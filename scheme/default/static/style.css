@@ -1,0 +1,27 @@
+.hentry {
+    padding: 1em;
+}
+
+.l-box {
+    padding: 1em;
+}
+
+.header {
+    border-bottom-color: black;
+    border-radius: 0;
+    background: url('/resources/nighttime-vector.svg') #151547;
+    background-size: 100% 256px ;
+    height: 256px;
+}
+
+.footer {
+    border-bottom-color: black;
+    border-radius: 0;
+    background: rgb(198, 198, 237);
+}
+
+.headermenu .pure-menu {
+    border-bottom-color: black;
+    border-radius: 0;
+    background: rgb(217, 217, 237);
+}
