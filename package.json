@@ -1,0 +1,12 @@
+{ "name" : "rm3",
+  "description" : "A node.js CMS toolkit",
+  "main" : "./lib/some-library.js",
+  "dependencies": {
+	"async": ">=0.2.9",
+	"express": ">=3.4.7",
+	"request": ">=2.30.0",
+	"dustjs-linkedin": ">=2.2.2"
+  },
+  "devDependencies": {
+  }
+}
