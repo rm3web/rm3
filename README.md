@@ -8,3 +8,7 @@ To test:
 To lint:
 
     npm run lint
+
+To generate docs:
+
+    npm run docs
