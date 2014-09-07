@@ -13,8 +13,8 @@ test('middleware fetch_entity', function (t) {
   query.entity_from_path = function(ent, sp, rev, next) {
     t.deepEqual(entity, ent);
     t.deepEqual(sp, new sitepath(['sparklepony']));
-    t.deepEqual(rev, null)
-    next(null, {e: 'st'})
+    t.deepEqual(rev, null);
+    next(null, {e: 'st'});
   };
 
   var middleware = fetch_entity(query, entity);
@@ -24,8 +24,8 @@ test('middleware fetch_entity', function (t) {
 
   middleware(req, res, function()
   {
-    t.deepEqual(req.entity, {e: 'st'})
+    t.deepEqual(req.entity, {e: 'st'});
     t.end();
-  })
+  });
 
 });

@@ -14,26 +14,28 @@ test('page', function (t) {
     var outstream = new events.EventEmitter();
     callback(null, outstream);
     outstream.emit("data","thunk");
-    outstream.emit("end")
+    outstream.emit("end");
   };
+
   req.entity.view = function() {
     t.pass('view');
     return {};
-  }
+  };
 
   res.writeHead = function(type, data)
   {
     t.deepEqual(type,200);
-    t.deepEqual(data,{'Content-Type': 'text/html'})
-  }
+    t.deepEqual(data,{'Content-Type': 'text/html'});
+  };
   res.write = function(data)
   {
-    t.deepEqual(data,"thunk")
-  }
+    t.deepEqual(data,"thunk");
+  };
   res.end = function()
   {
     t.end();
-  }
+  };
+  
   var page = new Page();
 
   page.render(req,res);

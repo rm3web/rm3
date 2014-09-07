@@ -9,14 +9,14 @@ test.test('query', function (t) {
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
-  var query = require('../../lib/query')
+  var query = require('../../lib/query');
   var db = require('../../lib/db');
 
   ent = new entity.Entity();
   ent._path = new sitepath(['wh','query']);
-  ent._proto = 'base'
+  ent._proto = 'base';
   ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"}
+    "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';
 
   async.waterfall([
@@ -33,7 +33,7 @@ test.test('query', function (t) {
     if(err) {
       t.fail(err);
     }
-    db.gun_database()
+    db.gun_database();
     t.end();
   });
 
