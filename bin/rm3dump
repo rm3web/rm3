@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+var query = require('../lib/query');
+var entity = require('../lib/entity');
+var sitepath = require ('../lib/sitepath');
+var pg = require('pg');
+
+query.query_db_for_entity(new sitepath(['wh', 'frrr']), function(ent){
+	console.log(ent.view())
+})
