@@ -18,7 +18,7 @@ test('middleware path_map', function (t) {
       middleware(req, res, function()
       {
         t.deepEqual(req.sitepath, new sitepath(['wh']));
-        callback()
+        callback();
       });
     },
     function(callback) {
@@ -26,13 +26,13 @@ test('middleware path_map', function (t) {
       middleware(req, res, function()
       {
         t.deepEqual(req.sitepath, new sitepath(['wh','wh']));
-        callback()
+        callback();
       });
     }
   ], function(err, results)
   {
     t.end();
-  })
+  });
     
   
 

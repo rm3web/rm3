@@ -11,7 +11,7 @@ test.test('db', function (t) {
   var db = require('../../lib/db');
 
   db.connect_wrap(function(client, done) {
-    t.deepEqual(client.database,"rm3unit")
+    t.deepEqual(client.database,"rm3unit");
     var select = client.query({
       text: 'SELECT $1::int AS number',
       values: [1],
@@ -21,7 +21,7 @@ test.test('db', function (t) {
       if(err) {
         t.fail(err);
       }
-      t.deepEqual(result.rows[0].number,1)
+      t.deepEqual(result.rows[0].number,1);
       db.gun_database();
       t.end();
     });

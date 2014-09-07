@@ -10,13 +10,13 @@ test('update', function (t) {
   var update = require('../../lib/update');
   var db = require('../../lib/db');
 
-  var longstr = '<div></div>'
+  var longstr = '<div></div>';
 
   ent = new entity.Entity();
   ent._path = new sitepath(['wh']);
-  ent._proto = 'base'
+  ent._proto = 'base';
   ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"}
+    "abstract": "some text goes here"};
   ent.data.posting = longstr;
 
   update.create_entity(ent, function(err, entity_id, revision_id, revision_num){
@@ -25,5 +25,5 @@ test('update', function (t) {
     }
     t.end();
     db.gun_database();
-  })
+  });
 });
