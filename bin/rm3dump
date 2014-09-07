@@ -3,9 +3,9 @@
 var query = require('../lib/query');
 var entity = require('../lib/entity');
 var sitepath = require ('../lib/sitepath');
-var pg = require('pg');
+var db = require('../lib/db');
 
-query.entity_from_path(entity.Entity, new sitepath(['wh']), null, function(err, ent){
+query.entity_from_path(db, entity.Entity, new sitepath(['wh']), null, function(err, ent){
 	console.log(ent.view())
-	pg.end();
+	db.gun_database();
 })

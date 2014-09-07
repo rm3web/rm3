@@ -19,7 +19,7 @@ test('update', function (t) {
     "abstract": "some text goes here"};
   ent.data.posting = longstr;
 
-  update.create_entity(ent, function(err, entity_id, revision_id, revision_num){
+  update.create_entity(db, ent, function(err, entity_id, revision_id, revision_num){
     if(err) {
       t.fail(err);
     }
