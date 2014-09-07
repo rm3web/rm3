@@ -21,10 +21,10 @@ test.test('query', function (t) {
 
   async.waterfall([
     function(callback){
-      update.create_entity(ent, callback);
+      update.create_entity(db, ent, callback);
     },
     function(entity_id, revision_id, revision_num, callback) {
-      query.entity_from_path(entity.Entity, ent._path, null, function(err, entity){
+      query.entity_from_path(db, entity.Entity, ent._path, null, function(err, entity){
         //req.entity = entity;
         callback(err);
       });

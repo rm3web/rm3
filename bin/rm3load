@@ -3,7 +3,7 @@
 var update = require('../lib/update');
 var entity = require('../lib/entity');
 var sitepath = require ('../lib/sitepath');
-var pg = require('pg');
+var db = require('../lib/db');
 
 var longstr = '<div class="hentry">     <a href="blog.html">       <img \
 src="/resources/blog-big.gif" align="left" height="75" width="75" \
@@ -47,7 +47,7 @@ ent.summary = {"title": "blrg",
 	 "abstract": "some text goes here"}
 ent.data.posting = longstr;
 
-update.create_entity(ent, function(){
+update.create_entity(db, ent, function(){
 	console.log('done')
-	pg.end();
+	db.gun_database();
 })
