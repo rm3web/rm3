@@ -41,7 +41,7 @@ now was the time to fix this.       </div>     </div>   </div>'
 
 
 ent = new entity.Entity();
-ent._path = new sitepath(['wh', 'frrr']);
+ent._path = new sitepath(['wh']);
 ent._proto = 'base'
 ent.summary = {"title": "blrg",
 	 "abstract": "some text goes here"}
