@@ -21,12 +21,14 @@
   "devDependencies": {
     "jshint": "~2.5.5",
     "tape": "~2.14.0",
-    "jsdox": "~0.4.2"
+    "jsdox": "~0.4.2",
+    "istanbul": "~0.3.2"
   },
   "scripts": {
     "unit-tests": "./node_modules/.bin/tape tests/unit/*.js",
     "db-tests": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && ./node_modules/.bin/tape tests/db/*.js",
     "test": "npm run unit-tests && npm run db-tests",
+    "coverage": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && ./node_modules/.bin/istanbul cover ./node_modules/.bin/tape tests/unit/*.js tests/db/*.js",
     "lint": "./node_modules/.bin/jshint lib tests",
     "docs": "./node_modules/.bin/jsdox -A --output ./docs/ lib"
   },
