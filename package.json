@@ -24,7 +24,9 @@
     "jsdox": "~0.4.2"
   },
   "scripts": {
-    "test": "./node_modules/.bin/tape tests/unit/*.js",
+    "unit-tests": "./node_modules/.bin/tape tests/unit/*.js",
+    "db-tests": "./node_modules/.bin/tape tests/db/*.js",
+    "test": "npm run unit-tests && npm run db-tests",
     "lint": "./node_modules/.bin/jshint lib tests",
     "docs": "./node_modules/.bin/jsdox -A --output ./docs/ lib"
   },
