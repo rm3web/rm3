@@ -5,7 +5,7 @@ var entity = require('../lib/entity');
 var sitepath = require ('../lib/sitepath');
 var pg = require('pg');
 
-query.query_db_for_entity(new sitepath(['wh']), function(err, ent){
+query.entity_from_path(new sitepath(['wh']), function(err, ent){
 	console.log(ent.view())
 	pg.end();
 })
