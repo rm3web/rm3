@@ -2,7 +2,7 @@ var fetch_entity = require('../../lib/middleware/fetch_entity');
 var test = require('tape');
 var sitepath = require ('../../lib/sitepath');
 
-test('conf', function (t) {
+test('middleware fetch_entity', function (t) {
   
   t.plan(5);
   var query = {};
