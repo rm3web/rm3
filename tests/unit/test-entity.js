@@ -2,7 +2,7 @@ var entity = require ('../../lib/entity');
 var sitepath = require ('../../lib/sitepath');
 var test = require('tape');
 
-test('entity fromQuery', function (t) {
+test('entity from_db', function (t) {
   t.plan(1);
 
   var e = new entity.Entity();
