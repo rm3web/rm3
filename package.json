@@ -20,11 +20,13 @@
   },
   "devDependencies": {
     "jshint": "~2.5.5",
-    "tape": "~2.14.0"
+    "tape": "~2.14.0",
+    "jsdox": "~0.4.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/tape tests/unit/*.js",
-    "lint": "./node_modules/.bin/jshint lib tests"
+    "lint": "./node_modules/.bin/jshint lib tests",
+    "docs": "./node_modules/.bin/jsdox -A --output ./docs/ lib"
   },
   "keywords": [
     "cms"
