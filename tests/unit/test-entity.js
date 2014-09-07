@@ -52,3 +52,34 @@ test('entity from_db', function (t) {
   t.deepEqual(e,e2);
   t.end();
 });
+
+test('entity view', function (t) {
+  t.plan(1);
+
+  var e = new entity.Entity();
+  e._path = new sitepath(['wh']);
+  e._entity_id = '96010990-36ad-11e4-863b-614e8d833a23';
+  e._revision_id = '96010991-36ad-11e4-863b-614e8d833a23';
+  e._revision_num = 1;
+  e._proto = "base";
+  e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+  e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+  e.data.posting = '<div>Test test</div>';
+  e.summary = 
+  {"title": "blrg",
+   "abstract": "some text goes here"};
+
+  v = { 
+  meta: 
+   { entity_id: '96010990-36ad-11e4-863b-614e8d833a23',
+     revision_id: '96010991-36ad-11e4-863b-614e8d833a23',
+     revision_num: 1,
+     proto: 'base',
+     modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+     created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)') },
+  summary: { title: 'blrg', abstract: 'some text goes here' },
+  posting: '<div>Test test</div>' }
+
+  t.deepEqual(e.view(),v);
+  t.end();
+});
