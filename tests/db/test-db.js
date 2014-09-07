@@ -19,8 +19,8 @@ test.test('db', function (t) {
         values: [1],
         name: 'test-db-1'
       }, function(err, result){
-        callback(err, done, result)
-      })
+        callback(err, done, result);
+      });
     }
   ], function(err, done, result) {
     done();
