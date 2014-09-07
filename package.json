@@ -1,12 +1,31 @@
-{ "name" : "rm3",
-  "description" : "A node.js CMS toolkit",
-  "main" : "./lib/some-library.js",
-  "dependencies": {
-	"async": ">=0.2.9",
-	"express": ">=3.4.7",
-	"request": ">=2.30.0",
-	"dustjs-linkedin": ">=2.2.2"
+{
+  "name": "rm3",
+  "version": "0.0.0",
+  "description": "A node.js CMS toolkit",
+  "main": "lib/front.js",
+  "directories": {
+    "test": "tests"
   },
-  "devDependencies": {
-  }
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:wirehead/rm3.git"
+  },
+  "dependencies": {
+    "async": "~0.2.9",
+    "dustjs-linkedin": "~2.2.2",
+    "express": "~3.4.7",
+    "request": "~2.30.0",
+    "tape": "~2.14.0",
+    "pg": "~3.4.2",
+    "clone": "~0.1.18"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "./node_modules/.bin/tape tests/unit/*.js"
+  },
+  "keywords": [
+    "cms"
+  ],
+  "author": "Wirehead",
+  "license": "GPLv2"
 }
