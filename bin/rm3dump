@@ -7,4 +7,5 @@ var pg = require('pg');
 
 query.query_db_for_entity(new sitepath(['wh']), function(err, ent){
 	console.log(ent.view())
+	pg.end();
 })
