@@ -1,7 +1,10 @@
 var Conf = require ('../../lib/conf');
 var test = require('tape');
+var entity = require('../../lib/entity');
+var sitepath = require ('../../lib/sitepath');
+var async = require('async');
 
-test('db', function (t) {
+test.test('db', function (t) {
   t.plan(2);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
@@ -17,10 +20,9 @@ test('db', function (t) {
       done();
       if(err) {
         t.fail(err);
-        t.end();
       }
       t.deepEqual(result.rows[0].number,1)
-      client.end();
+      db.gun_database();
       t.end();
     });
   });
