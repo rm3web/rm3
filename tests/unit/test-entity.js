@@ -33,8 +33,8 @@ test('entity fromQuery', function (t) {
       { name: 'created', dataTypeID: 1114 },
       { name: 'summary', dataTypeID: 114 },
       { name: 'data', dataTypeID: 114 } ],
-  rowAsArray: false }
-  e.from_db(queryresp)
+  rowAsArray: false };
+  e.from_db(queryresp);
 
   var e2 = new entity.Entity();
   e2._path = new sitepath(['wh']);
@@ -47,8 +47,8 @@ test('entity fromQuery', function (t) {
   e2.data.posting = '<div>Test test</div>';
   e2.summary = 
   {"title": "blrg",
-   "abstract": "some text goes here"}
+   "abstract": "some text goes here"};
 
-  t.deepEqual(e,e2)
+  t.deepEqual(e,e2);
   t.end();
 });
