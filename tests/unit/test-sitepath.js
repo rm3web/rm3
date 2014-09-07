@@ -50,17 +50,16 @@ test('sitepath toDottedPath', function(t) {
 });
 
 test('sitepath up', function(t) {
-	t.plan(1)
+	t.plan(1);
 
 	var p = new sitepath(['wh', 'hat']);
 	var p2 = new sitepath(['wh']);
 
 	t.deepEqual(p.up(),p2);
 	t.end();
-})
+});
 
-
-test('sitepath fromUrlSegment'), function(t) {
+test('sitepath fromUrlSegment', function(t) {
 	t.plan(2);
 
 	var p = new sitepath();
@@ -71,10 +70,10 @@ test('sitepath fromUrlSegment'), function(t) {
 	t.deepEqual(p2.path,['wh','suck']);
 
 	t.end();
-}
+});
 
-test('sitepath fromUrlSegment prefix'), function(t) {
-	t.plan(1)
+test('sitepath fromUrlSegment prefix', function(t) {
+	t.plan(1);
 
 	var p = new sitepath();
 
@@ -82,10 +81,10 @@ test('sitepath fromUrlSegment prefix'), function(t) {
 	t.deepEqual(p.path,['wh','suck']);
 
 	t.end();
-}
+});
 
 test('sitepath fromUrlSegment bad', function(t) {
-	t.plan(1)
+	t.plan(1);
 
 	var p = new sitepath();
 
@@ -94,10 +93,10 @@ test('sitepath fromUrlSegment bad', function(t) {
 
 	t.end();
 
-})
+});
 
 test('sitepath fromUrlSegment path', function(t) {
-	t.plan(2)
+	t.plan(2);
 
 	var p = new sitepath();
 
@@ -106,15 +105,14 @@ test('sitepath fromUrlSegment path', function(t) {
 	t.deepEqual(p.page,'blah.html');
 
 	t.end();
-
-})
+});
 
 test('sitepath down', function(t) {
-	t.plan(1)
+	t.plan(1);
 
 	var p = new sitepath(['wh', 'hat']);
 	var p2 = new sitepath(['wh']);
 
 	t.deepEqual(p2.down('hat'),p);
 	t.end();
-})
+});
