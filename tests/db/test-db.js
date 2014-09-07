@@ -10,7 +10,7 @@ test.test('db', function (t) {
   Conf._data.endpoints.postgres = conString;
   var db = require('../../lib/db');
 
-  db.connect_wrap(function(client, done) {
+  db.connect_wrap(function(err, client, done) {
     t.deepEqual(client.database,"rm3unit");
     var select = client.query({
       text: 'SELECT $1::int AS number',
