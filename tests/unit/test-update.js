@@ -5,9 +5,9 @@ var sitepath = require ('../../lib/sitepath');
 var update = require ('../../lib/update');
 
 test('update', function (t) {
-  t.plan(10);
+  t.plan(12);
   
-  insert_query = "INSERT INTO wh_entity (path, stub, entity_id, revision_id, \
+  var insert_query = "INSERT INTO wh_entity (path, stub, entity_id, revision_id, \
 revision_num, proto, modified, created, summary, data) VALUES ($1, $2, \
 $3, $4, $5, $6, $7, $8, $9, $10);";
 
@@ -21,15 +21,23 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
   db.connect_wrap = function (queryfunc) {
     client = {};
     client.query = function(spec, func) {
-      t.pass('called query')
-      t.deepEqual(spec.text, insert_query)
-      t.deepEqual(spec.values[0], 'wh') //path
-      t.deepEqual(spec.values[1], false) //stub
-      t.deepEqual(spec.values[4], 1) //revision_num
-      t.deepEqual(spec.values[5], 'base') //proto
-      t.deepEqual(spec.values[8], ent.summary) // summary
-      t.deepEqual(spec.values[9], ent.data) // summary
-      func(null, {})
+      if (spec === 'BEGIN') {
+        t.pass('called begin')
+        func(null, {})
+      } else if (spec === 'COMMIT') {
+        t.pass('called commit')
+        func(null, {})
+      } else {
+        t.pass('called query')
+        t.deepEqual(spec.text, insert_query)
+        t.deepEqual(spec.values[0], 'wh') //path
+        t.deepEqual(spec.values[1], false) //stub
+        t.deepEqual(spec.values[4], 1) //revision_num
+        t.deepEqual(spec.values[5], 'base') //proto
+        t.deepEqual(spec.values[8], ent.summary) // summary
+        t.deepEqual(spec.values[9], ent.data) // summary
+        func(null, {})
+      }
     }
     queryfunc(null, client, function()
       {
