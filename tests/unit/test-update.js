@@ -18,13 +18,15 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
     "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';
   db = {};
+  db.open_transaction = function(client, done, callback) {
+    t.pass('called begin')
+    callback(null, client, done);
+  };
+
   db.connect_wrap = function (queryfunc) {
     client = {};
     client.query = function(spec, func) {
-      if (spec === 'BEGIN') {
-        t.pass('called begin')
-        func(null, {})
-      } else if (spec === 'COMMIT') {
+      if (spec === 'COMMIT') {
         t.pass('called commit')
         func(null, {})
       } else {
