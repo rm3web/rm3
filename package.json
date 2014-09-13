@@ -16,7 +16,9 @@
     "express": "~3.4.7",
     "request": "~2.30.0",
     "pg": "~3.4.2",
-    "clone": "~0.1.18"
+    "clone": "~0.1.18",
+    "errs": "~0.3.0",
+    "winston": "~0.7.3"
   },
   "devDependencies": {
     "jshint": "~2.5.5",
