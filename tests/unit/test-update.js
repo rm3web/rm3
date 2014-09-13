@@ -19,7 +19,7 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
   ent.data.posting = '<div></div>';
   db = {};
   db.open_transaction = function(client, done, callback) {
-    t.pass('called begin')
+    t.pass('called begin');
     callback(null, client, done);
   };
 
@@ -27,23 +27,23 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
     client = {};
     client.query = function(spec, func) {
       if (spec === 'COMMIT') {
-        t.pass('called commit')
-        func(null, {})
+        t.pass('called commit');
+        func(null, {});
       } else {
-        t.pass('called query')
-        t.deepEqual(spec.text, insert_query)
-        t.deepEqual(spec.values[0], 'wh') //path
-        t.deepEqual(spec.values[1], false) //stub
-        t.deepEqual(spec.values[4], 1) //revision_num
-        t.deepEqual(spec.values[5], 'base') //proto
-        t.deepEqual(spec.values[8], ent.summary) // summary
-        t.deepEqual(spec.values[9], ent.data) // summary
-        func(null, {})
+        t.pass('called query');
+        t.deepEqual(spec.text, insert_query);
+        t.deepEqual(spec.values[0], 'wh'); //path
+        t.deepEqual(spec.values[1], false); //stub
+        t.deepEqual(spec.values[4], 1); //revision_num
+        t.deepEqual(spec.values[5], 'base'); //proto
+        t.deepEqual(spec.values[8], ent.summary); // summary
+        t.deepEqual(spec.values[9], ent.data); // summary
+        func(null, {});
       }
-    }
+    };
     queryfunc(null, client, function()
       {
-        t.pass('called done')
+        t.pass('called done');
       });
   };
 
@@ -51,7 +51,7 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
     if(err) {
       t.fail(err);
     } else {
-      t.pass('finished')
+      t.pass('finished');
     }
     t.end();
   });
