@@ -1,6 +1,8 @@
 var fetch_entity = require('../../lib/middleware/fetch_entity');
 var test = require('tape');
 var sitepath = require ('../../lib/sitepath');
+var util = require('util'),
+    errs = require('errs');
 
 test('middleware fetch_entity', function (t) {
   
@@ -26,6 +28,68 @@ test('middleware fetch_entity', function (t) {
   middleware(req, res, function()
   {
     t.deepEqual(req.entity, {e: 'st'});
+    t.end();
+  });
+
+});
+
+test('middleware fetch_entity not_found_error', function (t) {
+  
+  t.plan(3);
+  var query = {};
+  var entity = {};
+  var db = {};
+  var req = {};
+  var res = {};
+
+  function EntityNotFoundError() {
+    this.message = "Entity not found";
+  }
+  util.inherits(EntityNotFoundError, Error);
+  errs.register('query.not_found', EntityNotFoundError);
+
+  query.entity_from_path = function(db, ent, sp, rev, next) {
+    next(errs.create('query.not_found', {
+        path: 'sparklepony',
+        revision_id: null
+      }));
+  };
+
+  var middleware = fetch_entity(db, query, entity);
+  t.deepEqual(typeof middleware, "function");
+
+  req.sitepath = new sitepath(['sparklepony']);
+
+  middleware(req, res, function(err)
+  {
+    t.deepEqual(err.name,'NotFoundError');
+    t.deepEqual(err.http_response_code, 404);
+    t.end();
+  });
+
+});
+
+test('middleware fetch_entity db_error', function (t) {
+  
+  t.plan(2);
+  var query = {};
+  var entity = {};
+  var db = {};
+  var req = {};
+  var res = {};
+
+  query.entity_from_path = function(db, ent, sp, rev, next) {
+    next(new Error("Connection was ended during query"));
+  };
+
+  var middleware = fetch_entity(db, query, entity);
+  t.deepEqual(typeof middleware, "function");
+
+  req.sitepath = new sitepath(['sparklepony']);
+
+  middleware(req, res, function(err)
+  {
+    t.deepEqual(err.name,'Error');
     t.end();
   });
 
