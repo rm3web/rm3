@@ -23,23 +23,23 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
     callback(null, client, done);
   };
 
+  db.commit_transaction = function(client, callback) {
+    t.pass('called commit');
+    callback(null);
+  };
+
   db.connect_wrap = function (queryfunc) {
     client = {};
     client.query = function(spec, func) {
-      if (spec === 'COMMIT') {
-        t.pass('called commit');
-        func(null, {});
-      } else {
-        t.pass('called query');
-        t.deepEqual(spec.text, insert_query);
-        t.deepEqual(spec.values[0], 'wh'); //path
-        t.deepEqual(spec.values[1], false); //stub
-        t.deepEqual(spec.values[4], 1); //revision_num
-        t.deepEqual(spec.values[5], 'base'); //proto
-        t.deepEqual(spec.values[8], ent.summary); // summary
-        t.deepEqual(spec.values[9], ent.data); // summary
-        func(null, {});
-      }
+      t.pass('called query');
+      t.deepEqual(spec.text, insert_query);
+      t.deepEqual(spec.values[0], 'wh'); //path
+      t.deepEqual(spec.values[1], false); //stub
+      t.deepEqual(spec.values[4], 1); //revision_num
+      t.deepEqual(spec.values[5], 'base'); //proto
+      t.deepEqual(spec.values[8], ent.summary); // summary
+      t.deepEqual(spec.values[9], ent.data); // summary
+      func(null, {});
     };
     queryfunc(null, client, function()
       {
