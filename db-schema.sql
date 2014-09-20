@@ -15,6 +15,7 @@ CREATE TABLE wh_entity (
 
 CREATE TABLE wh_log (
 	path ltree,
+	entity_id uuid,
 	note text,
 	base_revision_id uuid,
 	replace_revision_id uuid,
@@ -23,6 +24,8 @@ CREATE TABLE wh_log (
 	evt_start timestamp,
 	evt_end timestamp,
 	evt_touched timestamp,
+	evt_class text,
+	evt_final boolean,
 	data json
 );
 
