@@ -5,7 +5,7 @@ var sitepath = require ('../../lib/sitepath');
 var update = require ('../../lib/update');
 
 test('update', function (t) {
-  t.plan(22);
+  t.plan(23);
   
   var insert_query = "INSERT INTO wh_entity (path, stub, entity_id, revision_id, \
 revision_num, proto, modified, created, summary, data) VALUES ($1, $2, \
@@ -47,12 +47,13 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
         //t.deepEqual(spec.text, insert_query);
         t.deepEqual(spec.name, 'insert_log_query');
         t.deepEqual(spec.values[0], 'wh'); //path
-        t.deepEqual(spec.values[2], null); //base_revision_id
-        t.deepEqual(spec.values[3], null); //replace_revision_id
-        t.deepEqual(spec.values[5], 1); //revision_num
-        t.deepEqual(spec.values[9].evt_class, 'create');
-        t.deepEqual(spec.values[9].to_data.summary, ent.summary);
-        t.deepEqual(spec.values[9].to_data.data, ent.data);
+        t.deepEqual(spec.values[3], null); //base_revision_id
+        t.deepEqual(spec.values[4], null); //replace_revision_id
+        t.deepEqual(spec.values[6], 1); //revision_num
+        t.deepEqual(spec.values[10], 'create');
+        t.deepEqual(spec.values[11], true);
+        t.deepEqual(spec.values[12].to_data.summary, ent.summary);
+        t.deepEqual(spec.values[12].to_data.data, ent.data);
         func(null, {});
       }
     };
