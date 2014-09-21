@@ -18,7 +18,7 @@ function quick_query(db, querytext, next) {
 }
 
 test('update create-create-delete', function (t) {
-  t.plan(25);
+  t.plan(27);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -52,12 +52,14 @@ test('update create-create-delete', function (t) {
       });
     },
     function check_log_1(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_create_delete'";
+      query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.create_create_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
         }
         t.deepEqual(result.rowCount, 1);
+        t.deepEqual(result.rows[0].evt_final, true);
+        t.notDeepEqual(result.rows[0].evt_end, null);
         t.deepEqual(result.rows[0].entity_id, entity_id);
         t.deepEqual(result.rows[0].revision_id, revision_id);
         t.deepEqual(result.rows[0].revision_num, revision_num);
