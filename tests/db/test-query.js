@@ -21,7 +21,7 @@ test.test('query', function (t) {
 
   async.waterfall([
     function(callback){
-      update.create_entity(db, ent, callback);
+      update.create_entity(db, ent, true, 'create', callback);
     },
     function(entity_id, revision_id, revision_num, callback) {
       query.entity_from_path(db, entity.Entity, ent._path, null, function(err, entity){
@@ -35,7 +35,7 @@ test.test('query', function (t) {
       });
     },
     function(entity, callback) {
-      update.delete_entity(db, entity, callback);
+      update.delete_entity(db, entity, true, 'delete', callback);
     }
   ], function(err, result) {
     if(err) {

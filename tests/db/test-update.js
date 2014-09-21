@@ -35,7 +35,7 @@ test('update create-create-delete', function (t) {
 
   async.waterfall([
     function do_create(callback){
-      update.create_entity(db, ent, callback);
+      update.create_entity(db, ent, true, 'create', callback);
     },
     function check_create_1(entity_id, revision_id, revision_num, callback) {
       ent._entity_id = entity_id;
@@ -67,7 +67,7 @@ test('update create-create-delete', function (t) {
       });
     },
     function do_create_again(entity_id, revision_id, revision_num, callback){
-      update.create_entity(db, ent, function(err) {
+      update.create_entity(db, ent, true, 'create', function(err) {
         if (err) {
           t.deepEqual(err.name, 'DbDuplicateRecordError');
         } else {
@@ -102,7 +102,7 @@ test('update create-create-delete', function (t) {
       });
     },
     function do_delete(entity_id, revision_id, revision_num, callback){
-      update.delete_entity(db, ent, callback);
+      update.delete_entity(db, ent, true, 'delete', callback);
     },
     function check_create_3(entity_id, revision_id, revision_num, callback) {
       query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete';";
@@ -160,7 +160,7 @@ test('update create-update-delete', function (t) {
 
   async.waterfall([
     function do_create(callback){
-      update.create_entity(db, ent, callback);
+      update.create_entity(db, ent, true, 'create', callback);
     },
     function check_create_1(entity_id, revision_id, revision_num, callback) {
       ent._entity_id = entity_id;
@@ -192,7 +192,7 @@ test('update create-update-delete', function (t) {
     function do_update(entity_id, revision_id, revision_num, callback){
       ent2 = ent.clone();
       ent2.data.posting = "<div>blah blah blah</div>";
-      update.update_entity(db, ent, ent2, callback);
+      update.update_entity(db, ent, ent2, true, 'update', callback);
     },
     function check_create_2(entity_id, revision_id, revision_num, callback) {
       ent2._entity_id = entity_id;
@@ -228,7 +228,7 @@ test('update create-update-delete', function (t) {
       });
     },
     function do_delete(entity_id, revision_id, revision_num, callback){
-      update.delete_entity(db, ent2, callback);
+      update.delete_entity(db, ent2, true, 'delete', callback);
     },
     function check_create_3(entity_id, revision_id, revision_num, callback) {
       query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete';";

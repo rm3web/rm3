@@ -47,7 +47,7 @@ ent.summary = {"title": "blrg",
 	 "abstract": "some text goes here"}
 ent.data.posting = longstr;
 
-update.create_entity(db, ent, function(){
+update.create_entity(db, ent, true, 'loaded via rm3load', function(){
 	console.log('done')
 	db.gun_database();
 })
