@@ -18,7 +18,7 @@ function quick_query(db, querytext, next) {
 }
 
 test('update', function (t) {
-  t.plan(23);
+  t.plan(25);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -113,15 +113,17 @@ test('update', function (t) {
       });
     },
     function check_log_3(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh' ORDER BY revision_num ASC;";
+      query = "SELECT evt_class, entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh' ORDER BY revision_num ASC;";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
         }
         t.deepEqual(result.rowCount, 2);
+        t.deepEqual(result.rows[0].evt_class, 'create');
         t.deepEqual(result.rows[0].entity_id, entity_id);
         t.notDeepEqual(result.rows[0].revision_id, result.rows[1].revision_id);
         t.notDeepEqual(result.rows[0].revision_num, result.rows[1].revision_num);
+        t.deepEqual(result.rows[1].evt_class, 'delete');
         t.deepEqual(result.rows[1].entity_id, entity_id);
         t.deepEqual(result.rows[1].revision_id, revision_id);
         t.deepEqual(result.rows[1].revision_num, revision_num);
