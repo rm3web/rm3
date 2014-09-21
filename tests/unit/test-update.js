@@ -63,7 +63,7 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
       });
   };
 
-  update.create_entity(db, ent, function(err, entity_id, revision_id, revision_num){
+  update.create_entity(db, ent, true, 'create', function(err, entity_id, revision_id, revision_num){
     if(err) {
       t.fail(err);
     } else {
