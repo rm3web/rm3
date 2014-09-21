@@ -31,8 +31,11 @@ test.test('query', function (t) {
         t.deepEqual(entity._entity_id,entity_id);
         t.deepEqual(entity._revision_id,revision_id);
         t.deepEqual(entity._revision_num,revision_num);
-        callback(err);
+        callback(err, entity);
       });
+    },
+    function(entity, callback) {
+      update.delete_entity(db, entity, callback);
     }
   ], function(err, result) {
     if(err) {
