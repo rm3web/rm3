@@ -3,7 +3,7 @@ var test = require('tape');
 var entity = require('../../lib/entity');
 var sitepath = require ('../../lib/sitepath');
 var async = require('async');
-
+var uuid = require('node-uuid');
 
 function quick_query(db, querytext, next) {
   async.waterfall([
@@ -484,6 +484,38 @@ test('update provisional create', function (t) {
       t.fail(err);
     }
     t.end();
+    db.gun_database();
+  });
+});
+
+test('update bad provisional create', function (t) {
+  t.plan(2);
+  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
+  Conf._data.endpoints.postgres = conString;
+  var update = require('../../lib/update');
+  var db = require('../../lib/db');
+
+  var longstr = '<div></div>';
+
+  var ent = new entity.Entity();
+  ent._path = new sitepath(['wh', 'pcreate']);
+  ent._proto = 'base';
+  ent.summary = {"title": "blrg",
+    "abstract": "some text goes here"};
+  ent.data.posting = longstr;
+
+  async.waterfall([
+    function do_apply(callback){
+      update.commit_entity_rev(db, uuid.v1(), callback);
+    },
+  ], function(err){
+    if(err) {
+      t.pass('this errored');
+      t.deepEqual(err.name, 'InvalidLogClass');
+      t.end();
+    } else {
+      t.fail(err);
+    }
     db.gun_database();
   });
 });
