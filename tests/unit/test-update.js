@@ -72,3 +72,19 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
     t.end();
   });
 });
+
+test('update bad evt_class logentry', function (t) {
+  t.plan(2);
+  var logentry = {
+    evt_class: 'this_is_not_valid'
+  };
+  update._private.exec_logentry(true, undefined, undefined, logentry, function(err) {
+    if (err) {
+      t.pass('this errored');
+      t.deepEqual(err.name, 'InvalidLogClass');
+      t.end();
+    } else {
+      t.fail('this should error');
+    }
+  });
+});
