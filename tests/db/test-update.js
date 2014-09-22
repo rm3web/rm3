@@ -272,7 +272,7 @@ test('update create-update-delete', function (t) {
 });
 
 test('update provisional create', function (t) {
-  t.plan(7);
+  t.plan(16);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -291,7 +291,7 @@ test('update provisional create', function (t) {
     function do_create(callback){
       update.create_entity(db, ent, false, 'create', callback);
     },
-    function check_create(entity_id, revision_id, revision_num, callback) {
+    function check_create_1(entity_id, revision_id, revision_num, callback) {
       query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.pcreate';";
       quick_query(db, query, function(err, result) {
         if(err) {
@@ -301,7 +301,6 @@ test('update provisional create', function (t) {
         callback(err, entity_id, revision_id, revision_num);
       });
     },
-
     function check_log_1(entity_id, revision_id, revision_num, callback) {
       query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.pcreate'";
       quick_query(db, query, function(err, result) {
@@ -311,6 +310,36 @@ test('update provisional create', function (t) {
         t.deepEqual(result.rowCount, 1);
         t.deepEqual(result.rows[0].evt_final, false);
         t.deepEqual(result.rows[0].evt_end, null);
+        t.deepEqual(result.rows[0].entity_id, entity_id);
+        t.deepEqual(result.rows[0].revision_id, revision_id);
+        t.deepEqual(result.rows[0].revision_num, revision_num);
+        callback(err, entity_id, revision_id, revision_num);
+      });
+    },
+    function do_apply(entity_id, revision_id, revision_num, callback){
+      update.commit_entity_rev(db, revision_id, callback);
+    },
+    function check_create_2(entity_id, revision_id, revision_num, callback) {
+      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.pcreate'";
+      quick_query(db, query, function(err, result) {
+        if(err) {
+          t.fail(err);
+        }
+        t.deepEqual(result.rows[0].entity_id, entity_id);
+        t.deepEqual(result.rows[0].revision_id, revision_id);
+        t.deepEqual(result.rows[0].revision_num, revision_num);
+        callback(err, entity_id, revision_id, revision_num);
+      });
+    },
+    function check_log_2(entity_id, revision_id, revision_num, callback) {
+      query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.pcreate'";
+      quick_query(db, query, function(err, result) {
+        if(err) {
+          t.fail(err);
+        }
+        t.deepEqual(result.rowCount, 1);
+        t.deepEqual(result.rows[0].evt_final, true);
+        t.notDeepEqual(result.rows[0].evt_end, null);
         t.deepEqual(result.rows[0].entity_id, entity_id);
         t.deepEqual(result.rows[0].revision_id, revision_id);
         t.deepEqual(result.rows[0].revision_num, revision_num);
