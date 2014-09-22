@@ -14,6 +14,20 @@ test('sitepath creation', function (t) {
 	t.end();
 });
 
+test('sitepath fromDottedPath', function (t) {
+	t.plan(2);
+
+	var p = new sitepath();
+	var p2 = new sitepath();
+	p.fromDottedPath()
+	p2.fromDottedPath('wh.bleh');
+
+	t.deepEqual(p.path,[]);
+	t.deepEqual(p2.path, ['wh', 'bleh']);
+
+	t.end();
+});
+
 test('sitepath jsonSerialize', function(t) {
 	t.plan(1);
 
@@ -103,6 +117,35 @@ test('sitepath fromUrlSegment path', function(t) {
 	p.fromUrlSegment('/suck/blah.html');
 	t.deepEqual(p.path,['suck']);
 	t.deepEqual(p.page,'blah.html');
+
+	t.end();
+});
+
+test('sitepath fromUrlSegment partial', function(t) {
+	t.plan(6);
+
+	var p = new sitepath();
+
+	p.fromUrlSegment('/suck/$/offset/15');
+	t.deepEqual(p.path,['suck']);
+	t.deepEqual(p.page,null);
+	t.deepEqual(p.partial,'/offset/15');
+
+	p.fromUrlSegment('/suck/blah.txt/$/offset/15');
+	t.deepEqual(p.path,['suck']);
+	t.deepEqual(p.page,'blah.txt');
+	t.deepEqual(p.partial,'/offset/15');
+	t.end();
+});
+
+test('sitepath fromUrlSegment invalid', function(t) {
+	t.plan(1);
+
+	var p = new sitepath();
+
+	t.throws(function() {
+		p.fromUrlSegment('/suck/bla-.html');
+	}, 'validation error');
 
 	t.end();
 });
