@@ -25,3 +25,13 @@
     border-radius: 0;
     background: rgb(217, 217, 237);
 }
+
+#draft input[type=text], #draft textarea
+{
+    font-size:inherit;
+    text-align:inherit;
+    font-family:inherit;
+    color:inherit;
+    width:100%;
+    border:1px dotted #ddd;
+}
