@@ -5,7 +5,7 @@ var sitepath = require ('../../lib/sitepath');
 var async = require('async');
 
 test.test('query', function (t) {
-  t.plan(6);
+  t.plan(10);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -20,21 +20,30 @@ test.test('query', function (t) {
   ent.data.posting = '<div></div>';
 
   async.waterfall([
-    function(callback){
+    function cr_eate(callback){
       update.create_entity(db, ent, true, 'create', callback);
     },
-    function(entity_id, revision_id, revision_num, callback) {
-      query.entity_from_path(db, entity.Entity, ent._path, null, function(err, entity){
-        t.deepEqual(entity.summary,ent.summary);
-        t.deepEqual(entity.data,ent.data);
-        t.deepEqual(entity._path,ent._path);
-        t.deepEqual(entity._entity_id,entity_id);
-        t.deepEqual(entity._revision_id,revision_id);
-        t.deepEqual(entity._revision_num,revision_num);
-        callback(err, entity);
+    function en_from_path(entity_id, revision_id, revision_num, callback) {
+      query.entity_from_path(db, entity.Entity, ent._path, null, function(err, ent2){
+        t.deepEqual(ent2.summary,ent.summary);
+        t.deepEqual(ent2.data,ent.data);
+        t.deepEqual(ent2._path,ent._path);
+        t.deepEqual(ent2._entity_id,entity_id);
+        t.deepEqual(ent2._revision_id,revision_id);
+        t.deepEqual(ent2._revision_num,revision_num);
+        callback(err, ent2, revision_id);
       });
     },
-    function(entity, callback) {
+    function en_from_revid(ent2, revision_id, callback) {
+      query.entity_from_path(db, entity.Entity, ent._path, revision_id, function(err, ent3) {
+        t.deepEqual(ent3.summary,ent.summary);
+        t.deepEqual(ent3.data,ent.data);
+        t.deepEqual(ent3._path,ent._path);
+        t.deepEqual(ent3._revision_id,revision_id);
+        callback(err, ent3);
+      });
+    },
+    function del_ent(entity, callback) {
       update.delete_entity(db, entity, true, 'delete', callback);
     }
   ], function(err, result) {
@@ -64,8 +73,8 @@ test.test('query not_found', function (t) {
   ent.data.posting = '<div></div>';
 
   async.waterfall([
-    function(callback) {
-      query.entity_from_path(db, entity.Entity, entpath, null, function(err, entity){
+    function en_from_a(callback) {
+      query.entity_from_path(db, entity.Entity, entpath, null, function(err, ent2){
         t.deepEqual(err.name,'EntityNotFoundError');
         t.deepEqual(err.path,entpath.toDottedPath());
         callback();
