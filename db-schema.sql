@@ -9,6 +9,7 @@ CREATE TABLE wh_entity (
 	proto text,
 	modified timestamp,
 	created timestamp,
+	touched timestamp,
 	summary json,
 	data json
 );
