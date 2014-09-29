@@ -511,7 +511,7 @@ test('update bad provisional create', function (t) {
   ], function(err){
     if(err) {
       t.pass('this errored');
-      t.deepEqual(err.name, 'InvalidLogClass');
+      t.deepEqual(err.name, 'RevisionIdNotFoundClass');
       t.end();
     } else {
       t.fail(err);
