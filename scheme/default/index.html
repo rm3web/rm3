@@ -1,38 +1,5 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="{summary.abstract}">
-  {+titletag}
-  <title>{summary.title}</title>
-  {/titletag}
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
-  <link rel="stylesheet" href="/resources/style.css">
-
-</head>
-
-<body>
-	<div class="pure-g">
-		<div class="pure-u-1 header pure-hidden-phone">
-
-		</div>
-    <div class="pure-u-1 headermenu">
-      <div class="pure-menu pure-menu-open pure-menu-horizontal">
-       <a class="pure-menu-heading" href="">WireWorld</a>
-       <ul>
-        <li class="pure-menu-selected"><a href="index.html">Home</a></li>
-        <li><a href="page.html">Art</a></li>
-        <li><a href="page.html">Bicycling</a></li>
-        <li><a href="page.html">Food</a></li>
-        <li><a href="page.html">Hacks</a></li>
-        <li><a href="page.html">Making Stuff</a></li>
-        <li><a href="page.html">Blog</a></li>
-      </li>
-    </ul>
-  </div>
-
-</div>
+{>base/}
+{<main}
 
 <div class="pure-u-2-3">
 
@@ -45,16 +12,4 @@
   <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
 </div>
-</div>
-
-<div class="pure-g">
- <div class="pure-u-1 footer">
-  <p>Last Updated:
-    <span>2013-12-19 11:02AM</span>
-    <br />Posted: <span>2013-12-19 11:02AM</span></p>
-
-  </div>
-</div>
-</body>
-
-</html>
+{/main}
