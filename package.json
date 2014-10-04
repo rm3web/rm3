@@ -25,7 +25,10 @@
     "jshint": "~2.5.5",
     "tape": "~3.0.0",
     "jsdox": "~0.4.2",
-    "istanbul": "~0.3.2"
+    "istanbul": "~0.3.2",
+    "gulp": "~3.8.8",
+    "gulp-nodemon": "~1.0.4",
+    "gulp-jshint": "~1.8.5"
   },
   "scripts": {
     "unit-tests": "./node_modules/.bin/tape tests/unit/*.js",
