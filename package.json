@@ -11,18 +11,19 @@
     "url": "git@github.com:wirehead/rm3.git"
   },
   "dependencies": {
-    "async": "~0.2.9",
-    "dustjs-linkedin": "~2.2.2",
-    "express": "~3.4.7",
+    "async": "~0.2.10",
+    "dustjs-linkedin": "~2.2.10",
+    "express": "~3.4.8",
     "request": "~2.30.0",
     "pg": "~3.4.2",
     "clone": "~0.1.18",
     "errs": "~0.3.0",
-    "winston": "~0.7.3"
+    "winston": "~0.7.3",
+    "squel": "~3.8.1"
   },
   "devDependencies": {
     "jshint": "~2.5.5",
-    "tape": "~2.14.0",
+    "tape": "~3.0.0",
     "jsdox": "~0.4.2",
     "istanbul": "~0.3.2"
   },
