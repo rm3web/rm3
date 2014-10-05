@@ -38,5 +38,5 @@ test('page', function (t) {
   
   var page = new Page();
 
-  page.render(req,res);
+  page.render({}, req,res);
 });
