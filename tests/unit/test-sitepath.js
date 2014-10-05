@@ -19,7 +19,7 @@ test('sitepath fromDottedPath', function (t) {
 
 	var p = new sitepath();
 	var p2 = new sitepath();
-	p.fromDottedPath()
+	p.fromDottedPath();
 	p2.fromDottedPath('wh.bleh');
 
 	t.deepEqual(p.path,[]);
