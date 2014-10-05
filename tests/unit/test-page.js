@@ -8,7 +8,7 @@ test('page', function (t) {
   req.sitepath.page = null;
   var res = {};
 
-  req.scheme.render = function (data, callback) {
+  req.scheme.render = function (data, view, callback) {
     t.pass('render');
     t.deepEqual(typeof callback, "function");
     var outstream = new events.EventEmitter();
