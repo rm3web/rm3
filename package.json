@@ -20,7 +20,8 @@
     "errs": "~0.3.0",
     "winston": "~0.7.3",
     "squel": "~3.8.1",
-    "routes": "~1.2.0"
+    "routes": "~1.2.0",
+    "body-parser": "~1.9.0"
   },
   "devDependencies": {
     "jshint": "~2.5.5",

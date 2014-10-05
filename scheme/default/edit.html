@@ -1,9 +1,9 @@
 {>base/}
 {<main}
 <div class="pure-u-2-3">
-<form id="draft"class="pure-form pure-form-stacked">
+<form id="draft" method="post" action="edit.html" class="pure-form pure-form-stacked">
     <fieldset>
-    <textarea rows="30" class="pure-input-1" id="posting" placeholder="posting">
+    <textarea rows="30" class="pure-input-1" name="posting" placeholder="posting">
 {posting}
 </textarea>
 </fieldset>
@@ -14,8 +14,8 @@
             <button type="submit" class="pure-button pure-button-primary">Edit</button>
             </div>
             <div class="pure-u-2-3">
-             <label for="option-one" class="pure-checkbox">
-                    <input id="option-one" type="checkbox" value="">
+             <label for="publish-silently" class="pure-checkbox">
+                    <input id="publish-silently" name="publish-silently" type="checkbox" value="">
                     Publish silently
     </label>
             </div>
