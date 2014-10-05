@@ -9,11 +9,11 @@ test('query gen', function(t) {
   try {
     query._query_gen('wh','retr','entity',{},undefined,undefined);
   } catch (err) {
-    t.deepEqual(err.name,'InvalidQuery')
+    t.deepEqual(err.name,'InvalidQuery');
   }
   
   var tmp = query._query_gen('wh','child','entity',{},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT path, stub, entity_id, revision_id, revision_num, proto, modified, created, summary, data FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC')
+  t.deepEqual(tmp.text, 'SELECT path, stub, entity_id, revision_id, revision_num, proto, modified, created, summary, data FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC');
 
   t.end();
 });
