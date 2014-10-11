@@ -39,7 +39,7 @@ test('sitepath jsonSerialize', function(t) {
 });
 
 test('sitepath toUrl', function(t) {
-	t.plan(2);
+	t.plan(3);
 
 	var p = new sitepath(['wh', 'hat']);
 
@@ -48,6 +48,10 @@ test('sitepath toUrl', function(t) {
 
 	t.deepEqual(p.toUrl('http://www.wirewd.com/',1),
 		'http://www.wirewd.com/hat');
+
+	t.deepEqual(p.toUrl('/'),
+		'/wh/hat');
+
 	t.end();
 });
 

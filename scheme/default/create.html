@@ -1,0 +1,56 @@
+{>base/}
+{<main}
+<div class="pure-u-4-5">
+
+<form id="draft" method="post" action="create.html" class="pure-form pure-form-stacked">
+    <fieldset>
+    <h1>
+    <textarea class="pure-input-1" placeholder="Title" name="title" id="title">{summary.title}</textarea></h1>
+    <textarea rows="5" class="pure-input-1" name="abstract" placeholder="abstract">
+{summary.abstract}
+</textarea>
+    </fieldset>
+    <fieldset>
+    <div class="pure-u-1-3">
+    <input class="pure-input-1" type="text" value="{path}" readonly>
+    </div>
+    <div class="pure-u-1-3">
+    <input class="pure-input-1" type="text" name="path" placeholder="Path">
+    </div>
+    <div class="pure-u-1-3">
+    <label for="autogen-slug" class="pure-checkbox">
+        <input id="autogen-slug" name="autogen-slug" type="checkbox" value="" />
+        Auto-generate slug
+    </label>
+    </div>
+    </fieldset>
+
+
+    <fieldset>
+    <textarea rows="30" class="pure-input-1" name="posting" placeholder="posting">
+{posting}
+</textarea>
+</fieldset>
+
+<fieldset>
+<div class="pure-g-r">
+            <div class="pure-u-1-3">
+            <button type="submit" class="pure-button pure-button-primary">Edit</button>
+            </div>
+            <div class="pure-u-2-3">
+             <label for="save-as-draft" class="pure-checkbox">
+                    <input id="save-as-draft" name="save-as-draft" type="checkbox" value="" />
+                    Save as draft
+    </label>
+            </div>
+            </fieldset>
+
+</form>
+
+</div>
+
+
+</div>
+<div class="pure-u-1-5">
+</div>
+{/main}
