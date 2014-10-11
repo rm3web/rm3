@@ -19,7 +19,7 @@ exports = module.exports = function(dust) {
     </ul>\
 </div><div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">\
-        <li><a href="create.html?type=base">Default Node</a></li>\
+        <li><a href="/$new/create.html?type=base">Default Node</a></li>\
     </ul>\
 </div>';
         return chunk.write(longstr);
