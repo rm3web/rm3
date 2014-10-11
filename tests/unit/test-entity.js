@@ -75,6 +75,7 @@ test('entity view', function (t) {
      revision_id: '96010991-36ad-11e4-863b-614e8d833a23',
      revision_num: 1,
      proto: 'base',
+     site_path: '/',
      modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
      created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)') },
   summary: { title: 'blrg', abstract: 'some text goes here' },

@@ -22,7 +22,9 @@
     "winston": "~0.7.3",
     "squel": "~3.8.1",
     "routes": "~1.2.0",
-    "body-parser": "~1.9.0"
+    "body-parser": "~1.9.0",
+    "validator": "~3.19.1",
+    "speakingurl": "~0.13.1"
   },
   "devDependencies": {
     "jshint": "~2.5.5",
