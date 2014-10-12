@@ -33,6 +33,35 @@ test('middleware fetch_entity', function (t) {
 
 });
 
+test('middleware fetch_entity create', function (t) {
+  
+  t.plan(2);
+  var query = {};
+  var entity = function() {
+    return {e:'rr'};
+  };
+  var db = {};
+  var req = {};
+  var res = {};
+
+  query.entity_from_path = function(db, ent, sp, rev, next) {
+    t.fail('this shouldn\'t be called');
+  };
+
+  var middleware = fetch_entity(db, query, entity);
+  t.deepEqual(typeof middleware, "function");
+
+  req.sitepath = new sitepath(['sparklepony']);
+  req.creation = '$bonkers';
+
+  middleware(req, res, function()
+  {
+    t.deepEqual(req.entity, {e: 'rr'});
+    t.end();
+  });
+
+});
+
 test('middleware fetch_entity not_found_error', function (t) {
   
   t.plan(3);
