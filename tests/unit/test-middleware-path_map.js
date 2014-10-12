@@ -5,7 +5,7 @@ var sitepath = require ('../../lib/sitepath');
 
 test('middleware path_map', function (t) {
   
-  t.plan(3);
+  t.plan(5);
 
   var res = {};
 
@@ -26,6 +26,15 @@ test('middleware path_map', function (t) {
       middleware(req, res, function()
       {
         t.deepEqual(req.sitepath, new sitepath(['wh','wh']));
+        callback();
+      });
+    },
+    function(callback) {
+      var req = {path: '/$new/wh/'};
+      middleware(req, res, function()
+      {
+        t.deepEqual(req.sitepath, new sitepath(['wh', 'wh']));
+        t.deepEqual(req.creation, '$new');
         callback();
       });
     }
