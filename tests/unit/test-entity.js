@@ -84,3 +84,44 @@ test('entity view', function (t) {
   t.deepEqual(e.view(),v);
   t.end();
 });
+
+test('entity new', function (t) {
+  t.plan(1);
+
+  var e = new entity.Entity();
+  e.createNew(new sitepath(['wh']), 'base');
+  e.data.posting = '<div>Test test</div>';
+  e.summary = 
+  {"title": "blrg",
+   "abstract": "some text goes here"};
+
+  v = { 
+  meta: 
+   { entity_id: null,
+     revision_id: null,
+     revision_num: null,
+     proto: 'base',
+     site_path: '/',
+     modified: null,
+     created: null},
+  summary: { title: 'blrg', abstract: 'some text goes here' },
+  posting: '<div>Test test</div>' };
+
+  t.deepEqual(e.view(),v);
+  t.end();
+});
+
+test('entity new again', function (t) {
+  t.plan(1);
+
+  var e = new entity.Entity();
+  e.createNew(new sitepath(['wh']), 'base');
+
+  // tape throws is acting odd.
+  try {
+    e.createNew(new sitepath(['wh']), 'base');
+  } catch (err) {
+    t.deepEqual(err.message,'can\'t set path');
+  }
+  t.end();
+});
