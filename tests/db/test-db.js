@@ -39,7 +39,7 @@ test.test('db open_transaction failure', function (t) {
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var db = require('../../lib/db');
-  client = {
+  var client = {
     query: function(q, callback) {
       callback(new Error('ffffff'));
     }
@@ -60,7 +60,7 @@ test.test('db commit_transaction failure', function (t) {
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var db = require('../../lib/db');
-  client = {
+  var client = {
     query: function(q, callback) {
       callback(new Error('ffffff'));
     }
@@ -81,7 +81,7 @@ test.test('db rollback_transaction failure', function (t) {
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var db = require('../../lib/db');
-  client = {
+  var client = {
     query: function(q, callback) {
       callback(new Error('ffffff'));
     }
@@ -102,7 +102,7 @@ test.test('db wrap_error', function (t) {
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var db = require('../../lib/db');
-  err = db.wrap_error(new Error('could not connect to server: Connection refused'));
+  var err = db.wrap_error(new Error('could not connect to server: Connection refused'));
   t.deepEqual(err.name, 'DbConnectionRefusedError');
   err = db.wrap_error(new Error('relation wh_frro does not exist'));
   t.deepEqual(err.name, 'DbTableMissingError');

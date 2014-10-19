@@ -61,7 +61,7 @@ test('query from_db', function (t) {
   var select_query = "SELECT path, stub, entity_id, revision_id, revision_num, \
 proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
   
-  entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh','rq']);
 
   var Entclass = function() {};
 
@@ -69,10 +69,10 @@ proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
     t.pass('called from_db');
   };
 
-  db = {};
+  var db = {};
 
   db.connect_wrap = function (queryfunc) {
-    client = {};
+    var client = {};
     client.query = function(spec, func) {
       t.pass('called query');
       t.deepEqual(spec.text, select_query);
@@ -100,7 +100,7 @@ test('query from_db not_found', function (t) {
   var select_query = "SELECT path, stub, entity_id, revision_id, revision_num, \
 proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
   
-  entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh','rq']);
 
   var Entclass = function() {};
 
@@ -108,10 +108,10 @@ proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
     t.fail('should not try to call');
   };
 
-  db = {};
+  var db = {};
 
   db.connect_wrap = function (queryfunc) {
-    client = {};
+    var client = {};
     client.query = function(spec, func) {
       t.pass('called query');
       t.deepEqual(spec.text, select_query);
@@ -140,7 +140,7 @@ test('query from_db error', function (t) {
   var select_query = "SELECT path, stub, entity_id, revision_id, revision_num, \
 proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
   
-  entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh','rq']);
 
   var Entclass = function() {};
 
@@ -148,10 +148,10 @@ proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
     t.fail('should not try to call');
   };
 
-  db = {};
+  var db = {};
 
   db.connect_wrap = function (queryfunc) {
-    client = {};
+    var client = {};
     client.query = function(spec, func) {
       t.pass('called query');
       t.deepEqual(spec.text, select_query);
@@ -180,7 +180,7 @@ test('query from_db not_found log', function (t) {
 revision_id, revision_num, evt_start, evt_end, evt_touched, evt_class, evt_final, data \
 FROM wh_log WHERE revision_id = $1;";
 
-  entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh','rq']);
 
   var Entclass = function() {};
 
@@ -188,10 +188,10 @@ FROM wh_log WHERE revision_id = $1;";
     t.fail('should not try to call');
   };
 
-  db = {};
+  var db = {};
 
   db.connect_wrap = function (queryfunc) {
-    client = {};
+    var client = {};
     client.query = function(spec, func) {
       t.pass('called query');
       t.deepEqual(spec.text, select_query);
@@ -220,7 +220,7 @@ test('query from_db error log', function (t) {
 revision_id, revision_num, evt_start, evt_end, evt_touched, evt_class, evt_final, data \
 FROM wh_log WHERE revision_id = $1;";
   
-  entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh','rq']);
 
   var Entclass = function() {};
 
@@ -228,10 +228,10 @@ FROM wh_log WHERE revision_id = $1;";
     t.fail('should not try to call');
   };
 
-  db = {};
+  var db = {};
 
   db.connect_wrap = function (queryfunc) {
-    client = {};
+    var client = {};
     client.query = function(spec, func) {
       t.pass('called query');
       t.deepEqual(spec.text, select_query);
@@ -258,9 +258,9 @@ test('query', function (t) {
 
   var select_query = 'SELECT path, stub, entity_id, revision_id, revision_num, proto, modified, created, summary, data FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC';
 
-  entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh','rq']);
 
-  db = {};
+  var db = {};
 
   var rec = { path: 'wh.query',
     stub: false,
@@ -274,11 +274,11 @@ test('query', function (t) {
     data: { posting: '<div></div>' } };
 
   db.connect_wrap = function (queryfunc) {
-    client = {};
+    var client = {};
     client.query = function(spec) {
       t.pass('called query');
       t.deepEqual(spec.text, select_query);
-      ee = new events.EventEmitter();
+      var ee = new events.EventEmitter();
       process.nextTick(function() {
         ee.emit('row', rec);
         ee.emit('end');
@@ -310,18 +310,18 @@ test('query count', function (t) {
 
   var select_query = 'SELECT count(*) FROM wh_entity WHERE (path <@ $1)';
 
-  entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh','rq']);
 
-  db = {};
+  var db = {};
 
   var rec = { count: '2' };
 
   db.connect_wrap = function (queryfunc) {
-    client = {};
+    var client = {};
     client.query = function(spec) {
       t.pass('called query');
       t.deepEqual(spec.text, select_query);
-      ee = new events.EventEmitter();
+      var ee = new events.EventEmitter();
       process.nextTick(function() {
         ee.emit('row', rec);
         ee.emit('end');

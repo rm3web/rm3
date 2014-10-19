@@ -11,13 +11,13 @@ test('update', function (t) {
 revision_num, proto, modified, created, summary, data) VALUES ($1, $2, \
 $3, $4, $5, $6, $7, $8, $9, $10);";
 
-  ent = new entity.Entity();
+  var ent = new entity.Entity();
   ent._path = new sitepath(['wh']);
   ent._proto = 'base';
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';
-  db = {};
+  var db = {};
   db.open_transaction = function(client, done, callback) {
     t.pass('called begin');
     callback(null, client, done);
@@ -29,7 +29,7 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
   };
 
   db.connect_wrap = function (queryfunc) {
-    client = {};
+    var client = {};
     client.query = function(spec, func) {
       if(spec.name === 'insert_entity_query') {
         t.pass('called insert entity');

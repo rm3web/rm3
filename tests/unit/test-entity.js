@@ -69,7 +69,7 @@ test('entity view', function (t) {
   {"title": "blrg",
    "abstract": "some text goes here"};
 
-  v = { 
+  var v = { 
   meta: 
    { entity_id: '96010990-36ad-11e4-863b-614e8d833a23',
      revision_id: '96010991-36ad-11e4-863b-614e8d833a23',
@@ -95,7 +95,7 @@ test('entity new', function (t) {
   {"title": "blrg",
    "abstract": "some text goes here"};
 
-  v = { 
+  var v = { 
   meta: 
    { entity_id: null,
      revision_id: null,

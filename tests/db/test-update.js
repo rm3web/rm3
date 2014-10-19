@@ -40,7 +40,7 @@ test('update create-create-delete', function (t) {
     function check_create_1(entity_id, revision_id, revision_num, callback) {
       ent._entity_id = entity_id;
       ent._revision_num = revision_num;
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -52,7 +52,7 @@ test('update create-create-delete', function (t) {
       });
     },
     function check_log_1(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.create_create_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.create_create_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -77,7 +77,7 @@ test('update create-create-delete', function (t) {
       });
     },
     function check_create_2(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -89,7 +89,7 @@ test('update create-create-delete', function (t) {
       });
     },
     function check_log_2(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_create_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_create_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -105,7 +105,7 @@ test('update create-create-delete', function (t) {
       update.delete_entity(db, ent, true, 'delete', callback);
     },
     function check_create_3(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete';";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete';";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -115,7 +115,7 @@ test('update create-create-delete', function (t) {
       });
     },
     function check_log_3(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT evt_class, entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_create_delete' ORDER BY revision_num ASC;";
+      var query = "SELECT evt_class, entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_create_delete' ORDER BY revision_num ASC;";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -165,7 +165,7 @@ test('update create-update-delete', function (t) {
     function check_create_1(entity_id, revision_id, revision_num, callback) {
       ent._entity_id = entity_id;
       ent._revision_num = revision_num;
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -177,7 +177,7 @@ test('update create-update-delete', function (t) {
       });
     },
     function check_log_1(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_update_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_update_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -197,7 +197,7 @@ test('update create-update-delete', function (t) {
     function check_create_2(entity_id, revision_id, revision_num, callback) {
       ent2._entity_id = entity_id;
       ent2._revision_num = revision_num;
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -210,7 +210,7 @@ test('update create-update-delete', function (t) {
       });
     },
     function check_log_2(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_update_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_update_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -231,7 +231,7 @@ test('update create-update-delete', function (t) {
       update.delete_entity(db, ent2, true, 'delete', callback);
     },
     function check_create_3(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete';";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete';";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -241,7 +241,7 @@ test('update create-update-delete', function (t) {
       });
     },
     function check_log_3(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_update_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_update_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -288,7 +288,7 @@ test('update create-move-delete', function (t) {
     "abstract": "some text goes here"};
   ent.data.posting = longstr;
 
-  newpath = new sitepath(['wh','create_move_delete2']);
+  var newpath = new sitepath(['wh','create_move_delete2']);
 
   async.waterfall([
     function do_create(callback){
@@ -297,7 +297,7 @@ test('update create-move-delete', function (t) {
     function check_create_1(entity_id, revision_id, revision_num, callback) {
       ent._entity_id = entity_id;
       ent._revision_num = revision_num;
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -309,7 +309,7 @@ test('update create-move-delete', function (t) {
       });
     },
     function check_log_1(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_move_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_move_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -326,7 +326,7 @@ test('update create-move-delete', function (t) {
     },
     function check_create_2(entity_id, revision_id, revision_num, callback) {
       ent._path = newpath;
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete2'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete2'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -339,7 +339,7 @@ test('update create-move-delete', function (t) {
       });
     },
     function check_log_2(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_move_delete'";
+      var query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_move_delete'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -360,7 +360,7 @@ test('update create-move-delete', function (t) {
       update.delete_entity(db, ent, true, 'delete', callback);
     },
     function check_create_3(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete2';";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete2';";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -370,7 +370,7 @@ test('update create-move-delete', function (t) {
       });
     },
     function check_log_3(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_move_delete2'";
+      var query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_move_delete2'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -385,7 +385,7 @@ test('update create-move-delete', function (t) {
       });
     },
     function check_create_4(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete';";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete';";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -425,7 +425,7 @@ test('update provisional create', function (t) {
       update.create_entity(db, ent, false, 'create', callback);
     },
     function check_create_1(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.pcreate';";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.pcreate';";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -435,7 +435,7 @@ test('update provisional create', function (t) {
       });
     },
     function check_log_1(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.pcreate'";
+      var query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.pcreate'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -453,7 +453,7 @@ test('update provisional create', function (t) {
       update.commit_entity_rev(db, revision_id, callback);
     },
     function check_create_2(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.pcreate'";
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.pcreate'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -465,7 +465,7 @@ test('update provisional create', function (t) {
       });
     },
     function check_log_2(entity_id, revision_id, revision_num, callback) {
-      query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.pcreate'";
+      var query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.pcreate'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
