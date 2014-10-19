@@ -5,7 +5,7 @@ var sitepath = require ('../../lib/sitepath');
 var async = require('async');
 
 test.test('query', function (t) {
-  t.plan(10);
+  t.plan(15);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -18,6 +18,13 @@ test.test('query', function (t) {
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';
+
+  qent = new entity.Entity();
+  qent._path = new sitepath(['wh','query', 'sub']);
+  qent._proto = 'base';
+  qent.summary = {"title": "blrg sub",
+    "abstract": "some text goes here"};
+  qent.data.posting = '<div></div>';
 
   async.waterfall([
     function cr_eate(callback){
@@ -41,6 +48,36 @@ test.test('query', function (t) {
         t.deepEqual(ent3._path,ent._path);
         t.deepEqual(ent3._revision_id,revision_id);
         callback(err, ent3);
+      });
+    },
+    function cr_eate2(ent3, callback){
+      update.create_entity(db, qent, true, 'create', function(
+        err, entity_id, revision_id, revision_num) {
+        callback(err, ent3, qent);
+      });
+    },
+    function query_op(entity, qent, callback) {
+      var resp = query.query(db, 'wh.query','child','entity',{},undefined,undefined);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        t.fail(err);
+      });
+      resp.on('end', function() {
+        t.deepEqual(arts[0].title,'blrg');
+        t.deepEqual(arts[0].path,'wh.query');
+        t.deepEqual(arts[1].title,'blrg sub');
+        t.deepEqual(arts[1].path,'wh.query.sub');
+        t.deepEqual(arts.length,2);
+        callback(null, entity, qent);
+      });
+      
+    },
+    function del_qent(entity, qent, callback) {
+      update.delete_entity(db, qent, true, 'delete', function(err) {
+        callback(null, entity);
       });
     },
     function del_ent(entity, callback) {
