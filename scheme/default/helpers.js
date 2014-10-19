@@ -16,7 +16,10 @@ exports = module.exports = function(dust, db, query) {
     <ul>';
         var sitepathquery = ctx.get('meta.site_path');
         var path = new SitePath(sitepathquery);
-        var baseurl = path.toUrl('/',1),
+        var baseurl = path.toUrl('/',1);
+        if (baseurl === '/') {
+            baseurl = '';
+        }
         longstr = longstr + gen_link(baseurl, '/edit.html', ctx.get('section') === 'edit','Edit');
         longstr = longstr + gen_link('', '#', true, 'Tag');
         longstr = longstr + gen_link(baseurl, '/delete.html', true, 'Delete');
@@ -37,7 +40,7 @@ exports = module.exports = function(dust, db, query) {
         return chunk.map(function(chunk) {
             var baseurl = ctx.get('meta.site_path');
             path = new SitePath(baseurl);
-            var resp = query.query(db, path,'child','entity',{},undefined,undefined);
+            var resp = query.query(db, path,'dir','entity',{},undefined,undefined);
             chunk.write('<ul>');
             resp.on('article', function(article) {
                 console.log(article);
@@ -46,8 +49,11 @@ exports = module.exports = function(dust, db, query) {
             });
             resp.on('error', function(err) {
                 chunk.write('</ul>');
+                console.log(err);
+                chunk.end();
             });
             resp.on('end', function() {
+                chunk.write('</ul>');
                 chunk.end();
             });
         })
