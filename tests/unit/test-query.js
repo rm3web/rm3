@@ -258,7 +258,7 @@ test('query', function (t) {
 
   var select_query = 'SELECT path, stub, entity_id, revision_id, revision_num, proto, modified, created, summary, data FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC';
 
-  var entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh']);
 
   var db = {};
 
@@ -291,7 +291,7 @@ test('query', function (t) {
       });
   };
 
-  var resp = query.query(db, 'wh','child','entity',{},undefined,undefined);
+  var resp = query.query(db, entpath,'child','entity',{},undefined,undefined);
   resp.on('article', function(article) {
     t.deepEqual(article.title, rec.summary.title);
     t.deepEqual(article.summary, rec.summary.abstract);
@@ -310,7 +310,7 @@ test('query count', function (t) {
 
   var select_query = 'SELECT count(*) FROM wh_entity WHERE (path <@ $1)';
 
-  var entpath = new sitepath(['wh','rq']);
+  var entpath = new sitepath(['wh']);
 
   var db = {};
 
@@ -334,7 +334,7 @@ test('query count', function (t) {
       });
   };
 
-  var resp = query.query(db, 'wh','child','count',{},undefined,undefined);
+  var resp = query.query(db, entpath,'child','count',{},undefined,undefined);
   resp.on('count', function(article) {
     t.deepEqual(article.count, '2');
   });

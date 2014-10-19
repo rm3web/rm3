@@ -57,7 +57,7 @@ test.test('query', function (t) {
       });
     },
     function query_op(entity, qent, callback) {
-      var resp = query.query(db, 'wh.query','child','entity',{},undefined,undefined);
+      var resp = query.query(db, ent._path,'child','entity',{},undefined,undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -67,9 +67,9 @@ test.test('query', function (t) {
       });
       resp.on('end', function() {
         t.deepEqual(arts[0].title,'blrg');
-        t.deepEqual(arts[0].path,'wh.query');
+        t.deepEqual(arts[0].path.toDottedPath(),'wh.query');
         t.deepEqual(arts[1].title,'blrg sub');
-        t.deepEqual(arts[1].path,'wh.query.sub');
+        t.deepEqual(arts[1].path.toDottedPath(),'wh.query.sub');
         t.deepEqual(arts.length,2);
         callback(null, entity, qent);
       });
