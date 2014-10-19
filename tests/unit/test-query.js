@@ -29,7 +29,7 @@ test('query gen', function(t) {
   t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path @> $1)');
 
   tmp = query._query_gen('wh','dir','count',{},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path ~ \'$1.*{1}\')');
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path ~ lquery($1 || \'.*{1}\'))');
 
   tmp = query._query_gen('wh','child','count',{},undefined,undefined);
   t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1)');
