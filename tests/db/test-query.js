@@ -12,14 +12,14 @@ test.test('query', function (t) {
   var query = require('../../lib/query');
   var db = require('../../lib/db');
 
-  ent = new entity.Entity();
+  var ent = new entity.Entity();
   ent._path = new sitepath(['wh','query']);
   ent._proto = 'base';
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';
 
-  qent = new entity.Entity();
+  var qent = new entity.Entity();
   qent._path = new sitepath(['wh','query', 'sub']);
   qent._proto = 'base';
   qent.summary = {"title": "blrg sub",
@@ -102,8 +102,8 @@ test.test('query not_found', function (t) {
   var query = require('../../lib/query');
   var db = require('../../lib/db');
 
-  ent = new entity.Entity();
-  entpath = new sitepath(['wh','rainbows']);
+  var ent = new entity.Entity();
+  var entpath = new sitepath(['wh','rainbows']);
   ent._proto = 'base';
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
