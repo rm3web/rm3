@@ -5,7 +5,7 @@ var sitepath = require ('../../lib/sitepath');
 var async = require('async');
 
 test.test('query', function (t) {
-  t.plan(15);
+  t.plan(26);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -73,7 +73,24 @@ test.test('query', function (t) {
         t.deepEqual(arts.length,2);
         callback(null, entity, qent);
       });
-      
+    },
+    function query_hist(entity, qent, callback) {
+      var resp = query.query_history(db, ent._path);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        t.fail(err);
+      });
+      resp.on('end', function() {
+        t.deepEqual(arts[0].evt_class,'create');
+        t.deepEqual(arts[0].revision_num,1);
+        t.deepEqual(arts[0].path, 'wh.query');
+        t.deepEqual(arts[0].data.to_data.data.posting, ent.data.posting);
+        t.deepEqual(arts.length,1);
+        callback(null, entity, qent);
+      });
     },
     function del_qent(entity, qent, callback) {
       update.delete_entity(db, qent, true, 'delete', function(err) {
@@ -82,7 +99,26 @@ test.test('query', function (t) {
     },
     function del_ent(entity, callback) {
       update.delete_entity(db, entity, true, 'delete', callback);
-    }
+    },
+    function query_hist2(entity_id, revision_id, revision_num, callback) {
+      var resp = query.query_history(db, ent._path);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        t.fail(err);
+      });
+      resp.on('end', function() {
+        t.deepEqual(arts[0].evt_class,'create');
+        t.deepEqual(arts[1].evt_class,'delete');
+        t.deepEqual(arts[0].revision_num,1);
+        t.deepEqual(arts[0].path, 'wh.query');
+        t.deepEqual(arts[1].path, 'wh.query');
+        t.deepEqual(arts.length,2);
+        callback(null);
+      });
+    },
   ], function(err, result) {
     if(err) {
       t.fail(err);
