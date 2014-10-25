@@ -29,6 +29,7 @@ exports = module.exports = function(dust, db, query) {
         longstr = longstr + gen_link('', '#', true, 'Tag', false);
         longstr = longstr + gen_link(baseurl, '/delete.html', false, 'Delete', true);
         longstr = longstr + gen_link(baseurl, '/move.html', true, 'Move', false);
+        longstr = longstr + gen_link(baseurl, '/history.html', false, 'History', false);
         longstr = longstr + '<li><a href="#" data-dropdown="#dropdown-1">Create &#x25BC;</a></li>\
     <li class="pure-menu-heading">User</li>\
     <li><a href="#">Log Out</a></li>\
@@ -50,6 +51,36 @@ exports = module.exports = function(dust, db, query) {
             resp.on('article', function(article) {
                 chunk.write("<li><a href=\"" + article.path.toUrl('/', 1) + "\">");
                 chunk.write(article.title + "</a></li>");
+            });
+            resp.on('error', function(err) {
+                chunk.write('</ul>');
+                chunk.end();
+            });
+            resp.on('end', function() {
+                chunk.write('</ul>');
+                chunk.end();
+            });
+        })
+    }
+    dust.helpers.history = function (chunk, ctx, bodies, params) {
+        return chunk.map(function(chunk) {
+            var baseurl = ctx.get('meta.site_path');
+            var revision_id = ctx.get('meta.revision_id')
+            path = new SitePath(baseurl);
+            var resp = query.query_history(db, path);
+            chunk.write('<ul>');
+            resp.on('article', function(article) {
+                if (revision_id === article.revision_id) {
+                    chunk.write("<li><b><a href=\"" + article.path.toUrl('/', 1) + "\">");
+                    chunk.write(article.evt_class + " / " + article.revision_id);
+                    chunk.write("</a></b></li>");
+                } else {
+                    chunk.write("<li><a href=\"" + article.path.toUrl('/', 1));
+                    chunk.write("?revision_id=" + article.revision_id + "\">");
+                    chunk.write(article.evt_class + " / " + article.revision_id);
+                    chunk.write("</a></li>");
+                }
+                console.log(article);
             });
             resp.on('error', function(err) {
                 chunk.write('</ul>');
