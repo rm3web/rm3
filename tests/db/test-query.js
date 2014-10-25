@@ -86,7 +86,7 @@ test.test('query', function (t) {
       resp.on('end', function() {
         t.deepEqual(arts[0].evt_class,'create');
         t.deepEqual(arts[0].revision_num,1);
-        t.deepEqual(arts[0].path, 'wh.query');
+        t.deepEqual(arts[0].path.toDottedPath(), 'wh.query');
         t.deepEqual(arts[0].data.to_data.data.posting, ent.data.posting);
         t.deepEqual(arts.length,1);
         callback(null, entity, qent);
@@ -113,8 +113,8 @@ test.test('query', function (t) {
         t.deepEqual(arts[0].evt_class,'create');
         t.deepEqual(arts[1].evt_class,'delete');
         t.deepEqual(arts[0].revision_num,1);
-        t.deepEqual(arts[0].path, 'wh.query');
-        t.deepEqual(arts[1].path, 'wh.query');
+        t.deepEqual(arts[0].path.toDottedPath(), 'wh.query');
+        t.deepEqual(arts[1].path.toDottedPath(), 'wh.query');
         t.deepEqual(arts.length,2);
         callback(null);
       });
