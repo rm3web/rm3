@@ -4,13 +4,19 @@ var sitepath = require ('../../lib/sitepath');
 var util = require('util'),
     errs = require('errs');
 
+function mock_req(path) {
+  var req = {};
+  req.sitepath = new sitepath(path);
+  return req;
+}
+
 test('middleware fetch_entity', function (t) {
   
   t.plan(5);
   var query = {};
   var entity = {};
   var db = {};
-  var req = {};
+  var req = mock_req(['sparklepony']);
   var res = {};
 
   query.entity_from_path = function(db, ent, sp, rev, next) {
@@ -22,8 +28,6 @@ test('middleware fetch_entity', function (t) {
 
   var middleware = fetch_entity(db, query, entity);
   t.deepEqual(typeof middleware, "function");
-
-  req.sitepath = new sitepath(['sparklepony']);
 
   middleware(req, res, function()
   {
@@ -41,7 +45,8 @@ test('middleware fetch_entity create', function (t) {
     return {e:'rr'};
   };
   var db = {};
-  var req = {};
+  var req = mock_req(['sparklepony']);
+  req.creation = '$bonkers';
   var res = {};
 
   query.entity_from_path = function(db, ent, sp, rev, next) {
@@ -50,9 +55,6 @@ test('middleware fetch_entity create', function (t) {
 
   var middleware = fetch_entity(db, query, entity);
   t.deepEqual(typeof middleware, "function");
-
-  req.sitepath = new sitepath(['sparklepony']);
-  req.creation = '$bonkers';
 
   middleware(req, res, function()
   {
@@ -68,7 +70,7 @@ test('middleware fetch_entity not_found_error', function (t) {
   var query = {};
   var entity = {};
   var db = {};
-  var req = {};
+  var req = mock_req(['sparklepony']);
   var res = {};
 
   function EntityNotFoundError() {
@@ -87,8 +89,6 @@ test('middleware fetch_entity not_found_error', function (t) {
   var middleware = fetch_entity(db, query, entity);
   t.deepEqual(typeof middleware, "function");
 
-  req.sitepath = new sitepath(['sparklepony']);
-
   middleware(req, res, function(err)
   {
     t.deepEqual(err.name,'NotFoundError');
@@ -104,7 +104,7 @@ test('middleware fetch_entity db_error', function (t) {
   var query = {};
   var entity = {};
   var db = {};
-  var req = {};
+  var req = mock_req(['sparklepony']);
   var res = {};
 
   query.entity_from_path = function(db, ent, sp, rev, next) {
@@ -113,8 +113,6 @@ test('middleware fetch_entity db_error', function (t) {
 
   var middleware = fetch_entity(db, query, entity);
   t.deepEqual(typeof middleware, "function");
-
-  req.sitepath = new sitepath(['sparklepony']);
 
   middleware(req, res, function(err)
   {
