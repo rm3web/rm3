@@ -1,10 +1,15 @@
 var SitePath = require ('../../lib/sitepath');
 
-function gen_link(base, url, disabled, title) {
+function gen_link(base, url, disabled, title, confirm) {
     if (disabled) {
         return '<li class="pure-menu-disabled"><a href="#">' + title + '</a></li>'
     } else {
-        return '<li><a href="' + base + url + '">' + title +  '</a></li>'
+        if (confirm) {
+            return '<li><a href="'+ base + url + '" onclick="ConfirmChoice(\''
+                    + base + url + '\'); return false;">' + title + '</a></li>';
+        } else {
+            return '<li><a href="' + base + url + '">' + title +  '</a></li>'
+        }
     }
 }
 
@@ -20,10 +25,10 @@ exports = module.exports = function(dust, db, query) {
         if (baseurl === '/') {
             baseurl = '';
         }
-        longstr = longstr + gen_link(baseurl, '/edit.html', ctx.get('section') === 'edit','Edit');
-        longstr = longstr + gen_link('', '#', true, 'Tag');
-        longstr = longstr + gen_link(baseurl, '/delete.html', true, 'Delete');
-        longstr = longstr + gen_link(baseurl, '/move.html', true, 'Move');
+        longstr = longstr + gen_link(baseurl, '/edit.html', ctx.get('section') === 'edit','Edit', false);
+        longstr = longstr + gen_link('', '#', true, 'Tag', false);
+        longstr = longstr + gen_link(baseurl, '/delete.html', false, 'Delete', true);
+        longstr = longstr + gen_link(baseurl, '/move.html', true, 'Move', false);
         longstr = longstr + '<li><a href="#" data-dropdown="#dropdown-1">Create &#x25BC;</a></li>\
     <li class="pure-menu-heading">User</li>\
     <li><a href="#">Log Out</a></li>\
@@ -43,13 +48,11 @@ exports = module.exports = function(dust, db, query) {
             var resp = query.query(db, path,'dir','entity',{},undefined,undefined);
             chunk.write('<ul>');
             resp.on('article', function(article) {
-                console.log(article);
                 chunk.write("<li><a href=\"" + article.path.toUrl('/', 1) + "\">");
                 chunk.write(article.title + "</a></li>");
             });
             resp.on('error', function(err) {
                 chunk.write('</ul>');
-                console.log(err);
                 chunk.end();
             });
             resp.on('end', function() {
