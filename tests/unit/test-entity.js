@@ -111,6 +111,23 @@ test('entity new', function (t) {
   t.end();
 });
 
+test('entity update', function (t) {
+  t.plan(1);
+
+  var e = new entity.Entity();
+  var now = new Date();
+  e.createNew(new sitepath(['wh']), 'base');
+  e.data.posting = '<div>Test test</div>';
+  e.summary = 
+  {"title": "blrg",
+   "abstract": "some text goes here"};
+
+  e.updateTimes(now);
+
+  t.deepEqual(e.view().meta.modified,now);
+  t.end();
+});
+
 test('entity new again', function (t) {
   t.plan(1);
 
