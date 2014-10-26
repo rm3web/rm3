@@ -14,7 +14,7 @@ test('query gen', function(t) {
   }
   
   var tmp = query._query_gen('wh','child','entity',{},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT path, stub, entity_id, revision_id, revision_num, proto, modified, created, summary, data FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC');
+  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC');
 
   tmp = query._query_gen('wh','child','count',{},undefined,undefined);
   t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1)');
@@ -47,10 +47,10 @@ test('query gen', function(t) {
   t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1) AND (created >= $2)');
 
   tmp = query._query_gen('wh','child','entity',{},'changed',undefined);
-  t.deepEqual(tmp.text, 'SELECT path, stub, entity_id, revision_id, revision_num, proto, modified, created, summary, data FROM wh_entity WHERE (path <@ $1) ORDER BY modified ASC');
+  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path <@ $1) ORDER BY modified ASC');
 
   tmp = query._query_gen('wh','child','entity',{},'created',undefined);
-  t.deepEqual(tmp.text, 'SELECT path, stub, entity_id, revision_id, revision_num, proto, modified, created, summary, data FROM wh_entity WHERE (path <@ $1) ORDER BY created ASC');
+  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path <@ $1) ORDER BY created ASC');
 
   t.end();
 });
@@ -256,7 +256,7 @@ FROM wh_log WHERE revision_id = $1;";
 test('query', function (t) {
   t.plan(6);
 
-  var select_query = 'SELECT path, stub, entity_id, revision_id, revision_num, proto, modified, created, summary, data FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC';
+  var select_query = 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC';
 
   var entpath = new sitepath(['wh']);
 
