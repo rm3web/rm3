@@ -5,7 +5,7 @@ var sitepath = require ('../../lib/sitepath');
 var async = require('async');
 
 test.test('query', function (t) {
-  t.plan(26);
+  t.plan(31);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -14,19 +14,13 @@ test.test('query', function (t) {
 
   var now = new Date();
   var ent = new entity.Entity();
-  ent._path = new sitepath(['wh','query']);
-  ent._proto = 'base';
-  ent._created = now;
-  ent._modified = now;
+  ent.createNew(new sitepath(['wh','query']), 'base', now);
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';
 
   var qent = new entity.Entity();
-  qent._path = new sitepath(['wh','query', 'sub']);
-  qent._proto = 'base';
-  qent._created = now;
-  qent._modified = now;
+  qent.createNew(new sitepath(['wh','query', 'sub']), 'base', now);
   qent.summary = {"title": "blrg sub",
     "abstract": "some text goes here"};
   qent.data.posting = '<div></div>';
@@ -43,6 +37,8 @@ test.test('query', function (t) {
         t.deepEqual(ent2._entity_id,entity_id);
         t.deepEqual(ent2._revision_id,revision_id);
         t.deepEqual(ent2._revision_num,revision_num);
+        t.deepEqual(ent2._created,now);
+        t.deepEqual(ent2._modified,now);
         callback(err, ent2, revision_id);
       });
     },
@@ -52,6 +48,8 @@ test.test('query', function (t) {
         t.deepEqual(ent3.data,ent.data);
         t.deepEqual(ent3._path,ent._path);
         t.deepEqual(ent3._revision_id,revision_id);
+        t.deepEqual(ent3._created,now);
+        t.deepEqual(ent3._modified,now);
         callback(err, ent3);
       });
     },
@@ -89,6 +87,7 @@ test.test('query', function (t) {
         t.fail(err);
       });
       resp.on('end', function() {
+        t.deepEqual(new Date(arts[0].data.to_data.created),now);
         t.deepEqual(arts[0].evt_class,'create');
         t.deepEqual(arts[0].revision_num,1);
         t.deepEqual(arts[0].path.toDottedPath(), 'wh.query');

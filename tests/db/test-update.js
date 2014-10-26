@@ -28,10 +28,7 @@ test('update create-create-delete', function (t) {
 
   var now = new Date();
   var ent = new entity.Entity();
-  ent._path = new sitepath(['wh', 'create_create_delete']);
-  ent._proto = 'base';
-  ent._created = now;
-  ent._modified = now;
+  ent.createNew(new sitepath(['wh', 'create_create_delete']), 'base', now);
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = longstr;
