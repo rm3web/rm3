@@ -88,8 +88,9 @@ test('entity view', function (t) {
 test('entity new', function (t) {
   t.plan(1);
 
+  var now = new Date();
   var e = new entity.Entity();
-  e.createNew(new sitepath(['wh']), 'base');
+  e.createNew(new sitepath(['wh']), 'base', now);
   e.data.posting = '<div>Test test</div>';
   e.summary = 
   {"title": "blrg",
@@ -102,8 +103,8 @@ test('entity new', function (t) {
      revision_num: null,
      proto: 'base',
      site_path: ['wh'],
-     modified: null,
-     created: null},
+     modified: now,
+     created: now},
   summary: { title: 'blrg', abstract: 'some text goes here' },
   posting: '<div>Test test</div>' };
 
@@ -116,7 +117,7 @@ test('entity update', function (t) {
 
   var e = new entity.Entity();
   var now = new Date();
-  e.createNew(new sitepath(['wh']), 'base');
+  e.createNew(new sitepath(['wh']), 'base', now);
   e.data.posting = '<div>Test test</div>';
   e.summary = 
   {"title": "blrg",
@@ -131,8 +132,9 @@ test('entity update', function (t) {
 test('entity new again', function (t) {
   t.plan(1);
 
+  var now = new Date();
   var e = new entity.Entity();
-  e.createNew(new sitepath(['wh']), 'base');
+  e.createNew(new sitepath(['wh']), 'base', now);
 
   // tape throws is acting odd.
   try {

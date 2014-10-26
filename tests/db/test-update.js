@@ -26,9 +26,12 @@ test('update create-create-delete', function (t) {
 
   var longstr = '<div></div>';
 
+  var now = new Date();
   var ent = new entity.Entity();
   ent._path = new sitepath(['wh', 'create_create_delete']);
   ent._proto = 'base';
+  ent._created = now;
+  ent._modified = now;
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = longstr;
@@ -150,6 +153,7 @@ test('update create-update-delete', function (t) {
 
   var longstr = '<div></div>';
 
+  var now = new Date();
   var ent = new entity.Entity();
   var ent2;
   ent._path = new sitepath(['wh','create_update_delete']);
@@ -157,6 +161,8 @@ test('update create-update-delete', function (t) {
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = longstr;
+  ent._created = now;
+  ent._modified = now;
 
   async.waterfall([
     function do_create(callback){
@@ -280,10 +286,14 @@ test('update create-move-delete', function (t) {
 
   var longstr = '<div></div>';
 
+  var now = new Date();
+
   var ent = new entity.Entity();
   var ent2;
   ent._path = new sitepath(['wh','create_move_delete']);
   ent._proto = 'base';
+  ent._created = now;
+  ent._modified = now;
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = longstr;
@@ -413,9 +423,13 @@ test('update provisional create', function (t) {
 
   var longstr = '<div></div>';
 
+  var now = new Date();
+
   var ent = new entity.Entity();
   ent._path = new sitepath(['wh', 'pcreate']);
   ent._proto = 'base';
+  ent._created = now;
+  ent._modified = now;
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = longstr;
@@ -497,9 +511,13 @@ test('update bad provisional create', function (t) {
 
   var longstr = '<div></div>';
 
+  var now = new Date();
+
   var ent = new entity.Entity();
   ent._path = new sitepath(['wh', 'pcreate']);
   ent._proto = 'base';
+  ent._created = now;
+  ent._modified = now;
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = longstr;
