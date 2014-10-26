@@ -9,7 +9,7 @@ test('update', function (t) {
   
   var insert_query = "INSERT INTO wh_entity (path, stub, entity_id, revision_id, \
 revision_num, proto, modified, created, summary, data) VALUES ($1, $2, \
-$3, $4, $5, $6, $7, $8, $9, $10);";
+$3, $4, $5, $6, $7, $8, $9, $10)";
 
   var now = new Date();
 
@@ -43,8 +43,8 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
         t.deepEqual(spec.values[1], false); //stub
         t.deepEqual(spec.values[4], 1); //revision_num
         t.deepEqual(spec.values[5], 'base'); //proto
-        t.deepEqual(spec.values[8], ent.summary); // summary
-        t.deepEqual(spec.values[9], ent.data); // summary
+        t.deepEqual(spec.values[8], JSON.stringify(ent.summary)); // summary
+        t.deepEqual(spec.values[9], JSON.stringify(ent.data)); // summary
         func(null, {});
       } else{
         t.pass('called insert log');
@@ -56,8 +56,9 @@ $3, $4, $5, $6, $7, $8, $9, $10);";
         t.deepEqual(spec.values[6], 1); //revision_num
         t.deepEqual(spec.values[10], 'create');
         t.deepEqual(spec.values[11], true);
-        t.deepEqual(spec.values[12].to_data.summary, ent.summary);
-        t.deepEqual(spec.values[12].to_data.data, ent.data);
+        var data = JSON.parse(spec.values[12]);
+        t.deepEqual(data.to_data.summary, ent.summary);
+        t.deepEqual(data.to_data.data, ent.data);
         func(null, {});
       }
     };
