@@ -11,9 +11,13 @@ test('update', function (t) {
 revision_num, proto, modified, created, summary, data) VALUES ($1, $2, \
 $3, $4, $5, $6, $7, $8, $9, $10);";
 
+  var now = new Date();
+
   var ent = new entity.Entity();
   ent._path = new sitepath(['wh']);
   ent._proto = 'base';
+  ent._created = now;
+  ent._updated = now;
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';

@@ -12,9 +12,12 @@ test.test('query', function (t) {
   var query = require('../../lib/query');
   var db = require('../../lib/db');
 
+  var now = new Date();
   var ent = new entity.Entity();
   ent._path = new sitepath(['wh','query']);
   ent._proto = 'base';
+  ent._created = now;
+  ent._modified = now;
   ent.summary = {"title": "blrg",
     "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';
@@ -22,6 +25,8 @@ test.test('query', function (t) {
   var qent = new entity.Entity();
   qent._path = new sitepath(['wh','query', 'sub']);
   qent._proto = 'base';
+  qent._created = now;
+  qent._modified = now;
   qent.summary = {"title": "blrg sub",
     "abstract": "some text goes here"};
   qent.data.posting = '<div></div>';
