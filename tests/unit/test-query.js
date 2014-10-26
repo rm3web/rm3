@@ -58,8 +58,7 @@ test('query gen', function(t) {
 test('query from_db', function (t) {
   t.plan(5);
 
-  var select_query = "SELECT path, stub, entity_id, revision_id, revision_num, \
-proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
+  var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
   
   var entpath = new sitepath(['wh','rq']);
 
@@ -97,8 +96,7 @@ proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
 test('query from_db not_found', function (t) {
   t.plan(5);
 
-  var select_query = "SELECT path, stub, entity_id, revision_id, revision_num, \
-proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
+  var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
   
   var entpath = new sitepath(['wh','rq']);
 
@@ -137,8 +135,7 @@ proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
 test('query from_db error', function (t) {
   t.plan(4);
 
-  var select_query = "SELECT path, stub, entity_id, revision_id, revision_num, \
-proto, modified, created, summary, data FROM wh_entity WHERE path = $1;";
+  var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
   
   var entpath = new sitepath(['wh','rq']);
 
@@ -178,7 +175,7 @@ test('query from_db not_found log', function (t) {
 
   var select_query = "SELECT path, entity_id, note, base_revision_id, replace_revision_id, \
 revision_id, revision_num, evt_start, evt_end, evt_touched, evt_class, evt_final, data \
-FROM wh_log WHERE revision_id = $1;";
+FROM wh_log WHERE (revision_id = $1)";
 
   var entpath = new sitepath(['wh','rq']);
 
@@ -218,7 +215,7 @@ test('query from_db error log', function (t) {
 
   var select_query = "SELECT path, entity_id, note, base_revision_id, replace_revision_id, \
 revision_id, revision_num, evt_start, evt_end, evt_touched, evt_class, evt_final, data \
-FROM wh_log WHERE revision_id = $1;";
+FROM wh_log WHERE (revision_id = $1)";
   
   var entpath = new sitepath(['wh','rq']);
 
@@ -337,6 +334,62 @@ test('query count', function (t) {
   var resp = query.query(db, entpath,'child','count',{},undefined,undefined);
   resp.on('count', function(article) {
     t.deepEqual(article.count, '2');
+  });
+  resp.on('error', function(err) {
+    t.fail(err);
+  });
+  resp.on('end', function() {
+    t.end();
+  });
+});
+
+test('query_history', function (t) {
+  t.plan(6);
+
+  var select_query = 'SELECT path, entity_id, note, base_revision_id, \
+replace_revision_id, revision_id, revision_num, evt_start, evt_end, \
+evt_touched, evt_class, evt_final, data FROM wh_log WHERE (path = $1) ORDER BY revision_num ASC';
+
+  var entpath = new sitepath(['wh']);
+
+  var db = {};
+
+  var rec = { entity_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+          note: 'test',
+          base_revision_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+          replace_revision_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+          revision_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+          revision_num: 1,
+          evt_start: new Date(),
+          evt_end: new Date(),
+          evt_touched: new Date(),
+          evt_class: 'test',
+          evt_final: true,
+          data: {}};
+
+  db.connect_wrap = function (queryfunc) {
+    var client = {};
+    client.query = function(spec) {
+      t.pass('called query');
+      t.deepEqual(spec.text, select_query);
+      var ee = new events.EventEmitter();
+      process.nextTick(function() {
+        ee.emit('row', rec);
+        ee.emit('end');
+      });
+      return ee;
+    };
+    queryfunc(null, client, function()
+      {
+        t.pass('called done');
+      });
+  };
+
+  var resp = query.query_history(db, entpath);
+  resp.on('article', function(article) {
+    t.deepEqual(article.note, rec.note);
+    t.deepEqual(article.data, rec.data);
+    t.deepEqual(article.revision_id, rec.revision_id);
   });
   resp.on('error', function(err) {
     t.fail(err);
