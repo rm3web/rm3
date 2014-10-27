@@ -16,7 +16,7 @@ function gen_link(base, url, disabled, title, confirm) {
 
 exports = module.exports = function(dust, db, query) {
     dust.helpers.textblock_edit = function(chunk, ctx, bodies, params) {
-        var textblock = ctx.get('data.posting');
+        var textblock = dust.helpers.tap(params.field, chunk, ctx);
         var sr1 = '<textarea rows="30" class="pure-input-1" name="posting" placeholder="posting">'
         var sr2 = '</textarea>\
 <select name="textblock_format" size="1">'
@@ -32,7 +32,7 @@ exports = module.exports = function(dust, db, query) {
         }
     }
     dust.helpers.textblock = function(chunk, ctx, bodies, params) {
-        var textblock = ctx.get('data.posting');
+        var textblock = dust.helpers.tap(params.field, chunk, ctx);
         return chunk.write(textblocks.outputTextBlock(textblock));
     }
     dust.helpers.menu = function (chunk, ctx, bodies, params) {
