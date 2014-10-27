@@ -79,7 +79,7 @@ test('entity view', function (t) {
      modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
      created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)') },
   summary: { title: 'blrg', abstract: 'some text goes here' },
-  posting: '<div>Test test</div>' };
+  data: {posting: '<div>Test test</div>' }};
 
   t.deepEqual(e.view(),v);
   t.end();
@@ -106,7 +106,7 @@ test('entity new', function (t) {
      modified: now,
      created: now},
   summary: { title: 'blrg', abstract: 'some text goes here' },
-  posting: '<div>Test test</div>' };
+  data: {posting: '<div>Test test</div>' }};
 
   t.deepEqual(e.view(),v);
   t.end();
