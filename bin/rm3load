@@ -45,7 +45,7 @@ ent._path = new sitepath(['wh']);
 ent._proto = 'base'
 ent.summary = {"title": "blrg",
 	 "abstract": "some text goes here"}
-ent.data.posting = longstr;
+ent.data.posting = {format: 'html', htmltext: longstr};
 
 update.create_entity(db, ent, true, 'loaded via rm3load', function(){
 	console.log('done')

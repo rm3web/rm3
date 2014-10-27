@@ -1,4 +1,5 @@
 var SitePath = require ('../../lib/sitepath');
+var textblocks = require('textblocks')
 
 function gen_link(base, url, disabled, title, confirm) {
     if (disabled) {
@@ -14,6 +15,26 @@ function gen_link(base, url, disabled, title, confirm) {
 }
 
 exports = module.exports = function(dust, db, query) {
+    dust.helpers.textblock_edit = function(chunk, ctx, bodies, params) {
+        var textblock = ctx.get('data.posting');
+        var sr1 = '<textarea rows="30" class="pure-input-1" name="posting" placeholder="posting">'
+        var sr2 = '</textarea>\
+<select name="textblock_format" size="1">'
+        var sr3a = '<option value="html" selected="true">HTML</option>\
+<option value="markdown">Markdown</option>'
+        var sr3b = '<option value="html">HTML</option>\
+<option value="markdown" selected="true">Markdown</option>'
+        var sr4 = '</select>'
+        if (textblock.hasOwnProperty('source')) {
+            return chunk.write(sr1 + textblock.source + sr2 + sr3b + sr4);
+        } else {
+            return chunk.write(sr1 + textblock.htmltext + sr2 + sr3a + sr4);
+        }
+    }
+    dust.helpers.textblock = function(chunk, ctx, bodies, params) {
+        var textblock = ctx.get('data.posting');
+        return chunk.write(textblocks.outputTextBlock(textblock));
+    }
     dust.helpers.menu = function (chunk, ctx, bodies, params) {
         var longstr = '<div class="l-box">';
         longstr = longstr + '<div class="pure-menu pure-menu-open">\
