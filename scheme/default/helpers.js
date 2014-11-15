@@ -89,26 +89,20 @@ exports = module.exports = function(dust, db, query) {
             var revision_id = ctx.get('meta.revision_id')
             path = new SitePath(baseurl);
             var resp = query.query_history(db, path);
-            chunk.write('<ul>');
+            var body = bodies.block;
+            var idx = 0;
             resp.on('article', function(article) {
-                if (revision_id === article.revision_id) {
-                    chunk.write("<li><b><a href=\"" + article.path.toUrl('/', 1) + "\">");
-                    chunk.write(article.evt_class + " / " + article.revision_id);
-                    chunk.write("</a></b></li>");
-                } else {
-                    chunk.write("<li><a href=\"" + article.path.toUrl('/', 1));
-                    chunk.write("?revision_id=" + article.revision_id + "\">");
-                    chunk.write(article.evt_class + " / " + article.revision_id);
-                    chunk.write("</a></li>");
-                }
-                console.log(article);
+                chunk.render(bodies.block, ctx.push(
+                    {path: article.path.toUrl('/',1),
+                     current: revision_id === article.revision_id,
+                     rec: article,
+                     '$idx': idx }));
+                idx = idx + 1;
             });
             resp.on('error', function(err) {
-                chunk.write('</ul>');
                 chunk.end();
             });
             resp.on('end', function() {
-                chunk.write('</ul>');
                 chunk.end();
             });
         })
