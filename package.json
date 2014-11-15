@@ -25,7 +25,10 @@
     "body-parser": "~1.9.1",
     "validator": "~3.19.1",
     "speakingurl": "~0.13.1",
-    "textblocks": "git://github.com/wirehead/textblocks.git#master"
+    "textblocks": "git://github.com/wirehead/textblocks.git#master",
+    "dust-intl": "~1.0.0",
+    "intl": "~0.1.4",
+    "dotenv": "~0.4.0"
   },
   "devDependencies": {
     "jshint": "~2.5.5",
