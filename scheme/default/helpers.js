@@ -68,17 +68,19 @@ exports = module.exports = function(dust, db, query) {
             var baseurl = ctx.get('meta.site_path');
             path = new SitePath(baseurl);
             var resp = query.query(db, path,'dir','entity',{},undefined,undefined);
-            chunk.write('<ul>');
+            var body = bodies.block;
+            var idx = 0;
             resp.on('article', function(article) {
-                chunk.write("<li><a href=\"" + article.path.toUrl('/', 1) + "\">");
-                chunk.write(article.title + "</a></li>");
+                chunk.render(bodies.block, ctx.push(
+                    {path: article.path.toUrl('/',1),
+                     article: article,
+                     '$idx': idx }));
+                idx = idx + 1;
             });
             resp.on('error', function(err) {
-                chunk.write('</ul>');
                 chunk.end();
             });
             resp.on('end', function() {
-                chunk.write('</ul>');
                 chunk.end();
             });
         })
