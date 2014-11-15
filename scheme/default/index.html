@@ -22,7 +22,11 @@ function ConfirmChoice(path) {{~n}
     //Done Hiding-->
           </script>
     {@menu}{/menu}
-    {@basic_query}{/basic_query}
+    <ul>
+    {@basic_query}
+     <li><a href="{path}">{article.title}</a></li>
+    {/basic_query}
+     </ul>
 
         </div>
 
