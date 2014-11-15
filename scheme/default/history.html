@@ -2,9 +2,50 @@
 {<main}
 
 <div class="pure-u-2-3">
+<h1>History</h1>
 
-{@history}{/history}
+<table class="pure-table">
+  <thead>
+<tr><th></th><th>Event type</th><th>Revision Num</th><th>Revision ID</th><th>Time</th><th></th></tr>
+</thead>
+<tbody>
+{@history}
+{@math key="{$idx}" method="mod" operand="2"}
+ {@eq value=0}
+        <tr class="pure-table-odd">
+    {:else}
+        <tr class="pure-table-even">
+    {/eq}
+{/math}
 
+{@if cond="{current}"}
+<td rowspan="2">*</td>
+{:else}
+<td rowspan="2"></td>
+ {/if}
+    <td>{rec.evt_class}</td>
+    <td>{rec.revision_num}</td>
+    <td>{rec.revision_id}</td>
+    <td>{@formatRelative val=rec.evt_end/}</td>
+    <td rowspan="2">
+{@if cond="{current}"}
+<b><a href="{path}">view</a></b>
+{:else}
+<a href="{path}?revision_id={rec.revision_id}">view</a>
+ {/if}
+</td></tr>
+
+{@math key="{$idx}" method="mod" operand="2"}
+ {@eq value=0}
+        <tr class="pure-table-odd">
+    {:else}
+        <tr class="pure-table-even">
+    {/eq}
+{/math}
+<td colspan="4">{rec.note}</td></tr>
+{/history}
+</tbody>
+</table>
 </div>
 
 <div class="pure-u-1-3">
