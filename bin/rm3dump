@@ -18,7 +18,7 @@ function parse_sitepath(val) {
 program
   .version(pjson.version)  
   .option('-l, --log','Get history', false)
-  .option('-p, --path [path]','Get path',parse_sitepath,'wh')
+  .option('-p, --path [path]','Get path',parse_sitepath,new sitepath(['wh']))
   .option('-f, --friendly','Human-readable friendly format')
   .parse(process.argv)
   ;
