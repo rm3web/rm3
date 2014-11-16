@@ -80,6 +80,8 @@ async.waterfall([
     } else {
       var rec = ent.to_rec();
       rec.history = log;
+      rec.dump_date = new Date();
+      rec.dump_version = pjson.version;
       console.log(JSON.stringify(rec));
     }
   }
