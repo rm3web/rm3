@@ -4,8 +4,84 @@ var query = require('../lib/query');
 var entity = require('../lib/entity');
 var sitepath = require ('../lib/sitepath');
 var db = require('../lib/db');
+var program = require('commander');
+var pjson = require('../package.json');
+var async = require('async');
+var util = require('util');
 
-query.entity_from_path(db, entity.Entity, new sitepath(['wh']), null, function(err, ent){
-	console.log(ent.view())
-	db.gun_database();
+function parse_sitepath(val) {
+  var pth = new sitepath(null,null);
+  pth.fromDottedPath(val);
+  return pth;
+}
+
+program
+  .version(pjson.version)  
+  .option('-l, --log','Get history', false)
+  .option('-p, --path [path]','Get path',parse_sitepath,'wh')
+  .option('-f, --friendly','Human-readable friendly format')
+  .parse(process.argv)
+  ;
+
+async.waterfall([
+  function query_ent(callback) {
+    query.entity_from_path(db, entity.Entity, program.path, null, callback)
+  },
+  function query_hist(ent, callback) {
+    if (program.log) {
+      var resp = query.query_history(db, ent._path);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        callback(err);
+      });
+      resp.on('end', function() {
+        callback(null, ent, arts);
+      });
+    } else {
+      callback(null, ent, undefined);
+    }
+  }
+], function(err, ent, log) {
+  if (!err) {
+    if (program.friendly) {
+      console.log('Path: %s', ent._path.toDottedPath());
+      console.log('Entity ID: %s', ent._entity_id);
+      console.log('Entity Revision ID / Num: %s\t%s', ent._revision_id, ent._revision_num);
+      console.log('Proto: %s', ent._proto);
+      console.log('Created: %s', ent._created);
+      console.log('Modified: %s', ent._modified);
+      console.log('Summary:');
+      console.log(util.inspect(ent.summary, { depth: null }));
+      console.log('\nData:');
+      console.log(util.inspect(ent.data, { depth: null }));
+      console.log();
+      if (log) {
+        console.log('History:');
+        log.forEach(function(entry, index, array) {
+          console.log('Revision #%s %s / %s:', index, entry.revision_id, entry.revision_num);
+          console.log('Event Class: %s', entry.evt_class);
+          console.log('Note: %s', entry.note);
+          console.log('Base Revision ID: %s', entry.base_revision_id);
+          console.log('Replace Revision ID: %s', entry.replace_revision_id);
+          console.log('Event Started: %s', entry.evt_start);
+          console.log('Event Ended: %s', entry.evt_end);
+          console.log('Event Touched: %s', entry.evt_touched);
+          if (entry.evt_final) {
+            console.log('Finalized event')
+          }
+          console.log('Data:');
+          console.log(util.inspect(entry.data, { depth: null }));
+          console.log();
+        });
+      }
+    } else {
+      var rec = ent.to_rec();
+      rec.history = log;
+      console.log(JSON.stringify(rec));
+    }
+  }
+  db.gun_database();
 })
