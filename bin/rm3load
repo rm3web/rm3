@@ -4,50 +4,57 @@ var update = require('../lib/update');
 var entity = require('../lib/entity');
 var sitepath = require ('../lib/sitepath');
 var db = require('../lib/db');
+var program = require('commander');
+var pjson = require('../package.json');
 
-var longstr = '<div class="hentry">     <a href="blog.html">       <img \
-src="/resources/blog-big.gif" align="left" height="75" width="75" \
-border="0"/>     </a>     <span class="entry-title">       <a \
-href="blog.html" rel="bookmark">Every single piece of bike gear I buy \
-ends up with a broken power button and it\'s getting old</a> \
-</span>     <span class="updated">2013-12-19 11:02AM</span>     <div \
-class="entry-summary">       <div \
-xmlns="http://www.w3.org/1999/xhtml">Most of America has a bike.  And, \
-expensive or cheap, it usually lives in the garage on rubber-coated \
-hooks and gets pulled out on random sunny days and then forgotten \
-about the rest of the time.  But then there\'s a small percentage of \
-the population out there, which I\'m part of, that rides their bikes \
-all the time, rain or shine, and gets real stuff done on their bikes, \
-like commuting to work and buying groceries.  To do this safely \
-requires a few pieces of electronic hardware.  Some people, like \
-myself, ride a bit more than that.  And, at least for me, I\'ve found \
-something really annoying in all of the biking gear I\'ve \
-owned...</div>     </div>   </div> \
-<div class="hentry">     <a \
-href="/hacks/blog/littleche_monomaniacal/">       <img \
-src="/resources/blog-big.gif" align="left" height="75" width="75" border="0"/> \
-</a>     <span class="entry-title">       <a \
-href="/hacks/blog/littleche_monomaniacal/" rel="bookmark">Monomaniacal \
-littlechef: launching cloud servers, user cookbook, nagios cookbook, \
-and DNS</a>     </span>     <span class="updated">2013-05-19 \
-05:33PM</span>     <div class="entry-summary">       <div \
-xmlns="http://www.w3.org/1999/xhtml">I\'m on a monomaniacal littlechef\
-quest at home.  See, I burned a weekend helping a friend set up her \
-chef and vagrant infrastructure some months ago.  And I wrote about \
-it.  And I figured that it would eventually get back to it and re-do \
-all of my servers.  Then I spent some time in sysadmin hell and ended \
-up needing to re-construct my sites from the backups and realized that\
-now was the time to fix this.       </div>     </div>   </div>'
+function parse_sitepath(val) {
+  var pth = new sitepath(null,null);
+  pth.fromDottedPath(val);
+  return pth;
+}
 
+program
+  .version(pjson.version)
+  .option('-f, --file [infile]','Input file','-')
+  .option('-p, --path [path]','Change the path to the new destination path',parse_sitepath)
+  .parse(process.argv);
+
+function loadData(parsedData) {
+  console.log(parsedData);
+  ent = new entity.Entity();
+  ent.from_db({rows: [parsedData]});
+  if (program.path) {
+    ent._path = program.path
+  }
+  update.create_entity(db, ent, true, 'loaded via rm3load', function(){
+    console.log('done')
+    db.gun_database();
+  });
+}
+
+if (program.file === '-') {
+  var stdin = process.stdin
+  var inputChunks = [];
+
+  stdin.setEncoding('utf8');
+ 
+  stdin.on('readable', function () {
+    var chunk = process.stdin.read();
+    if (chunk !== null) {
+      inputChunks.push(chunk);
+    }
+  });
+ 
+  stdin.on('end', function () {
+    var inputData = inputChunks.join();
+    var parsedData = JSON.parse(inputData);
+    loadData(parsedData);
+  });
+} else {
+  var fs = require('fs');
+  var inputData = fs.readFileSync(program.file);
+  var parsedData = JSON.parse(inputData);
+  loadData(parsedData);
+}
 
 ent = new entity.Entity();
-ent._path = new sitepath(['wh']);
-ent._proto = 'base'
-ent.summary = {"title": "blrg",
-	 "abstract": "some text goes here"}
-ent.data.posting = {format: 'html', htmltext: longstr};
-
-update.create_entity(db, ent, true, 'loaded via rm3load', function(){
-	console.log('done')
-	db.gun_database();
-})
