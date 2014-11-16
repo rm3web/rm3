@@ -28,7 +28,8 @@
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "dust-intl": "~1.0.0",
     "intl": "~0.1.4",
-    "dotenv": "~0.4.0"
+    "dotenv": "~0.4.0",
+    "commander": "~2.5.0"
   },
   "devDependencies": {
     "jshint": "~2.5.5",
@@ -44,7 +45,7 @@
     "db-tests": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && ./node_modules/.bin/tape tests/db/*.js",
     "test": "npm run unit-tests && npm run db-tests",
     "coverage": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && ./node_modules/.bin/istanbul cover ./node_modules/.bin/tape tests/unit/*.js tests/db/*.js",
-    "lint": "./node_modules/.bin/jshint lib tests",
+    "lint": "./node_modules/.bin/jshint lib tests bin",
     "docs": "./node_modules/.bin/jsdox -A --output ./docs/ lib"
   },
   "keywords": [
