@@ -1,5 +1,6 @@
 var SitePath = require ('../../lib/sitepath');
 var textblocks = require('textblocks')
+var Protoset = require('../../lib/protoset');
 
 function gen_link(base, url, disabled, title, confirm) {
     if (disabled) {
@@ -58,7 +59,13 @@ exports = module.exports = function(dust, db, query) {
 </div><div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
         longstr = longstr + '<li><a href="/$new' + baseurl;
-        longstr = longstr + '/create.html?type=base">Default Node</a></li>'
+        protos = Protoset.list_protos();
+        for(var proto in protos) {
+            if (protos.hasOwnProperty(proto)) {
+                longstr = longstr + '/create.html?type='+ proto +'">'
+                longstr = longstr + protos[proto].desc + '</a></li>'
+            }
+        }
         longstr = longstr + '</ul>\
 </div>';
         return chunk.write(longstr);
