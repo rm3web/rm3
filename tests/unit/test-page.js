@@ -37,6 +37,11 @@ test('page', function (t) {
   };
   
   var page = new Page();
+  page.view_router.addRoute('/GET/', function(req, res, page, next) 
+  {
+    var view = req.entity.view();
+    req.scheme.render(view, 'view', page._renderPageResponse.bind(this, req, res));
+  });
 
   page.render({}, req,res);
 });
