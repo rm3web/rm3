@@ -1,0 +1,42 @@
+{>base/}
+{<main}
+
+<div class="pure-u-2-3">
+
+{@textblock field=data.posting}{/textblock}
+
+<h1>Index:</h1>
+    {@basic_query}
+     <li><a href="{path}">{article.title}</a></li>
+    {/basic_query}
+
+
+</div>
+
+<div class="pure-u-1-3">
+
+          <script language="JavaScript">
+            <!--{~n}
+{~n}
+function ConfirmChoice(path) {{~n}
+  answer = confirm("Do you really want to go here?"){~n}
+    if (answer !=0) {{~n}
+        location = path + "?sure=yes"{~n}
+     }{~n}
+   }{~n}
+{~n}
+    //Done Hiding-->
+          </script>
+    {@menu}{/menu}
+    <ul>
+    {@basic_query}
+     <li><a href="{path}">{article.title}</a></li>
+    {/basic_query}
+     </ul>
+
+        </div>
+
+
+</div>
+
+{/main}
