@@ -4,7 +4,7 @@ var test = require('tape');
 
 test('page', function (t) {
   t.plan(6);
-  var req = {scheme: {}, entity: {}, sitepath: {}};
+  var req = {scheme: {}, entity: {}, sitepath: {}, method: 'GET'};
   req.sitepath.page = null;
   var res = {};
 
