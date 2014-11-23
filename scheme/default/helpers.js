@@ -58,10 +58,10 @@ exports = module.exports = function(dust, db, query) {
     </ul>\
 </div><div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
-        longstr = longstr + '<li><a href="/$new' + baseurl;
         protos = Protoset.list_protos();
         for(var proto in protos) {
             if (protos.hasOwnProperty(proto)) {
+                longstr = longstr + '<li><a href="/$new' + baseurl;
                 longstr = longstr + '/create.html?type='+ proto +'">'
                 longstr = longstr + protos[proto].desc + '</a></li>'
             }
