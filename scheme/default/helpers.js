@@ -52,11 +52,15 @@ exports = module.exports = function(dust, db, query) {
         longstr = longstr + gen_link(baseurl, '/delete.html', false, 'Delete', true);
         longstr = longstr + gen_link(baseurl, '/move.html', true, 'Move', false);
         longstr = longstr + gen_link(baseurl, '/history.html', false, 'History', false);
-        longstr = longstr + '<li><a href="#" data-dropdown="#dropdown-1">Create &#x25BC;</a></li>\
-    <li class="pure-menu-heading">User</li>\
-    <li><a href="#">Log Out</a></li>\
-    </ul>\
-</div><div id="dropdown-1" class="dropdown dropdown-tip">\
+        longstr = longstr + '<li><a href="#" data-dropdown="#dropdown-1">Create &#x25BC;</a></li>';
+        longstr = longstr + '<li class="pure-menu-heading">User</li>'
+        user = ctx.get('user');
+        if (user) {
+            longstr = longstr + '<li><a href="/logout/">Log Out</a></li>'
+        } else {
+            longstr = longstr + '<li><a href="/login/">Log In</a></li>'
+        }
+        longstr = longstr + '</ul></div><div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
         protos = Protoset.list_protos();
         for(var proto in protos) {
@@ -68,6 +72,7 @@ exports = module.exports = function(dust, db, query) {
         }
         longstr = longstr + '</ul>\
 </div>';
+
         return chunk.write(longstr);
     }
     dust.helpers.basic_query = function (chunk, ctx, bodies, params) {
