@@ -56,9 +56,9 @@ exports = module.exports = function(dust, db, query) {
         longstr = longstr + '<li class="pure-menu-heading">User</li>'
         user = ctx.get('user');
         if (user) {
-            longstr = longstr + '<li><a href="/logout/">Log Out</a></li>'
+            longstr = longstr + '<li><a href="/$logout/">Log Out</a></li>'
         } else {
-            longstr = longstr + '<li><a href="/login/">Log In</a></li>'
+            longstr = longstr + '<li><a href="/$login/">Log In</a></li>'
         }
         longstr = longstr + '</ul></div><div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
