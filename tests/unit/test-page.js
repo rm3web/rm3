@@ -5,7 +5,7 @@ var test = require('tape');
 function mock_req(t) {
   var req = {scheme: {}, entity: {}, sitepath: {}, method: 'GET'};
   req.sitepath.page = null;
-  req.scheme.render = function (data, view, callback) {
+  req.scheme.render = function (view, data, callback) {
     t.fail('should not try to render');
   };
 
@@ -25,7 +25,7 @@ function mock_req_view(t, req) {
 }
 
 function mock_req_scheme(t, req) {
-  req.scheme.render = function (data, view, callback) {
+  req.scheme.render = function (view, data, callback) {
     t.pass('render');
     t.deepEqual(typeof callback, "function");
     var outstream = new events.EventEmitter();
@@ -79,7 +79,7 @@ test('page', function (t) {
   page.view_router.addRoute('/GET/', function(req, res, page, next) 
   {
     var view = req.entity.view();
-    req.scheme.render(view, 'view', page._renderPageResponse.bind(this, req, res));
+    req.scheme.render('view', view, page._renderPageResponse.bind(this, req, res));
   });
 
   page.render({}, req,res);
@@ -111,7 +111,7 @@ test('page view_map', function (t) {
   page.view_router.addRoute('/GET/glitter', function(req, res, page, next) 
   {
     var view = req.entity.view();
-    req.scheme.render(view, 'view', page._renderPageResponse.bind(this, req, res));
+    req.scheme.render('view', view, page._renderPageResponse.bind(this, req, res));
   });
 
   page.view_router.addRoute('/GET/', function(req, res, page, next) 
@@ -155,7 +155,7 @@ test('page command_map', function (t) {
   page.view_router.addRoute('/*/glitter', function(req, res, page, next) 
   {
     var view = req.entity.view();
-    req.scheme.render(view, 'view', page._renderPageResponse.bind(this, req, res));
+    req.scheme.render('view', view, page._renderPageResponse.bind(this, req, res));
   });
 
   page.view_router.addRoute('/GET/', function(req, res, page, next) 
