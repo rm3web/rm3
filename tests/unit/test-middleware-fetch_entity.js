@@ -64,6 +64,62 @@ test('middleware fetch_entity create', function (t) {
 
 });
 
+test('middleware fetch_entity revision_id', function (t) {
+  
+  t.plan(5);
+  var query = {};
+  var entity = {};
+  var db = {};
+  var req = mock_req(['sparklepony']);
+  req.query = {};
+  req.query.revision_id = '11111111-1111-1111-a111-111111111111';
+  var res = {};
+
+  query.entity_from_path = function(db, ent, sp, rev, next) {
+    t.deepEqual(entity, ent);
+    t.deepEqual(sp, new sitepath(['sparklepony']));
+    t.deepEqual(rev, '11111111-1111-1111-a111-111111111111');
+    next(null, {e: 'st'});
+  };
+
+  var middleware = fetch_entity(db, query, entity);
+  t.deepEqual(typeof middleware, "function");
+
+  middleware(req, res, function()
+  {
+    t.deepEqual(req.entity, {e: 'st'});
+    t.end();
+  });
+});
+
+test('middleware fetch_entity bad revision_id', function (t) {
+  
+  t.plan(5);
+  var query = {};
+  var entity = {};
+  var db = {};
+  var req = mock_req(['sparklepony']);
+  req.query = {};
+  req.query.revision_id = '11111111-1111-1111-a111';
+  var res = {};
+
+  query.entity_from_path = function(db, ent, sp, rev, next) {
+    t.deepEqual(entity, ent);
+    t.deepEqual(sp, new sitepath(['sparklepony']));
+    t.deepEqual(rev, null);
+    next(null, {e: 'st'});
+  };
+
+  var middleware = fetch_entity(db, query, entity);
+  t.deepEqual(typeof middleware, "function");
+
+  middleware(req, res, function()
+  {
+    t.deepEqual(req.entity, {e: 'st'});
+    t.end();
+  });
+});
+
 test('middleware fetch_entity not_found_error', function (t) {
   
   t.plan(3);
@@ -117,6 +173,39 @@ test('middleware fetch_entity db_error', function (t) {
   middleware(req, res, function(err)
   {
     t.deepEqual(err.name,'Error');
+    t.end();
+  });
+
+});
+
+test('middleware fetch_entity db_error2', function (t) {
+  
+  t.plan(2);
+  var query = {};
+  var entity = {};
+  var db = {};
+  var req = mock_req(['sparklepony']);
+  var res = {};
+
+  function OtherKindOfError() {
+    this.message = "Other kind of error";
+  }
+  util.inherits(OtherKindOfError, Error);
+  errs.register('otherkind', OtherKindOfError);
+
+  query.entity_from_path = function(db, ent, sp, rev, next) {
+    next(errs.create('otherkind', {
+        path: 'sparklepony',
+        revision_id: null
+      }));
+  };
+
+  var middleware = fetch_entity(db, query, entity);
+  t.deepEqual(typeof middleware, "function");
+
+  middleware(req, res, function(err)
+  {
+    t.deepEqual(err.name,'OtherKindOfError');
     t.end();
   });
 
