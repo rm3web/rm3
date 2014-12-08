@@ -19,8 +19,9 @@
 <body>
   <div class="pure-g">
     <div class="pure-u-1 header pure-hidden-phone">
-
     </div>
+
+    {+pageheader}
     <div class="pure-u-1 headermenu">
       <div class="pure-menu pure-menu-open pure-menu-horizontal">
        <a class="pure-menu-heading" href="">WireWorld</a>
@@ -32,15 +33,16 @@
         <li><a href="page.html">Hacks</a></li>
         <li><a href="page.html">Making Stuff</a></li>
         <li><a href="page.html">Blog</a></li>
-      </li>
-    </ul>
+       </ul>
+    </div>
   </div>
+  {/pageheader}
 
-</div>
 {+main}
 {/main}
 </div>
 
+{+pagefooter}
 <div class="pure-g">
  <div class="pure-u-1 footer">
   <p>Last Updated:
@@ -49,6 +51,7 @@
 
   </div>
 </div>
+{/pagefooter}
 </body>
 
 </html>
