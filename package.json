@@ -26,7 +26,7 @@
     "validator": "~3.19.1",
     "speakingurl": "~0.13.1",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
-    "dust-intl": "~1.0.0",
+    "dust-intl": "~1.0.1",
     "intl": "~0.1.4",
     "dotenv": "~0.4.0",
     "commander": "~2.5.0",
