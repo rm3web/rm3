@@ -1,0 +1,69 @@
+{>base/}
+{<main}
+<div class="pure-u-2-3">
+<form id="draft" method="post" action="create.html?type={meta.proto}" class="pure-form pure-form-stacked">
+  <fieldset>
+    <label for="username" class="pure-input-1">Login (ASCII text, no spaces):</label>
+    <input id="username" class="pure-input-1" type="text" name="username" placeholder="User name">
+  </fieldset>
+  
+  <fieldset>
+    <label for="fullname" class="pure-input-1">Full name:</label>
+    <input class="pure-input-1" type="text" value="" name="fullname" placeholder="Full name" />
+  </fieldset>
+
+  <fieldset>
+    <label for="password" class="pure-input-1">Password (enter twice):</label>
+    <input class="pure-input-1" type="password" value="" name="password1" placeholder="Password" />
+    <input class="pure-input-1" type="password" value="" name="password2" placeholder="Confirm Password" />
+  </fieldset>
+
+  <fieldset>
+    <label for="profile_url" class="pure-input-1">Profile URL:</label>
+    <input class="pure-input-1" type="text" value="" id="profile_url" name="profile_url" placeholder="URL" />
+  </fieldset>
+
+<fieldset>
+    <label for="email" class="pure-input-1">Email:</label>
+    <input class="pure-input-1" type="text" value="" id="email" name="email" placeholder="Email" />
+  </fieldset>
+
+  <fieldset>
+    <label for="Profile text" class="pure-input-1">Profile text:</label>
+    <textarea rows="5" class="pure-input-1" name="abstract" placeholder="Profile text">
+    {summary.abstract}
+    </textarea>
+  </fieldset>
+
+
+<fieldset>
+  <div class="pure-g-r">
+    <div class="pure-u-1-3">
+      <button type="submit" class="pure-button pure-button-primary">Edit</button>
+    </div>
+    <div class="pure-u-2-3">
+      <label for="publish-silently" class="pure-checkbox">
+        <input id="publish-silently" name="publish-silently" type="checkbox" value="">
+        Publish silently
+      </label>
+    </div>
+</fieldset>
+
+</form>
+
+</div>
+
+<div class="pure-u-1-3">
+{@menu}{/menu}
+        </div>
+
+
+</div>
+{/main}
+{<pagefooter}
+<div class="pure-g">
+ <div class="pure-u-1 footer">
+   &nbsp;
+  </div>
+</div>
+{/pagefooter}
