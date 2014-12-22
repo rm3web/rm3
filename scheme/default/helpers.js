@@ -32,10 +32,28 @@ exports = module.exports = function(dust, db, query) {
             return chunk.write(sr1 + textblock.htmltext + sr2 + sr3a + sr4);
         }
     }
+
+    dust.helpers.disabled_mode = function(chunk, ctx, bodies, params) {
+        var section = ctx.get('section');
+        var dis = dust.helpers.tap(params[section], chunk, ctx);
+        if (dis) {
+            return chunk.write('disabled')
+        } else {
+            return chunk.write('');
+        }
+    }
+
+    dust.helpers.combo_form = function(chunk, ctx, bodies, params) {
+        var section = ctx.get('section');
+        var path = dust.helpers.tap(params[section], chunk, ctx);
+        return chunk.write('<form id="draft" method="post" action="' + path + '" class="pure-form pure-form-stacked">');
+    }
+
     dust.helpers.textblock = function(chunk, ctx, bodies, params) {
         var textblock = dust.helpers.tap(params.field, chunk, ctx);
         return chunk.write(textblocks.outputTextBlock(textblock));
     }
+
     dust.helpers.menu = function (chunk, ctx, bodies, params) {
         var longstr = '<div class="l-box">';
         longstr = longstr + '<div class="pure-menu pure-menu-open">\
