@@ -19,7 +19,7 @@ function quick_query(db, querytext, next) {
 }
 
 test('user', function (t) {
-  //t.plan(27);
+  t.plan(22);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -86,8 +86,87 @@ test('user', function (t) {
         callback(err, entity_id, revision_id, revision_num);
       });
     },
+    function do_assign(entity_id, revision_id, revision_num, callback) {
+      update.assign_user_to_role(db, ent.path(), 'role', 'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err, entity_id, revision_id, revision_num);
+      });
+    },
+    function check_assign_1(entity_id, revision_id, revision_num, callback) {
+      ent._entity_id = entity_id;
+      ent._revision_num = revision_num;
+      var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.users.test'";
+      quick_query(db, query, function(err, result) {
+        if(err) {
+          t.fail(err);
+        }
+        t.deepEqual(result.rows[0].subject, 'wh.users.test');
+        t.deepEqual(result.rows[0].role, 'role');
+        callback(err, entity_id, revision_id, revision_num);
+      });
+    },
+    function check_log_2(entity_id, revision_id, revision_num, callback) {
+      var query = "SELECT evt_final, evt_end, evt_class FROM wh_log WHERE path = 'wh.users.test'";
+      quick_query(db, query, function(err, result) {
+        if(err) {
+          t.fail(err);
+        }
+        t.deepEqual(result.rowCount, 2);
+        t.deepEqual(result.rows[0].evt_final, true);
+        t.notDeepEqual(result.rows[0].evt_end, null);
+        t.deepEqual(result.rows[0].evt_class,'create');
+        t.deepEqual(result.rows[1].evt_class,'assign');
+        callback(err, entity_id, revision_id, revision_num);
+      });
+    },
+    function do_assign_2(entity_id, revision_id, revision_num, callback) {
+      update.assign_user_to_role(db, ent.path(), 'role2', 'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err, entity_id, revision_id, revision_num);
+      });
+    },
+    function check_assign_2(entity_id, revision_id, revision_num, callback) {
+      ent._entity_id = entity_id;
+      ent._revision_num = revision_num;
+      var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.users.test' ORDER BY role ASC";
+      quick_query(db, query, function(err, result) {
+        if(err) {
+          t.fail(err);
+        }
+        t.deepEqual(result.rowCount, 2);
+        t.deepEqual(result.rows[0].subject, 'wh.users.test');
+        t.deepEqual(result.rows[0].role, 'role');
+        t.deepEqual(result.rows[1].subject, 'wh.users.test');
+        t.deepEqual(result.rows[1].role, 'role2');
+        callback(err, entity_id, revision_id, revision_num);
+      });
+    },
+    function do_deassign(entity_id, revision_id, revision_num, callback) {
+      update.remove_user_from_role(db, ent.path(), 'role2', 'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err, entity_id, revision_id, revision_num);
+      });
+    },
     function do_delete(entity_id, revision_id, revision_num, callback){
       update.delete_entity(db, ent, true, 'delete', callback);
+    },
+    function check_assign_3(entity_id, revision_id, revision_num, callback) {
+      ent._entity_id = entity_id;
+      ent._revision_num = revision_num;
+      var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.users.test' ORDER BY role ASC";
+      quick_query(db, query, function(err, result) {
+        if(err) {
+          t.fail(err);
+        }
+        t.deepEqual(result.rowCount, 0);
+        callback(err, entity_id, revision_id, revision_num);
+      });
     },
   ], function(err){
     if(err) {
