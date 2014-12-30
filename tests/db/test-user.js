@@ -176,3 +176,81 @@ test('user', function (t) {
     db.gun_database();
   });
 });
+
+test.test('query user', function (t) {
+  t.plan(3);
+  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
+  Conf._data.endpoints.postgres = conString;
+  var update = require('../../lib/update');
+  var query = require('../../lib/query');
+  var db = require('../../lib/db');
+
+  var now = new Date();
+  var ent = new entity.Entity();
+  var userpath = new sitepath(['wh', 'users']);
+
+  user.createUser(ent, userpath, 'unicorn', 'test', now);
+
+  ent.summary.abstract = 'i like unicorns and sparkles and ponies.';
+  
+  async.waterfall([
+    function encode_password(callback) {
+      user.encodePassword('sparkle_kitty', ent, callback);
+    },
+    function do_create(callback){
+      update.create_entity(db, ent, true, 'create', callback);
+    },
+    function do_assign(entity_id, revision_id, revision_num, callback) {
+      update.assign_user_to_role(db, ent.path(), 'role', 'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err);
+      });
+    },
+    function do_permit(callback) {
+      update.add_permission_to_role(db, 'role', 'blah', new sitepath(['wh']),'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err);
+      });
+    },
+    function do_permit_2(callback) {
+      update.add_permission_to_role(db, 'role', 'stuff', new sitepath(['wh']),'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err);
+      });
+    },
+    function query_op(callback) {
+      var resp = query.permissions_for_user(db, new sitepath(['wh', 'users', 'unicorn']));
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        t.fail(err);
+      });
+      resp.on('end', function() {
+        t.deepEqual(arts[0].permission,'blah');
+        t.deepEqual(arts[1].permission,'stuff');
+        t.deepEqual(arts.length,2);
+        callback(null);
+      });
+    },
+    function del_user(callback) {
+      update.delete_entity(db, ent, true, 'delete', function(err) {
+        callback(null, entity);
+      });
+    },
+
+  ], function(err, result) {
+    if(err) {
+      t.fail(err);
+    }
+    db.gun_database();
+    t.end();
+  });
+});
