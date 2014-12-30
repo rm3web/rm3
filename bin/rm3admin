@@ -72,7 +72,7 @@ program
       }
       
       update.create_entity(db, ent, true, 
-                           'test', function(err, entity_id, revision_id, revision_num) {
+                           'cli', function(err, entity_id, revision_id, revision_num) {
         if (err) {
           console.log('error:');
           console.log(err);
@@ -90,9 +90,20 @@ program
   .description('assign a user to a role')
   .option("--userroot [root]", "User Root path", parse_sitepath, new sitepath(['wh','users']))
   .action(function(name, role, options){
-    console.log('assign')
-    console.log(name)
-    console.log(role)
+    if (!(name && role)) {
+      console.log('Name and role are required')
+      return;
+    }
+    update.assign_user_to_role(db, options.userroot.down(name), role,
+                           'cli', function(err, entity_id, revision_id, revision_num) {
+      if (err) {
+        console.log('error:');
+        console.log(err);
+      } else {
+        console.log('Created');
+        db.gun_database();
+      }
+    });
   });
 
 
@@ -100,10 +111,22 @@ program
   .command('permit [role] [permission] [path]')
   .description('add a permission to a role')
   .action(function(role, permission, path, options){
-    console.log('permit')
-    console.log(role)
-    console.log(permission)
-    console.log(path)
+//exports.add_permission_to_role = function(db, role, permission, path, note, next) {
+    if (!(permission && role && path)) {
+      console.log('role, permission, and path are required')
+      return;
+    }
+    path = parse_sitepath(path);
+    update.add_permission_to_role(db, role, permission, path,
+                           'cli', function(err, entity_id, revision_id, revision_num) {
+      if (err) {
+        console.log('error:');
+        console.log(err);
+      } else {
+        console.log('Created');
+        db.gun_database();
+      }
+    });
   });
 
 program.parse(process.argv);
