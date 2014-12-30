@@ -178,7 +178,7 @@ test('user', function (t) {
 });
 
 test.test('query user', function (t) {
-  t.plan(3);
+  t.plan(12);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -224,7 +224,7 @@ test.test('query user', function (t) {
         callback(err);
       });
     },
-    function query_op(callback) {
+    function query_perm_user(callback) {
       var resp = query.permissions_for_user(db, new sitepath(['wh', 'users', 'unicorn']));
       var arts = [];
       resp.on('article', function(article) {
@@ -240,12 +240,75 @@ test.test('query user', function (t) {
         callback(null);
       });
     },
-    function del_user(callback) {
-      update.delete_entity(db, ent, true, 'delete', function(err) {
-        callback(null, entity);
+    function query_role(callback) {
+      var resp = query.list_roles(db);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        t.fail(err);
+      });
+      resp.on('end', function() {
+        t.deepEqual(arts[0].role,'role');
+        t.deepEqual(arts.length,1);
+        callback(null);
       });
     },
-
+    function query_users(callback) {
+      var resp = query.list_users_in_role(db,'role');
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        t.fail(err);
+      });
+      resp.on('end', function() {
+        t.deepEqual(arts[0].user,ent.path());
+        t.deepEqual(arts.length,1);
+        callback(null);
+      });
+    },
+    function query_permissions(callback) {
+      var resp = query.list_permissions_in_role(db,'role');
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        t.fail(err);
+      });
+      resp.on('end', function() {
+        t.deepEqual(arts[0].path,new sitepath(['wh']));
+        t.deepEqual(arts[1].path,new sitepath(['wh']));
+        t.deepEqual(arts[0].permission,'blah');
+        t.deepEqual(arts[1].permission,'stuff');
+        t.deepEqual(arts.length,2);
+        callback(null);
+      });
+    },
+    function del_user(callback) {
+      update.delete_entity(db, ent, true, 'delete', function(err) {
+        callback(null);
+      });
+    },
+    function del_role(callback) {
+      update.remove_permission_from_role(db, 'role', 'blah', new sitepath(['wh']),'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err);
+      });
+    },
+    function del_role_2(callback) {
+      update.remove_permission_from_role(db, 'role', 'stuff', new sitepath(['wh']),'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err);
+      });
+    },
   ], function(err, result) {
     if(err) {
       t.fail(err);
