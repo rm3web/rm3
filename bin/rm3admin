@@ -2,6 +2,7 @@
 
 var update = require('../lib/update');
 var entity = require('../lib/entity');
+var query = require('../lib/query');
 var sitepath = require ('../lib/sitepath');
 var db = require('../lib/db');
 var program = require('commander');
@@ -106,6 +107,100 @@ program
     });
   });
 
+program
+  .command('userinfo [name]')
+  .description('information about the user')
+  .option("--userroot [root]", "User Root path", parse_sitepath, new sitepath(['wh','users']))
+  .action(function(name, options){
+    if (!(name)) {
+      console.log('Name is required')
+      return;
+    }
+    console.log('--')
+    var resp = query.permissions_for_user(db, options.userroot.down(name));
+    resp.on('article', function(article) {
+      console.log('Role: %s\tPermission: %s\tPath %s',
+        article.role, article.permission, article.path.toDottedPath());
+    });
+    resp.on('error', function(err) {
+      console.log('error:')
+      console.log(err);
+    });
+    resp.on('end', function() {
+      console.log('--');
+      db.gun_database();
+    });
+  });
+
+program
+  .command('roleusers [role]')
+  .description('information about the role')
+  .action(function(role, options){
+    if (!(role)) {
+      console.log('Role is required')
+      return;
+    }
+    console.log('--')
+    var resp = query.list_users_in_role(db, role);
+    resp.on('article', function(article) {
+      console.log(article.user.toDottedPath());
+    });
+    resp.on('error', function(err) {
+      console.log('error:')
+      console.log(err);
+    });
+    resp.on('end', function() {
+      console.log('--');
+      db.gun_database();
+    });
+  });
+
+
+
+program
+  .command('roleinfo [role]')
+  .description('information about the role')
+  .action(function(role, options){
+    if (!(role)) {
+      console.log('Role is required')
+      return;
+    }
+    console.log('--')
+    var resp = query.list_permissions_in_role(db, role);
+    resp.on('article', function(article) {
+      console.log('Permission: %s\tPath %s', article.permission, article.path.toDottedPath());
+    });
+    resp.on('error', function(err) {
+      console.log('error:')
+      console.log(err);
+    });
+    resp.on('end', function() {
+      console.log('--');
+      db.gun_database();
+    });
+  });
+
+program
+  .command('deassign [name] [role]')
+  .description('removes a user from a role')
+  .option("--userroot [root]", "User Root path", parse_sitepath, new sitepath(['wh','users']))
+  .action(function(name, role, options){
+    if (!(name && role)) {
+      console.log('Name and role are required')
+      return;
+    }
+    update.remove_user_from_role(db, options.userroot.down(name), role,
+                           'cli', function(err, entity_id, revision_id, revision_num) {
+      if (err) {
+        console.log('error:');
+        console.log(err);
+      } else {
+        console.log('Deleted');
+        db.gun_database();
+      }
+    });
+  });
+
 
 program
   .command('permit [role] [permission] [path]')
@@ -124,6 +219,27 @@ program
         console.log(err);
       } else {
         console.log('Created');
+        db.gun_database();
+      }
+    });
+  });
+
+program
+  .command('deny [role] [permission] [path]')
+  .description('remove a permission from a role')
+  .action(function(role, permission, path, options){
+    if (!(permission && role && path)) {
+      console.log('role, permission, and path are required')
+      return;
+    }
+    path = parse_sitepath(path);
+    update.remove_permission_from_role(db, role, permission, path,
+                           'cli', function(err, entity_id, revision_id, revision_num) {
+      if (err) {
+        console.log('error:');
+        console.log(err);
+      } else {
+        console.log('Deleted');
         db.gun_database();
       }
     });
