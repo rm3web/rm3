@@ -537,7 +537,7 @@ test('update bad provisional create', function (t) {
 
 
 test('update permit-permit-deny', function (t) {
-  t.plan(21);
+  t.plan(12);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -545,26 +545,26 @@ test('update permit-permit-deny', function (t) {
 
   var longstr = '<div></div>';
 
-  var path = new sitepath(['wh', 'permit_permit_deny']);
+  var path = 'wh.permit_permit_deny.*';
 
   async.waterfall([
     function do_create(callback){
       update.add_permission_to_role(db, "role", "permission", path, "note", callback);
     },
     function check_create_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = 'wh.permit_permit_deny'";
+      var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = 'wh.permit_permit_deny.*'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
         }
         t.deepEqual(result.rows[0].role, "role");
         t.deepEqual(result.rows[0].permission, "permission");
-        t.deepEqual(result.rows[0].path, "wh.permit_permit_deny");
+        t.deepEqual(result.rows[0].path, "wh.permit_permit_deny.*");
         callback(err, entity_id, revision_id, revision_num);
       });
     },
     function check_log_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT evt_class, revision_id, evt_final, evt_end FROM wh_log WHERE path = 'wh.permit_permit_deny'";
+      var query = "SELECT evt_class, revision_id, evt_final, evt_end FROM wh_log WHERE revision_id = '" + revision_id + "'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
@@ -587,27 +587,14 @@ test('update permit-permit-deny', function (t) {
       });
     },
     function check_create_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = 'wh.permit_permit_deny'";
+      var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = 'wh.permit_permit_deny.*'";
       quick_query(db, query, function(err, result) {
         if(err) {
           t.fail(err);
         }
         t.deepEqual(result.rows[0].role, "role");
         t.deepEqual(result.rows[0].permission, "permission");
-        t.deepEqual(result.rows[0].path, "wh.permit_permit_deny");
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT evt_class, revision_id, evt_final, evt_end FROM wh_log WHERE path = 'wh.permit_permit_deny'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].evt_final, true);
-        t.notDeepEqual(result.rows[0].evt_end, null);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
+        t.deepEqual(result.rows[0].path, "wh.permit_permit_deny.*");
         callback(err, entity_id, revision_id, revision_num);
       });
     },
@@ -621,20 +608,6 @@ test('update permit-permit-deny', function (t) {
           t.fail(err);
         }
         t.deepEqual(result.rowCount, 0);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_3(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT evt_class, revision_id, evt_final, evt_end FROM wh_log WHERE path = 'wh.permit_permit_deny'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 2);
-        t.deepEqual(result.rows[0].evt_class, 'permit');
-        t.notDeepEqual(result.rows[0].revision_id, result.rows[1].revision_id);
-        t.deepEqual(result.rows[1].evt_class, 'deny');
-        t.deepEqual(result.rows[1].revision_id, revision_id);
         callback(err, entity_id, revision_id, revision_num);
       });
     }

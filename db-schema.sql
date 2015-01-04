@@ -42,14 +42,14 @@ CREATE TABLE wh_tag (
 );
 
 CREATE TABLE wh_permission_to_role (
-  PRIMARY KEY(role, permission, path),
+	PRIMARY KEY(role, permission, path),
   role text,
   permission text,
-  path ltree
+  path text,
+  query lquery
 );
 
 CREATE INDEX wh_permission_role_idx ON wh_permission_to_role USING BTREE (role);
-CREATE INDEX wh_path_role_idx ON wh_permission_to_role USING BTREE (path);
 CREATE INDEX wh_permission_idx ON wh_permission_to_role USING BTREE (permission);
 
 CREATE TABLE wh_subject_to_roles (

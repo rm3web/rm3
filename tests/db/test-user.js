@@ -209,7 +209,7 @@ test.test('query user', function (t) {
       });
     },
     function do_permit(callback) {
-      update.add_permission_to_role(db, 'role', 'blah', new sitepath(['wh']),'note', function(err) {
+      update.add_permission_to_role(db, 'role', 'blah', 'wh' ,'note', function(err) {
         if(err) {
           t.fail(err);
         }
@@ -217,7 +217,7 @@ test.test('query user', function (t) {
       });
     },
     function do_permit_2(callback) {
-      update.add_permission_to_role(db, 'role', 'stuff', new sitepath(['wh']),'note', function(err) {
+      update.add_permission_to_role(db, 'role', 'stuff', 'wh' ,'note', function(err) {
         if(err) {
           t.fail(err);
         }
@@ -294,7 +294,7 @@ test.test('query user', function (t) {
       });
     },
     function del_role(callback) {
-      update.remove_permission_from_role(db, 'role', 'blah', new sitepath(['wh']),'note', function(err) {
+      update.remove_permission_from_role(db, 'role', 'blah', 'wh', 'note', function(err) {
         if(err) {
           t.fail(err);
         }
@@ -302,7 +302,7 @@ test.test('query user', function (t) {
       });
     },
     function del_role_2(callback) {
-      update.remove_permission_from_role(db, 'role', 'stuff', new sitepath(['wh']),'note', function(err) {
+      update.remove_permission_from_role(db, 'role', 'stuff', 'wh', 'note', function(err) {
         if(err) {
           t.fail(err);
         }
