@@ -211,7 +211,6 @@ program
       console.log('role, permission, and path are required')
       return;
     }
-    path = parse_sitepath(path);
     update.add_permission_to_role(db, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
@@ -232,7 +231,6 @@ program
       console.log('role, permission, and path are required')
       return;
     }
-    path = parse_sitepath(path);
     update.remove_permission_from_role(db, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
