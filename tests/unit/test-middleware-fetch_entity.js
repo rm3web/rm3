@@ -19,7 +19,7 @@ test('middleware fetch_entity', function (t) {
   var req = mock_req(['sparklepony']);
   var res = {};
 
-  query.entity_from_path = function(db, ent, sp, rev, next) {
+  query.entity_from_path = function(db, ent, acc, sp, rev, next) {
     t.deepEqual(entity, ent);
     t.deepEqual(sp, new sitepath(['sparklepony']));
     t.deepEqual(rev, null);
@@ -49,7 +49,7 @@ test('middleware fetch_entity create', function (t) {
   req.creation = '$bonkers';
   var res = {};
 
-  query.entity_from_path = function(db, ent, sp, rev, next) {
+  query.entity_from_path = function(db, ent, acc, sp, rev, next) {
     t.fail('this shouldn\'t be called');
   };
 
@@ -75,7 +75,7 @@ test('middleware fetch_entity revision_id', function (t) {
   req.query.revision_id = '11111111-1111-1111-a111-111111111111';
   var res = {};
 
-  query.entity_from_path = function(db, ent, sp, rev, next) {
+  query.entity_from_path = function(db, ent, acc, sp, rev, next) {
     t.deepEqual(entity, ent);
     t.deepEqual(sp, new sitepath(['sparklepony']));
     t.deepEqual(rev, '11111111-1111-1111-a111-111111111111');
@@ -103,7 +103,7 @@ test('middleware fetch_entity bad revision_id', function (t) {
   req.query.revision_id = '11111111-1111-1111-a111';
   var res = {};
 
-  query.entity_from_path = function(db, ent, sp, rev, next) {
+  query.entity_from_path = function(db, ent, acc, sp, rev, next) {
     t.deepEqual(entity, ent);
     t.deepEqual(sp, new sitepath(['sparklepony']));
     t.deepEqual(rev, null);
@@ -135,7 +135,7 @@ test('middleware fetch_entity not_found_error', function (t) {
   util.inherits(EntityNotFoundError, Error);
   errs.register('query.not_found', EntityNotFoundError);
 
-  query.entity_from_path = function(db, ent, sp, rev, next) {
+  query.entity_from_path = function(db, ent, acc, sp, rev, next) {
     next(errs.create('query.not_found', {
         path: 'sparklepony',
         revision_id: null
@@ -163,7 +163,7 @@ test('middleware fetch_entity db_error', function (t) {
   var req = mock_req(['sparklepony']);
   var res = {};
 
-  query.entity_from_path = function(db, ent, sp, rev, next) {
+  query.entity_from_path = function(db, ent, acc, sp, rev, next) {
     next(new Error("Connection was ended during query"));
   };
 
@@ -193,7 +193,7 @@ test('middleware fetch_entity db_error2', function (t) {
   util.inherits(OtherKindOfError, Error);
   errs.register('otherkind', OtherKindOfError);
 
-  query.entity_from_path = function(db, ent, sp, rev, next) {
+  query.entity_from_path = function(db, ent, acc, sp, rev, next) {
     next(errs.create('otherkind', {
         path: 'sparklepony',
         revision_id: null
