@@ -30,7 +30,7 @@ test.test('query', function (t) {
       update.create_entity(db, ent, true, 'create', callback);
     },
     function en_from_path(entity_id, revision_id, revision_num, callback) {
-      query.entity_from_path(db, entity.Entity, ent._path, null, function(err, ent2){
+      query.entity_from_path(db, entity.Entity, {}, ent._path, null, function(err, ent2){
         t.deepEqual(ent2.summary,ent.summary);
         t.deepEqual(ent2.data,ent.data);
         t.deepEqual(ent2._path,ent._path);
@@ -43,7 +43,7 @@ test.test('query', function (t) {
       });
     },
     function en_from_revid(ent2, revision_id, callback) {
-      query.entity_from_path(db, entity.Entity, ent._path, revision_id, function(err, ent3) {
+      query.entity_from_path(db, entity.Entity, {}, ent._path, revision_id, function(err, ent3) {
         t.deepEqual(ent3.summary,ent.summary);
         t.deepEqual(ent3.data,ent.data);
         t.deepEqual(ent3._path,ent._path);
@@ -60,7 +60,7 @@ test.test('query', function (t) {
       });
     },
     function query_op(entity, qent, callback) {
-      var resp = query.query(db, ent._path,'child','entity',{},undefined,undefined);
+      var resp = query.query(db, {}, ent._path,'child','entity',{},undefined,undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -78,7 +78,7 @@ test.test('query', function (t) {
       });
     },
     function query_hist(entity, qent, callback) {
-      var resp = query.query_history(db, ent._path);
+      var resp = query.query_history(db, {}, ent._path);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -105,7 +105,7 @@ test.test('query', function (t) {
       update.delete_entity(db, entity, true, 'delete', callback);
     },
     function query_hist2(entity_id, revision_id, revision_num, callback) {
-      var resp = query.query_history(db, ent._path);
+      var resp = query.query_history(db, {}, ent._path);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -130,8 +130,6 @@ test.test('query', function (t) {
     db.gun_database();
     t.end();
   });
-
-
 });
 
 test.test('query not_found', function (t) {
@@ -151,7 +149,7 @@ test.test('query not_found', function (t) {
 
   async.waterfall([
     function en_from_a(callback) {
-      query.entity_from_path(db, entity.Entity, entpath, null, function(err, ent2){
+      query.entity_from_path(db, entity.Entity, {}, entpath, null, function(err, ent2){
         t.deepEqual(err.name,'EntityNotFoundError');
         t.deepEqual(err.path,entpath.toDottedPath());
         callback();
@@ -164,6 +162,4 @@ test.test('query not_found', function (t) {
     db.gun_database();
     t.end();
   });
-
-
 });
