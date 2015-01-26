@@ -25,7 +25,7 @@ program
 
 async.waterfall([
   function query_ent(callback) {
-    query.entity_from_path(db, entity.Entity, program.path, null, callback)
+    query.entity_from_path(db, entity.Entity, {}, program.path, null, callback)
   },
   function query_hist(ent, callback) {
     if (program.log) {
