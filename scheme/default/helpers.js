@@ -122,7 +122,9 @@ exports = module.exports = function(dust, db, query) {
             var baseurl = ctx.get('meta.site_path');
             var revision_id = ctx.get('meta.revision_id')
             path = new SitePath(baseurl);
-            var resp = query.query_history(db, path);
+            var security = {user: ctx.get('user'),
+                            context: 'STANDARD'};
+            var resp = query.query_history(db, security, path);
             var body = bodies.block;
             var idx = 0;
             resp.on('article', function(article) {
