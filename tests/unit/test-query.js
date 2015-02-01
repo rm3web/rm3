@@ -93,6 +93,39 @@ test('query from_db', function (t) {
   });
 });
 
+test('query fetch_effective_permissions', function (t) {
+  t.plan(4);
+  
+  var select_query = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+  
+  var entpath = new sitepath(['wh']);
+  var user = new sitepath(['wh','users','wirehead']);
+
+  var db = {};
+
+  db.connect_wrap = function (queryfunc) {
+    var client = {};
+    client.query = function(spec, func) {
+      t.pass('called query');
+      t.deepEqual(spec.text, select_query);
+      func(null, {rowCount: 1});
+    };
+    queryfunc(null, client, function()
+      {
+        t.pass('called done');
+      });
+  };
+
+  query.fetch_effective_permissions(db, user, entpath, function(err, entity){
+    if(err) {
+      t.fail(err);
+    } else {
+      t.pass('finished');
+    }
+    t.end();
+  });
+});
+
 test('query from_db not_found', function (t) {
   t.plan(5);
 

@@ -3,6 +3,7 @@ var test = require('tape');
 var entity = require('../../lib/entity');
 var sitepath = require ('../../lib/sitepath');
 var async = require('async');
+var user = require('../../lib/user');
 
 test.test('query', function (t) {
   t.plan(31);
@@ -161,5 +162,77 @@ test.test('query not_found', function (t) {
     }
     db.gun_database();
     t.end();
+  });
+});
+
+test('query roles', function (t) {
+  t.plan(2);
+  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
+  Conf._data.endpoints.postgres = conString;
+  var update = require('../../lib/update');
+  var query = require('../../lib/query');
+  var db = require('../../lib/db');
+
+  var longstr = '<div></div>';
+
+  var now = new Date();
+  var ent = new entity.Entity();
+
+  var path = 'wh.query.roles.*';
+  var entpath = new sitepath(['wh','query','roles','node']);
+  var userpath = new sitepath(['wh','query','user']);
+
+  user.createUser(ent, userpath, 'test', 'test', now);
+
+  async.waterfall([
+    function encode_password(callback) {
+      user.encodePassword('meow_kitty', ent, callback);
+    },
+    function do_create_user(callback){
+      update.create_entity(db, ent, true, 'create', callback);
+    },
+    function do_create_permission(entity_id, revision_id, revision_num, callback){
+      update.add_permission_to_role(db, "query-role", "permission", path, "note", callback);
+    },
+    function do_assign(entity_id, revision_id, revision_num, callback) {
+      update.assign_user_to_role(db, ent.path(), 'query-role', 'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err);
+      });
+    },
+    function check_create_2(callback) {
+      query.fetch_effective_permissions(db, ent.path(), entpath, function(err, permissions){
+        if(err) {
+          t.fail(err);
+        } else {
+          t.deepEqual(permissions,[{ permission: 'permission', role: 'query-role' }]);
+          t.pass('finished');
+        }
+        callback(err);
+      });
+      
+    },
+    function do_delete_role(callback){
+      update.remove_permission_from_role(db, "query-role", "permission", path, "note", callback);
+    },
+    function do_deassign(entity_id, revision_id, revision_num, callback) {
+      update.remove_user_from_role(db, ent.path(), 'query-role', 'note', function(err) {
+        if(err) {
+          t.fail(err);
+        }
+        callback(err);
+      });
+    },
+    function do_delete(callback){
+      update.delete_entity(db, ent, true, 'delete', callback);
+    }
+  ], function(err, entity_id, revision_id, revision_num){
+    if(err) {
+      t.fail(err);
+    }
+    t.end();
+    db.gun_database();
   });
 });
