@@ -34,7 +34,7 @@ test('entity from_db', function (t) {
       { name: 'summary', dataTypeID: 114 },
       { name: 'data', dataTypeID: 114 } ],
   rowAsArray: false };
-  e.from_db(queryresp);
+  e.from_db(queryresp, {});
 
   var e2 = new entity.Entity();
   e2._path = new sitepath(['wh']);
@@ -85,7 +85,7 @@ test('entity from_db to_rec', function (t) {
       { name: 'summary', dataTypeID: 114 },
       { name: 'data', dataTypeID: 114 } ],
   rowAsArray: false };
-  e.from_db(queryresp);
+  e.from_db(queryresp, {});
   t.deepEqual(queryresp.rows[0],e.to_rec());
   t.end();
 });

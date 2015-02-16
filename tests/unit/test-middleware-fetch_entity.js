@@ -7,6 +7,8 @@ var util = require('util'),
 function mock_req(path) {
   var req = {};
   req.sitepath = new sitepath(path);
+  req.user = {};
+  req.user.path = function() {return 'wh'}
   return req;
 }
 

@@ -619,4 +619,3 @@ test('update permit-permit-deny', function (t) {
     db.gun_database();
   });
 });
-
