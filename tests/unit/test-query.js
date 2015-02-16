@@ -83,7 +83,7 @@ test('query from_db', function (t) {
       });
   };
 
-  query.entity_from_path(db, Entclass, {}, entpath, null, function(err, entity){
+  query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
     if(err) {
       t.fail(err);
     } else {
@@ -108,7 +108,7 @@ test('query fetch_effective_permissions', function (t) {
     client.query = function(spec, func) {
       t.pass('called query');
       t.deepEqual(spec.text, select_query);
-      func(null, {rowCount: 1});
+      func(null, {rowCount: 1, rows: ['root']});
     };
     queryfunc(null, client, function()
       {
@@ -154,7 +154,7 @@ test('query from_db not_found', function (t) {
       });
   };
 
-  query.entity_from_path(db, Entclass, {}, entpath, null, function(err, entity){
+  query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
     if(err) {
       t.deepEqual(err.name,'EntityNotFoundError');
       t.deepEqual(err.path,entpath.toDottedPath());
@@ -193,7 +193,7 @@ test('query from_db error', function (t) {
       });
   };
 
-  query.entity_from_path(db, Entclass, {}, entpath, null, function(err, entity){
+  query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
     if(err) {
       t.deepEqual(err.name,'QueryError');
     } else {
@@ -233,7 +233,7 @@ FROM wh_log WHERE (revision_id = $1)";
       });
   };
 
-  query.entity_from_path(db, Entclass, {}, entpath, '1234', function(err, entity){
+  query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, '1234', function(err, entity){
     if(err) {
       t.deepEqual(err.name,'RevisionIdNotFoundError');
     } else {
@@ -273,7 +273,7 @@ FROM wh_log WHERE (revision_id = $1)";
       });
   };
 
-  query.entity_from_path(db, Entclass, {}, entpath, '1535', function(err, entity){
+  query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, '1535', function(err, entity){
     if(err) {
       t.deepEqual(err.name,'QueryError');
     } else {

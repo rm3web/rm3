@@ -31,7 +31,7 @@ test.test('query', function (t) {
       update.create_entity(db, ent, true, 'create', callback);
     },
     function en_from_path(entity_id, revision_id, revision_num, callback) {
-      query.entity_from_path(db, entity.Entity, {}, ent._path, null, function(err, ent2){
+      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, ent._path, null, function(err, ent2){
         t.deepEqual(ent2.summary,ent.summary);
         t.deepEqual(ent2.data,ent.data);
         t.deepEqual(ent2._path,ent._path);
@@ -44,7 +44,7 @@ test.test('query', function (t) {
       });
     },
     function en_from_revid(ent2, revision_id, callback) {
-      query.entity_from_path(db, entity.Entity, {}, ent._path, revision_id, function(err, ent3) {
+      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, ent._path, revision_id, function(err, ent3) {
         t.deepEqual(ent3.summary,ent.summary);
         t.deepEqual(ent3.data,ent.data);
         t.deepEqual(ent3._path,ent._path);
@@ -150,7 +150,7 @@ test.test('query not_found', function (t) {
 
   async.waterfall([
     function en_from_a(callback) {
-      query.entity_from_path(db, entity.Entity, {}, entpath, null, function(err, ent2){
+      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, entpath, null, function(err, ent2){
         t.deepEqual(err.name,'EntityNotFoundError');
         t.deepEqual(err.path,entpath.toDottedPath());
         callback();
@@ -166,7 +166,7 @@ test.test('query not_found', function (t) {
 });
 
 test('query roles', function (t) {
-  t.plan(2);
+  t.plan(8);
   var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   Conf._data.endpoints.postgres = conString;
   var update = require('../../lib/update');
@@ -178,7 +178,7 @@ test('query roles', function (t) {
   var now = new Date();
   var ent = new entity.Entity();
 
-  var path = 'wh.query.roles.*';
+  var path = 'wh.query.*';
   var entpath = new sitepath(['wh','query','roles','node']);
   var userpath = new sitepath(['wh','query','user']);
 
@@ -194,6 +194,9 @@ test('query roles', function (t) {
     function do_create_permission(entity_id, revision_id, revision_num, callback){
       update.add_permission_to_role(db, "query-role", "permission", path, "note", callback);
     },
+    function do_create_permission_2(entity_id, revision_id, revision_num, callback){
+      update.add_permission_to_role(db, "nobody", "permission", path, "note", callback);
+    },
     function do_assign(entity_id, revision_id, revision_num, callback) {
       update.assign_user_to_role(db, ent.path(), 'query-role', 'note', function(err) {
         if(err) {
@@ -207,15 +210,52 @@ test('query roles', function (t) {
         if(err) {
           t.fail(err);
         } else {
-          t.deepEqual(permissions,[{ permission: 'permission', role: 'query-role' }]);
+          t.deepEqual(permissions,{ permission: 'query-role'});
           t.pass('finished');
         }
         callback(err);
       });
-      
+    },
+    function check_create_3(callback) {
+      query.fetch_effective_permissions(db, undefined, entpath, function(err, permissions){
+        if(err) {
+          t.fail(err);
+        } else {
+          t.deepEqual(permissions,{ permission: 'nobody'});
+          t.pass('finished');
+        }
+        callback(err);
+      });
+    },
+    function check_create_4(callback) {
+      query.entity_from_path(db, entity.Entity, {context: 'STANDARD', user: ent.path()}, 
+                             ent.path(), undefined, function(err, ent2){
+        if(err) {
+          t.fail(err);
+        } else {
+          t.deepEqual(ent2.permissions, { permission: 'query-role'})
+          t.pass('finished');
+        }
+        callback(err);
+      });
+    },
+    function check_create_5(callback) {
+      query.entity_from_path(db, entity.Entity, {context: 'STANDARD', user: undefined}, 
+                             ent.path(), undefined, function(err, ent2){
+        if(err) {
+          t.fail(err);
+        } else {
+          t.deepEqual(ent2.permissions, { permission: 'nobody'})
+          t.pass('finished');
+        }
+        callback(err);
+      });
     },
     function do_delete_role(callback){
       update.remove_permission_from_role(db, "query-role", "permission", path, "note", callback);
+    },
+    function do_delete_role_2(entity_id, revision_id, revision_num, callback){
+      update.remove_permission_from_role(db, "nobody", "permission", path, "note", callback);
     },
     function do_deassign(entity_id, revision_id, revision_num, callback) {
       update.remove_user_from_role(db, ent.path(), 'query-role', 'note', function(err) {
