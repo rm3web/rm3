@@ -97,8 +97,11 @@ exports = module.exports = function(dust, db, query) {
         return chunk.map(function(chunk) {
             var baseurl = ctx.get('meta.site_path');
             path = new SitePath(baseurl);
-            var security = {user: ctx.get('user'),
-                            context: 'STANDARD'};
+            var security = {context: 'STANDARD'};
+            var user = ctx.get('user');
+            if (user != undefined) {
+                security.user = user;
+            }
             var resp = query.query(db, security, path,'dir','entity',{},undefined,undefined);
             var body = bodies.block;
             var idx = 0;

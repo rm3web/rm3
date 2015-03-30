@@ -61,7 +61,7 @@ test.test('query', function (t) {
       });
     },
     function query_op(entity, qent, callback) {
-      var resp = query.query(db, {}, ent._path,'child','entity',{},undefined,undefined);
+      var resp = query.query(db, {context: "ROOT"}, ent._path,'child','entity',{},undefined,undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -233,7 +233,7 @@ test('query roles', function (t) {
         if(err) {
           t.fail(err);
         } else {
-          t.deepEqual(ent2.permissions, { permission: 'query-role'})
+          t.deepEqual(ent2.permissions, { permission: 'query-role'});
           t.pass('finished');
         }
         callback(err);
@@ -245,7 +245,7 @@ test('query roles', function (t) {
         if(err) {
           t.fail(err);
         } else {
-          t.deepEqual(ent2.permissions, { permission: 'nobody'})
+          t.deepEqual(ent2.permissions, { permission: 'nobody'});
           t.pass('finished');
         }
         callback(err);
