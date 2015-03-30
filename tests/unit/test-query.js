@@ -13,44 +13,46 @@ test('query gen', function(t) {
     t.deepEqual(err.name,'InvalidQuery');
   }
   
-  var tmp = query._query_gen({}, 'wh','child','entity',{},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC');
+  var root = {context: "ROOT"};
 
-  tmp = query._query_gen({}, 'wh','child','count',{},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1)');
+  var tmp = query._query_gen(root, 'wh','child','entity',{},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC');
+
+  tmp = query._query_gen(root, 'wh','child','count',{},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)');
 
   try {
-    query._query_gen({}, 'wh','child','retr',{},undefined,undefined);
+    query._query_gen(root, 'wh','child','retr',{},undefined,undefined);
   } catch (err) {
     t.deepEqual(err.name,'InvalidQuery');
   }
 
-  tmp = query._query_gen({}, 'wh','parents','count',{},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path @> $1)');
+  tmp = query._query_gen(root, 'wh','parents','count',{},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path @> $1)');
 
-  tmp = query._query_gen({}, 'wh','dir','count',{},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path ~ lquery($1 || \'.*{1}\'))');
+  tmp = query._query_gen(root, 'wh','dir','count',{},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path ~ lquery($1 || \'.*{1}\'))');
 
-  tmp = query._query_gen({}, 'wh','child','count',{},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1)');
+  tmp = query._query_gen(root, 'wh','child','count',{},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)');
 
-  tmp = query._query_gen({}, 'wh','child','count',{protos: ['blah']},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1) AND (proto = $2)');
+  tmp = query._query_gen(root, 'wh','child','count',{protos: ['blah']},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (proto = $2)');
 
-  tmp = query._query_gen({}, 'wh','child','count',{notprotos: ['blah']},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1) AND (proto <> $2)');
+  tmp = query._query_gen(root, 'wh','child','count',{notprotos: ['blah']},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (proto <> $2)');
 
-  tmp = query._query_gen({}, 'wh','child','count',{before: 123},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1) AND (created < $2)');
+  tmp = query._query_gen(root, 'wh','child','count',{before: 123},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (created < $2)');
 
-  tmp = query._query_gen({}, 'wh','child','count',{after: 123},undefined,undefined);
-  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (path <@ $1) AND (created >= $2)');
+  tmp = query._query_gen(root, 'wh','child','count',{after: 123},undefined,undefined);
+  t.deepEqual(tmp.text, 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (created >= $2)');
 
-  tmp = query._query_gen({}, 'wh','child','entity',{},'changed',undefined);
-  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path <@ $1) ORDER BY modified ASC');
+  tmp = query._query_gen(root, 'wh','child','entity',{},'changed',undefined);
+  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY modified ASC');
 
-  tmp = query._query_gen({}, 'wh','child','entity',{},'created',undefined);
-  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path <@ $1) ORDER BY created ASC');
+  tmp = query._query_gen(root, 'wh','child','entity',{},'created',undefined);
+  t.deepEqual(tmp.text, 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY created ASC');
 
   t.end();
 });
@@ -286,7 +288,7 @@ FROM wh_log WHERE (revision_id = $1)";
 test('query', function (t) {
   t.plan(6);
 
-  var select_query = 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path <@ $1) ORDER BY path ASC';
+  var select_query = 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC';
 
   var entpath = new sitepath(['wh']);
 
@@ -321,7 +323,9 @@ test('query', function (t) {
       });
   };
 
-  var resp = query.query(db, {}, entpath, 'child','entity',{},undefined,undefined);
+  var root = {context: "ROOT"};
+
+  var resp = query.query(db, root, entpath, 'child','entity',{},undefined,undefined);
   resp.on('article', function(article) {
     t.deepEqual(article.title, rec.summary.title);
     t.deepEqual(article.summary, rec.summary.abstract);
@@ -338,7 +342,7 @@ test('query', function (t) {
 test('query count', function (t) {
   t.plan(4);
 
-  var select_query = 'SELECT count(*) FROM wh_entity WHERE (path <@ $1)';
+  var select_query = 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)';
 
   var entpath = new sitepath(['wh']);
 
@@ -364,7 +368,9 @@ test('query count', function (t) {
       });
   };
 
-  var resp = query.query(db, {}, entpath, 'child','count',{},undefined,undefined);
+  var root = {context: "ROOT"};
+
+  var resp = query.query(db, root, entpath, 'child','count',{},undefined,undefined);
   resp.on('count', function(article) {
     t.deepEqual(article.count, '2');
   });
