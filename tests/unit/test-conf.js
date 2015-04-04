@@ -1,12 +1,12 @@
 var Conf = require ('../../lib/conf');
-var test = require('tape');
+var should = require('should');
 
-test('conf', function (t) {
-  // dummy test: make this better when conf develops
-  t.plan(1);
-  var conString = Conf.get_endpoint('postgres');
+describe('conf', function() {
+  it('should work as expected', function () {
+    // dummy test: make this better when conf develops
 
-  t.deepEqual(conString, 'postgresql://wirehead:rm3test@127.0.0.1/rm3test');
+    var conString = Conf.get_endpoint('postgres');
 
-  t.end();
+    conString.should.be.equal('postgresql://wirehead:rm3test@127.0.0.1/rm3test');
+  });
 });
