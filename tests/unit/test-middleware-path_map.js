@@ -1,48 +1,30 @@
 var path_map = require('../../lib/middleware/path_map');
-var test = require('tape');
-var async = require('async');
 var sitepath = require ('../../lib/sitepath');
+var should = require('should');
 
-test('middleware path_map', function (t) {
-  
-  t.plan(5);
-
+describe('middleware:path_map', function() {
   var res = {};
 
   var middleware = path_map();
-  t.deepEqual(typeof middleware, "function");
+  should.deepEqual(typeof middleware, "function");
 
-  async.parallel([
-    function(callback) {
-      var req = {path: '/'};
-      middleware(req, res, function()
-      {
-        t.deepEqual(req.sitepath, new sitepath(['wh']));
-        callback();
-      });
-    },
-    function(callback) {
-      var req = {path: '/wh/'};
-      middleware(req, res, function()
-      {
-        t.deepEqual(req.sitepath, new sitepath(['wh','wh']));
-        callback();
-      });
-    },
-    function(callback) {
-      var req = {path: '/$new/wh/'};
-      middleware(req, res, function()
-      {
-        t.deepEqual(req.sitepath, new sitepath(['wh', 'wh']));
-        t.deepEqual(req.creation, '$new');
-        callback();
-      });
-    }
-  ], function(err, results)
-  {
-    t.end();
-  });
-    
+  var tests = [
+    {args: '/',       expected: new sitepath(['wh'])},
+    {args: '/wh/',    expected: new sitepath(['wh','wh'])},
+    {args: '/$new/wh/', expected: new sitepath(['wh', 'wh']), creation: '$new'}
+  ];
   
-
+  tests.forEach(function(test) {
+    it('correctly maps ' + test.args, function(done) {
+      var req = {path: test.args};
+      middleware(req, res, function()
+      {
+        req.sitepath.should.eql(test.expected);
+        if(test.hasOwnProperty('creation')) {
+          req.creation.should.equal(test.creation);
+        }
+        done();
+      });
+    });
+  });
 });

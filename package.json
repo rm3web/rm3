@@ -36,15 +36,20 @@
   },
   "devDependencies": {
     "jshint": "~2.5.5",
+    "should": "~5.2.0",
+    "mocha": "~2.2.1",
+    "mocha-steps": "0.0.1",
     "tape": "~3.0.0",
     "jsdox": "~0.4.2",
     "istanbul": "~0.3.2",
     "gulp": "~3.8.8",
     "gulp-nodemon": "~1.0.4",
-    "gulp-jshint": "~1.8.5"
+    "gulp-jshint": "~1.8.5",
+    "gulp-istanbul": "~0.7.0",
+    "gulp-mocha": "~2.0.1"
   },
   "scripts": {
-    "unit-tests": "./node_modules/.bin/tape tests/unit/*.js",
+    "unit-tests": "./node_modules/.bin/mocha tests/unit/*.js",
     "db-tests": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && ./node_modules/.bin/tape tests/db/*.js",
     "test": "npm run unit-tests && npm run db-tests",
     "coverage": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && ./node_modules/.bin/istanbul cover ./node_modules/.bin/tape tests/unit/*.js tests/db/*.js",
