@@ -56,7 +56,7 @@ describe('db', function() {
     it('should handle open_transaction errors', function(next) {
       db.open_transaction(client, undefined, function(err){
         if (err) {
-          should.deepEqual(err.name,'DbError');
+          err.name.should.equal('DbError');
         } else {
           should.fail('should call an error');
         }
@@ -67,7 +67,7 @@ describe('db', function() {
     it('should handle commit_transaction errors', function(next) {
       db.commit_transaction(client, function(err){
         if (err) {
-          should.deepEqual(err.name,'DbCommitFailedError');
+          err.name.should.equal('DbCommitFailedError');
         } else {
           should.fail('should call an error');
         }
@@ -78,7 +78,7 @@ describe('db', function() {
     it('should handle rollback_transaction errors', function(next) {
       db.rollback_transaction(client, function(err){
         if (err) {
-          should.deepEqual(err.name,'DbRollbackFailedError');
+          err.name.should.equal('DbRollbackFailedError');
         } else {
           should.fail('should call an error');
         }
@@ -88,13 +88,14 @@ describe('db', function() {
   });
 
   
-  it('should wrap errors', function () {
-
+  it('should wrap connection refused errors', function () {
     var err = db.wrap_error(new Error('could not connect to server: Connection refused'));
-    should.deepEqual(err.name, 'DbConnectionRefusedError');
-    err = db.wrap_error(new Error('relation wh_frro does not exist'));
-    should.deepEqual(err.name, 'DbTableMissingError');
+    err.name.should.equal('DbConnectionRefusedError');
+  });
 
+  it('should wrap table missing errors', function () {
+    err = db.wrap_error(new Error('relation wh_frro does not exist'));
+    err.name.should.equal('DbTableMissingError');
   });
 
   after(function() {
