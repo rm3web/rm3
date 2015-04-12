@@ -7,5 +7,5 @@
   "undef": true,
   "node": true,
   "mocha": true,
-  "globals": {"context": false}
+  "globals": {"context": false, "step": false}
 }

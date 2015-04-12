@@ -1,9 +1,12 @@
 var Conf = require ('../../lib/conf');
-var test = require('tape');
 var entity = require('../../lib/entity');
 var sitepath = require ('../../lib/sitepath');
 var async = require('async');
 var uuid = require('node-uuid');
+var update = require('../../lib/update');
+var db = require('../../lib/db');
+var should = require('should');
+require('mocha-steps');
 
 function quick_query(db, querytext, next) {
   async.waterfall([
@@ -17,605 +20,554 @@ function quick_query(db, querytext, next) {
   ], next);
 }
 
-test('update create-create-delete', function (t) {
-  t.plan(27);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var db = require('../../lib/db');
+function step_generic_create(desc, path, ents, entidx, provisional, now) {
+  ents[entidx] = new entity.Entity();
+  step(desc, function(done) {
+    var longstr = '<div></div>';
+    ents[entidx].createNew(path, 'base', now);
+    ents[entidx].summary = {"title": "blrg",
+      "abstract": "some text goes here"};
+    ents[entidx].data.posting = longstr;
+    update.create_entity(db, ents[entidx], provisional, 'create', 
+      function(err, entity_id, revision_id, revision_num) {
+            entity_id.should.be.an.instanceof(String);
+            revision_id.should.be.an.instanceof(String);
+            revision_num.should.be.an.instanceof(Number);
+            ents[entidx]._entity_id = entity_id;
+            ents[entidx]._revision_id = revision_id;
+            ents[entidx]._revision_num = revision_num;
+            done(err);
+          });
+  });
+}
 
-  var longstr = '<div></div>';
+function step_generic_update(desc, ents, startidx, nextidx) {
+  ents[nextidx] = ents[startidx].clone();
+  ents[nextidx].data.posting = "<div>blah blah blah</div>";
+  step(desc, function(done) {
+    update.update_entity(db, ents[startidx], ents[nextidx], true, 'update', 
+      function(err, entity_id, revision_id, revision_num) {
+          entity_id.should.be.an.instanceof(String);
+          revision_id.should.be.an.instanceof(String);
+          revision_num.should.be.an.instanceof(Number);
+          ents[nextidx]._entity_id = entity_id;
+          ents[nextidx]._revision_id = revision_id;
+          ents[nextidx]._revision_num = revision_num;
+          done(err);
+        });
+  });
+}
 
-  var now = new Date();
-  var ent = new entity.Entity();
-  ent.createNew(new sitepath(['wh', 'create_create_delete']), 'base', now);
-  ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"};
-  ent.data.posting = longstr;
+function step_generic_move(desc, ents, startidx, newpath, move_mark) {
+  step(desc, function(done) {
+    update.move_entity(db, ents[startidx], newpath, true, 'move', 
+      function(err, entity_id, revision_id, revision_num) {
+          entity_id.should.be.an.instanceof(String);
+          revision_id.should.be.an.instanceof(String);
+          revision_num.should.be.an.instanceof(Number);
+          move_mark.revision_id = revision_id;
+          move_mark.revision_num = revision_num;
+          done(err);
+        });
+  });
+}
 
-  async.waterfall([
-    function do_create(callback){
-      update.create_entity(db, ent, true, 'create', callback);
-    },
-    function check_create_1(entity_id, revision_id, revision_num, callback) {
-      ent._entity_id = entity_id;
-      ent._revision_num = revision_num;
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
+function step_generic_delete(desc, ent, del_mark) {
+  step(desc, function(done) {
+    update.delete_entity(db, ent, true, 'delete',
+      function(err, entity_id, revision_id, revision_num) {
+        entity_id.should.be.an.instanceof(String);
+        entity_id.should.equal(ent._entity_id);
+        revision_id.should.be.an.instanceof(String);
+        revision_num.should.be.an.instanceof(Number);
+        del_mark.revision_id = revision_id;
+        del_mark.revision_num = revision_num;
+        done(err);
       });
-    },
-    function check_log_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.create_create_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].evt_final, true);
-        t.notDeepEqual(result.rows[0].evt_end, null);
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function do_create_again(entity_id, revision_id, revision_num, callback){
-      update.create_entity(db, ent, true, 'create', function(err) {
+  });
+}
+
+function step_validate_permission_existence(desc, path) {
+  step(desc, function(done) {
+    var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = '" + 
+      path + "'";
+    quick_query(db, query, function(err, result) {
+      if(err) {
+        return done(err);
+      }
+      should.deepEqual(result.rows[0].role, "role");
+      should.deepEqual(result.rows[0].permission, "permission");
+      should.deepEqual(result.rows[0].path, path);
+      done();
+    });
+  });
+}
+
+function step_validate_permission_non_existence(desc, path) {
+  step(desc, function(done) {
+    var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = '" + 
+      path + "'";
+    quick_query(db, query, function(err, result) {
+      if(err) {
+        return done(err);
+      }
+      should.deepEqual(result.rowCount, 0);
+      done();
+    });
+  });
+}
+
+function step_validate_entity_existence(desc, ent) {
+  step(desc, function(done) {
+    var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = '" +
+      ent.path().toDottedPath() + "'";
+    quick_query(db, query, function(err, result) {
+      if(err) {
+        return done(err);
+      }
+      should.deepEqual(result.rows[0].entity_id, ent._entity_id);
+      should.deepEqual(result.rows[0].revision_id, ent._revision_id);
+      should.deepEqual(result.rows[0].revision_num, ent._revision_num);
+      done();
+    });
+  });
+}
+
+function step_validate_non_entity_existence(desc, ent) {
+  step(desc, function(done) {
+  var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = '" +
+    ent.path().toDottedPath() + "'";
+    quick_query(db, query, function(err, result) {
+      if(err) {
+        return done(err);
+      }
+      should.deepEqual(result.rowCount, 0);
+      done();
+    });
+  });
+}
+
+function step_generic_revid_check(desc, mark, check) {
+  step(desc, function(done) {
+    var query = "SELECT evt_class, entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE revision_id = '" +
+      mark.revision_id + "'";
+    quick_query(db, query, function(err, result) {
+      if(err) {
+        return done(err);
+      }
+      check(result);
+      done();
+    });
+  });
+}
+
+function step_generic_log_check(desc, ent, check) {
+  step(desc, function(done) {
+    var query = "SELECT evt_class, entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = '" +
+      ent.path().toDottedPath() + "'";
+    quick_query(db, query, function(err, result) {
+      if(err) {
+        return done(err);
+      }
+      check(result);
+      done();
+    });
+  });
+}
+
+function check_log_create(row, ent) {
+  should.deepEqual(row.evt_final, true);
+  should.notDeepEqual(row.evt_end, null);
+  should.deepEqual(row.entity_id, ent._entity_id);
+  should.deepEqual(row.revision_id, ent._revision_id);
+  should.deepEqual(row.revision_num, ent._revision_num);
+}
+
+function check_log_pcreate(row, ent) {
+  should.deepEqual(row.evt_final, false);
+  should.deepEqual(row.evt_end, null);
+  should.deepEqual(row.entity_id, ent._entity_id);
+  should.deepEqual(row.revision_id, ent._revision_id);
+  should.deepEqual(row.revision_num, ent._revision_num);
+}
+
+function check_log_delete(row, ent, del_mark) {
+  should.deepEqual(row.evt_class, 'delete');
+  should.deepEqual(row.entity_id, ent._entity_id);
+  should.deepEqual(row.revision_id, del_mark.revision_id);
+  should.deepEqual(row.revision_num, del_mark.revision_num);
+}
+
+function check_log_update(row, ent, ent2) {
+  should.deepEqual(row.evt_class, 'update');
+  should.deepEqual(row.entity_id, ent2._entity_id);
+  should.deepEqual(row.revision_id, ent2._revision_id);
+  should.deepEqual(row.revision_num, ent2._revision_num);
+}
+
+describe('update', function() {
+  
+  describe('create-create-delete', function() {
+    var now = new Date();
+    var ents = {};
+    var del_mark = {};
+
+    step_generic_create('create', new sitepath(['wh', 'create_create_delete']), ents, 
+      'one', true, now);
+
+    step_validate_entity_existence('check create', ents.one);
+
+    step_generic_log_check('check log', ents.one, function(result) {
+      var ent = ents.one;
+      should.deepEqual(result.rowCount, 1);
+
+    });
+
+    step('try to create again', function(done) {
+      update.create_entity(db, ents.one, true, 'create', function(err) {
         if (err) {
-          t.deepEqual(err.name, 'DbDuplicateRecordError');
+          should.deepEqual(err.name, 'DbDuplicateRecordError');
         } else {
-          t.fail("didn't catch error");
+          should.fail("didn't catch error");
         }
-        callback(null, entity_id, revision_id, revision_num);
+        done();
       });
-    },
-    function check_create_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_create_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function do_delete(entity_id, revision_id, revision_num, callback){
-      update.delete_entity(db, ent, true, 'delete', callback);
-    },
-    function check_create_3(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete';";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 0);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_3(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT evt_class, entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_create_delete' ORDER BY revision_num ASC;";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 2);
-        t.deepEqual(result.rows[0].evt_class, 'create');
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.notDeepEqual(result.rows[0].revision_id, result.rows[1].revision_id);
-        t.notDeepEqual(result.rows[0].revision_num, result.rows[1].revision_num);
-        t.deepEqual(result.rows[1].evt_class, 'delete');
-        t.deepEqual(result.rows[1].entity_id, entity_id);
-        t.deepEqual(result.rows[1].revision_id, revision_id);
-        t.deepEqual(result.rows[1].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    }
-  ], function(err){
-    if(err) {
-      t.fail(err);
-    }
-    t.end();
-    db.gun_database();
+    });
+
+    step_validate_entity_existence('verify only one creation went through', ents.one);
+
+    step_generic_log_check('verify only one creation went through in log', ents.one,
+      function(result) {
+        var ent = ents.one;
+        should.deepEqual(result.rowCount, 1);
+        check_log_create(result.rows[0],ent);
+    });
+
+    step_generic_delete('delete', ents.one, del_mark);
+
+    step_validate_non_entity_existence('check create after delete', ents.one);
+
+    step_generic_log_check('verify create and delete in log', ents.one, function(result) {
+      result.rowCount.should.equal(2);
+      var ent = ents.one;
+      check_log_create(result.rows[0],ent);
+      check_log_delete(result.rows[1],ent,del_mark);
+      should.notDeepEqual(result.rows[0].revision_id, result.rows[1].revision_id);
+      should.notDeepEqual(result.rows[0].revision_num, result.rows[1].revision_num);
+    });
   });
-});
 
-test('update create-update-delete', function (t) {
-  t.plan(33);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var db = require('../../lib/db');
+  describe('create-update-delete', function() {
+    var now = new Date();
+    var ents = {};
+    var del_mark = {};
 
-  var longstr = '<div></div>';
+    step_generic_create('create', new sitepath(['wh', 'create_update_delete']), ents, 
+      'start', true, now);
 
-  var now = new Date();
-  var ent = new entity.Entity();
-  var ent2;
-  ent._path = new sitepath(['wh','create_update_delete']);
-  ent._proto = 'base';
-  ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"};
-  ent.data.posting = longstr;
-  ent._created = now;
-  ent._modified = now;
+    step_validate_entity_existence('check create', ents.start);
 
-  async.waterfall([
-    function do_create(callback){
-      update.create_entity(db, ent, true, 'create', callback);
-    },
-    function check_create_1(entity_id, revision_id, revision_num, callback) {
-      ent._entity_id = entity_id;
-      ent._revision_num = revision_num;
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_update_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function do_update(entity_id, revision_id, revision_num, callback){
-      ent2 = ent.clone();
-      ent2.data.posting = "<div>blah blah blah</div>";
-      update.update_entity(db, ent, ent2, true, 'update', callback);
-    },
-    function check_create_2(entity_id, revision_id, revision_num, callback) {
-      ent2._entity_id = entity_id;
-      ent2._revision_num = revision_num;
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_update_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 2);
-        t.deepEqual(result.rows[0].evt_class, 'create');
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.notDeepEqual(result.rows[0].revision_id, result.rows[1].revision_id);
-        t.notDeepEqual(result.rows[0].revision_num, result.rows[1].revision_num);
-        t.deepEqual(result.rows[1].evt_class, 'update');
-        t.deepEqual(result.rows[1].entity_id, entity_id);
-        t.deepEqual(result.rows[1].revision_id, revision_id);
-        t.deepEqual(result.rows[1].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function do_delete(entity_id, revision_id, revision_num, callback){
-      update.delete_entity(db, ent2, true, 'delete', callback);
-    },
-    function check_create_3(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_update_delete';";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 0);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_3(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_update_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 3);
-        t.deepEqual(result.rows[1].evt_class, 'update');
-        t.deepEqual(result.rows[1].entity_id, entity_id);
-        t.deepEqual(result.rows[2].evt_class, 'delete');
-        t.deepEqual(result.rows[2].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_num, 1);
-        t.deepEqual(result.rows[1].revision_num, 2);
-        t.deepEqual(result.rows[2].revision_num, 3);
-        t.notDeepEqual(result.rows[2].revision_id, result.rows[1].revision_id);
-        t.notDeepEqual(result.rows[2].revision_num, result.rows[1].revision_num);
-        t.deepEqual(result.rows[2].revision_id, revision_id);
-        t.deepEqual(result.rows[2].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-  ], function(err){
-    if(err) {
-      console.log(err);
-      t.fail(err);
-    }
-    t.end();
-    db.gun_database();
+    step_generic_update('update', ents, 'start', 'next');
+
+    step_validate_entity_existence('verify update', ents.next);
+
+    step_generic_log_check('check log after update', ents.start, function(result) {
+      var ent = ents.start;
+      var ent2 = ents.next;
+
+      should.deepEqual(result.rowCount, 2);
+      check_log_create(result.rows[0],ent);
+      check_log_update(result.rows[1],ent, ent2);
+    });
+
+    step_generic_delete('delete', ents.next, del_mark);
+
+    step_validate_non_entity_existence('check create after delete', ents.next);
+
+    step_generic_log_check('check log after delete', ents.start, function(result) {
+      var ent = ents.start;
+      var ent2 = ents.next;
+
+      should.deepEqual(result.rowCount, 3);
+      check_log_create(result.rows[0],ent);
+      check_log_update(result.rows[1],ent, ent2);
+      check_log_delete(result.rows[2],ent,del_mark);
+      should.notDeepEqual(result.rows[2].revision_id, result.rows[1].revision_id);
+      should.notDeepEqual(result.rows[2].revision_num, result.rows[1].revision_num);
+    });
   });
-});
 
-test('update create-move-delete', function (t) {
-  //t.plan(33);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var db = require('../../lib/db');
+  describe('create-move-delete', function() {
+    var now = new Date();
+    var ents = {};
+    var move_mark = {};
+    var del_mark = {};
+    var newpath = new sitepath(['wh','create_move_delete2']);
 
-  var longstr = '<div></div>';
+    step_generic_create('create', new sitepath(['wh', 'create_move_delete']), ents, 
+      'start', true, now);
 
-  var now = new Date();
+    step_validate_entity_existence('check create', ents.start);
 
-  var ent = new entity.Entity();
-  var ent2;
-  ent._path = new sitepath(['wh','create_move_delete']);
-  ent._proto = 'base';
-  ent._created = now;
-  ent._modified = now;
-  ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"};
-  ent.data.posting = longstr;
+    step_generic_move('move', ents, 'start', newpath, move_mark);
 
-  var newpath = new sitepath(['wh','create_move_delete2']);
+    step_validate_non_entity_existence('check create after delete', ents.start);
 
-  async.waterfall([
-    function do_create(callback){
-      update.create_entity(db, ent, true, 'create', callback);
-    },
-    function check_create_1(entity_id, revision_id, revision_num, callback) {
-      ent._entity_id = entity_id;
-      ent._revision_num = revision_num;
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete'";
+    step('validate move', function(done) {
+      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = '" +
+        newpath.toDottedPath() + "'";
       quick_query(db, query, function(err, result) {
         if(err) {
-          t.fail(err);
+          return done(err);
         }
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
+        var ent = ents.start;
+        should.deepEqual(result.rows[0].entity_id, ent._entity_id);
+        should.deepEqual(result.rows[0].revision_id, move_mark.revision_id);
+        should.deepEqual(result.rows[0].revision_num, move_mark.revision_num);
+        done();
       });
-    },
-    function check_log_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_log WHERE path = 'wh.create_move_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function do_update(entity_id, revision_id, revision_num, callback){
-      update.move_entity(db, ent, newpath, true, 'move', callback);      
-    },
-    function check_create_2(entity_id, revision_id, revision_num, callback) {
+    });
+
+    step_validate_non_entity_existence('validate moved', ents.start);
+
+    step_generic_log_check('check log at old location', ents.start, function(result) {
+      var ent = ents.start;
+
+      should.deepEqual(result.rowCount, 2);
+      check_log_create(result.rows[0],ent);
+
+      should.deepEqual(result.rows[1].evt_class, 'move');
+      should.deepEqual(result.rows[1].entity_id, ent._entity_id);
+      should.deepEqual(result.rows[1].revision_id, move_mark.revision_id);
+      should.deepEqual(result.rows[1].revision_num, move_mark.revision_num);
+    });
+
+    step('delete', function(done) {
+      var ent = ents.start;
       ent._path = newpath;
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete2'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_move_delete'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 2);
-        t.deepEqual(result.rows[0].evt_class, 'create');
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.notDeepEqual(result.rows[0].revision_id, result.rows[1].revision_id);
-        t.notDeepEqual(result.rows[0].revision_num, result.rows[1].revision_num);
-        t.deepEqual(result.rows[1].evt_class, 'move');
-        t.deepEqual(result.rows[1].entity_id, entity_id);
-        t.deepEqual(result.rows[1].revision_id, revision_id);
-        t.deepEqual(result.rows[1].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function do_delete(entity_id, revision_id, revision_num, callback){
-      update.delete_entity(db, ent, true, 'delete', callback);
-    },
-    function check_create_3(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete2';";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 0);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_3(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num, evt_class FROM wh_log WHERE path = 'wh.create_move_delete2'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].evt_class, 'delete');
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_num, 2);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_create_4(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_move_delete';";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 0);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-  ], function(err){
-    if(err) {
-      console.log(err);
-      t.fail(err);
-    }
-    t.end();
-    db.gun_database();
+      update.delete_entity(db, ent, true, 'delete',
+        function(err, entity_id, revision_id, revision_num) {
+          entity_id.should.be.an.instanceof(String);
+          entity_id.should.equal(ent._entity_id);
+          revision_id.should.be.an.instanceof(String);
+          revision_num.should.be.an.instanceof(Number);
+          del_mark.revision_id = revision_id;
+          del_mark.revision_num = revision_num;
+          done(err);
+        });
+    });
+
+    step_validate_non_entity_existence('validate delete', ents.start);
+
+    step_generic_log_check('check log at new location', ents.start, function(result) {
+      var ent = ents.start;
+
+      should.deepEqual(result.rowCount, 1);
+      check_log_delete(result.rows[0],ent,del_mark);
+    });
   });
-});
 
-test('update provisional create', function (t) {
-  t.plan(16);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var db = require('../../lib/db');
+  describe('provisional create', function() {
+    var now = new Date();
+    var ents = {};
+    var del_mark = {};
+    var commit_mark = {};
 
-  var longstr = '<div></div>';
+    step_generic_create('create', new sitepath(['wh', 'pcreate']), ents, 
+      'start', false, now);
 
-  var now = new Date();
+    step_validate_non_entity_existence('validate provisional wont create', ents.start);
 
-  var ent = new entity.Entity();
-  ent._path = new sitepath(['wh', 'pcreate']);
-  ent._proto = 'base';
-  ent._created = now;
-  ent._modified = now;
-  ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"};
-  ent.data.posting = longstr;
+    step_generic_log_check('check log after provisional create', ents.start, function(result) {
+      var ent = ents.start;
 
-  async.waterfall([
-    function do_create(callback){
-      update.create_entity(db, ent, false, 'create', callback);
-    },
-    function check_create_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.pcreate';";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 0);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.pcreate'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].evt_final, false);
-        t.deepEqual(result.rows[0].evt_end, null);
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function do_apply(entity_id, revision_id, revision_num, callback){
-      update.commit_entity_rev(db, revision_id, callback);
-    },
-    function check_create_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.pcreate'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_log_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = 'wh.pcreate'";
-      quick_query(db, query, function(err, result) {
-        if(err) {
-          t.fail(err);
-        }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].evt_final, true);
-        t.notDeepEqual(result.rows[0].evt_end, null);
-        t.deepEqual(result.rows[0].entity_id, entity_id);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        t.deepEqual(result.rows[0].revision_num, revision_num);
-        callback(err, entity_id, revision_id, revision_num);
-      });
-    }
-  ], function(err){
-    if(err) {
-      t.fail(err);
-    }
-    t.end();
-    db.gun_database();
+      should.deepEqual(result.rowCount, 1);
+      check_log_pcreate(result.rows[0],ent);
+    });
+
+    step('commit', function(done) {
+      update.commit_entity_rev(db, ents.start._revision_id,
+        function(err, entity_id, revision_id, revision_num) {
+          entity_id.should.be.an.instanceof(String);
+          entity_id.should.equal(ents.start._entity_id);
+          revision_id.should.be.an.instanceof(String);
+          revision_num.should.be.an.instanceof(Number);
+          commit_mark.revision_id = revision_id;
+          commit_mark.revision_num = revision_num;
+          done(err);
+        });
+    });
+
+    step_validate_entity_existence('check create', ents.start);
+
+    step_generic_log_check('check create log', ents.start, function(result) {
+      var ent = ents.start;
+
+      should.deepEqual(result.rowCount, 1);
+      check_log_create(result.rows[0],ent);
+    });
+
+    step_generic_delete('delete', ents.start, del_mark);
   });
-});
 
-test('update bad provisional create', function (t) {
-  t.plan(2);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var db = require('../../lib/db');
-
-  var longstr = '<div></div>';
-
-  var now = new Date();
-
-  var ent = new entity.Entity();
-  ent._path = new sitepath(['wh', 'pcreate']);
-  ent._proto = 'base';
-  ent._created = now;
-  ent._modified = now;
-  ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"};
-  ent.data.posting = longstr;
-
-  async.waterfall([
-    function do_apply(callback){
-      update.commit_entity_rev(db, uuid.v1(), callback);
-    },
-  ], function(err){
-    if(err) {
-      t.pass('this errored');
-      t.deepEqual(err.name, 'RevisionIdNotFoundError');
-      t.end();
-    } else {
-      t.fail(err);
-    }
-    db.gun_database();
+  it('fails on invalid revision_num', function(done) {
+    update.commit_entity_rev(db, uuid.v1(), function(err) {
+      if(err) {
+        should.deepEqual(err.name, 'RevisionIdNotFoundError');
+      } else {
+        should.fail('Did not fail when passed an invalid revision id');
+      }
+      done();
+    });
   });
-});
 
+  describe('permit-permit-deny', function() {
+    var path = 'wh.permit_permit_deny.*';
 
-test('update permit-permit-deny', function (t) {
-  t.plan(12);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var db = require('../../lib/db');
+    var permission_rec = {};
 
-  var longstr = '<div></div>';
+    step('permit', function(done) {
+      update.add_permission_to_role(db, "role", "permission", path, "note", 
+        function(err, entity_id, revision_id, revision_num)
+        {
+          revision_id.should.be.an.instanceof(String);
+          revision_num.should.be.an.instanceof(Number);
+          permission_rec.revision_id = revision_id;
+          permission_rec.revision_num = revision_num;
+          done(err);
+        }
+      );
+    });
 
-  var path = 'wh.permit_permit_deny.*';
+    step_validate_permission_existence('validate add_permission_to_role', path);
 
-  async.waterfall([
-    function do_create(callback){
-      update.add_permission_to_role(db, "role", "permission", path, "note", callback);
-    },
-    function check_create_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = 'wh.permit_permit_deny.*'";
+    step_generic_revid_check('validate log', permission_rec, function(result){
+      should.deepEqual(result.rowCount, 1);
+      should.deepEqual(result.rows[0].evt_final, true);
+      should.notDeepEqual(result.rows[0].evt_end, null);
+      should.deepEqual(result.rows[0].revision_id, permission_rec.revision_id);
+    });
+
+    step('permit again', function(done) {
+      update.add_permission_to_role(db, "role", "permission", path, "note", 
+        function(err, entity_id, revision_id, revision_num)
+        {
+          if (err) {
+            should.deepEqual(err.name, 'DbDuplicateRecordError');
+            done();
+          } else {
+            should.fail("didn't catch error");
+          }
+        }
+      );
+    });
+
+    step_validate_permission_existence('validate failure is ok', path);
+
+    step('remove', function(done) {
+      update.remove_permission_from_role(db, "role", "permission", path, "note", 
+        function(err, entity_id, revision_id, revision_num)
+        {
+          revision_id.should.be.an.instanceof(String);
+          revision_num.should.be.an.instanceof(Number);
+          permission_rec.revision_id = revision_id;
+          permission_rec.revision_num = revision_num;
+          done(err);
+        }
+      );
+    });
+
+    step_validate_permission_non_existence('validate delete', path);
+  });
+
+  describe('assign', function() {
+    var now = new Date();
+    var ents = {};
+    var del_mark = {};
+    var userpath = new sitepath(['wh', 'update_assign']);
+
+    step_generic_create('create', userpath, ents, 'one', true, now);
+
+    step('assign', function create_assignment_resource(done) {
+      update.assign_user_to_role(db, userpath, 'role', 'note', done);
+    });
+
+    step('check assign', function check_assign(done) {
+      var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quick_query(db, query, function(err, result) {
         if(err) {
-          t.fail(err);
+          should.fail(err);
         }
-        t.deepEqual(result.rows[0].role, "role");
-        t.deepEqual(result.rows[0].permission, "permission");
-        t.deepEqual(result.rows[0].path, "wh.permit_permit_deny.*");
-        callback(err, entity_id, revision_id, revision_num);
+        should.deepEqual(result.rowCount, 1);
+        should.deepEqual(result.rows[0].subject, 'wh.update_assign');
+        should.deepEqual(result.rows[0].role, 'role');
+        done(err);
       });
-    },
-    function check_log_1(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT evt_class, revision_id, evt_final, evt_end FROM wh_log WHERE revision_id = '" + revision_id + "'";
+    });
+
+    step_generic_log_check('check create log', ents.one, function(result) {
+      var ent = ents.one;
+
+      should.deepEqual(result.rowCount, 2);
+      check_log_create(result.rows[0],ent);
+      should.deepEqual(result.rows[1].evt_class,'assign');
+    });
+
+    step('assign again', function create_assignment_resource(done) {
+      update.assign_user_to_role(db, userpath, 'role2', 'note', done);
+    });
+
+    step('check assign again', function check_assign(done) {
+      var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quick_query(db, query, function(err, result) {
         if(err) {
-          t.fail(err);
+          should.fail(err);
         }
-        t.deepEqual(result.rowCount, 1);
-        t.deepEqual(result.rows[0].evt_final, true);
-        t.notDeepEqual(result.rows[0].evt_end, null);
-        t.deepEqual(result.rows[0].revision_id, revision_id);
-        callback(err, entity_id, revision_id, revision_num);
+        should.deepEqual(result.rowCount, 2);
+        should.deepEqual(result.rows[0].subject, 'wh.update_assign');
+        should.deepEqual(result.rows[0].role, 'role');
+        should.deepEqual(result.rows[1].subject, 'wh.update_assign');
+        should.deepEqual(result.rows[1].role, 'role2');
+        done();
       });
-    },
-    function do_create_again(entity_id, revision_id, revision_num, callback){
-      update.add_permission_to_role(db, "role", "permission", path, "note", function(err) {
-        if (err) {
-          t.deepEqual(err.name, 'DbDuplicateRecordError');
-        } else {
-          t.fail("didn't catch error");
-        }
-        callback(null, entity_id, revision_id, revision_num);
-      });
-    },
-    function check_create_2(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = 'wh.permit_permit_deny.*'";
+    });
+
+    step('de-assign', function delete_assignment_resource(done) {
+      update.remove_user_from_role(db, userpath, 'role', 'note', done);
+    });
+
+    step('check assign after 1 de-assign', function check_assign(done) {
+      var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quick_query(db, query, function(err, result) {
         if(err) {
-          t.fail(err);
+          should.fail(err);
         }
-        t.deepEqual(result.rows[0].role, "role");
-        t.deepEqual(result.rows[0].permission, "permission");
-        t.deepEqual(result.rows[0].path, "wh.permit_permit_deny.*");
-        callback(err, entity_id, revision_id, revision_num);
+        should.deepEqual(result.rowCount, 1);
+        should.deepEqual(result.rows[0].subject, 'wh.update_assign');
+        should.deepEqual(result.rows[0].role, 'role2');
+        done(err);
       });
-    },
-    function do_delete(entity_id, revision_id, revision_num, callback){
-      update.remove_permission_from_role(db, "role", "permission", path, "note", callback);
-    },
-    function check_create_3(entity_id, revision_id, revision_num, callback) {
-      var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = 'wh.create_create_delete';";
+    });
+
+    step('de-assign', function delete_assignment_resource(done) {
+      update.remove_user_from_role(db, userpath, 'role2', 'note', done);
+    });
+
+    step('check assign after 2 de-assigns', function check_assign(done) {
+      var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quick_query(db, query, function(err, result) {
         if(err) {
-          t.fail(err);
+          should.fail(err);
         }
-        t.deepEqual(result.rowCount, 0);
-        callback(err, entity_id, revision_id, revision_num);
+        should.deepEqual(result.rowCount, 0);
+        done(err);
       });
-    }
-  ], function(err){
-    if(err) {
-      t.fail(err);
-    }
-    t.end();
+    });
+
+    step_generic_delete('delete', ents.one, del_mark);
+  });
+
+  after(function() {
     db.gun_database();
   });
 });

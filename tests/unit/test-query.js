@@ -4,6 +4,7 @@ var sitepath = require ('../../lib/sitepath');
 var query = require ('../../lib/query');
 var events = require("events");
 var should = require('should');
+var Plan = require('test-plan');
 
 describe('query gen', function() {
   var root = {context: "ROOT"};
@@ -59,6 +60,8 @@ describe('query gen', function() {
 
 describe('query', function() {
   it('#entity_from_path()', function (done) {
+    var plan = new Plan(2, done);
+    
     var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
     
     var entpath = new sitepath(['wh','rq']);
@@ -78,6 +81,7 @@ describe('query', function() {
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -86,11 +90,12 @@ describe('query', function() {
         should.fail(err);
       } else {
       }
-      done();
+      plan.ok(true);
     });
   });
 
   it('#fetch_effective_permissions()', function (done) {
+    var plan = new Plan(2, done);
     var select_query = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
     
     var entpath = new sitepath(['wh']);
@@ -106,6 +111,7 @@ describe('query', function() {
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -114,11 +120,12 @@ describe('query', function() {
         should.fail(err);
       } else {
       }
-      done();
+      plan.ok(true);
     });
   });
 
   it('query from_db not_found', function (done) {
+    var plan = new Plan(2, done);
     var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
     
     var entpath = new sitepath(['wh','rq']);
@@ -139,6 +146,7 @@ describe('query', function() {
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -149,11 +157,12 @@ describe('query', function() {
       } else {
         should.fail('should not succeed');
       }
-      done();
+      plan.ok(true);
     });
   });
 
   it('query from_db error', function (done) {
+    var plan = new Plan(2, done);
     var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
     
     var entpath = new sitepath(['wh','rq']);
@@ -174,6 +183,7 @@ describe('query', function() {
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -183,11 +193,12 @@ describe('query', function() {
       } else {
         should.fail('should not succeed');
       }
-      done();
+      plan.ok(true);
     });
   });
 
-  it('query from_db not_found log', function (done) {  
+  it('query from_db not_found log', function (done) {
+    var plan = new Plan(2, done);
     var select_query = "SELECT path, entity_id, note, base_revision_id, replace_revision_id, \
 revision_id, revision_num, evt_start, evt_end, evt_touched, evt_class, evt_final, data \
 FROM wh_log WHERE (revision_id = $1)";
@@ -210,6 +221,7 @@ FROM wh_log WHERE (revision_id = $1)";
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -219,11 +231,12 @@ FROM wh_log WHERE (revision_id = $1)";
       } else {
         should.fail('should not succeed');
       }
-      done();
+      plan.ok(true);
     });
   });
 
   it('query from_db error log', function (done) {
+    var plan = new Plan(2, done);
     var select_query = "SELECT path, entity_id, note, base_revision_id, replace_revision_id, \
 revision_id, revision_num, evt_start, evt_end, evt_touched, evt_class, evt_final, data \
 FROM wh_log WHERE (revision_id = $1)";
@@ -246,6 +259,7 @@ FROM wh_log WHERE (revision_id = $1)";
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -255,11 +269,12 @@ FROM wh_log WHERE (revision_id = $1)";
       } else {
         should.fail('should not succeed');
       }
-      done();
+      plan.ok(true);
     });
   });
 
   it('query', function (done) {
+    var plan = new Plan(3, done);
     var select_query = 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC';
 
     var entpath = new sitepath(['wh']);
@@ -290,6 +305,7 @@ FROM wh_log WHERE (revision_id = $1)";
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -300,16 +316,18 @@ FROM wh_log WHERE (revision_id = $1)";
       should.deepEqual(article.title, rec.summary.title);
       should.deepEqual(article.summary, rec.summary.abstract);
       should.deepEqual(article.guid, rec.entity_id);
+      plan.ok(true);
     });
     resp.on('error', function(err) {
       should.fail(err);
     });
     resp.on('end', function() {
-      done();
+      plan.ok(true);
     });
   });
 
   it('query count', function (done) {
+    var plan = new Plan(3, done);
     var select_query = 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)';
 
     var entpath = new sitepath(['wh']);
@@ -331,6 +349,7 @@ FROM wh_log WHERE (revision_id = $1)";
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -339,16 +358,18 @@ FROM wh_log WHERE (revision_id = $1)";
     var resp = query.query(db, root, entpath, 'child','count',{},undefined,undefined);
     resp.on('count', function(article) {
       should.deepEqual(article.count, '2');
+      plan.ok(true);
     });
     resp.on('error', function(err) {
       should.fail(err);
     });
     resp.on('end', function() {
-      done();
+      plan.ok(true);
     });
   });
 
   it('query_history', function (done) {
+    var plan = new Plan(3, done);
     var select_query = 'SELECT path, entity_id, note, base_revision_id, \
 replace_revision_id, revision_id, revision_num, evt_start, evt_end, \
 evt_touched, evt_class, evt_final, data FROM wh_log WHERE (path = $1) ORDER BY revision_num ASC';
@@ -383,6 +404,7 @@ evt_touched, evt_class, evt_final, data FROM wh_log WHERE (path = $1) ORDER BY r
       };
       queryfunc(null, client, function()
         {
+          plan.ok(true);
         });
     };
 
@@ -391,12 +413,13 @@ evt_touched, evt_class, evt_final, data FROM wh_log WHERE (path = $1) ORDER BY r
       should.deepEqual(article.note, rec.note);
       should.deepEqual(article.data, rec.data);
       should.deepEqual(article.revision_id, rec.revision_id);
+      plan.ok(true);
     });
     resp.on('error', function(err) {
       should.fail(err);
     });
     resp.on('end', function() {
-      done();
+      plan.ok(true);
     });
   });
 });
