@@ -23,6 +23,7 @@ exports.entity_resource = function entity_resource(path, ents, entidx, provision
 
   after(function delete_entity_resource(done) {
     update.delete_entity(db, ent, true, 'delete', done);
+    delete ents[entidx];
   });
 };
 
@@ -51,6 +52,7 @@ exports.user_resource = function user_resource(userpath, username, ents, entidx,
 
   after(function delete_entity_resource(done) {
     update.delete_entity(db, ent, true, 'delete', done);
+    delete ents[entidx];
   });
 };
 

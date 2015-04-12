@@ -144,10 +144,49 @@ describe('query', function() {
     var now = new Date();
 
     resources.user_resource(userpath, 'test', ents, 'user', now);
-    resources.permission_resource('query-role', 'permission', path);
+    resources.permission_resource('query-role', 'view', path);
     resources.permission_resource('query-role', 'stuff', path);
-    resources.permission_resource('nobody', 'permission', path);
+    resources.permission_resource('nobody', 'view', path);
     resources.assignment_resource(userpath, 'test', 'query-role');
+
+    describe('#query', function() {
+      var otherpath = new sitepath(['wh','query2','node']);
+      resources.entity_resource(otherpath, ents, 'other', false, now);
+
+      it('filters out forbidden nodes', function(done) {
+        var context = {context: 'STANDARD', user: ents.user.path()}
+        var resp = query.query(db, context, otherpath, 'child','entity',{},undefined,undefined);
+        var arts = [];
+        resp.on('article', function(article) {
+          arts.push(article);
+        });
+        resp.on('error', function(err) {
+          should.fail(err);
+        });
+        resp.on('end', function() {
+          should.deepEqual(arts.length,0);
+          done();
+        });
+      });
+
+
+      it('lets allowed nodes through', function(done) {
+        var context = {context: 'STANDARD', user: ents.user.path()}
+        var resp = query.query(db, context, ents.user.path(), 'child','entity',{},undefined,undefined);
+        var arts = [];
+        resp.on('article', function(article) {
+          arts.push(article);
+        });
+        resp.on('error', function(err) {
+          should.fail(err);
+        });
+        resp.on('end', function() {
+          should.deepEqual(arts.length,1);
+          should.deepEqual(arts[0].summary,'i like unicorns and sparkles and ponies.');
+          done();
+        });
+      });
+    });
 
     describe('#fetch_effective_permissions', function() {
       var entpath = new sitepath(['wh','query','roles','node']);
@@ -157,7 +196,7 @@ describe('query', function() {
           if(err) {
             should.fail(err);
           } else {
-            should.deepEqual(permissions,{ permission: 'query-role', stuff: 'query-role'});
+            should.deepEqual(permissions,{ view: 'query-role', stuff: 'query-role'});
           }
           done(err);
         });
@@ -168,7 +207,7 @@ describe('query', function() {
           if(err) {
             should.fail(err);
           } else {
-            should.deepEqual(permissions,{ permission: 'nobody'});
+            should.deepEqual(permissions,{ view: 'nobody'});
           }
           done(err);
         });
@@ -183,7 +222,7 @@ describe('query', function() {
           if(err) {
             should.fail(err);
           } else {
-            should.deepEqual(ent2.permissions, { permission: 'query-role', stuff: 'query-role'});
+            should.deepEqual(ent2.permissions, { view: 'query-role', stuff: 'query-role'});
           }
           done(err);
         });
@@ -195,7 +234,7 @@ describe('query', function() {
           if(err) {
             should.fail(err);
           } else {
-            should.deepEqual(ent2.permissions, { permission: 'nobody'});
+            should.deepEqual(ent2.permissions, { view: 'nobody'});
           }
           done(err);
         });
@@ -214,7 +253,7 @@ describe('query', function() {
         });
         resp.on('end', function() {
           should.deepEqual(arts[0].permission,'stuff');
-          should.deepEqual(arts[1].permission,'permission');
+          should.deepEqual(arts[1].permission,'view');
           should.deepEqual(arts.length,2);
           done();
         });
@@ -271,7 +310,7 @@ describe('query', function() {
         resp.on('end', function() {
           should.deepEqual(arts[0].path,'wh.query.*');
           should.deepEqual(arts[1].path,'wh.query.*');
-          should.deepEqual(arts[0].permission,'permission');
+          should.deepEqual(arts[0].permission,'view');
           should.deepEqual(arts[1].permission,'stuff');
           should.deepEqual(arts.length,2);
           done();

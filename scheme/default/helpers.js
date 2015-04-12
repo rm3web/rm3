@@ -100,7 +100,7 @@ exports = module.exports = function(dust, db, query) {
             var security = {context: 'STANDARD'};
             var user = ctx.get('user');
             if (user != undefined) {
-                security.user = user;
+                security.user = user.path();
             }
             var resp = query.query(db, security, path,'dir','entity',{},undefined,undefined);
             var body = bodies.block;
