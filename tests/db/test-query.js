@@ -1,278 +1,286 @@
 var Conf = require ('../../lib/conf');
-var test = require('tape');
 var entity = require('../../lib/entity');
 var sitepath = require ('../../lib/sitepath');
-var async = require('async');
+var update = require('../../lib/update');
+var query = require('../../lib/query');
+var db = require('../../lib/db');
 var user = require('../../lib/user');
+var should = require('should');
+var resources = require('../lib/resources.js');
 
-test.test('query', function (t) {
-  t.plan(31);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var query = require('../../lib/query');
-  var db = require('../../lib/db');
+function entities_should_mostly_equal(ent, ent2){
+  should.deepEqual(ent2.summary,ent.summary);
+  should.deepEqual(ent2.data,ent.data);
+  should.deepEqual(ent2._path,ent._path);
+  should.deepEqual(ent2._entity_id,ent._entity_id);
+  should.deepEqual(ent2._revision_id,ent._revision_id);
+  should.deepEqual(ent2._revision_num,ent._revision_num);
+  should.deepEqual(ent2._created,ent._created);
+  should.deepEqual(ent2._modified,ent._modified);
+}
 
-  var now = new Date();
-  var ent = new entity.Entity();
-  ent.createNew(new sitepath(['wh','query']), 'base', now);
-  ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"};
-  ent.data.posting = '<div></div>';
+describe('query', function() {
+  describe('#entity_from_path', function () {
+    var ents = {};
 
-  var qent = new entity.Entity();
-  qent.createNew(new sitepath(['wh','query', 'sub']), 'base', now);
-  qent.summary = {"title": "blrg sub",
-    "abstract": "some text goes here"};
-  qent.data.posting = '<div></div>';
+    var path = new sitepath(['wh','entity_from_path']);
+    var now = new Date();
 
-  async.waterfall([
-    function cr_eate(callback){
-      update.create_entity(db, ent, true, 'create', callback);
-    },
-    function en_from_path(entity_id, revision_id, revision_num, callback) {
-      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, ent._path, null, function(err, ent2){
-        t.deepEqual(ent2.summary,ent.summary);
-        t.deepEqual(ent2.data,ent.data);
-        t.deepEqual(ent2._path,ent._path);
-        t.deepEqual(ent2._entity_id,entity_id);
-        t.deepEqual(ent2._revision_id,revision_id);
-        t.deepEqual(ent2._revision_num,revision_num);
-        t.deepEqual(ent2._created,now);
-        t.deepEqual(ent2._modified,now);
-        callback(err, ent2, revision_id);
+    resources.entity_resource(path, ents, 'one', false, now);
+
+    it('returns not found exceptions', function(done) {
+      var badpath = new sitepath(['wh','rainbows']);
+
+      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, badpath, null, function(err, ent){
+        should.deepEqual(err.name,'EntityNotFoundError');
+        should.deepEqual(err.path,badpath.toDottedPath());
+        done();
       });
-    },
-    function en_from_revid(ent2, revision_id, callback) {
-      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, ent._path, revision_id, function(err, ent3) {
-        t.deepEqual(ent3.summary,ent.summary);
-        t.deepEqual(ent3.data,ent.data);
-        t.deepEqual(ent3._path,ent._path);
-        t.deepEqual(ent3._revision_id,revision_id);
-        t.deepEqual(ent3._created,now);
-        t.deepEqual(ent3._modified,now);
-        callback(err, ent3);
+    });
+
+    it('returns entities', function(done) {
+      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2){
+        var ent = ents.one;
+        entities_should_mostly_equal(ent,ent2);
+        should.deepEqual(ent2._created,now);
+        should.deepEqual(ent2._modified,now);
+        done();
       });
-    },
-    function cr_eate2(ent3, callback){
-      update.create_entity(db, qent, true, 'create', function(
-        err, entity_id, revision_id, revision_num) {
-        callback(err, ent3, qent);
+    });
+
+    it('returns entities using revid', function(done) {
+      var ent = ents.one;
+      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, path, ent._revision_id, function(err, ent2){
+        entities_should_mostly_equal(ent,ent2);
+        should.deepEqual(ent2._created,now);
+        should.deepEqual(ent2._modified,now);
+        done();
       });
-    },
-    function query_op(entity, qent, callback) {
-      var resp = query.query(db, {context: "ROOT"}, ent._path,'child','entity',{},undefined,undefined);
-      var arts = [];
-      resp.on('article', function(article) {
-        arts.push(article);
-      });
-      resp.on('error', function(err) {
-        t.fail(err);
-      });
-      resp.on('end', function() {
-        t.deepEqual(arts[0].title,'blrg');
-        t.deepEqual(arts[0].path.toDottedPath(),'wh.query');
-        t.deepEqual(arts[1].title,'blrg sub');
-        t.deepEqual(arts[1].path.toDottedPath(),'wh.query.sub');
-        t.deepEqual(arts.length,2);
-        callback(null, entity, qent);
-      });
-    },
-    function query_hist(entity, qent, callback) {
-      var resp = query.query_history(db, {}, ent._path);
-      var arts = [];
-      resp.on('article', function(article) {
-        arts.push(article);
-      });
-      resp.on('error', function(err) {
-        t.fail(err);
-      });
-      resp.on('end', function() {
-        t.deepEqual(new Date(arts[0].data.to_data.created),now);
-        t.deepEqual(arts[0].evt_class,'create');
-        t.deepEqual(arts[0].revision_num,1);
-        t.deepEqual(arts[0].path.toDottedPath(), 'wh.query');
-        t.deepEqual(arts[0].data.to_data.data.posting, ent.data.posting);
-        t.deepEqual(arts.length,1);
-        callback(null, entity, qent);
-      });
-    },
-    function del_qent(entity, qent, callback) {
-      update.delete_entity(db, qent, true, 'delete', function(err) {
-        callback(null, entity);
-      });
-    },
-    function del_ent(entity, callback) {
-      update.delete_entity(db, entity, true, 'delete', callback);
-    },
-    function query_hist2(entity_id, revision_id, revision_num, callback) {
-      var resp = query.query_history(db, {}, ent._path);
-      var arts = [];
-      resp.on('article', function(article) {
-        arts.push(article);
-      });
-      resp.on('error', function(err) {
-        t.fail(err);
-      });
-      resp.on('end', function() {
-        t.deepEqual(arts[0].evt_class,'create');
-        t.deepEqual(arts[1].evt_class,'delete');
-        t.deepEqual(arts[0].revision_num,1);
-        t.deepEqual(arts[0].path.toDottedPath(), 'wh.query');
-        t.deepEqual(arts[1].path.toDottedPath(), 'wh.query');
-        t.deepEqual(arts.length,2);
-        callback(null);
-      });
-    },
-  ], function(err, result) {
-    if(err) {
-      t.fail(err);
-    }
-    db.gun_database();
-    t.end();
+    });
   });
-});
 
-test.test('query not_found', function (t) {
-  t.plan(2);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var query = require('../../lib/query');
-  var db = require('../../lib/db');
+  describe('#query', function () {
+    var ents = {};
 
-  var ent = new entity.Entity();
-  var entpath = new sitepath(['wh','rainbows']);
-  ent._proto = 'base';
-  ent.summary = {"title": "blrg",
-    "abstract": "some text goes here"};
-  ent.data.posting = '<div></div>';
+    var path1 = new sitepath(['wh','query']);
+    var path2 = new sitepath(['wh','query','sub']);
+    var now = new Date();
 
-  async.waterfall([
-    function en_from_a(callback) {
-      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, entpath, null, function(err, ent2){
-        t.deepEqual(err.name,'EntityNotFoundError');
-        t.deepEqual(err.path,entpath.toDottedPath());
-        callback();
+    resources.entity_resource(path1, ents, 'one', false, now);
+    resources.entity_resource(path2, ents, 'two', false, now);
+
+    it('works', function(done) {
+      var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{},undefined,undefined);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
       });
-    }
-  ], function(err, result) {
-    if(err) {
-      t.fail(err);
-    }
-    db.gun_database();
-    t.end();
+      resp.on('error', function(err) {
+        should.fail(err);
+      });
+      resp.on('end', function() {
+        should.deepEqual(arts[0].title,'one');
+        should.deepEqual(arts[0].path.toDottedPath(),'wh.query');
+        should.deepEqual(arts[1].title,'two');
+        should.deepEqual(arts[1].path.toDottedPath(),'wh.query.sub');
+        should.deepEqual(arts.length,2);
+        done();
+      });
+    });
   });
-});
 
-test('query roles', function (t) {
-  t.plan(8);
-  var conString = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  Conf._data.endpoints.postgres = conString;
-  var update = require('../../lib/update');
-  var query = require('../../lib/query');
-  var db = require('../../lib/db');
+  describe("#query_history", function() {
+    var ents = {};
 
-  var longstr = '<div></div>';
+    var path = new sitepath(['wh','query_history']);
+    var now = new Date();
 
-  var now = new Date();
-  var ent = new entity.Entity();
+    resources.entity_resource(path, ents, 'one', false, now);
 
-  var path = 'wh.query.*';
-  var entpath = new sitepath(['wh','query','roles','node']);
-  var userpath = new sitepath(['wh','query','user']);
+    before(function(done) {
+      ents.updated = ents.one.clone();
+      ents.updated.data.posting = "<div>blah blah blah</div>";
+      ents.updated.summary.title = 'updated';
+      update.update_entity(db, ents.one, ents.updated, true, 'update',
+        function(err, entity_id, revision_id, revision_num) {
+          entity_id.should.be.an.instanceof(String);
+          revision_id.should.be.an.instanceof(String);
+          revision_num.should.be.an.instanceof(Number);
+          ents.updated._entity_id = entity_id;
+          ents.updated._revision_id = revision_id;
+          ents.updated._revision_num = revision_num;
+          done(err);
+        }
+      );
+    });
 
-  user.createUser(ent, userpath, 'test', 'test', now);
+    it('works', function(done){
+      var resp = query.query_history(db, {}, path);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        should.fail(err);
+      });
+      resp.on('end', function() {
+        should.deepEqual(new Date(arts[1].data.to_data.created),now);
+        should.deepEqual(arts[0].evt_class,'create');
+        should.deepEqual(arts[1].evt_class,'update');
+        should.deepEqual(arts[0].revision_num,1);
+        should.deepEqual(arts[1].revision_num,2);
+        should.deepEqual(arts[0].path.toDottedPath(), path.toDottedPath());
+        should.deepEqual(arts[1].path.toDottedPath(), path.toDottedPath());
+        should.deepEqual(arts.length,2);
+        done();
+      });      
+    });
+  });
 
-  async.waterfall([
-    function encode_password(callback) {
-      user.encodePassword('meow_kitty', ent, callback);
-    },
-    function do_create_user(callback){
-      update.create_entity(db, ent, true, 'create', callback);
-    },
-    function do_create_permission(entity_id, revision_id, revision_num, callback){
-      update.add_permission_to_role(db, "query-role", "permission", path, "note", callback);
-    },
-    function do_create_permission_2(entity_id, revision_id, revision_num, callback){
-      update.add_permission_to_role(db, "nobody", "permission", path, "note", callback);
-    },
-    function do_assign(entity_id, revision_id, revision_num, callback) {
-      update.assign_user_to_role(db, ent.path(), 'query-role', 'note', function(err) {
-        if(err) {
-          t.fail(err);
-        }
-        callback(err);
+  describe('roles', function() {
+    var path = 'wh.query.*';
+    var userpath = new sitepath(['wh','query','user']);
+    var ents = {};
+    var now = new Date();
+
+    resources.user_resource(userpath, 'test', ents, 'user', now);
+    resources.permission_resource('query-role', 'permission', path);
+    resources.permission_resource('query-role', 'stuff', path);
+    resources.permission_resource('nobody', 'permission', path);
+    resources.assignment_resource(userpath, 'test', 'query-role');
+
+    describe('#fetch_effective_permissions', function() {
+      var entpath = new sitepath(['wh','query','roles','node']);
+
+      it('fetches for a user', function(done) {
+        query.fetch_effective_permissions(db, ents.user.path(), entpath, function(err, permissions){
+          if(err) {
+            should.fail(err);
+          } else {
+            should.deepEqual(permissions,{ permission: 'query-role', stuff: 'query-role'});
+          }
+          done(err);
+        });
       });
-    },
-    function check_create_2(callback) {
-      query.fetch_effective_permissions(db, ent.path(), entpath, function(err, permissions){
-        if(err) {
-          t.fail(err);
-        } else {
-          t.deepEqual(permissions,{ permission: 'query-role'});
-          t.pass('finished');
-        }
-        callback(err);
+
+      it('fetches for nobody', function(done) {
+        query.fetch_effective_permissions(db, undefined, entpath, function(err, permissions){
+          if(err) {
+            should.fail(err);
+          } else {
+            should.deepEqual(permissions,{ permission: 'nobody'});
+          }
+          done(err);
+        });
       });
-    },
-    function check_create_3(callback) {
-      query.fetch_effective_permissions(db, undefined, entpath, function(err, permissions){
-        if(err) {
-          t.fail(err);
-        } else {
-          t.deepEqual(permissions,{ permission: 'nobody'});
-          t.pass('finished');
-        }
-        callback(err);
+    });
+
+    describe('#fetch_entity_from_path', function() {
+      var entpath = new sitepath(['wh','query','user','test']);
+      it('fetches the permissions with a user', function(done) {
+        query.entity_from_path(db, entity.Entity, {context: 'STANDARD', user: entpath}, 
+                               entpath, undefined, function(err, ent2){
+          if(err) {
+            should.fail(err);
+          } else {
+            should.deepEqual(ent2.permissions, { permission: 'query-role', stuff: 'query-role'});
+          }
+          done(err);
+        });
       });
-    },
-    function check_create_4(callback) {
-      query.entity_from_path(db, entity.Entity, {context: 'STANDARD', user: ent.path()}, 
-                             ent.path(), undefined, function(err, ent2){
-        if(err) {
-          t.fail(err);
-        } else {
-          t.deepEqual(ent2.permissions, { permission: 'query-role'});
-          t.pass('finished');
-        }
-        callback(err);
+
+      it('fetches the permissions without a user', function(done) {
+        query.entity_from_path(db, entity.Entity, {context: 'STANDARD', user: undefined}, 
+                               entpath, undefined, function(err, ent2){
+          if(err) {
+            should.fail(err);
+          } else {
+            should.deepEqual(ent2.permissions, { permission: 'nobody'});
+          }
+          done(err);
+        });
       });
-    },
-    function check_create_5(callback) {
-      query.entity_from_path(db, entity.Entity, {context: 'STANDARD', user: undefined}, 
-                             ent.path(), undefined, function(err, ent2){
-        if(err) {
-          t.fail(err);
-        } else {
-          t.deepEqual(ent2.permissions, { permission: 'nobody'});
-          t.pass('finished');
-        }
-        callback(err);
+    });
+
+    describe('#permissions_for_user', function() {
+      it('works', function(done) {
+        var resp = query.permissions_for_user(db, ents.user.path());
+        var arts = [];
+        resp.on('article', function(article) {
+          arts.push(article);
+        });
+        resp.on('error', function(err) {
+          should.fail(err);
+        });
+        resp.on('end', function() {
+          should.deepEqual(arts[0].permission,'stuff');
+          should.deepEqual(arts[1].permission,'permission');
+          should.deepEqual(arts.length,2);
+          done();
+        });
       });
-    },
-    function do_delete_role(callback){
-      update.remove_permission_from_role(db, "query-role", "permission", path, "note", callback);
-    },
-    function do_delete_role_2(entity_id, revision_id, revision_num, callback){
-      update.remove_permission_from_role(db, "nobody", "permission", path, "note", callback);
-    },
-    function do_deassign(entity_id, revision_id, revision_num, callback) {
-      update.remove_user_from_role(db, ent.path(), 'query-role', 'note', function(err) {
-        if(err) {
-          t.fail(err);
-        }
-        callback(err);
+    });
+
+    describe('#list_roles', function() {
+      it('works', function(done) {
+        var resp = query.list_roles(db);
+        var arts = [];
+        resp.on('article', function(article) {
+          arts.push(article);
+        });
+        resp.on('error', function(err) {
+          should.fail(err);
+        });
+        resp.on('end', function() {
+          should.deepEqual(arts[0].role,'query-role');
+          should.deepEqual(arts[1].role,'nobody');
+          should.deepEqual(arts.length,2);
+          done();
+        });
       });
-    },
-    function do_delete(callback){
-      update.delete_entity(db, ent, true, 'delete', callback);
-    }
-  ], function(err, entity_id, revision_id, revision_num){
-    if(err) {
-      t.fail(err);
-    }
-    t.end();
+    });
+
+    describe('#list_users_in_role', function() {
+      it('works', function(done) {
+        var resp = query.list_users_in_role(db,'query-role');
+        var arts = [];
+        resp.on('article', function(article) {
+          arts.push(article);
+        });
+        resp.on('error', function(err) {
+          should.fail(err);
+        });
+        resp.on('end', function() {
+          should.deepEqual(arts[0].user,ents.user.path());
+          should.deepEqual(arts.length,1);
+          done();
+        });
+      });
+    });
+
+    describe('#list_permissions_in_role', function() {
+      it('works', function(done) {
+        var resp = query.list_permissions_in_role(db,'query-role');
+        var arts = [];
+        resp.on('article', function(article) {
+          arts.push(article);
+        });
+        resp.on('error', function(err) {
+          should.fail(err);
+        });
+        resp.on('end', function() {
+          should.deepEqual(arts[0].path,'wh.query.*');
+          should.deepEqual(arts[1].path,'wh.query.*');
+          should.deepEqual(arts[0].permission,'permission');
+          should.deepEqual(arts[1].permission,'stuff');
+          should.deepEqual(arts.length,2);
+          done();
+        });
+      });
+    });
+  });
+
+  after(function() {
     db.gun_database();
   });
 });
