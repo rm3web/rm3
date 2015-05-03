@@ -27,6 +27,7 @@
     "validator": "~3.39.0",
     "speakingurl": "~3.0.0",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
+    "page-router": "git://github.com/wirehead/page-router.git#master",
     "dust-intl": "~1.1.0",
     "intl": "~0.1.4",
     "dotenv": "~1.1.0",

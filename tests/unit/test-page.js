@@ -84,13 +84,14 @@ describe('page', function() {
       };
       
       var page = new Page();
-      page.view_router.addRoute('/GET/', function(req, res, page, next) 
+      page.view_router.get('', function(req, res, next) 
       {
         var view = req.entity.view();
-        req.scheme.render('view', view, page._renderPageResponse.bind(this, req, res));
+        req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
+        next();
       });
 
-      page.render({}, req,res);
+      page.render(req,res, function() {});
     });
 
     it('should render a view', function (done) {
@@ -102,18 +103,19 @@ describe('page', function() {
       };
       
       var page = new Page();
-      page.view_router.addRoute('/GET/glitter', function(req, res, page, next) 
+      page.view_router.get('glitter', function(req, res, next) 
       {
         var view = req.entity.view();
-        req.scheme.render('view', view, page._renderPageResponse.bind(this, req, res));
+        req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
+        next();
       });
 
-      page.view_router.addRoute('/GET/', function(req, res, page, next) 
+      page.view_router.get('', function(req, res, page, next) 
       {
         should.fail();
       });
 
-      page.render({}, req,res);
+      page.render(req,res,function() {});
     });
 
     it('should map a command', function (done) {
@@ -131,18 +133,19 @@ describe('page', function() {
         next();
       });
 
-      page.view_router.addRoute('/*/glitter', function(req, res, page, next) 
+      page.view_router.route_all('glitter', function(req, res, next) 
       {
         var view = req.entity.view();
-        req.scheme.render('view', view, page._renderPageResponse.bind(this, req, res));
+        req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
+        next();
       });
 
-      page.view_router.addRoute('/GET/', function(req, res, page, next) 
+      page.view_router.route_all('', function(req, res, next) 
       {
         should.fail();
       });
 
-      page.render({}, req,res);
+      page.render(req,res, function() {});
     });
   });
 
@@ -150,7 +153,7 @@ describe('page', function() {
     it('should throw an error', function (done) {
       var page = new Page();
 
-      page.render({}, req, res, function(err) {
+      page.render(req, res, function(err) {
         err.name.should.equal('NoViewFoundError');
         done();
       });
