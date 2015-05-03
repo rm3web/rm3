@@ -21,7 +21,7 @@
     "clone": "~1.0.2",
     "errs": "~0.3.2",
     "winston": "~1.0.0",
-    "squel": "~3.8.1",
+    "squel": "~3.10.0",
     "routes": "~1.2.0",
     "body-parser": "~1.9.3",
     "validator": "~3.19.1",
