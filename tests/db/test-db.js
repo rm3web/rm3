@@ -94,7 +94,7 @@ describe('db', function() {
   });
 
   it('should wrap table missing errors', function () {
-    err = db.wrap_error(new Error('relation wh_frro does not exist'));
+    var err = db.wrap_error(new Error('relation wh_frro does not exist'));
     err.name.should.equal('DbTableMissingError');
   });
 

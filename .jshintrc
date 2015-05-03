@@ -7,5 +7,6 @@
   "undef": true,
   "node": true,
   "mocha": true,
+  "futurehostile": true,
   "globals": {"context": false, "step": false}
 }
