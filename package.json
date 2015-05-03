@@ -24,7 +24,7 @@
     "squel": "~3.10.0",
     "routes": "~1.2.0",
     "body-parser": "~1.12.3",
-    "validator": "~3.19.1",
+    "validator": "~3.39.0",
     "speakingurl": "~0.13.1",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "dust-intl": "~1.0.1",
