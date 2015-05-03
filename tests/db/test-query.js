@@ -154,7 +154,7 @@ describe('query', function() {
       resources.entity_resource(otherpath, ents, 'other', false, now);
 
       it('filters out forbidden nodes', function(done) {
-        var context = {context: 'STANDARD', user: ents.user.path()}
+        var context = {context: 'STANDARD', user: ents.user.path()};
         var resp = query.query(db, context, otherpath, 'child','entity',{},undefined,undefined);
         var arts = [];
         resp.on('article', function(article) {
@@ -171,7 +171,7 @@ describe('query', function() {
 
 
       it('lets allowed nodes through', function(done) {
-        var context = {context: 'STANDARD', user: ents.user.path()}
+        var context = {context: 'STANDARD', user: ents.user.path()};
         var resp = query.query(db, context, ents.user.path(), 'child','entity',{},undefined,undefined);
         var arts = [];
         resp.on('article', function(article) {
