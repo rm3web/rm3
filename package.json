@@ -25,7 +25,7 @@
     "routes": "~1.2.0",
     "body-parser": "~1.12.3",
     "validator": "~3.39.0",
-    "speakingurl": "~0.13.1",
+    "speakingurl": "~3.0.0",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "dust-intl": "~1.0.1",
     "intl": "~0.1.4",
