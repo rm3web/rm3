@@ -30,7 +30,7 @@
     "dust-intl": "~1.1.0",
     "intl": "~0.1.4",
     "dotenv": "~1.1.0",
-    "commander": "~2.5.0",
+    "commander": "~2.8.1",
     "passport": "~0.2.1",
     "passport-local": "~1.0.0",
     "connect-flash": "~0.1.1"
