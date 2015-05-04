@@ -128,7 +128,7 @@ describe('page', function() {
       };
       
       var page = new Page();
-      page.command_router.addRoute('/POST/glitter', function(req, res, page, db, next)
+      page.command_router.post('glitter', function(req, res, next)
       {
         next();
       });
