@@ -212,6 +212,18 @@ describe('query', function() {
           done(err);
         });
       });
+
+      it('fetches deeper permissions', function(done) {
+        var entpath2 = new sitepath(['wh','query','roles','node', 'node2', 'node3']);
+        query.fetch_effective_permissions(db, ents.user.path(), entpath, function(err, permissions){
+          if(err) {
+            should.fail(err);
+          } else {
+            should.deepEqual(permissions,{ view: 'query-role', stuff: 'query-role'});
+          }
+          done(err);
+        });
+      });
     });
 
     describe('#fetch_entity_from_path', function() {
