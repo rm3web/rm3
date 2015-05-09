@@ -50,7 +50,7 @@
     "jsdox": "~0.4.2",
     "istanbul": "~0.3.13",
     "gulp": "~3.8.8",
-    "gulp-nodemon": "~1.0.4",
+    "gulp-nodemon": "~2.0.3",
     "gulp-jshint": "~1.8.5",
     "gulp-istanbul": "~0.7.0",
     "gulp-mocha": "~2.0.1",
