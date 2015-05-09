@@ -19,8 +19,9 @@ describe('entity', function() {
           modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           summary: { title: 'blrg', abstract: 'some text goes here' },
-          data: { posting: '<div>Test test</div>' } }  
-      ],
+          data: { posting: '<div>Test test</div>' },
+          tags: { }
+      }],
       fields: 
       [ { name: 'path', dataTypeID: 17555 },
         { name: 'stub', dataTypeID: 16 },
@@ -31,7 +32,8 @@ describe('entity', function() {
         { name: 'modified', dataTypeID: 1114 },
         { name: 'created', dataTypeID: 1114 },
         { name: 'summary', dataTypeID: 114 },
-        { name: 'data', dataTypeID: 114 } ],
+        { name: 'data', dataTypeID: 114 },
+        { name: 'tags', dataTypeId: 114} ],
     rowAsArray: false };
 
     beforeEach(function() {
@@ -52,6 +54,7 @@ describe('entity', function() {
       e2.summary = 
       {"title": "blrg",
        "abstract": "some text goes here"};
+      e2.tags = {};
 
       e.should.be.eql(e2);
     });
@@ -86,7 +89,8 @@ describe('entity', function() {
          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)') },
       summary: { title: 'blrg', abstract: 'some text goes here' },
-      data: {posting: '<div>Test test</div>' }};
+      data: {posting: '<div>Test test</div>' },
+      tags: {}};
 
       v.should.be.eql(e.view());
     });
@@ -136,7 +140,8 @@ describe('entity', function() {
          modified: now,
          created: now},
       summary: { title: 'blrg', abstract: 'some text goes here' },
-      data: {posting: '<div>Test test</div>' }};
+      data: {posting: '<div>Test test</div>' },
+      tags: {}};
 
       v.should.be.eql(e.view());
     });
