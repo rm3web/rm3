@@ -9,6 +9,7 @@ rm3 is a system for managing stuff on the web. It's a little more than just a bl
 How to get started?
 -------------------
 
+* Install PostgreSQL 9.3 or later and node.js
 * Git clone this repo
 * Create the database in postgresql
   * `createdb rm3test`
@@ -50,8 +51,23 @@ To lint:
 
 * `npm run lint`
 
+To check coverage
+
+* `npm run coverage`
 
 Benchmarks
 ----------
 
 * `npm run benchmark`
+
+Contributing
+------------
+
+Feel free to submit PR's or bugs.
+
+Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
+
+License
+-------
+
+GPL, see LICENSE.txt
