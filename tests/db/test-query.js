@@ -70,7 +70,9 @@ describe('query', function() {
       e.addTag('navigation','navbar');
     });
 
-    resources.entity_resource(path2, ents, 'two', false, now);
+    resources.entity_resource(path2, ents, 'two', false, now, function(e){
+      e.addTag(null,'navbar');
+    });
 
     it('works', function(done) {
       var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{},undefined,undefined);
@@ -103,6 +105,23 @@ describe('query', function() {
       resp.on('end', function() {
         should.deepEqual(arts[0].title,'one');
         should.deepEqual(arts[0].path.toDottedPath(),'wh.query');
+        should.deepEqual(arts.length,1);
+        done();
+      });
+    });
+
+    it('works for plain tags', function(done) {
+      var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{tag: 'navbar'},undefined,undefined);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        should.fail(err);
+      });
+      resp.on('end', function() {
+        should.deepEqual(arts[0].title,'two');
+        should.deepEqual(arts[0].path.toDottedPath(),'wh.query.sub');
         should.deepEqual(arts.length,1);
         done();
       });
