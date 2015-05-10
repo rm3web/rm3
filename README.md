@@ -6,6 +6,22 @@ What is it?
 
 rm3 is a system for managing stuff on the web. It's a little more than just a blog engine, but a little less than an enterprise CMS. It is to Drupal as Ghost is to WordPress. When farther along, it will be able to be used as a blog, or a wiki, or a photo archive, or a combination of things. Like a blog, it lets you create a series of blog articles in a collection. Like a wiki, it maintains a history of all changes.
 
+Release Status
+--------------
+
+This is currently in PRE-ALPHA state, defined as:
+* I'm not yet trying to run this in production, so you definitely shouldn't.
+* Any data you put in here you should be prepared to reconstruct without the benefit of a migration tool.
+* Security and stability bugs are to be expected.
+* Key features are missing.
+* The basic structure of code is assumed to be unstable.
+
+The next milestone is ALPHA, defined as:
+* Key features are not missing
+* Any data you put in here you should be prepared to reconstruct without the benefit of a migration tool.
+* Security and stability bugs are to be expected.
+* Some stable internal APIs will be present.
+
 How to get started?
 -------------------
 
@@ -18,7 +34,7 @@ How to get started?
   * `./bin/rm3load -f default_frontpage.json`
   * `./bin/rm3load -f default_users.json`
 * Add a user and assign them to the root group
-  * `./bin/rm3admin adduser wirehead "Some New USer" -p "Some profile text" -u http://www.wirewd.com/ -e email@example.com --password password`
+  * `./bin/rm3admin adduser wirehead "Some New User" -p "Some profile text" -u http://www.wirewd.com/ -e email@example.com --password password`
   * `./bin/rm3admin assign wirehead root`
 * Add permissions for the root group
   * `./bin/rm3admin permit root edit \*`
@@ -31,6 +47,8 @@ How to get started?
 
 Docs
 ----
+
+[docs]
 
 To generate API docs:
 
