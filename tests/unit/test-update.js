@@ -7,8 +7,10 @@ var should = require('should');
 describe('update', function() {
   it('executes correctly', function(done) {
     var insert_query = "INSERT INTO wh_entity (path, stub, entity_id, revision_id, \
-revision_num, proto, modified, created, summary, data) VALUES ($1, $2, \
-$3, $4, $5, $6, $7, $8, $9, $10)";
+revision_num, proto, modified, created, summary, data, tags) VALUES ($1, $2, \
+$3, $4, $5, $6, $7, $8, $9, $10, $11)";
+    var insert_tag_query = "INSERT INTO wh_tag (subj_path, pred_class, \
+pred_path, obj_str) VALUES ($1, $2, $3, $4)";
 
     var now = new Date();
 
@@ -20,6 +22,8 @@ $3, $4, $5, $6, $7, $8, $9, $10)";
     ent.summary = {"title": "blrg",
       "abstract": "some text goes here"};
     ent.data.posting = '<div></div>';
+    ent.addTag('navigation','navbar');
+
     var db = {};
     db.open_transaction = function(client, done, callback) {
       callback(null, client, done);
@@ -42,7 +46,15 @@ $3, $4, $5, $6, $7, $8, $9, $10)";
           should.deepEqual(spec.values[8], JSON.stringify(ent.summary)); // summary
           should.deepEqual(spec.values[9], JSON.stringify(ent.data)); // summary
           func(null, {});
-        } else{
+        } else if (spec.name === 'insert_tag_query') {
+          spec.name.should.equal('insert_tag_query');
+          spec.text.should.equal(insert_tag_query);
+          spec.values[0].should.equal('wh');
+          spec.values[1].should.equal('tag');
+          spec.values[2].should.equal('navigation');
+          spec.values[3].should.equal('navbar');
+          func(null, {});
+        } else {
           //t.deepEqual(spec.text, insert_query);
           should.deepEqual(spec.name, 'insert_log_query');
           should.deepEqual(spec.values[0], 'wh'); //path
