@@ -146,4 +146,26 @@ exports = module.exports = function(dust, db, query) {
             });
         })
     }
+    dust.helpers.tags = function (chunk, ctx, bodies, params) {
+        return chunk.map(function(chunk) {
+            var tags = dust.helpers.tap(params.obj, chunk, ctx);
+            console.log(tags);
+            console.log(params);
+            for (var pred_key in tags) {
+                if (tags.hasOwnProperty(pred_key)) {
+                    var pred = tags[pred_key];
+                    for (var obj_key in pred) {
+                        var obj = pred[obj_key];
+                        var pred_class = obj.pred_class;
+                        chunk.render(bodies.block, ctx.push(
+                            {pred_key: pred_key,
+                             obj_key: obj_key,
+                             pred_class: pred_class, 
+                             obj:obj}));
+                    }
+                }
+            }
+            chunk.end();
+        })
+    }
 }

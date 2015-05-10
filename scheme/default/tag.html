@@ -1,7 +1,55 @@
 {>base/}
 {<main}
 <div class="pure-u-2-3">
-  Tagging goes here
+  <table class="pure-table">
+  <thead>
+<th></th><th>Predicate</th><th>Object</th><td></th>
+</thead>
+
+  {@tags obj=tags}
+
+{@math key="{$idx}" method="mod" operand="2"}
+ {@eq value=0}
+        <tr class="pure-table-odd">
+    {:else}
+        <tr class="pure-table-even">
+    {/eq}
+{/math}
+<td></td><td>{pred_class}: {pred_key}</td><td>{obj_key}</td>
+<td>
+    <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
+    <input type="hidden" name="action" value="rmtag" />
+    <input type="hidden" name="pred_class" value="{pred_class}" />
+    <input type="hidden" name="pred_key" value="{pred_key}" />
+    <input type="hidden" name="obj_key" value="{obj_key}" />
+    <button type="submit" class="pure-button pure-button-primary">Delete</button>
+    </form>
+</td>
+</tr>
+  {/tags}
+<tr>
+  <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
+    <td>Add:</td>
+  <td colspan="2">
+    <input type="hidden" name="action" value="addtag" />
+    <input class="pure-input-1" type="text" name="obj_key" placeholder="Tag"/>
+  </td>
+  <td>
+    <button type="submit" class="pure-button pure-button-primary">Add tag</button>
+  </td>
+</form></tr>
+
+  <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
+    <td>Navbar:</td>
+  <td colspan="3">
+    <input type="hidden" name="action" value="navbar" />
+    <button type="submit" class="pure-button pure-button-primary">Add to navbar</button>
+  </td>
+</form></tr>
+
+</table>
+  
+    </form>
 </div>
 
 <div class="pure-u-1-3">
