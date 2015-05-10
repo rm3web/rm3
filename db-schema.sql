@@ -34,11 +34,10 @@ CREATE TABLE wh_log (
 );
 
 CREATE TABLE wh_tag (
-	pred_path ltree REFERENCES wh_entity (path) ON DELETE CASCADE,
+	pred_path ltree,
 	obj_str text,
-	subj_path ltree REFERENCES wh_entity (path) ON DELETE CASCADE,
-	pred_class text,
-	tag_id uuid UNIQUE
+	subj_path ltree,
+	pred_class text
 );
 
 CREATE TABLE wh_permission_to_role (
