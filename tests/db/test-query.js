@@ -66,7 +66,10 @@ describe('query', function() {
     var path2 = new sitepath(['wh','query','sub']);
     var now = new Date();
 
-    resources.entity_resource(path1, ents, 'one', false, now);
+    resources.entity_resource(path1, ents, 'one', false, now, function(e){
+      e.addTag('navigation','navbar');
+    });
+
     resources.entity_resource(path2, ents, 'two', false, now);
 
     it('works', function(done) {
@@ -84,6 +87,23 @@ describe('query', function() {
         should.deepEqual(arts[1].title,'two');
         should.deepEqual(arts[1].path.toDottedPath(),'wh.query.sub');
         should.deepEqual(arts.length,2);
+        done();
+      });
+    });
+
+    it('works for the navbar', function(done) {
+      var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{navbar: true},undefined,undefined);
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        should.fail(err);
+      });
+      resp.on('end', function() {
+        should.deepEqual(arts[0].title,'one');
+        should.deepEqual(arts[0].path.toDottedPath(),'wh.query');
+        should.deepEqual(arts.length,1);
         done();
       });
     });

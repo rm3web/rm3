@@ -3,13 +3,17 @@ var entity = require('../../lib/entity');
 var db = require('../../lib/db');
 var update = require('../../lib/update');
 
-exports.entity_resource = function entity_resource(path, ents, entidx, provisional, now) {
+exports.entity_resource = function entity_resource(path, ents, entidx, provisional, now, func) {
   var ent = new entity.Entity();
   ent.createNew(path, 'base', now);
   ent.summary = {"title": entidx,
     "abstract": "some text goes here"};
   ent.data.posting = '<div></div>';
   ents[entidx] = ent;
+
+  if(func) {
+    func(ent);
+  }
 
   before(function create_entity_resource(done) {
     update.create_entity(db, ent, true, 'create', 
