@@ -45,10 +45,8 @@ How to get started?
 * Run it
   * `gulp develop`
 
-Docs
+[Docs](docs)
 ----
-
-[docs]
 
 To generate API docs:
 
