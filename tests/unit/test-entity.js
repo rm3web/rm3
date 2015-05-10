@@ -54,7 +54,7 @@ describe('entity', function() {
       e2.summary = 
       {"title": "blrg",
        "abstract": "some text goes here"};
-      e2.tags = {};
+      e2._tags = {};
 
       e.should.be.eql(e2);
     });
@@ -152,19 +152,91 @@ describe('entity', function() {
     });    
   });
 
-  describe('#update', function() {
-    it('should work', function () {
-      var e = new entity.Entity();
-      var now = new Date();
+  context('updates', function() {
+    var e, now;
+    beforeEach(function() {
+      e = new entity.Entity();
+      now = new Date();
       e.createNew(new sitepath(['wh']), 'base', now);
-      e.data.posting = '<div>Test test</div>';
-      e.summary = 
-      {"title": "blrg",
-       "abstract": "some text goes here"};
+        e.data.posting = '<div>Test test</div>';
+        e.summary = 
+        {"title": "blrg",
+         "abstract": "some text goes here"};
+    });
 
-      e.updateTimes(now);
+    describe('#updateTimes', function() {
+      it('should work', function () {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
 
-      now.should.be.equal(e.view().meta.modified);
+        now.should.be.equal(e.view().meta.modified);
+
+        e.updateTimes(tomorrow);
+
+        tomorrow.should.be.equal(e.view().meta.modified);
+      });
+    });
+
+    describe('#addTag', function() {
+      it('should work', function() {
+        e.addTag(null,'sparklefish');
+        e.addTag(undefined,'meowcat');
+        e.addTag(new sitepath(['wh','ponies']),'twilight');
+        e.addTag(new sitepath(['wh','ponies']),new sitepath(['wh','princess']));
+        e.addTag('navigation','navbar');
+
+        e._tags.should.have.property('plain');
+        e._tags.should.have.property('navigation');
+        e._tags.plain.should.have.property('sparklefish');
+        e._tags.plain.should.have.property('meowcat');
+        e._tags.navigation.should.have.property('navbar');
+        e._tags.plain.meowcat.should.have.property('pred_class');
+        e._tags.plain.meowcat.pred_class.should.equal('tag');
+        e._tags.should.have.property('wh.ponies');
+        e._tags['wh.ponies'].should.have.property('twilight');
+        e._tags['wh.ponies'].twilight.pred_class.should.equal('tag');
+        e._tags['wh.ponies'].should.have.property('wh.princess');
+        e._tags['wh.ponies']['wh.princess'].pred_class.should.equal('ontag');
+      });
+
+      it('should reject invalid values', function() {
+        (function(){
+          e.addTag('stuff', 'base');
+        }).should.throw('tag predicate must be a sitepath or \'navigation\'');
+      });
+    });
+
+    describe('#removeTag', function() {
+      it('should work', function() {
+        e.addTag(null,'sparklecat');
+        e.addTag(null,'meowfish');
+        e.addTag(new sitepath(['wh','ponies']),'sparkle');
+        e.addTag(new sitepath(['wh','ponies']),new sitepath(['wh','princess']));
+        e.addTag('navigation','navbar');
+
+        e.removeTag(null,'meowfish');
+        e._tags.should.have.property('plain');
+        e._tags.should.have.property('wh.ponies');
+        e._tags.plain.should.have.property('sparklecat');
+        e._tags.plain.should.not.have.property('meowcat');
+
+        e.removeTag(null,'sparklecat');
+        e._tags.should.not.have.property('plain');
+
+        e.removeTag(new sitepath(['wh','ponies']),'sparkle');
+        e._tags.should.have.property('wh.ponies');
+        e.removeTag(new sitepath(['wh','ponies']),new sitepath(['wh','princess']));
+        e._tags.should.not.have.property('wh.ponies');
+
+        e.removeTag('navigation','navbar');
+        e._tags.should.not.have.property('navigation');
+      });
+
+      it('should reject invalid values', function() {
+        (function(){
+          e.removeTag('stuff', 'base');
+        }).should.throw('tag predicate must be a sitepath or \'navigation\'');
+      });
     });
   });
 });
