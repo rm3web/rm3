@@ -44,6 +44,8 @@ describe('query gen', function() {
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (created >= $2)'},
       {args: [root, 'wh','child','count',{navbar: true},undefined,undefined],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag.subj_path = wh_entity.path) WHERE (wh_entity.path <@ $1) AND (pred_path = \'navigation\') AND (obj_str = \'navbar\')'},
+      {args: [root, 'wh','child','count',{tag: 'bears'},undefined,undefined],
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag.subj_path = wh_entity.path) WHERE (wh_entity.path <@ $1) AND (pred_path = \'plain\') AND (obj_str = $2)'},
       {args: [root, 'wh','child','entity',{},'changed',undefined],
        expected: 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY modified ASC'},
       {args: [root, 'wh','child','entity',{},'created',undefined],
