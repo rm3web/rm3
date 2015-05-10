@@ -66,7 +66,7 @@ exports = module.exports = function(dust, db, query) {
             baseurl = '';
         }
         longstr = longstr + gen_link(baseurl, '/edit.html', ctx.get('section') === 'edit','Edit', false);
-        longstr = longstr + gen_link('', '#', true, 'Tag', false);
+        longstr = longstr + gen_link(baseurl, '/tag.html', ctx.get('section') === 'tag', 'Tag', false);
         longstr = longstr + gen_link(baseurl, '/delete.html', false, 'Delete', true);
         longstr = longstr + gen_link(baseurl, '/move.html', true, 'Move', false);
         longstr = longstr + gen_link(baseurl, '/history.html', false, 'History', false);
