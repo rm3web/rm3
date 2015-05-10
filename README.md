@@ -27,6 +27,7 @@ How to get started?
 
 * Install PostgreSQL 9.3 or later and node.js
 * Git clone this repo
+* `npm install`
 * Create the database in postgresql
   * `createdb rm3test`
   * `psql rm3test < db-schema.sql`
@@ -56,7 +57,7 @@ Tests
 -----
 
 To set up testing environment:
-* Install dev deps
+* `npm install --dev`
 * `createdb rm3unit`
 
 To test:
