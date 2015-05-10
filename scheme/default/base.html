@@ -24,23 +24,19 @@
     {+pageheader}
     <div class="pure-u-1 headermenu">
       <div class="pure-menu pure-menu-open pure-menu-horizontal">
-       <a class="pure-menu-heading" href="">WireWorld</a>
+       <a class="pure-menu-heading" href="/">WireWorld</a>
        <ul>
-        <li class="pure-menu-selected"><a href="/">Home</a></li>
-        <li><a href="page.html">Art</a></li>
-        <li><a href="page.html">Bicycling</a></li>
-        <li><a href="page.html">Food</a></li>
-        <li><a href="page.html">Hacks</a></li>
-        <li><a href="page.html">Making Stuff</a></li>
-        <li><a href="page.html">Blog</a></li>
+    {@navbar_query}
+     <li><a href="{path}">{article.title}</a></li>
+    {/navbar_query}
        </ul>
     </div>
   </div>
   {/pageheader}
 
-{+flash}
+{+flash_header}
 {>"flash"/}
-{/flash}
+{/flash_header}
 
 {+main}
 {/main}

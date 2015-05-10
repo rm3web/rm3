@@ -17,7 +17,7 @@ function gen_link(base, url, disabled, title, confirm) {
 
 exports = module.exports = function(dust, db, query) {
     dust.helpers.textblock_edit = function(chunk, ctx, bodies, params) {
-        var textblock = dust.helpers.tap(params.field, chunk, ctx);
+        var textblock = ctx.resolve(params.field);
         var sr1 = '<textarea rows="30" class="pure-input-1" name="posting" placeholder="posting">'
         var sr2 = '</textarea>\
 <select name="textblock_format" size="1">'
@@ -35,7 +35,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.disabled_mode = function(chunk, ctx, bodies, params) {
         var section = ctx.get('section');
-        var dis = dust.helpers.tap(params[section], chunk, ctx);
+        var dis = ctx.resolve(params[section]);
         if (dis) {
             return chunk.write('disabled')
         } else {
@@ -45,12 +45,12 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.combo_form = function(chunk, ctx, bodies, params) {
         var section = ctx.get('section');
-        var path = dust.helpers.tap(params[section], chunk, ctx);
+        var path = ctx.resolve(params[section]);
         return chunk.write('<form id="draft" method="post" action="' + path + '" class="pure-form pure-form-stacked">');
     }
 
     dust.helpers.textblock = function(chunk, ctx, bodies, params) {
-        var textblock = dust.helpers.tap(params.field, chunk, ctx);
+        var textblock = ctx.resolve(params.field);
         return chunk.write(textblocks.outputTextBlock(textblock));
     }
 
@@ -120,6 +120,35 @@ exports = module.exports = function(dust, db, query) {
             });
         })
     }
+
+    dust.helpers.navbar_query = function (chunk, ctx, bodies, params) {
+        return chunk.map(function(chunk) {
+            var baseurl = ['wh'];
+            path = new SitePath(baseurl);
+            var security = {context: 'STANDARD'};
+            var user = ctx.get('user');
+            if (user != undefined) {
+                security.user = user.path();
+            }
+            var resp = query.query(db, security, path,'dir','entity',{'navbar': true},undefined,undefined);
+            var body = bodies.block;
+            var idx = 0;
+            resp.on('article', function(article) {
+                chunk.render(bodies.block, ctx.push(
+                    {path: article.path.toUrl('/',1),
+                     article: article,
+                     '$idx': idx }));
+                idx = idx + 1;
+            });
+            resp.on('error', function(err) {
+                chunk.end();
+            });
+            resp.on('end', function() {
+                chunk.end();
+            });
+        })
+    }
+
     dust.helpers.history = function (chunk, ctx, bodies, params) {
         return chunk.map(function(chunk) {
             var baseurl = ctx.get('meta.site_path');
