@@ -116,11 +116,9 @@ function step_validate_permission_non_existence(desc, path) {
     var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = '" + 
       path + "'";
     quick_query(db, query, function(err, result) {
-      if(err) {
-        return done(err);
-      }
+      should.not.exist(err);
       should.deepEqual(result.rowCount, 0);
-      done();
+      done(err);
     });
   });
 }
@@ -130,13 +128,11 @@ function step_validate_entity_existence(desc, ent) {
     var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = '" +
       ent.path().toDottedPath() + "'";
     quick_query(db, query, function(err, result) {
-      if(err) {
-        return done(err);
-      }
+      should.not.exist(err);
       result.rows[0].entity_id.should.equal(ent._entity_id);
       result.rows[0].revision_id.should.equal(ent._revision_id);
       result.rows[0].revision_num.should.equal(ent._revision_num);
-      done();
+      done(err);
     });
   });
 }
@@ -146,28 +142,49 @@ function step_validate_tag_existence(desc, ent) {
     var query = "SELECT pred_path, obj_str, pred_class FROM wh_tag WHERE subj_path = '" +
       ent.path().toDottedPath() + "'";
     quick_query(db, query, function(err, result) {
-      if(err) {
-        return done(err);
-      }
+      should.not.exist(err);
       result.rows[0].pred_path.should.equal('navigation');
       result.rows[0].obj_str.should.equal('navbar');
       result.rows[0].pred_class.should.equal('tag');
-      done();
+      done(err);
     });
   });
 }
 
+function step_validate_tag_non_existence(desc, ent) {
+  step(desc, function(done) {
+    var query = "SELECT pred_path, obj_str, pred_class FROM wh_tag WHERE subj_path = '" +
+      ent.path().toDottedPath() + "'";
+    quick_query(db, query, function(err, result) {
+      should.not.exist(err);
+      should.deepEqual(result.rowCount, 0);
+      done(err);
+    });
+  });
+}
+
+function step_validate_tag_existence_path(desc, path) {
+  step(desc, function(done) {
+    var query = "SELECT pred_path, obj_str, pred_class FROM wh_tag WHERE subj_path = '" +
+      path.toDottedPath() + "'";
+    quick_query(db, query, function(err, result) {
+      should.not.exist(err);
+      result.rows[0].pred_path.should.equal('navigation');
+      result.rows[0].obj_str.should.equal('navbar');
+      result.rows[0].pred_class.should.equal('tag');
+      done(err);
+    });
+  });
+}
 
 function step_validate_non_entity_existence(desc, ent) {
   step(desc, function(done) {
   var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = '" +
     ent.path().toDottedPath() + "'";
     quick_query(db, query, function(err, result) {
-      if(err) {
-        return done(err);
-      }
+      should.not.exist(err);
       result.rowCount.should.equal(0);
-      done();
+      done(err);
     });
   });
 }
@@ -177,11 +194,9 @@ function step_generic_revid_check(desc, mark, check) {
     var query = "SELECT evt_class, entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE revision_id = '" +
       mark.revision_id + "'";
     quick_query(db, query, function(err, result) {
-      if(err) {
-        return done(err);
-      }
+      should.not.exist(err);
       check(result);
-      done();
+      done(err);
     });
   });
 }
@@ -191,11 +206,9 @@ function step_generic_log_check(desc, ent, check) {
     var query = "SELECT evt_class, entity_id, revision_id, revision_num, evt_final, evt_end FROM wh_log WHERE path = '" +
       ent.path().toDottedPath() + "'";
     quick_query(db, query, function(err, result) {
-      if(err) {
-        return done(err);
-      }
+      should.not.exist(err);
       check(result);
-      done();
+      done(err);
     });
   });
 }
@@ -261,6 +274,8 @@ describe('update', function() {
       });
     });
 
+    step_validate_tag_existence('check preservation', ents.one);
+
     step_validate_entity_existence('verify only one creation went through', ents.one);
 
     step_generic_log_check('verify only one creation went through in log', ents.one,
@@ -273,6 +288,8 @@ describe('update', function() {
     step_generic_delete('delete', ents.one, del_mark);
 
     step_validate_non_entity_existence('check create after delete', ents.one);
+
+    step_validate_tag_non_existence('check delete tags', ents.one);
 
     step_generic_log_check('verify create and delete in log', ents.one, function(result) {
       result.rowCount.should.equal(2);
@@ -298,6 +315,8 @@ describe('update', function() {
 
     step_validate_entity_existence('verify update', ents.next);
 
+    step_validate_tag_existence('verify the tags are still there', ents.next);
+
     step_generic_log_check('check log after update', ents.start, function(result) {
       var ent = ents.start;
       var ent2 = ents.next;
@@ -310,6 +329,8 @@ describe('update', function() {
     step_generic_delete('delete', ents.next, del_mark);
 
     step_validate_non_entity_existence('check create after delete', ents.next);
+
+    step_validate_tag_non_existence('check delete tags', ents.next);
 
     step_generic_log_check('check log after delete', ents.start, function(result) {
       var ent = ents.start;
@@ -339,6 +360,10 @@ describe('update', function() {
     step_generic_move('move', ents, 'start', newpath, move_mark);
 
     step_validate_non_entity_existence('check create after delete', ents.start);
+
+    step_validate_tag_existence_path('check tag move', newpath);
+
+    step_validate_tag_non_existence('check tag move deletion', ents.start);
 
     step('validate move', function(done) {
       var query = "SELECT entity_id, revision_id, revision_num FROM wh_entity WHERE path = '" +
@@ -412,6 +437,8 @@ describe('update', function() {
       check_log_pcreate(result.rows[0],ent);
     });
 
+    step_validate_tag_non_existence('check tag non creation', ents.start);
+
     step('commit', function(done) {
       update.commit_entity_rev(db, ents.start._revision_id,
         function(err, entity_id, revision_id, revision_num) {
@@ -433,6 +460,8 @@ describe('update', function() {
       should.deepEqual(result.rowCount, 1);
       check_log_create(result.rows[0],ent);
     });
+
+    step_validate_tag_existence('check tag create', ents.start);
 
     step_generic_delete('delete', ents.start, del_mark);
   });
