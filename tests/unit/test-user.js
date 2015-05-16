@@ -4,6 +4,7 @@ var SitePath = require ('../../lib/sitepath');
 var should = require('should');
 
 describe('user', function() {
+  this.timeout(3000); // This might take a bit of time
   var e, p;
   var now = new Date();
 
