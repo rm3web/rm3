@@ -31,6 +31,7 @@ How to get started?
 * Git clone this repo
 * `npm install`
 * Create the database in postgresql
+  * Set up a password and user.
   * `createdb rm3test`
   * `psql rm3test < db-schema.sql`
 * Load some default content
