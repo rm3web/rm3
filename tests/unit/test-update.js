@@ -25,15 +25,15 @@ pred_path, obj_str) VALUES ($1, $2, $3, $4)";
     ent.addTag('navigation','navbar');
 
     var db = {};
-    db.open_transaction = function(client, done, callback) {
+    db.openTransaction = function(client, done, callback) {
       callback(null, client, done);
     };
 
-    db.commit_transaction = function(client, callback) {
+    db.commitTransaction = function(client, callback) {
       callback(null);
     };
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
         if(spec.name === 'insert_entity_query') {

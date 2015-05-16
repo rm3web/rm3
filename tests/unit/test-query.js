@@ -77,7 +77,7 @@ describe('query', function() {
 
     var db = {};
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
         should.deepEqual(spec.text, select_query);
@@ -107,7 +107,7 @@ describe('query', function() {
 
     var db = {};
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
         should.deepEqual(spec.text, select_query);
@@ -142,7 +142,7 @@ describe('query', function() {
 
     var db = {};
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
         should.deepEqual(spec.text, select_query);
@@ -179,7 +179,7 @@ describe('query', function() {
 
     var db = {};
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
         should.deepEqual(spec.text, select_query);
@@ -217,7 +217,7 @@ FROM wh_log WHERE (revision_id = $1)";
 
     var db = {};
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
         should.deepEqual(spec.text, select_query);
@@ -255,7 +255,7 @@ FROM wh_log WHERE (revision_id = $1)";
 
     var db = {};
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
         should.deepEqual(spec.text, select_query);
@@ -296,7 +296,7 @@ FROM wh_log WHERE (revision_id = $1)";
       summary: { title: 'blrg', abstract: 'some text goes here' },
       data: { posting: '<div></div>' } };
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec) {
         should.deepEqual(spec.text, select_query);
@@ -340,7 +340,7 @@ FROM wh_log WHERE (revision_id = $1)";
 
     var rec = { count: '2' };
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec) {
         should.deepEqual(spec.text, select_query);
@@ -395,7 +395,7 @@ evt_touched, evt_class, evt_final, data FROM wh_log WHERE (path = $1) ORDER BY r
             evt_final: true,
             data: {}};
 
-    db.connect_wrap = function (queryfunc) {
+    db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec) {
         should.deepEqual(spec.text, select_query);

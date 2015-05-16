@@ -10,7 +10,7 @@ require('mocha-steps');
 
 function quick_query(db, querytext, next) {
   async.waterfall([
-    db.connect_wrap,
+    db.connectWrap,
     function(client, done, callback){
       client.query(querytext, function(err, result){
         done(err);
@@ -624,6 +624,6 @@ describe('update', function() {
   });
 
   after(function() {
-    db.gun_database();
+    db.gunDatabase();
   });
 });
