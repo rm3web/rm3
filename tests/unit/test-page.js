@@ -103,7 +103,7 @@ describe('page', function() {
       };
       
       var page = new Page();
-      page.view_router.get('glitter', function(req, res, next) 
+      page.view_router.get('glitter.html', function(req, res, next) 
       {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
@@ -128,12 +128,12 @@ describe('page', function() {
       };
       
       var page = new Page();
-      page.command_router.post('glitter', function(req, res, next)
+      page.command_router.post('glitter.html', function(req, res, next)
       {
         next();
       });
 
-      page.view_router.route_all('glitter', function(req, res, next) 
+      page.view_router.route_all('glitter.html', function(req, res, next) 
       {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
