@@ -27,6 +27,7 @@
     "intl": "~0.1.4",
     "method-override": "~2.3.2",
     "morgan": "~1.5.2",
+    "node-uuid": "^1.4.3",
     "page-router": "git://github.com/wirehead/page-router.git#master",
     "passport": "~0.2.1",
     "passport-local": "~1.0.0",
