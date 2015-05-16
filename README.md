@@ -1,6 +1,8 @@
 rm3
 ===
 
+[![Build Status](https://travis-ci.org/wirehead/rm3.svg?branch=master)](https://travis-ci.org/wirehead/rm3) [![Coverage Status](https://coveralls.io/repos/wirehead/rm3/badge.svg?branch=master)](https://coveralls.io/r/wirehead/rm3?branch=master)
+
 What is it?
 -----------
 
