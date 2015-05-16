@@ -371,6 +371,6 @@ describe('query', function() {
   });
 
   after(function() {
-    db.gun_database();
+    db.gunDatabase();
   });
 });
