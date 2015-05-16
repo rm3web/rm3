@@ -63,7 +63,7 @@
     "benchmark": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/matcha benchmark/*.js",
     "test": "npm run unit-tests && npm run db-tests",
     "coverage": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha tests/unit/*.js tests/db/*.js",
-    "travis": "RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha tests/unit/*.js tests/db/*.js",
+    "travis": "npm run lint && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha tests/unit/*.js tests/db/*.js",
     "lint": "./node_modules/.bin/jshint lib tests bin",
     "docs": "./node_modules/.bin/jsdox -A --output ./docs/api lib"
   },
