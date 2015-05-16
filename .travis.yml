@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "0.12"
+  - "0.11"
+  - "0.10"
+  - "iojs"
+  - "iojs-v1.0.4" 
+addons:
+  postgresql: "9.3"
+before_script:
+  - psql -c 'create database rm3test;' -U postgres
+  - psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres
+  - psql -c "GRANT ALL PRIVILEGES ON rm3test TO wirehead;" -U postgres
+  - psql rm3unit < ./db-schema.sql -U postgres
+script: "npm run travis"
