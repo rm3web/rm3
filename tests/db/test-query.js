@@ -182,11 +182,11 @@ describe('query', function() {
     var ents = {};
     var now = new Date();
 
-    resources.user_resource(userpath, 'test', ents, 'user', now);
-    resources.permission_resource('query-role', 'view', path);
-    resources.permission_resource('query-role', 'stuff', path);
-    resources.permission_resource('nobody', 'view', path);
-    resources.assignment_resource(userpath, 'test', 'query-role');
+    resources.userResource(userpath, 'test', ents, 'user', now);
+    resources.permissionResource('query-role', 'view', path);
+    resources.permissionResource('query-role', 'stuff', path);
+    resources.permissionResource('nobody', 'view', path);
+    resources.assignmentResource(userpath, 'test', 'query-role');
 
     describe('#query', function() {
       var otherpath = new sitepath(['wh','query2','node']);
