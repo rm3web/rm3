@@ -85,8 +85,8 @@ describe('query', function() {
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
@@ -115,8 +115,8 @@ describe('query', function() {
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     query.fetchEffectivePermissions(db, user, entpath, function(err, entity){
@@ -150,8 +150,8 @@ describe('query', function() {
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
@@ -187,8 +187,8 @@ describe('query', function() {
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
@@ -225,8 +225,8 @@ FROM wh_log WHERE ("revisionId" = $1)';
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, '1234', function(err, entity){
@@ -263,8 +263,8 @@ FROM wh_log WHERE ("revisionId" = $1)';
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, '1535', function(err, entity){
@@ -309,8 +309,8 @@ FROM wh_log WHERE ("revisionId" = $1)';
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     var root = {context: "ROOT"};
@@ -353,8 +353,8 @@ FROM wh_log WHERE ("revisionId" = $1)';
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     var root = {context: "ROOT"};
@@ -408,8 +408,8 @@ FROM wh_log WHERE ("revisionId" = $1)';
       };
       queryfunc(null, client, function()
         {
-          plan.ok(true);
-        });
+        plan.ok(true);
+      });
     };
 
     var resp = query.queryHistory(db, {}, entpath);

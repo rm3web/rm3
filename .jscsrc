@@ -10,5 +10,6 @@
       "catch"
   ],
   "requireOperatorBeforeLineBreak": true,
- "requireCamelCaseOrUpperCaseIdentifiers": true
+  "requireCamelCaseOrUpperCaseIdentifiers": true,
+  "validateIndentation": 2
 }

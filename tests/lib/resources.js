@@ -22,7 +22,7 @@ exports.entityResource = function entityResource(path, ents, entidx, provisional
         ents[entidx]._revisionId = revisionId;
         ents[entidx]._revisionNum = revisionNum;
         done(err);
-    });
+      });
   });
 
   after(function deleteEntityResource(done) {
@@ -51,7 +51,7 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
         ents[entidx]._revisionId = revisionId;
         ents[entidx]._revisionNum = revisionNum;
         done(err);
-    });
+      });
   });
 
   after(function deleteUserResource(done) {
