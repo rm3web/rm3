@@ -6,6 +6,7 @@ var gulp = require('gulp')
   , mocha = require('gulp-mocha')
   , run = require('gulp-run')
   , jscs = require('gulp-jscs')
+  , coveralls = require('gulp-coveralls')
   ;
 
 var lintable = ['lib/**/*.js', 'tests/**/*.js'];
