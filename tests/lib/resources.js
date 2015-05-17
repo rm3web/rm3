@@ -3,7 +3,7 @@ var entity = require('../../lib/entity');
 var db = require('../../lib/db');
 var update = require('../../lib/update');
 
-exports.entity_resource = function entity_resource(path, ents, entidx, provisional, now, func) {
+exports.entityResource = function entityResource(path, ents, entidx, provisional, now, func) {
   var ent = new entity.Entity();
   ent.createNew(path, 'base', now);
   ent.summary = {"title": entidx,
@@ -15,23 +15,23 @@ exports.entity_resource = function entity_resource(path, ents, entidx, provision
     func(ent);
   }
 
-  before(function create_entity_resource(done) {
-    update.create_entity(db, ent, true, 'create', 
-      function(err, entity_id, revision_id, revision_num) {
-        ents[entidx]._entity_id = entity_id;
-        ents[entidx]._revision_id = revision_id;
-        ents[entidx]._revision_num = revision_num;
+  before(function createEntityResource(done) {
+    update.createEntity(db, ent, true, 'create', 
+      function(err, entityId, revisionId, revisionNum) {
+        ents[entidx]._entityId = entityId;
+        ents[entidx]._revisionId = revisionId;
+        ents[entidx]._revisionNum = revisionNum;
         done(err);
     });
   });
 
-  after(function delete_entity_resource(done) {
-    update.delete_entity(db, ent, true, 'delete', done);
+  after(function deleteEntityResource(done) {
+    update.deleteEntity(db, ent, true, 'delete', done);
     delete ents[entidx];
   });
 };
 
-exports.user_resource = function user_resource(userpath, username, ents, entidx, now) {
+exports.userResource = function userResource(userpath, username, ents, entidx, now) {
   var ent = new entity.Entity();
 
   user.createUser(ent, userpath, username, 'test', now);
@@ -40,44 +40,44 @@ exports.user_resource = function user_resource(userpath, username, ents, entidx,
   
   ents[entidx] = ent;
 
-  before(function encode_password(done) {
+  before(function encodePassword(done) {
     user.encodePassword('meow_kitty', ent, done);
   });
 
-  before(function create_entity_resource(done) {
-    update.create_entity(db, ent, true, 'create', 
-      function(err, entity_id, revision_id, revision_num) {
-        ents[entidx]._entity_id = entity_id;
-        ents[entidx]._revision_id = revision_id;
-        ents[entidx]._revision_num = revision_num;
+  before(function createUserResource(done) {
+    update.createEntity(db, ent, true, 'create', 
+      function(err, entityId, revisionId, revisionNum) {
+        ents[entidx]._entityId = entityId;
+        ents[entidx]._revisionId = revisionId;
+        ents[entidx]._revisionNum = revisionNum;
         done(err);
     });
   });
 
-  after(function delete_entity_resource(done) {
-    update.delete_entity(db, ent, true, 'delete', done);
+  after(function deleteUserResource(done) {
+    update.deleteEntity(db, ent, true, 'delete', done);
     delete ents[entidx];
   });
 };
 
-exports.permission_resource = function permission_resource(role, permission, path) {
-  before(function create_permission_resource(done) {
-    update.add_permission_to_role(db, role, permission, path, "note", done);
+exports.permissionResource = function permissionResource(role, permission, path) {
+  before(function createPermissionResource(done) {
+    update.addPermissionToRole(db, role, permission, path, "note", done);
   });
 
-  after(function delete_permission_resource(done) {
-    update.remove_permission_from_role(db, role, permission, path, "note", done);
+  after(function deletePermissionResource(done) {
+    update.removePermissionFromRole(db, role, permission, path, "note", done);
   });
 };
 
-exports.assignment_resource = function assignment_resource(userpath, username, role) {
-  before(function create_assignment_resource(done) {
+exports.assignmentResource = function assignmentResource(userpath, username, role) {
+  before(function createAssignmentResource(done) {
     var path = userpath.down(username);
-    update.assign_user_to_role(db, path, role, 'note', done);
+    update.assignUserToRole(db, path, role, 'note', done);
   });
 
-  after(function delete_assignment_resource(done) {
+  after(function deleteAssignmentResource(done) {
     var path = userpath.down(username);
-    update.remove_user_from_role(db, path, role, 'note', done);
+    update.removeUserFromRole(db, path, role, 'note', done);
   });
 };

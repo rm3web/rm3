@@ -5,9 +5,9 @@ CREATE TABLE wh_entity (
 	path ltree,
 	stub boolean,
 	hidden boolean,
-	entity_id uuid UNIQUE,
-	revision_id uuid UNIQUE,
-	revision_num integer NOT NULL,
+	"entityId" uuid UNIQUE,
+	"revisionId" uuid UNIQUE,
+	"revisionNum" integer NOT NULL,
 	proto text,
 	modified timestamp,
 	created timestamp,
@@ -19,25 +19,25 @@ CREATE TABLE wh_entity (
 
 CREATE TABLE wh_log (
 	path ltree,
-	entity_id uuid,
+	"entityId" uuid,
 	note text,
-	base_revision_id uuid,
-	replace_revision_id uuid,
-	revision_id uuid,
-	revision_num integer,
-	evt_start timestamp,
-	evt_end timestamp,
-	evt_touched timestamp,
-	evt_class text,
-	evt_final boolean,
+	"baseRevisionId" uuid,
+	"replaceRevisionId" uuid,
+	"revisionId" uuid,
+	"revisionNum" integer,
+	"evtStart" timestamp,
+	"evtEnd" timestamp,
+	"evtTouched" timestamp,
+	"evtClass" text,
+	"evtFinal" boolean,
 	data json
 );
 
 CREATE TABLE wh_tag (
-	pred_path ltree,
-	obj_str text,
-	subj_path ltree,
-	pred_class text
+	"predPath" ltree,
+	"objStr" text,
+	"subjPath" ltree,
+	"predClass" text
 );
 
 CREATE TABLE wh_permission_to_role (

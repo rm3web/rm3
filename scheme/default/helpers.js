@@ -20,7 +20,7 @@ exports = module.exports = function(dust, db, query) {
         var textblock = ctx.resolve(params.field);
         var sr1 = '<textarea rows="30" class="pure-input-1" name="posting" placeholder="posting">'
         var sr2 = '</textarea>\
-<select name="textblock_format" size="1">'
+<select name="textblockFormat" size="1">'
         var sr3a = '<option value="html" selected="true">HTML</option>\
 <option value="markdown">Markdown</option>'
         var sr3b = '<option value="html">HTML</option>\
@@ -59,7 +59,7 @@ exports = module.exports = function(dust, db, query) {
         longstr = longstr + '<div class="pure-menu pure-menu-open">\
         <a class="pure-menu-heading">Admin</a>\
     <ul>';
-        var sitepathquery = ctx.get('meta.site_path');
+        var sitepathquery = ctx.get('meta.sitePath');
         var path = new SitePath(sitepathquery);
         var baseurl = path.toUrl('/',1);
         if (baseurl === '/') {
@@ -80,7 +80,7 @@ exports = module.exports = function(dust, db, query) {
         }
         longstr = longstr + '</ul></div><div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
-        protos = Protoset.list_protos();
+        protos = Protoset.listProtos();
         for(var proto in protos) {
             if (protos.hasOwnProperty(proto)) {
                 longstr = longstr + '<li><a href="/$new' + baseurl;
@@ -95,7 +95,7 @@ exports = module.exports = function(dust, db, query) {
     }
     dust.helpers.basic_query = function (chunk, ctx, bodies, params) {
         return chunk.map(function(chunk) {
-            var baseurl = ctx.get('meta.site_path');
+            var baseurl = ctx.get('meta.sitePath');
             path = new SitePath(baseurl);
             var security = {context: 'STANDARD'};
             var user = ctx.get('user');
@@ -151,18 +151,18 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.history = function (chunk, ctx, bodies, params) {
         return chunk.map(function(chunk) {
-            var baseurl = ctx.get('meta.site_path');
-            var revision_id = ctx.get('meta.revision_id')
+            var baseurl = ctx.get('meta.sitePath');
+            var revisionId = ctx.get('meta.revisionId')
             path = new SitePath(baseurl);
             var security = {user: ctx.get('user'),
                             context: 'STANDARD'};
-            var resp = query.query_history(db, security, path);
+            var resp = query.queryHistory(db, security, path);
             var body = bodies.block;
             var idx = 0;
             resp.on('article', function(article) {
                 chunk.render(bodies.block, ctx.push(
                     {path: article.path.toUrl('/',1),
-                     current: revision_id === article.revision_id,
+                     current: revisionId === article.revisionId,
                      rec: article,
                      '$idx': idx }));
                 idx = idx + 1;
@@ -178,18 +178,16 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.tags = function (chunk, ctx, bodies, params) {
         return chunk.map(function(chunk) {
             var tags = dust.helpers.tap(params.obj, chunk, ctx);
-            console.log(tags);
-            console.log(params);
-            for (var pred_key in tags) {
-                if (tags.hasOwnProperty(pred_key)) {
-                    var pred = tags[pred_key];
-                    for (var obj_key in pred) {
-                        var obj = pred[obj_key];
-                        var pred_class = obj.pred_class;
+            for (var predKey in tags) {
+                if (tags.hasOwnProperty(predKey)) {
+                    var pred = tags[predKey];
+                    for (var objKey in pred) {
+                        var obj = pred[objKey];
+                        var predClass = obj.predClass;
                         chunk.render(bodies.block, ctx.push(
-                            {pred_key: pred_key,
-                             obj_key: obj_key,
-                             pred_class: pred_class, 
+                            {predKey: predKey,
+                             objKey: objKey,
+                             predClass: predClass, 
                              obj:obj}));
                     }
                 }
