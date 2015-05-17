@@ -179,8 +179,8 @@ function stepValidateTagExistencePath(desc, path) {
 
 function stepValidateNonEntityExistence(desc, ent) {
   step(desc, function(done) {
-  var query = "SELECT \"entityId\", \"revisionId\", \"revisionNum\" FROM wh_entity WHERE path = '" +
-    ent.path().toDottedPath() + "'";
+    var query = "SELECT \"entityId\", \"revisionId\", \"revisionNum\" FROM wh_entity WHERE path = '" +
+      ent.path().toDottedPath() + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
       result.rowCount.should.equal(0);
@@ -283,7 +283,7 @@ describe('update', function() {
         var ent = ents.one;
         should.deepEqual(result.rowCount, 1);
         checkLogCreate(result.rows[0],ent);
-    });
+      });
 
     stepGenericDelete('delete', ents.one, delMark);
 

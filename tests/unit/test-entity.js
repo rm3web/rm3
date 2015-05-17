@@ -158,10 +158,10 @@ describe('entity', function() {
       e = new entity.Entity();
       now = new Date();
       e.createNew(new sitepath(['wh']), 'base', now);
-        e.data.posting = '<div>Test test</div>';
-        e.summary = 
-        {"title": "blrg",
-         "abstract": "some text goes here"};
+      e.data.posting = '<div>Test test</div>';
+      e.summary = 
+      {"title": "blrg",
+       "abstract": "some text goes here"};
     });
 
     describe('#updateTimes', function() {
