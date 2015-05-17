@@ -3,7 +3,7 @@ var sitepath = require ('../../lib/sitepath');
 var should = require('should');
 
 describe('entity', function() {
-  describe('#from_db', function() {
+  describe('#fromDb', function() {
     var e;
     var queryresp = { 
       command: 'SELECT',
@@ -38,7 +38,7 @@ describe('entity', function() {
 
     beforeEach(function() {
       e = new entity.Entity();
-      e.from_db(queryresp, {});
+      e.fromDb(queryresp, {});
     });
 
     it('should output correctly', function () {
@@ -59,8 +59,8 @@ describe('entity', function() {
       e.should.be.eql(e2);
     });
 
-    it('should work with to_rec', function () {
-      queryresp.rows[0].should.be.eql(e.to_rec());
+    it('should work with toRec', function () {
+      queryresp.rows[0].should.be.eql(e.toRec());
     });
   });
 

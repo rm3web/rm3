@@ -72,7 +72,7 @@ describe('query', function() {
 
     var Entclass = function() {};
 
-    Entclass.prototype.from_db = function(queryresp) {
+    Entclass.prototype.fromDb = function(queryresp) {
     };
 
     var db = {};
@@ -128,7 +128,7 @@ describe('query', function() {
     });
   });
 
-  it('query from_db not_found', function (done) {
+  it('query fromDb not_found', function (done) {
     var plan = new Plan(2, done);
     var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
     
@@ -136,7 +136,7 @@ describe('query', function() {
 
     var Entclass = function() {};
 
-    Entclass.prototype.from_db = function(queryresp) {
+    Entclass.prototype.fromDb = function(queryresp) {
       should.fail('should not try to call');
     };
 
@@ -165,7 +165,7 @@ describe('query', function() {
     });
   });
 
-  it('query from_db error', function (done) {
+  it('query fromDb error', function (done) {
     var plan = new Plan(2, done);
     var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
     
@@ -173,7 +173,7 @@ describe('query', function() {
 
     var Entclass = function() {};
 
-    Entclass.prototype.from_db = function(queryresp) {
+    Entclass.prototype.fromDb = function(queryresp) {
       should.fail('should not try to call');
     };
 
@@ -201,7 +201,7 @@ describe('query', function() {
     });
   });
 
-  it('query from_db not_found log', function (done) {
+  it('query fromDb not_found log', function (done) {
     var plan = new Plan(2, done);
     var select_query = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
 "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", data \
@@ -211,7 +211,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var Entclass = function() {};
 
-    Entclass.prototype.from_db = function(queryresp) {
+    Entclass.prototype.fromDb = function(queryresp) {
       should.fail('should not try to call');
     };
 
@@ -239,7 +239,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     });
   });
 
-  it('query from_db error log', function (done) {
+  it('query fromDb error log', function (done) {
     var plan = new Plan(2, done);
     var select_query = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
 "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", data \
@@ -249,7 +249,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var Entclass = function() {};
 
-    Entclass.prototype.from_db = function(queryresp) {
+    Entclass.prototype.fromDb = function(queryresp) {
       should.fail('should not try to call');
     };
 
