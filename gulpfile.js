@@ -3,29 +3,90 @@ var gulp = require('gulp')
   , nodemon = require('gulp-nodemon')
   , jshint = require('gulp-jshint')
   , istanbul = require('gulp-istanbul')
-  , mocha = require('gulp-mocha');
+  , mocha = require('gulp-mocha')
+  , run = require('gulp-run')
+  , jscs = require('gulp-jscs')
+  ;
 
-gulp.task('test', function () {
-    return gulp.src('tests/unit/*.js', {read: false})
-        .pipe(mocha({}));
+var lintable = ['lib/**/*.js', 'tests/**/*.js'];
+
+gulp.task('unit-tests', function (cb) {
+  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
+  var unit = gulp.src('tests/unit/*.js', {read: false})
+        .pipe(mocha({}))
+        .on('end', cb);
 });
 
-gulp.task('coverage', function (cb) {
+gulp.task('create-db', function (cb){
+  run('dropdb --if-exists rm3unit && createdb rm3unit').exec()
+    .pipe(gulp.dest('output'))
+    .on('end', cb);
+});
+
+gulp.task('build-schema', ['create-db'], function (cb){
+  gulp.src('db-schema.sql')
+    .pipe(run('psql rm3unit'))
+    .pipe(gulp.dest('output'))
+    .on('end', cb);
+});
+
+gulp.task('db-tests', ['create-db', 'build-schema'], function (cb) {
+  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
+  var unit = gulp.src('tests/db/*.js', {read: false})
+        .pipe(mocha({}))
+        .on('end', cb);
+});
+
+gulp.task('test', ['unit-tests', 'db-tests']);
+
+gulp.task('coverage', ['create-db', 'build-schema'], function (cb) {
+  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   gulp.src(['lib/**/*.js'])
     .pipe(istanbul()) // Covering files
     .pipe(istanbul.hookRequire()) // Force `require` to return covered files
     .on('finish', function () {
-      gulp.src(['tests/unit/*.js'])
+      gulp.src(['tests/**/*.js'])
         .pipe(mocha())
         .pipe(istanbul.writeReports()) // Creating the reports after tests runned
         .on('end', cb);
     });
 });
 
-gulp.task('lint', function () {
-  gulp.src('./**/*.js')
+gulp.task('coveralls', ['create-db', 'build-schema'], function (cb) {
+  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
+  gulp.src(['lib/**/*.js'])
+    .pipe(istanbul()) // Covering files
+    .pipe(istanbul.hookRequire()) // Force `require` to return covered files
+    .on('finish', function () {
+      gulp.src(['tests/**/*.js'])
+        .pipe(mocha())
+        .pipe(istanbul.writeReports()) // Creating the reports after tests runned
+        .on('end', function() {
+          run('cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage').exec()
+            .pipe(gulp.dest('output'))
+            .on('end', cb);
+        });
+    });
+});
+
+
+gulp.task('jscs', function (cb) {
+  gulp.src(lintable)
+    .pipe(jscs())
+    .pipe(gulp.dest('src'))
+    .on('end', cb);
+});
+
+gulp.task('jshint', function (cb) {
+  gulp.src(lintable)
     .pipe(jshint())
+    .pipe(jshint.reporter('default'))
+    .on('end', cb);
 })
+
+gulp.task('lint', ['jshint', 'jscs'])
+
+gulp.task('travis', ['lint', 'coveralls'])
 
 gulp.task('develop', function () {
   nodemon(
