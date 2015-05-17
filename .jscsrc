@@ -54,5 +54,18 @@
   "disallowSpacesInsideParentheses": true,
 
   "disallowMultipleLineBreaks": true,
-  "disallowNewlineBeforeBlockStatements": true
+  "disallowNewlineBeforeBlockStatements": true,
+
+  "plugins": [
+      "jscs-jsdoc"
+  ],
+  "jsDoc": {
+      "checkAnnotations": {
+        "preset": "jsdoc3",
+        "extra": {
+            "title": true
+        }
+      },
+      "checkTypes": "strictNativeCase"
+  }
 }
