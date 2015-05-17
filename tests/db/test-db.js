@@ -9,7 +9,7 @@ var Plan = require('test-plan');
 
 describe('db', function() {
   describe('db test sequence', function (done) {
-    var client, db_done;
+    var client, dbDone;
     step('connect', function(next) {
       db.connectWrap(function(err, cl, dbd) {
         if(err){
@@ -18,7 +18,7 @@ describe('db', function() {
         dbd.should.be.an.instanceof(Function);
         cl.should.be.an.instanceof(Object);
         client = cl;
-        db_done = dbd;
+        dbDone = dbd;
         should.deepEqual(client.database,"rm3unit");
 
         next();
@@ -33,7 +33,7 @@ describe('db', function() {
         result.rows.should.be.an.instanceof(Array);
         result.rows[0].number.should.equal(1);
         
-        db_done();
+        dbDone();
         if(err) {
           should.fail(err);
         }
