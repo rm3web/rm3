@@ -9,16 +9,16 @@ var Plan = require('test-plan');
 
 describe('db', function() {
   describe('db test sequence', function (done) {
-    var client, db_done;
+    var client, dbDone;
     step('connect', function(next) {
-      db.connect_wrap(function(err, cl, dbd) {
+      db.connectWrap(function(err, cl, dbd) {
         if(err){
           should.fail();
         }
         dbd.should.be.an.instanceof(Function);
         cl.should.be.an.instanceof(Object);
         client = cl;
-        db_done = dbd;
+        dbDone = dbd;
         should.deepEqual(client.database,"rm3unit");
 
         next();
@@ -33,7 +33,7 @@ describe('db', function() {
         result.rows.should.be.an.instanceof(Array);
         result.rows[0].number.should.equal(1);
         
-        db_done();
+        dbDone();
         if(err) {
           should.fail(err);
         }
@@ -54,7 +54,7 @@ describe('db', function() {
     });
 
     it('should handle open_transaction errors', function(next) {
-      db.open_transaction(client, undefined, function(err){
+      db.openTransaction(client, undefined, function(err){
         if (err) {
           err.name.should.equal('DbError');
         } else {
@@ -65,7 +65,7 @@ describe('db', function() {
     });
 
     it('should handle commit_transaction errors', function(next) {
-      db.commit_transaction(client, function(err){
+      db.commitTransaction(client, function(err){
         if (err) {
           err.name.should.equal('DbCommitFailedError');
         } else {
@@ -76,7 +76,7 @@ describe('db', function() {
     });
 
     it('should handle rollback_transaction errors', function(next) {
-      db.rollback_transaction(client, function(err){
+      db.rollbackTransaction(client, function(err){
         if (err) {
           err.name.should.equal('DbRollbackFailedError');
         } else {
@@ -89,16 +89,16 @@ describe('db', function() {
 
   
   it('should wrap connection refused errors', function () {
-    var err = db.wrap_error(new Error('could not connect to server: Connection refused'));
+    var err = db.wrapError(new Error('could not connect to server: Connection refused'));
     err.name.should.equal('DbConnectionRefusedError');
   });
 
   it('should wrap table missing errors', function () {
-    var err = db.wrap_error(new Error('relation wh_frro does not exist'));
+    var err = db.wrapError(new Error('relation wh_frro does not exist'));
     err.name.should.equal('DbTableMissingError');
   });
 
   after(function() {
-    db.gun_database();
+    db.gunDatabase();
   });
 });

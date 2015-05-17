@@ -1,11 +1,11 @@
-var path_map = require('../../lib/middleware/path_map');
+var pathMap = require('../../lib/middleware/path_map');
 var sitepath = require ('../../lib/sitepath');
 var should = require('should');
 
-describe('middleware:path_map', function() {
+describe('middleware:pathMap', function() {
   var res = {};
 
-  var middleware = path_map();
+  var middleware = pathMap();
   should.deepEqual(typeof middleware, "function");
 
   var tests = [

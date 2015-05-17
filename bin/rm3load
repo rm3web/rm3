@@ -22,13 +22,13 @@ program
 function loadData(parsedData) {
   console.log(parsedData);
   ent = new entity.Entity();
-  ent.from_db({rows: [parsedData]});
+  ent.fromDb({rows: [parsedData]});
   if (program.path) {
     ent._path = program.path
   }
-  update.create_entity(db, ent, true, 'loaded via rm3load', function(){
+  update.createEntity(db, ent, true, 'loaded via rm3load', function(){
     console.log('done')
-    db.gun_database();
+    db.gunDatabase();
   });
 }
 

@@ -41,7 +41,7 @@ program
 
     if (options.url) {
       if (validator.isURL(options.url)) {
-        ent.summary.profile_url = options.url;
+        ent.summary.profileUrl = options.url;
       } else {
         console.log('invalid URL')
         return;
@@ -72,14 +72,14 @@ program
         return;
       }
       
-      update.create_entity(db, ent, true, 
+      update.createEntity(db, ent, true, 
                            'cli', function(err, entity_id, revision_id, revision_num) {
         if (err) {
           console.log('error:');
           console.log(err);
         } else {
           console.log('Created');
-          db.gun_database();
+          db.gunDatabase();
         }
       });
     });
@@ -95,14 +95,14 @@ program
       console.log('Name and role are required')
       return;
     }
-    update.assign_user_to_role(db, options.userroot.down(name), role,
+    update.assignUserToRole(db, options.userroot.down(name), role,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
         console.log(err);
       } else {
         console.log('Created');
-        db.gun_database();
+        db.gunDatabase();
       }
     });
   });
@@ -128,7 +128,7 @@ program
     });
     resp.on('end', function() {
       console.log('--');
-      db.gun_database();
+      db.gunDatabase();
     });
   });
 
@@ -151,7 +151,7 @@ program
     });
     resp.on('end', function() {
       console.log('--');
-      db.gun_database();
+      db.gunDatabase();
     });
   });
 
@@ -176,7 +176,7 @@ program
     });
     resp.on('end', function() {
       console.log('--');
-      db.gun_database();
+      db.gunDatabase();
     });
   });
 
@@ -189,14 +189,14 @@ program
       console.log('Name and role are required')
       return;
     }
-    update.remove_user_from_role(db, options.userroot.down(name), role,
+    update.removeUserFromRole(db, options.userroot.down(name), role,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
         console.log(err);
       } else {
         console.log('Deleted');
-        db.gun_database();
+        db.gunDatabase();
       }
     });
   });
@@ -206,19 +206,19 @@ program
   .command('permit [role] [permission] [path]')
   .description('add a permission to a role')
   .action(function(role, permission, path, options){
-//exports.add_permission_to_role = function(db, role, permission, path, note, next) {
+//exports.addPermissionToRole = function(db, role, permission, path, note, next) {
     if (!(permission && role && path)) {
       console.log('role, permission, and path are required')
       return;
     }
-    update.add_permission_to_role(db, role, permission, path,
+    update.addPermissionToRole(db, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
         console.log(err);
       } else {
         console.log('Created');
-        db.gun_database();
+        db.gunDatabase();
       }
     });
   });
@@ -231,14 +231,14 @@ program
       console.log('role, permission, and path are required')
       return;
     }
-    update.remove_permission_from_role(db, role, permission, path,
+    update.removePermissionFromRole(db, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
         console.log(err);
       } else {
         console.log('Deleted');
-        db.gun_database();
+        db.gunDatabase();
       }
     });
   });
