@@ -66,6 +66,11 @@
             "title": true
         }
       },
+      "checkParamNames": true,
+      "checkRedundantParams": true,
+      "checkReturnTypes": true,
+      "checkRedundantReturns": true,
+      "checkTypes": true,
       "checkTypes": "strictNativeCase"
   }
 }
