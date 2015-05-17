@@ -17,10 +17,10 @@ exports.entity_resource = function entity_resource(path, ents, entidx, provision
 
   before(function create_entity_resource(done) {
     update.create_entity(db, ent, true, 'create', 
-      function(err, entity_id, revision_id, revision_num) {
-        ents[entidx]._entity_id = entity_id;
-        ents[entidx]._revision_id = revision_id;
-        ents[entidx]._revision_num = revision_num;
+      function(err, entityId, revisionId, revisionNum) {
+        ents[entidx]._entityId = entityId;
+        ents[entidx]._revisionId = revisionId;
+        ents[entidx]._revisionNum = revisionNum;
         done(err);
     });
   });
@@ -46,10 +46,10 @@ exports.user_resource = function user_resource(userpath, username, ents, entidx,
 
   before(function create_entity_resource(done) {
     update.create_entity(db, ent, true, 'create', 
-      function(err, entity_id, revision_id, revision_num) {
-        ents[entidx]._entity_id = entity_id;
-        ents[entidx]._revision_id = revision_id;
-        ents[entidx]._revision_num = revision_num;
+      function(err, entityId, revisionId, revisionNum) {
+        ents[entidx]._entityId = entityId;
+        ents[entidx]._revisionId = revisionId;
+        ents[entidx]._revisionNum = revisionNum;
         done(err);
     });
   });

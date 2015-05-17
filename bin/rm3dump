@@ -85,5 +85,5 @@ async.waterfall([
       console.log(JSON.stringify(rec));
     }
   }
-  db.gun_database();
+  db.gunDatabase();
 })

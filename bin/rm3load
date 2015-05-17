@@ -28,7 +28,7 @@ function loadData(parsedData) {
   }
   update.create_entity(db, ent, true, 'loaded via rm3load', function(){
     console.log('done')
-    db.gun_database();
+    db.gunDatabase();
   });
 }
 

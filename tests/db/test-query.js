@@ -12,9 +12,9 @@ function entities_should_mostly_equal(ent, ent2){
   should.deepEqual(ent2.summary,ent.summary);
   should.deepEqual(ent2.data,ent.data);
   should.deepEqual(ent2._path,ent._path);
-  should.deepEqual(ent2._entity_id,ent._entity_id);
-  should.deepEqual(ent2._revision_id,ent._revision_id);
-  should.deepEqual(ent2._revision_num,ent._revision_num);
+  should.deepEqual(ent2._entityId,ent._entityId);
+  should.deepEqual(ent2._revisionId,ent._revisionId);
+  should.deepEqual(ent2._revisionNum,ent._revisionNum);
   should.deepEqual(ent2._created,ent._created);
   should.deepEqual(ent2._modified,ent._modified);
 }
@@ -50,7 +50,7 @@ describe('query', function() {
 
     it('returns entities using revid', function(done) {
       var ent = ents.one;
-      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, path, ent._revision_id, function(err, ent2){
+      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, path, ent._revisionId, function(err, ent2){
         entities_should_mostly_equal(ent,ent2);
         should.deepEqual(ent2._created,now);
         should.deepEqual(ent2._modified,now);
@@ -141,13 +141,13 @@ describe('query', function() {
       ents.updated.data.posting = "<div>blah blah blah</div>";
       ents.updated.summary.title = 'updated';
       update.update_entity(db, ents.one, ents.updated, true, 'update',
-        function(err, entity_id, revision_id, revision_num) {
-          entity_id.should.be.an.instanceof(String);
-          revision_id.should.be.an.instanceof(String);
-          revision_num.should.be.an.instanceof(Number);
-          ents.updated._entity_id = entity_id;
-          ents.updated._revision_id = revision_id;
-          ents.updated._revision_num = revision_num;
+        function(err, entityId, revisionId, revisionNum) {
+          entityId.should.be.an.instanceof(String);
+          revisionId.should.be.an.instanceof(String);
+          revisionNum.should.be.an.instanceof(Number);
+          ents.updated._entityId = entityId;
+          ents.updated._revisionId = revisionId;
+          ents.updated._revisionNum = revisionNum;
           done(err);
         }
       );
@@ -163,14 +163,14 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        should.deepEqual(new Date(arts[1].data.to_data.created),now);
-        should.deepEqual(arts[0].evt_class,'create');
-        should.deepEqual(arts[1].evt_class,'update');
-        should.deepEqual(arts[0].revision_num,1);
-        should.deepEqual(arts[1].revision_num,2);
+        should.deepEqual(arts.length,2);
+        should.deepEqual(new Date(arts[1].data.toData.created),now);
+        should.deepEqual(arts[0].evtClass,'create');
+        should.deepEqual(arts[1].evtClass,'update');
+        should.deepEqual(arts[0].revisionNum,1);
+        should.deepEqual(arts[1].revisionNum,2);
         should.deepEqual(arts[0].path.toDottedPath(), path.toDottedPath());
         should.deepEqual(arts[1].path.toDottedPath(), path.toDottedPath());
-        should.deepEqual(arts.length,2);
         done();
       });      
     });

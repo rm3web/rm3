@@ -6,11 +6,11 @@ var should = require('should');
 
 describe('update', function() {
   it('executes correctly', function(done) {
-    var insert_query = "INSERT INTO wh_entity (path, stub, entity_id, revision_id, \
-revision_num, proto, modified, created, summary, data, tags) VALUES ($1, $2, \
-$3, $4, $5, $6, $7, $8, $9, $10, $11)";
-    var insert_tag_query = "INSERT INTO wh_tag (subj_path, pred_class, \
-pred_path, obj_str) VALUES ($1, $2, $3, $4)";
+    var insert_query = 'INSERT INTO wh_entity (path, stub, "entityId", "revisionId", \
+"revisionNum", proto, modified, created, summary, data, tags) VALUES ($1, $2, \
+$3, $4, $5, $6, $7, $8, $9, $10, $11)';
+    var insert_tag_query = 'INSERT INTO wh_tag ("subjPath", "predClass", \
+"predPath", "objStr") VALUES ($1, $2, $3, $4)';
 
     var now = new Date();
 
@@ -41,7 +41,7 @@ pred_path, obj_str) VALUES ($1, $2, $3, $4)";
           should.deepEqual(spec.name, 'insert_entity_query');
           should.deepEqual(spec.values[0], 'wh'); //path
           should.deepEqual(spec.values[1], false); //stub
-          should.deepEqual(spec.values[4], 1); //revision_num
+          should.deepEqual(spec.values[4], 1); //revisionNum
           should.deepEqual(spec.values[5], 'base'); //proto
           should.deepEqual(spec.values[8], JSON.stringify(ent.summary)); // summary
           should.deepEqual(spec.values[9], JSON.stringify(ent.data)); // summary
@@ -58,14 +58,14 @@ pred_path, obj_str) VALUES ($1, $2, $3, $4)";
           //t.deepEqual(spec.text, insert_query);
           should.deepEqual(spec.name, 'insert_log_query');
           should.deepEqual(spec.values[0], 'wh'); //path
-          should.deepEqual(spec.values[3], null); //base_revision_id
-          should.deepEqual(spec.values[4], null); //replace_revision_id
-          should.deepEqual(spec.values[6], 1); //revision_num
+          should.deepEqual(spec.values[3], null); //base_revisionId
+          should.deepEqual(spec.values[4], null); //replace_revisionId
+          should.deepEqual(spec.values[6], 1); //revisionNum
           should.deepEqual(spec.values[10], 'create');
           should.deepEqual(spec.values[11], true);
           var data = JSON.parse(spec.values[12]);
-          should.deepEqual(data.to_data.summary, ent.summary);
-          should.deepEqual(data.to_data.data, ent.data);
+          should.deepEqual(data.toData.summary, ent.summary);
+          should.deepEqual(data.toData.data, ent.data);
           func(null, {});
         }
       };
@@ -75,7 +75,7 @@ pred_path, obj_str) VALUES ($1, $2, $3, $4)";
         });
     };
 
-    update.create_entity(db, ent, true, 'create', function(err, entity_id, revision_id, revision_num){
+    update.create_entity(db, ent, true, 'create', function(err, entityId, revisionId, revisionNum){
       if(err) {
         should.fail(err);
       } else {
@@ -85,7 +85,7 @@ pred_path, obj_str) VALUES ($1, $2, $3, $4)";
   });
   it('fails on bad evt_class', function(done) {
     var logentry = {
-      evt_class: 'this_is_not_valid'
+      evtClass: 'this_is_not_valid'
     };
     update._private.exec_logentry(true, undefined, undefined, logentry, function(err) {
       if (err) {
