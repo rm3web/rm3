@@ -52,7 +52,7 @@ describe('middleware:fetch_entity', function() {
 
     it('middleware fetch_entity revision_id', function (done) {
       req.query = {};
-      req.query.revision_id = '11111111-1111-1111-a111-111111111111';
+      req.query.revisionId = '11111111-1111-1111-a111-111111111111';
 
       query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         ent.should.eql(entity);
@@ -112,7 +112,7 @@ describe('middleware:fetch_entity', function() {
       middleware(req, res, function(err)
       {
         should.deepEqual(err.name,'NotFoundError');
-        should.deepEqual(err.http_response_code, 404);
+        should.deepEqual(err.httpResponseCode, 404);
         done();
       });
 
