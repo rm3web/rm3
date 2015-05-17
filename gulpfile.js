@@ -62,9 +62,10 @@ gulp.task('coveralls', ['create-db', 'build-schema'], function (cb) {
       gulp.src(['tests/**/*.js'])
         .pipe(mocha())
         .pipe(istanbul.writeReports({reporters: ['lcovonly']})) // Creating the reports after tests runned
-        .on('end', cb);
-      gulp.src('test/coverage/**/lcov.info')
-        .pipe(coveralls());
+        .on('end', function() {
+          gulp.src('test/coverage/**/lcov.info')
+            .pipe(coveralls());
+        });
     });
 });
 
