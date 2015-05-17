@@ -8,18 +8,18 @@ require('mocha-steps');
 var Plan = require('test-plan');
 
 describe('db', function() {
-  describe('db test sequence', function (done) {
+  describe('db test sequence', function(done) {
     var client, dbDone;
     step('connect', function(next) {
       db.connectWrap(function(err, cl, dbd) {
-        if(err){
+        if (err) {
           should.fail();
         }
         dbd.should.be.an.instanceof(Function);
         cl.should.be.an.instanceof(Object);
         client = cl;
         dbDone = dbd;
-        should.deepEqual(client.database,"rm3unit");
+        should.deepEqual(client.database, "rm3unit");
 
         next();
       });
@@ -29,15 +29,15 @@ describe('db', function() {
         text: 'SELECT $1::int AS number',
         values: [1],
         name: 'test-db-1'
-      }, function(err, result){
+      }, function(err, result) {
         result.rows.should.be.an.instanceof(Array);
         result.rows[0].number.should.equal(1);
-        
+
         dbDone();
-        if(err) {
+        if (err) {
           should.fail(err);
         }
-        
+
         next();
       });
     });
@@ -54,7 +54,7 @@ describe('db', function() {
     });
 
     it('should handle open_transaction errors', function(next) {
-      db.openTransaction(client, undefined, function(err){
+      db.openTransaction(client, undefined, function(err) {
         if (err) {
           err.name.should.equal('DbError');
         } else {
@@ -65,7 +65,7 @@ describe('db', function() {
     });
 
     it('should handle commit_transaction errors', function(next) {
-      db.commitTransaction(client, function(err){
+      db.commitTransaction(client, function(err) {
         if (err) {
           err.name.should.equal('DbCommitFailedError');
         } else {
@@ -76,7 +76,7 @@ describe('db', function() {
     });
 
     it('should handle rollback_transaction errors', function(next) {
-      db.rollbackTransaction(client, function(err){
+      db.rollbackTransaction(client, function(err) {
         if (err) {
           err.name.should.equal('DbRollbackFailedError');
         } else {
@@ -87,13 +87,12 @@ describe('db', function() {
     });
   });
 
-  
-  it('should wrap connection refused errors', function () {
+  it('should wrap connection refused errors', function() {
     var err = db.wrapError(new Error('could not connect to server: Connection refused'));
     err.name.should.equal('DbConnectionRefusedError');
   });
 
-  it('should wrap table missing errors', function () {
+  it('should wrap table missing errors', function() {
     var err = db.wrapError(new Error('relation wh_frro does not exist'));
     err.name.should.equal('DbTableMissingError');
   });

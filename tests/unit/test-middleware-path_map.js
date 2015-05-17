@@ -10,17 +10,16 @@ describe('middleware:pathMap', function() {
 
   var tests = [
     {args: '/',       expected: new sitepath(['wh'])},
-    {args: '/wh/',    expected: new sitepath(['wh','wh'])},
+    {args: '/wh/',    expected: new sitepath(['wh', 'wh'])},
     {args: '/$new/wh/', expected: new sitepath(['wh', 'wh']), creation: '$new'}
   ];
-  
+
   tests.forEach(function(test) {
     it('correctly maps ' + test.args, function(done) {
       var req = {path: test.args};
-      middleware(req, res, function()
-      {
+      middleware(req, res, function() {
         req.sitepath.should.eql(test.expected);
-        if(test.hasOwnProperty('creation')) {
+        if (test.hasOwnProperty('creation')) {
           req.creation.should.equal(test.creation);
         }
         done();

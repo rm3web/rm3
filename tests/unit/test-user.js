@@ -22,26 +22,26 @@ describe('user', function() {
     should.deepEqual(e.summary.title, 'unicorn');
 
     user.encodePassword('meow', e, function(err) {
-      if(err) {
+      if (err) {
         should.fail();
       }
       user.authenticatePassword('meow', e, function(err) {
-        if(err) {
+        if (err) {
           should.fail();
         }
         done();
       });
     });
   });
-  it('catches bad passwords', function (done) {
+  it('catches bad passwords', function(done) {
 
     user.encodePassword('hiss', e, function(err) {
-      if(err) {
+      if (err) {
         should.fail();
       }
       user.authenticatePassword('meow', e, function(err) {
-        if(err) {
-          should.deepEqual(err.name,'PasswordValidationError');
+        if (err) {
+          should.deepEqual(err.name, 'PasswordValidationError');
         } else {
           should.fail();
         }

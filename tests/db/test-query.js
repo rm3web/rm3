@@ -8,74 +8,74 @@ var user = require('../../lib/user');
 var should = require('should');
 var resources = require('../lib/resources.js');
 
-function entitiesShouldMostlyEqual(ent, ent2){
-  should.deepEqual(ent2.summary,ent.summary);
-  should.deepEqual(ent2.data,ent.data);
-  should.deepEqual(ent2._path,ent._path);
-  should.deepEqual(ent2._entityId,ent._entityId);
-  should.deepEqual(ent2._revisionId,ent._revisionId);
-  should.deepEqual(ent2._revisionNum,ent._revisionNum);
-  should.deepEqual(ent2._created,ent._created);
-  should.deepEqual(ent2._modified,ent._modified);
+function entitiesShouldMostlyEqual(ent, ent2) {
+  should.deepEqual(ent2.summary, ent.summary);
+  should.deepEqual(ent2.data, ent.data);
+  should.deepEqual(ent2._path, ent._path);
+  should.deepEqual(ent2._entityId, ent._entityId);
+  should.deepEqual(ent2._revisionId, ent._revisionId);
+  should.deepEqual(ent2._revisionNum, ent._revisionNum);
+  should.deepEqual(ent2._created, ent._created);
+  should.deepEqual(ent2._modified, ent._modified);
 }
 
 describe('query', function() {
-  describe('#entityFromPath', function () {
+  describe('#entityFromPath', function() {
     var ents = {};
 
-    var path = new sitepath(['wh','entityFromPath']);
+    var path = new sitepath(['wh', 'entityFromPath']);
     var now = new Date();
 
     resources.entityResource(path, ents, 'one', false, now);
 
     it('returns not found exceptions', function(done) {
-      var badpath = new sitepath(['wh','rainbows']);
+      var badpath = new sitepath(['wh', 'rainbows']);
 
-      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, badpath, null, function(err, ent){
-        should.deepEqual(err.name,'EntityNotFoundError');
-        should.deepEqual(err.path,badpath.toDottedPath());
+      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, badpath, null, function(err, ent) {
+        should.deepEqual(err.name, 'EntityNotFoundError');
+        should.deepEqual(err.path, badpath.toDottedPath());
         done();
       });
     });
 
     it('returns entities', function(done) {
-      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2){
+      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2) {
         var ent = ents.one;
-        entitiesShouldMostlyEqual(ent,ent2);
-        should.deepEqual(ent2._created,now);
-        should.deepEqual(ent2._modified,now);
+        entitiesShouldMostlyEqual(ent, ent2);
+        should.deepEqual(ent2._created, now);
+        should.deepEqual(ent2._modified, now);
         done();
       });
     });
 
     it('returns entities using revid', function(done) {
       var ent = ents.one;
-      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, ent._revisionId, function(err, ent2){
-        entitiesShouldMostlyEqual(ent,ent2);
-        should.deepEqual(ent2._created,now);
-        should.deepEqual(ent2._modified,now);
+      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, ent._revisionId, function(err, ent2) {
+        entitiesShouldMostlyEqual(ent, ent2);
+        should.deepEqual(ent2._created, now);
+        should.deepEqual(ent2._modified, now);
         done();
       });
     });
   });
 
-  describe('#query', function () {
+  describe('#query', function() {
     var ents = {};
 
-    var path1 = new sitepath(['wh','query']);
-    var path2 = new sitepath(['wh','query','sub']);
+    var path1 = new sitepath(['wh', 'query']);
+    var path2 = new sitepath(['wh', 'query', 'sub']);
     var now = new Date();
 
-    resources.entityResource(path1, ents, 'one', false, now, function(e){
-      e.addTag('navigation','navbar');
+    resources.entityResource(path1, ents, 'one', false, now, function(e) {
+      e.addTag('navigation', 'navbar');
     });
 
-    resources.entityResource(path2, ents, 'two', false, now, function(e){
-      e.addTag(null,'navbar');
+    resources.entityResource(path2, ents, 'two', false, now, function(e) {
+      e.addTag(null, 'navbar');
     });
 
     it('works', function(done) {
-      var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{},undefined,undefined);
+      var resp = query.query(db, {context: "ROOT"}, path1, 'child', 'entity', {}, undefined, undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -84,17 +84,17 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        should.deepEqual(arts[0].title,'one');
-        should.deepEqual(arts[0].path.toDottedPath(),'wh.query');
-        should.deepEqual(arts[1].title,'two');
-        should.deepEqual(arts[1].path.toDottedPath(),'wh.query.sub');
-        should.deepEqual(arts.length,2);
+        should.deepEqual(arts[0].title, 'one');
+        should.deepEqual(arts[0].path.toDottedPath(), 'wh.query');
+        should.deepEqual(arts[1].title, 'two');
+        should.deepEqual(arts[1].path.toDottedPath(), 'wh.query.sub');
+        should.deepEqual(arts.length, 2);
         done();
       });
     });
 
     it('works for the navbar', function(done) {
-      var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{navbar: true},undefined,undefined);
+      var resp = query.query(db, {context: "ROOT"}, path1, 'child', 'entity', {navbar: true}, undefined, undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -103,15 +103,15 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        should.deepEqual(arts[0].title,'one');
-        should.deepEqual(arts[0].path.toDottedPath(),'wh.query');
-        should.deepEqual(arts.length,1);
+        should.deepEqual(arts[0].title, 'one');
+        should.deepEqual(arts[0].path.toDottedPath(), 'wh.query');
+        should.deepEqual(arts.length, 1);
         done();
       });
     });
 
     it('works for plain tags', function(done) {
-      var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{tag: 'navbar'},undefined,undefined);
+      var resp = query.query(db, {context: "ROOT"}, path1, 'child', 'entity', {tag: 'navbar'}, undefined, undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -120,9 +120,9 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        should.deepEqual(arts[0].title,'two');
-        should.deepEqual(arts[0].path.toDottedPath(),'wh.query.sub');
-        should.deepEqual(arts.length,1);
+        should.deepEqual(arts[0].title, 'two');
+        should.deepEqual(arts[0].path.toDottedPath(), 'wh.query.sub');
+        should.deepEqual(arts.length, 1);
         done();
       });
     });
@@ -131,7 +131,7 @@ describe('query', function() {
   describe("#queryHistory", function() {
     var ents = {};
 
-    var path = new sitepath(['wh','queryHistory']);
+    var path = new sitepath(['wh', 'queryHistory']);
     var now = new Date();
 
     resources.entityResource(path, ents, 'one', false, now);
@@ -153,7 +153,7 @@ describe('query', function() {
       );
     });
 
-    it('works', function(done){
+    it('works', function(done) {
       var resp = query.queryHistory(db, {}, path);
       var arts = [];
       resp.on('article', function(article) {
@@ -163,22 +163,22 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        should.deepEqual(arts.length,2);
-        should.deepEqual(new Date(arts[1].data.toData.created),now);
-        should.deepEqual(arts[0].evtClass,'create');
-        should.deepEqual(arts[1].evtClass,'update');
-        should.deepEqual(arts[0].revisionNum,1);
-        should.deepEqual(arts[1].revisionNum,2);
+        should.deepEqual(arts.length, 2);
+        should.deepEqual(new Date(arts[1].data.toData.created), now);
+        should.deepEqual(arts[0].evtClass, 'create');
+        should.deepEqual(arts[1].evtClass, 'update');
+        should.deepEqual(arts[0].revisionNum, 1);
+        should.deepEqual(arts[1].revisionNum, 2);
         should.deepEqual(arts[0].path.toDottedPath(), path.toDottedPath());
         should.deepEqual(arts[1].path.toDottedPath(), path.toDottedPath());
         done();
-      });      
+      });
     });
   });
 
   describe('roles', function() {
     var path = 'wh.query.*';
-    var userpath = new sitepath(['wh','query','user']);
+    var userpath = new sitepath(['wh', 'query', 'user']);
     var ents = {};
     var now = new Date();
 
@@ -189,12 +189,12 @@ describe('query', function() {
     resources.assignmentResource(userpath, 'test', 'query-role');
 
     describe('#query', function() {
-      var otherpath = new sitepath(['wh','query2','node']);
+      var otherpath = new sitepath(['wh', 'query2', 'node']);
       resources.entityResource(otherpath, ents, 'other', false, now);
 
       it('filters out forbidden nodes', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
-        var resp = query.query(db, context, otherpath, 'child','entity',{},undefined,undefined);
+        var resp = query.query(db, context, otherpath, 'child', 'entity', {}, undefined, undefined);
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -203,15 +203,14 @@ describe('query', function() {
           should.fail(err);
         });
         resp.on('end', function() {
-          should.deepEqual(arts.length,0);
+          should.deepEqual(arts.length, 0);
           done();
         });
       });
 
-
       it('lets allowed nodes through', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
-        var resp = query.query(db, context, ents.user.path(), 'child','entity',{},undefined,undefined);
+        var resp = query.query(db, context, ents.user.path(), 'child', 'entity', {}, undefined, undefined);
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -220,45 +219,45 @@ describe('query', function() {
           should.fail(err);
         });
         resp.on('end', function() {
-          should.deepEqual(arts.length,1);
-          should.deepEqual(arts[0].summary,'i like unicorns and sparkles and ponies.');
+          should.deepEqual(arts.length, 1);
+          should.deepEqual(arts[0].summary, 'i like unicorns and sparkles and ponies.');
           done();
         });
       });
     });
 
     describe('#fetchEffectivePermissions', function() {
-      var entpath = new sitepath(['wh','query','roles','node']);
+      var entpath = new sitepath(['wh', 'query', 'roles', 'node']);
 
       it('fetches for a user', function(done) {
-        query.fetchEffectivePermissions(db, ents.user.path(), entpath, function(err, permissions){
-          if(err) {
+        query.fetchEffectivePermissions(db, ents.user.path(), entpath, function(err, permissions) {
+          if (err) {
             should.fail(err);
           } else {
-            should.deepEqual(permissions,{ view: 'query-role', stuff: 'query-role'});
+            should.deepEqual(permissions, {view: 'query-role', stuff: 'query-role'});
           }
           done(err);
         });
       });
 
       it('fetches for nobody', function(done) {
-        query.fetchEffectivePermissions(db, undefined, entpath, function(err, permissions){
-          if(err) {
+        query.fetchEffectivePermissions(db, undefined, entpath, function(err, permissions) {
+          if (err) {
             should.fail(err);
           } else {
-            should.deepEqual(permissions,{ view: 'nobody'});
+            should.deepEqual(permissions, {view: 'nobody'});
           }
           done(err);
         });
       });
 
       it('fetches deeper permissions', function(done) {
-        var entpath2 = new sitepath(['wh','query','roles','node', 'node2', 'node3']);
-        query.fetchEffectivePermissions(db, ents.user.path(), entpath, function(err, permissions){
-          if(err) {
+        var entpath2 = new sitepath(['wh', 'query', 'roles', 'node', 'node2', 'node3']);
+        query.fetchEffectivePermissions(db, ents.user.path(), entpath, function(err, permissions) {
+          if (err) {
             should.fail(err);
           } else {
-            should.deepEqual(permissions,{ view: 'query-role', stuff: 'query-role'});
+            should.deepEqual(permissions, {view: 'query-role', stuff: 'query-role'});
           }
           done(err);
         });
@@ -266,26 +265,26 @@ describe('query', function() {
     });
 
     describe('#fetch_entityFromPath', function() {
-      var entpath = new sitepath(['wh','query','user','test']);
+      var entpath = new sitepath(['wh', 'query', 'user', 'test']);
       it('fetches the permissions with a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {context: 'STANDARD', user: entpath}, 
-                               entpath, undefined, function(err, ent2){
-          if(err) {
+        query.entityFromPath(db, entity.Entity, {context: 'STANDARD', user: entpath},
+                               entpath, undefined, function(err, ent2) {
+          if (err) {
             should.fail(err);
           } else {
-            should.deepEqual(ent2.permissions, { view: 'query-role', stuff: 'query-role'});
+            should.deepEqual(ent2.permissions, {view: 'query-role', stuff: 'query-role'});
           }
           done(err);
         });
       });
 
       it('fetches the permissions without a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {context: 'STANDARD', user: undefined}, 
-                               entpath, undefined, function(err, ent2){
-          if(err) {
+        query.entityFromPath(db, entity.Entity, {context: 'STANDARD', user: undefined},
+                               entpath, undefined, function(err, ent2) {
+          if (err) {
             should.fail(err);
           } else {
-            should.deepEqual(ent2.permissions, { view: 'nobody'});
+            should.deepEqual(ent2.permissions, {view: 'nobody'});
           }
           done(err);
         });
@@ -303,9 +302,9 @@ describe('query', function() {
           should.fail(err);
         });
         resp.on('end', function() {
-          should.deepEqual(arts[0].permission,'stuff');
-          should.deepEqual(arts[1].permission,'view');
-          should.deepEqual(arts.length,2);
+          should.deepEqual(arts[0].permission, 'stuff');
+          should.deepEqual(arts[1].permission, 'view');
+          should.deepEqual(arts.length, 2);
           done();
         });
       });
@@ -322,9 +321,9 @@ describe('query', function() {
           should.fail(err);
         });
         resp.on('end', function() {
-          should.deepEqual(arts[0].role,'query-role');
-          should.deepEqual(arts[1].role,'nobody');
-          should.deepEqual(arts.length,2);
+          should.deepEqual(arts[0].role, 'query-role');
+          should.deepEqual(arts[1].role, 'nobody');
+          should.deepEqual(arts.length, 2);
           done();
         });
       });
@@ -332,7 +331,7 @@ describe('query', function() {
 
     describe('#listUsersInRole', function() {
       it('works', function(done) {
-        var resp = query.listUsersInRole(db,'query-role');
+        var resp = query.listUsersInRole(db, 'query-role');
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -341,8 +340,8 @@ describe('query', function() {
           should.fail(err);
         });
         resp.on('end', function() {
-          should.deepEqual(arts[0].user,ents.user.path());
-          should.deepEqual(arts.length,1);
+          should.deepEqual(arts[0].user, ents.user.path());
+          should.deepEqual(arts.length, 1);
           done();
         });
       });
@@ -350,7 +349,7 @@ describe('query', function() {
 
     describe('#listPermissionsInRole', function() {
       it('works', function(done) {
-        var resp = query.listPermissionsInRole(db,'query-role');
+        var resp = query.listPermissionsInRole(db, 'query-role');
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -359,11 +358,11 @@ describe('query', function() {
           should.fail(err);
         });
         resp.on('end', function() {
-          should.deepEqual(arts[0].path,'wh.query.*');
-          should.deepEqual(arts[1].path,'wh.query.*');
-          should.deepEqual(arts[0].permission,'view');
-          should.deepEqual(arts[1].permission,'stuff');
-          should.deepEqual(arts.length,2);
+          should.deepEqual(arts[0].path, 'wh.query.*');
+          should.deepEqual(arts[1].path, 'wh.query.*');
+          should.deepEqual(arts[0].permission, 'view');
+          should.deepEqual(arts[1].permission, 'stuff');
+          should.deepEqual(arts.length, 2);
           done();
         });
       });

@@ -21,7 +21,7 @@ describe('user', function() {
     step('#findByUsername', function(done) {
       user.findByUsername(db, query, entity.Entity, userpath, 'test', function(err, ent2) {
         ents.req = ent2;
-        if(err) {
+        if (err) {
           should.fail(err);
         }
         done(err);
@@ -29,12 +29,11 @@ describe('user', function() {
     });
     step('#check_password', function(done) {
       user.authenticatePassword('meow_kitty', ents.req, function(err) {
-        if(err) {
+        if (err) {
           should.fail(err);
         }
         done(err);
       });
     });
   });
-   
 });

@@ -11,12 +11,12 @@ exports.entityResource = function entityResource(path, ents, entidx, provisional
   ent.data.posting = '<div></div>';
   ents[entidx] = ent;
 
-  if(func) {
+  if (func) {
     func(ent);
   }
 
   before(function createEntityResource(done) {
-    update.createEntity(db, ent, true, 'create', 
+    update.createEntity(db, ent, true, 'create',
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
         ents[entidx]._revisionId = revisionId;
@@ -37,7 +37,7 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
   user.createUser(ent, userpath, username, 'test', now);
 
   ent.summary.abstract = 'i like unicorns and sparkles and ponies.';
-  
+
   ents[entidx] = ent;
 
   before(function encodePassword(done) {
@@ -45,7 +45,7 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
   });
 
   before(function createUserResource(done) {
-    update.createEntity(db, ent, true, 'create', 
+    update.createEntity(db, ent, true, 'create',
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
         ents[entidx]._revisionId = revisionId;

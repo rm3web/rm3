@@ -2,7 +2,7 @@ var Conf = require ('../../lib/conf');
 var should = require('should');
 
 describe('conf', function() {
-  it('should work as expected', function () {
+  it('should work as expected', function() {
     // dummy test: make this better when conf develops
 
     var conString = Conf.getEndpoint('postgres');
