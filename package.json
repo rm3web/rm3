@@ -69,7 +69,7 @@
     "coverage": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha tests/unit/*.js tests/db/*.js",
     "travis": "npm run lint && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha tests/unit/*.js tests/db/*.js --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
     "lint": "./node_modules/.bin/jshint lib tests bin && ./node_modules/.bin/jscs lib tests bin",
-    "docs": "./node_modules/.bin/jsdox -A --output ./docs/api lib"
+    "docs": "./node_modules/.bin/jsdox -A --output ./docs/api lib && ./node_modules/.bin/jsdox -A --output ./docs/api/middlware lib/middleware"
   },
   "keywords": [
     "cms"
