@@ -2,7 +2,7 @@ var Page = require ('../../lib/page');
 var events = require("events");
 var should = require('should');
 
-function mock_req() {
+function mockReq() {
   var req = {scheme: {}, entity: {}, sitepath: {}, method: 'GET'};
   req.sitepath.page = null;
   req.scheme.render = function (view, data, callback) {
@@ -17,13 +17,13 @@ function mock_req() {
   return req;
 }
 
-function mock_req_view(req) {
+function mockReqView(req) {
   req.entity.view = function() {
     return {};
   };
 }
 
-function mock_req_scheme(req) {
+function mockReqScheme(req) {
   req.scheme.render = function (view, data, callback) {
     should.deepEqual(typeof callback, "function");
     var outstream = new events.EventEmitter();
@@ -33,7 +33,7 @@ function mock_req_scheme(req) {
   };
 }
 
-function mock_res() {
+function mockRes() {
   var res = {};
 
   res.writeHead = function(type, data)
@@ -56,14 +56,14 @@ describe('page', function() {
   var res, req;
 
   beforeEach(function() {
-    req = mock_req();
-    res = mock_res();
+    req = mockReq();
+    res = mockRes();
   });
 
   context('with view', function() {
     beforeEach(function() {
-      mock_req_view(req);
-      mock_req_scheme(req);
+      mockReqView(req);
+      mockReqScheme(req);
     });
     beforeEach(function() {
       res.writeHead = function(type, data)
