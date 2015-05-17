@@ -40,7 +40,7 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
   
   ents[entidx] = ent;
 
-  before(function encode_password(done) {
+  before(function encodePassword(done) {
     user.encodePassword('meow_kitty', ent, done);
   });
 
