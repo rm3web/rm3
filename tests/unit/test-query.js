@@ -66,7 +66,7 @@ describe('query', function() {
   it('#entityFromPath()', function (done) {
     var plan = new Plan(2, done);
     
-    var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
+    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
     
     var entpath = new sitepath(['wh','rq']);
 
@@ -80,7 +80,7 @@ describe('query', function() {
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         func(null, {rowCount: 1});
       };
       queryfunc(null, client, function()
@@ -100,7 +100,7 @@ describe('query', function() {
 
   it('#fetchEffectivePermissions()', function (done) {
     var plan = new Plan(2, done);
-    var select_query = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
     
     var entpath = new sitepath(['wh']);
     var user = new sitepath(['wh','users','wirehead']);
@@ -110,7 +110,7 @@ describe('query', function() {
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         func(null, {rowCount: 1, rows: ['root']});
       };
       queryfunc(null, client, function()
@@ -130,7 +130,7 @@ describe('query', function() {
 
   it('query fromDb not_found', function (done) {
     var plan = new Plan(2, done);
-    var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
+    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
     
     var entpath = new sitepath(['wh','rq']);
 
@@ -145,7 +145,7 @@ describe('query', function() {
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         func(null, {rowCount: 0});
       };
       queryfunc(null, client, function()
@@ -167,7 +167,7 @@ describe('query', function() {
 
   it('query fromDb error', function (done) {
     var plan = new Plan(2, done);
-    var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
+    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
     
     var entpath = new sitepath(['wh','rq']);
 
@@ -182,7 +182,7 @@ describe('query', function() {
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         func(new Error("Connection was ended during query"));
       };
       queryfunc(null, client, function()
@@ -203,7 +203,7 @@ describe('query', function() {
 
   it('query fromDb not_found log', function (done) {
     var plan = new Plan(2, done);
-    var select_query = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
+    var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
 "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", data \
 FROM wh_log WHERE ("revisionId" = $1)';
 
@@ -220,7 +220,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         func(null, {rowCount: 0});
       };
       queryfunc(null, client, function()
@@ -241,7 +241,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('query fromDb error log', function (done) {
     var plan = new Plan(2, done);
-    var select_query = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
+    var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
 "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", data \
 FROM wh_log WHERE ("revisionId" = $1)';
     
@@ -258,7 +258,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         func(new Error("Connection was ended during query"));
       };
       queryfunc(null, client, function()
@@ -279,7 +279,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('query', function (done) {
     var plan = new Plan(3, done);
-    var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC';
+    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC';
 
     var entpath = new sitepath(['wh']);
 
@@ -299,7 +299,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         var ee = new events.EventEmitter();
         process.nextTick(function() {
           ee.emit('row', rec);
@@ -332,7 +332,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('query count', function (done) {
     var plan = new Plan(3, done);
-    var select_query = 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)';
+    var selectQuery = 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)';
 
     var entpath = new sitepath(['wh']);
 
@@ -343,7 +343,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         var ee = new events.EventEmitter();
         process.nextTick(function() {
           ee.emit('row', rec);
@@ -374,7 +374,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('queryHistory', function (done) {
     var plan = new Plan(3, done);
-    var select_query = 'SELECT path, "entityId", note, "baseRevisionId", \
+    var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", \
 "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", \
 "evtTouched", "evtClass", "evtFinal", data FROM wh_log WHERE (path = $1) ORDER BY "revisionNum" ASC';
 
@@ -398,7 +398,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function (queryfunc) {
       var client = {};
       client.query = function(spec) {
-        should.deepEqual(spec.text, select_query);
+        should.deepEqual(spec.text, selectQuery);
         var ee = new events.EventEmitter();
         process.nextTick(function() {
           ee.emit('row', rec);
