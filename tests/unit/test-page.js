@@ -133,14 +133,14 @@ describe('page', function() {
         next();
       });
 
-      page.viewRouter.route_all('glitter.html', function(req, res, next) 
+      page.viewRouter.routeAll('glitter.html', function(req, res, next) 
       {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
         next();
       });
 
-      page.viewRouter.route_all('', function(req, res, next) 
+      page.viewRouter.routeAll('', function(req, res, next) 
       {
         should.fail();
       });

@@ -20,7 +20,7 @@ exports = module.exports = function(dust, db, query) {
         var textblock = ctx.resolve(params.field);
         var sr1 = '<textarea rows="30" class="pure-input-1" name="posting" placeholder="posting">'
         var sr2 = '</textarea>\
-<select name="textblock_format" size="1">'
+<select name="textblockFormat" size="1">'
         var sr3a = '<option value="html" selected="true">HTML</option>\
 <option value="markdown">Markdown</option>'
         var sr3b = '<option value="html">HTML</option>\
@@ -80,7 +80,7 @@ exports = module.exports = function(dust, db, query) {
         }
         longstr = longstr + '</ul></div><div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
-        protos = Protoset.list_protos();
+        protos = Protoset.listProtos();
         for(var proto in protos) {
             if (protos.hasOwnProperty(proto)) {
                 longstr = longstr + '<li><a href="/$new' + baseurl;
