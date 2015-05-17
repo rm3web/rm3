@@ -30,7 +30,7 @@ function step_generic_create(desc, path, ents, entidx, provisional, now) {
     ents[entidx].data.posting = longstr;
     ents[entidx].addTag('navigation','navbar');
 
-    update.create_entity(db, ents[entidx], provisional, 'create', 
+    update.createEntity(db, ents[entidx], provisional, 'create', 
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -49,7 +49,7 @@ function step_generic_update(desc, ents, startidx, nextidx) {
   ents[nextidx] = ents[startidx].clone();
   ents[nextidx].data.posting = "<div>blah blah blah</div>";
   step(desc, function(done) {
-    update.update_entity(db, ents[startidx], ents[nextidx], true, 'update', 
+    update.updateEntity(db, ents[startidx], ents[nextidx], true, 'update', 
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -82,7 +82,7 @@ function step_generic_move(desc, ents, startidx, newpath, move_mark) {
 
 function step_generic_delete(desc, ent, delMark) {
   step(desc, function(done) {
-    update.delete_entity(db, ent, true, 'delete',
+    update.deleteEntity(db, ent, true, 'delete',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -264,7 +264,7 @@ describe('update', function() {
     });
 
     step('try to create again', function(done) {
-      update.create_entity(db, ents.one, true, 'create', function(err) {
+      update.createEntity(db, ents.one, true, 'create', function(err) {
         if (err) {
           should.deepEqual(err.name, 'DbDuplicateRecordError');
         } else {
@@ -397,7 +397,7 @@ describe('update', function() {
     step('delete', function(done) {
       var ent = ents.start;
       ent._path = newpath;
-      update.delete_entity(db, ent, true, 'delete',
+      update.deleteEntity(db, ent, true, 'delete',
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           entityId.should.equal(ent._entityId);

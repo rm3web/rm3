@@ -140,7 +140,7 @@ describe('query', function() {
       ents.updated = ents.one.clone();
       ents.updated.data.posting = "<div>blah blah blah</div>";
       ents.updated.summary.title = 'updated';
-      update.update_entity(db, ents.one, ents.updated, true, 'update',
+      update.updateEntity(db, ents.one, ents.updated, true, 'update',
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           revisionId.should.be.an.instanceof(String);
@@ -227,11 +227,11 @@ describe('query', function() {
       });
     });
 
-    describe('#fetch_effective_permissions', function() {
+    describe('#fetchEffectivePermissions', function() {
       var entpath = new sitepath(['wh','query','roles','node']);
 
       it('fetches for a user', function(done) {
-        query.fetch_effective_permissions(db, ents.user.path(), entpath, function(err, permissions){
+        query.fetchEffectivePermissions(db, ents.user.path(), entpath, function(err, permissions){
           if(err) {
             should.fail(err);
           } else {
@@ -242,7 +242,7 @@ describe('query', function() {
       });
 
       it('fetches for nobody', function(done) {
-        query.fetch_effective_permissions(db, undefined, entpath, function(err, permissions){
+        query.fetchEffectivePermissions(db, undefined, entpath, function(err, permissions){
           if(err) {
             should.fail(err);
           } else {
@@ -254,7 +254,7 @@ describe('query', function() {
 
       it('fetches deeper permissions', function(done) {
         var entpath2 = new sitepath(['wh','query','roles','node', 'node2', 'node3']);
-        query.fetch_effective_permissions(db, ents.user.path(), entpath, function(err, permissions){
+        query.fetchEffectivePermissions(db, ents.user.path(), entpath, function(err, permissions){
           if(err) {
             should.fail(err);
           } else {

@@ -75,7 +75,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
         });
     };
 
-    update.create_entity(db, ent, true, 'create', function(err, entityId, revisionId, revisionNum){
+    update.createEntity(db, ent, true, 'create', function(err, entityId, revisionId, revisionNum){
       if(err) {
         should.fail(err);
       } else {

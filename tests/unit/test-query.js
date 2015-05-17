@@ -98,7 +98,7 @@ describe('query', function() {
     });
   });
 
-  it('#fetch_effective_permissions()', function (done) {
+  it('#fetchEffectivePermissions()', function (done) {
     var plan = new Plan(2, done);
     var select_query = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
     
@@ -119,7 +119,7 @@ describe('query', function() {
         });
     };
 
-    query.fetch_effective_permissions(db, user, entpath, function(err, entity){
+    query.fetchEffectivePermissions(db, user, entpath, function(err, entity){
       if(err) {
         should.fail(err);
       } else {

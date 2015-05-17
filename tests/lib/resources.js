@@ -15,8 +15,8 @@ exports.entity_resource = function entity_resource(path, ents, entidx, provision
     func(ent);
   }
 
-  before(function create_entity_resource(done) {
-    update.create_entity(db, ent, true, 'create', 
+  before(function createEntity_resource(done) {
+    update.createEntity(db, ent, true, 'create', 
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
         ents[entidx]._revisionId = revisionId;
@@ -25,8 +25,8 @@ exports.entity_resource = function entity_resource(path, ents, entidx, provision
     });
   });
 
-  after(function delete_entity_resource(done) {
-    update.delete_entity(db, ent, true, 'delete', done);
+  after(function deleteEntity_resource(done) {
+    update.deleteEntity(db, ent, true, 'delete', done);
     delete ents[entidx];
   });
 };
@@ -44,8 +44,8 @@ exports.user_resource = function user_resource(userpath, username, ents, entidx,
     user.encodePassword('meow_kitty', ent, done);
   });
 
-  before(function create_entity_resource(done) {
-    update.create_entity(db, ent, true, 'create', 
+  before(function createEntity_resource(done) {
+    update.createEntity(db, ent, true, 'create', 
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
         ents[entidx]._revisionId = revisionId;
@@ -54,8 +54,8 @@ exports.user_resource = function user_resource(userpath, username, ents, entidx,
     });
   });
 
-  after(function delete_entity_resource(done) {
-    update.delete_entity(db, ent, true, 'delete', done);
+  after(function deleteEntity_resource(done) {
+    update.deleteEntity(db, ent, true, 'delete', done);
     delete ents[entidx];
   });
 };
