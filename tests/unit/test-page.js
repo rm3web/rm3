@@ -84,7 +84,7 @@ describe('page', function() {
       };
       
       var page = new Page();
-      page.view_router.get('', function(req, res, next) 
+      page.viewRouter.get('', function(req, res, next) 
       {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
@@ -103,14 +103,14 @@ describe('page', function() {
       };
       
       var page = new Page();
-      page.view_router.get('glitter.html', function(req, res, next) 
+      page.viewRouter.get('glitter.html', function(req, res, next) 
       {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
         next();
       });
 
-      page.view_router.get('', function(req, res, page, next) 
+      page.viewRouter.get('', function(req, res, page, next) 
       {
         should.fail();
       });
@@ -128,19 +128,19 @@ describe('page', function() {
       };
       
       var page = new Page();
-      page.command_router.post('glitter.html', function(req, res, next)
+      page.commandRouter.post('glitter.html', function(req, res, next)
       {
         next();
       });
 
-      page.view_router.route_all('glitter.html', function(req, res, next) 
+      page.viewRouter.route_all('glitter.html', function(req, res, next) 
       {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
         next();
       });
 
-      page.view_router.route_all('', function(req, res, next) 
+      page.viewRouter.route_all('', function(req, res, next) 
       {
         should.fail();
       });
