@@ -156,7 +156,7 @@ exports = module.exports = function(dust, db, query) {
             path = new SitePath(baseurl);
             var security = {user: ctx.get('user'),
                             context: 'STANDARD'};
-            var resp = query.query_history(db, security, path);
+            var resp = query.queryHistory(db, security, path);
             var body = bodies.block;
             var idx = 0;
             resp.on('article', function(article) {
