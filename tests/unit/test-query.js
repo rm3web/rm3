@@ -12,12 +12,12 @@ describe('query gen', function() {
   describe('throws an error', function() {
     it('throws an error on invalid query select', function() {
       (function(){
-        query._query_gen({}, 'wh','retr','entity',{},undefined,undefined);
+        query._queryGen({}, 'wh','retr','entity',{},undefined,undefined);
       }).should.throw('invalid query');
     });
     it('throws an error on invalid query target', function() {
       (function(){
-        query._query_gen(root, 'wh','child','retr',{},undefined,undefined);
+        query._queryGen(root, 'wh','child','retr',{},undefined,undefined);
       }).should.throw('invalid query');
     });
   });
@@ -55,7 +55,7 @@ describe('query gen', function() {
     tests.forEach(function(test, index) {
       // Need to name this better
       it('correctly builds ' + index, function() {
-        var tmp = query._query_gen.apply(this, test.args);
+        var tmp = query._queryGen.apply(this, test.args);
         tmp.text.should.equal(test.expected);
       });
     });
@@ -63,7 +63,7 @@ describe('query gen', function() {
 });
 
 describe('query', function() {
-  it('#entity_from_path()', function (done) {
+  it('#entityFromPath()', function (done) {
     var plan = new Plan(2, done);
     
     var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
@@ -89,7 +89,7 @@ describe('query', function() {
         });
     };
 
-    query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
+    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
       if(err) {
         should.fail(err);
       } else {
@@ -154,7 +154,7 @@ describe('query', function() {
         });
     };
 
-    query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
+    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
       if(err) {
         should.deepEqual(err.name,'EntityNotFoundError');
         should.deepEqual(err.path,entpath.toDottedPath());
@@ -191,7 +191,7 @@ describe('query', function() {
         });
     };
 
-    query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
+    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity){
       if(err) {
         should.deepEqual(err.name,'QueryError');
       } else {
@@ -229,7 +229,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
         });
     };
 
-    query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, '1234', function(err, entity){
+    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, '1234', function(err, entity){
       if(err) {
         should.deepEqual(err.name,'RevisionIdNotFoundError');
       } else {
@@ -267,7 +267,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
         });
     };
 
-    query.entity_from_path(db, Entclass, {context: "ROOT"}, entpath, '1535', function(err, entity){
+    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, '1535', function(err, entity){
       if(err) {
         should.deepEqual(err.name,'QueryError');
       } else {
@@ -372,7 +372,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     });
   });
 
-  it('query_history', function (done) {
+  it('queryHistory', function (done) {
     var plan = new Plan(3, done);
     var select_query = 'SELECT path, "entityId", note, "baseRevisionId", \
 "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", \
@@ -412,7 +412,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
         });
     };
 
-    var resp = query.query_history(db, {}, entpath);
+    var resp = query.queryHistory(db, {}, entpath);
     resp.on('article', function(article) {
       should.deepEqual(article.note, rec.note);
       should.deepEqual(article.data, rec.data);

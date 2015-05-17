@@ -20,10 +20,10 @@ function entities_should_mostly_equal(ent, ent2){
 }
 
 describe('query', function() {
-  describe('#entity_from_path', function () {
+  describe('#entityFromPath', function () {
     var ents = {};
 
-    var path = new sitepath(['wh','entity_from_path']);
+    var path = new sitepath(['wh','entityFromPath']);
     var now = new Date();
 
     resources.entity_resource(path, ents, 'one', false, now);
@@ -31,7 +31,7 @@ describe('query', function() {
     it('returns not found exceptions', function(done) {
       var badpath = new sitepath(['wh','rainbows']);
 
-      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, badpath, null, function(err, ent){
+      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, badpath, null, function(err, ent){
         should.deepEqual(err.name,'EntityNotFoundError');
         should.deepEqual(err.path,badpath.toDottedPath());
         done();
@@ -39,7 +39,7 @@ describe('query', function() {
     });
 
     it('returns entities', function(done) {
-      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2){
+      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2){
         var ent = ents.one;
         entities_should_mostly_equal(ent,ent2);
         should.deepEqual(ent2._created,now);
@@ -50,7 +50,7 @@ describe('query', function() {
 
     it('returns entities using revid', function(done) {
       var ent = ents.one;
-      query.entity_from_path(db, entity.Entity, {context: "ROOT"}, path, ent._revisionId, function(err, ent2){
+      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, ent._revisionId, function(err, ent2){
         entities_should_mostly_equal(ent,ent2);
         should.deepEqual(ent2._created,now);
         should.deepEqual(ent2._modified,now);
@@ -128,10 +128,10 @@ describe('query', function() {
     });
   });
 
-  describe("#query_history", function() {
+  describe("#queryHistory", function() {
     var ents = {};
 
-    var path = new sitepath(['wh','query_history']);
+    var path = new sitepath(['wh','queryHistory']);
     var now = new Date();
 
     resources.entity_resource(path, ents, 'one', false, now);
@@ -154,7 +154,7 @@ describe('query', function() {
     });
 
     it('works', function(done){
-      var resp = query.query_history(db, {}, path);
+      var resp = query.queryHistory(db, {}, path);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -265,10 +265,10 @@ describe('query', function() {
       });
     });
 
-    describe('#fetch_entity_from_path', function() {
+    describe('#fetch_entityFromPath', function() {
       var entpath = new sitepath(['wh','query','user','test']);
       it('fetches the permissions with a user', function(done) {
-        query.entity_from_path(db, entity.Entity, {context: 'STANDARD', user: entpath}, 
+        query.entityFromPath(db, entity.Entity, {context: 'STANDARD', user: entpath}, 
                                entpath, undefined, function(err, ent2){
           if(err) {
             should.fail(err);
@@ -280,7 +280,7 @@ describe('query', function() {
       });
 
       it('fetches the permissions without a user', function(done) {
-        query.entity_from_path(db, entity.Entity, {context: 'STANDARD', user: undefined}, 
+        query.entityFromPath(db, entity.Entity, {context: 'STANDARD', user: undefined}, 
                                entpath, undefined, function(err, ent2){
           if(err) {
             should.fail(err);
@@ -292,9 +292,9 @@ describe('query', function() {
       });
     });
 
-    describe('#permissions_for_user', function() {
+    describe('#permissionsForUser', function() {
       it('works', function(done) {
-        var resp = query.permissions_for_user(db, ents.user.path());
+        var resp = query.permissionsForUser(db, ents.user.path());
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -311,9 +311,9 @@ describe('query', function() {
       });
     });
 
-    describe('#list_roles', function() {
+    describe('#listRoles', function() {
       it('works', function(done) {
-        var resp = query.list_roles(db);
+        var resp = query.listRoles(db);
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -330,9 +330,9 @@ describe('query', function() {
       });
     });
 
-    describe('#list_users_in_role', function() {
+    describe('#listUsersInRole', function() {
       it('works', function(done) {
-        var resp = query.list_users_in_role(db,'query-role');
+        var resp = query.listUsersInRole(db,'query-role');
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -348,9 +348,9 @@ describe('query', function() {
       });
     });
 
-    describe('#list_permissions_in_role', function() {
+    describe('#listPermissionsInRole', function() {
       it('works', function(done) {
-        var resp = query.list_permissions_in_role(db,'query-role');
+        var resp = query.listPermissionsInRole(db,'query-role');
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);

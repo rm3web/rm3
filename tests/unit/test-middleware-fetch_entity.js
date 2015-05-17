@@ -32,7 +32,7 @@ describe('middleware:fetch_entity', function() {
     });
 
     it('should fetch an entity', function (done) {
-      query.entity_from_path = function(db, ent, acc, sp, rev, next) {
+      query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
         should.deepEqual(rev,null);
@@ -54,7 +54,7 @@ describe('middleware:fetch_entity', function() {
       req.query = {};
       req.query.revision_id = '11111111-1111-1111-a111-111111111111';
 
-      query.entity_from_path = function(db, ent, acc, sp, rev, next) {
+      query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
         should.deepEqual(rev, '11111111-1111-1111-a111-111111111111');
@@ -75,7 +75,7 @@ describe('middleware:fetch_entity', function() {
       req.query = {};
       req.query.revision_id = '11111111-1111-1111-a111';
 
-      query.entity_from_path = function(db, ent, acc, sp, rev, next) {
+      query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
         should.deepEqual(rev, null);
@@ -99,7 +99,7 @@ describe('middleware:fetch_entity', function() {
       util.inherits(EntityNotFoundError, Error);
       errs.register('query.not_found', EntityNotFoundError);
 
-      query.entity_from_path = function(db, ent, acc, sp, rev, next) {
+      query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         next(errs.create('query.not_found', {
             path: 'sparklepony',
             revision_id: null
@@ -119,7 +119,7 @@ describe('middleware:fetch_entity', function() {
     });
 
     it('middleware fetch_entity db_error', function (done) {
-      query.entity_from_path = function(db, ent, acc, sp, rev, next) {
+      query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         next(new Error("Connection was ended during query"));
       };
 
@@ -141,7 +141,7 @@ describe('middleware:fetch_entity', function() {
       util.inherits(OtherKindOfError, Error);
       errs.register('otherkind', OtherKindOfError);
 
-      query.entity_from_path = function(db, ent, acc, sp, rev, next) {
+      query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         next(errs.create('otherkind', {
             path: 'sparklepony',
             revision_id: null
@@ -172,7 +172,7 @@ describe('middleware:fetch_entity', function() {
         return {e:'rr'};
       };
 
-      query.entity_from_path = function(db, ent, acc, sp, rev, next) {
+      query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         should.fail('this shouldn\'t be called');
       };
 
