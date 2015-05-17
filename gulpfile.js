@@ -6,7 +6,6 @@ var gulp = require('gulp')
   , mocha = require('gulp-mocha')
   , run = require('gulp-run')
   , jscs = require('gulp-jscs')
-  , coveralls = require('gulp-coveralls')
   ;
 
 var lintable = ['lib/**/*.js', 'tests/**/*.js'];
@@ -61,10 +60,11 @@ gulp.task('coveralls', ['create-db', 'build-schema'], function (cb) {
     .on('finish', function () {
       gulp.src(['tests/**/*.js'])
         .pipe(mocha())
-        .pipe(istanbul.writeReports({reporters: ['lcovonly']})) // Creating the reports after tests runned
+        .pipe(istanbul.writeReports()) // Creating the reports after tests runned
         .on('end', function() {
-          gulp.src('test/coverage/**/lcov.info')
-            .pipe(coveralls());
+          run('cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage').exec()
+            .pipe(gulp.dest('output'))
+            .on('end', cb);
         });
     });
 });
