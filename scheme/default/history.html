@@ -23,10 +23,10 @@
 {:else}
 <td rowspan="2"></td>
  {/if}
-    <td>{rec.evt_class}</td>
-    <td>{rec.revision_num}</td>
-    <td>{rec.revision_id}</td>
-    <td>{@formatRelative val=rec.evt_end/}</td>
+    <td>{rec.evtClass}</td>
+    <td>{rec.revisionNum}</td>
+    <td>{rec.revisionId}</td>
+    <td>{@formatRelative val=rec.evtEnd/}</td>
     <td rowspan="2">
 {@if cond="{current}"}
 <b><a href="{path}">view</a></b>

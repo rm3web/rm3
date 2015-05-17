@@ -152,7 +152,7 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.history = function (chunk, ctx, bodies, params) {
         return chunk.map(function(chunk) {
             var baseurl = ctx.get('meta.sitePath');
-            var revision_id = ctx.get('meta.revision_id')
+            var revisionId = ctx.get('meta.revisionId')
             path = new SitePath(baseurl);
             var security = {user: ctx.get('user'),
                             context: 'STANDARD'};
@@ -162,7 +162,7 @@ exports = module.exports = function(dust, db, query) {
             resp.on('article', function(article) {
                 chunk.render(bodies.block, ctx.push(
                     {path: article.path.toUrl('/',1),
-                     current: revision_id === article.revision_id,
+                     current: revisionId === article.revisionId,
                      rec: article,
                      '$idx': idx }));
                 idx = idx + 1;
