@@ -13,10 +13,10 @@ suite('query#entity_from_path', function() {
   var path = new sitepath(['wh','perf_entity_from_path']);
   var now = new Date();
 
-  resources.entity_resource(path, ents, 'one', false, now);
+  resources.entityResource(path, ents, 'one', false, now);
 
   bench('simple query', function(done) {
-    query.entity_from_path(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2){
+    query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2){
 
       done();
     });
@@ -31,11 +31,11 @@ suite('query#query', function () {
   var path2 = new sitepath(['wh','query','sub']);
   var now = new Date();
 
-  resources.entity_resource(path1, ents, 'one', false, now, function(e){
+  resources.entityResource(path1, ents, 'one', false, now, function(e){
     e.addTag('navigation','navbar');
   });
 
-  resources.entity_resource(path2, ents, 'two', false, now, function(e){
+  resources.entityResource(path2, ents, 'two', false, now, function(e){
     e.addTag(null,'navbar');
   });
 
@@ -74,24 +74,24 @@ suite("query#query_history", function() {
   var path = new sitepath(['wh','query_history']);
   var now = new Date();
 
-  resources.entity_resource(path, ents, 'one', false, now);
+  resources.entityResource(path, ents, 'one', false, now);
 
   before(function(done) {
     ents.updated = ents.one.clone();
     ents.updated.data.posting = "<div>blah blah blah</div>";
     ents.updated.summary.title = 'updated';
-    update.update_entity(db, ents.one, ents.updated, true, 'update',
-      function(err, entity_id, revision_id, revision_num) {
-        ents.updated._entity_id = entity_id;
-        ents.updated._revision_id = revision_id;
-        ents.updated._revision_num = revision_num;
+    update.updateEntity(db, ents.one, ents.updated, true, 'update',
+      function(err, entityId, revisionId, revisionNum) {
+        ents.updated._entityId = entityId;
+        ents.updated._revisionId = revisionId;
+        ents.updated._revisionNum = revisionNum;
         done(err);
       }
     );
   });
 
   bench('query', function(done){
-    var resp = query.query_history(db, {}, path);
+    var resp = query.queryHistory(db, {}, path);
     var arts = [];
     resp.on('article', function(article) {
       arts.push(article);

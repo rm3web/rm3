@@ -8,7 +8,7 @@ var user = require('../../lib/user');
 var should = require('should');
 var resources = require('../lib/resources.js');
 
-function entities_should_mostly_equal(ent, ent2){
+function entitiesShouldMostlyEqual(ent, ent2){
   should.deepEqual(ent2.summary,ent.summary);
   should.deepEqual(ent2.data,ent.data);
   should.deepEqual(ent2._path,ent._path);
@@ -26,7 +26,7 @@ describe('query', function() {
     var path = new sitepath(['wh','entityFromPath']);
     var now = new Date();
 
-    resources.entity_resource(path, ents, 'one', false, now);
+    resources.entityResource(path, ents, 'one', false, now);
 
     it('returns not found exceptions', function(done) {
       var badpath = new sitepath(['wh','rainbows']);
@@ -41,7 +41,7 @@ describe('query', function() {
     it('returns entities', function(done) {
       query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2){
         var ent = ents.one;
-        entities_should_mostly_equal(ent,ent2);
+        entitiesShouldMostlyEqual(ent,ent2);
         should.deepEqual(ent2._created,now);
         should.deepEqual(ent2._modified,now);
         done();
@@ -51,7 +51,7 @@ describe('query', function() {
     it('returns entities using revid', function(done) {
       var ent = ents.one;
       query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, ent._revisionId, function(err, ent2){
-        entities_should_mostly_equal(ent,ent2);
+        entitiesShouldMostlyEqual(ent,ent2);
         should.deepEqual(ent2._created,now);
         should.deepEqual(ent2._modified,now);
         done();
@@ -66,11 +66,11 @@ describe('query', function() {
     var path2 = new sitepath(['wh','query','sub']);
     var now = new Date();
 
-    resources.entity_resource(path1, ents, 'one', false, now, function(e){
+    resources.entityResource(path1, ents, 'one', false, now, function(e){
       e.addTag('navigation','navbar');
     });
 
-    resources.entity_resource(path2, ents, 'two', false, now, function(e){
+    resources.entityResource(path2, ents, 'two', false, now, function(e){
       e.addTag(null,'navbar');
     });
 
@@ -134,7 +134,7 @@ describe('query', function() {
     var path = new sitepath(['wh','queryHistory']);
     var now = new Date();
 
-    resources.entity_resource(path, ents, 'one', false, now);
+    resources.entityResource(path, ents, 'one', false, now);
 
     before(function(done) {
       ents.updated = ents.one.clone();
@@ -190,7 +190,7 @@ describe('query', function() {
 
     describe('#query', function() {
       var otherpath = new sitepath(['wh','query2','node']);
-      resources.entity_resource(otherpath, ents, 'other', false, now);
+      resources.entityResource(otherpath, ents, 'other', false, now);
 
       it('filters out forbidden nodes', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
