@@ -31,26 +31,25 @@ describe('middleware:fetchEntity', function() {
       req = mockReq(['sparklepony']);
     });
 
-    it('should fetch an entity', function (done) {
+    it('should fetch an entity', function(done) {
       query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
-        should.deepEqual(rev,null);
+        should.deepEqual(rev, null);
         next(null, {e: 'st'});
       };
 
       var middleware = fetchEntity(db, query, entity);
       should.deepEqual(typeof middleware, "function");
 
-      middleware(req, res, function()
-      {
+      middleware(req, res, function() {
         req.entity.should.eql({e: 'st'});
         done();
       });
 
     });
 
-    it('middleware fetchEntity revision_id', function (done) {
+    it('middleware fetchEntity revision_id', function(done) {
       req.query = {};
       req.query.revisionId = '11111111-1111-1111-a111-111111111111';
 
@@ -64,14 +63,13 @@ describe('middleware:fetchEntity', function() {
       var middleware = fetchEntity(db, query, entity);
       should.deepEqual(typeof middleware, "function");
 
-      middleware(req, res, function()
-      {
+      middleware(req, res, function() {
         req.entity.should.eql({e: 'sr'});
         done();
       });
     });
 
-    it('middleware fetchEntity bad revision_id', function (done) {
+    it('middleware fetchEntity bad revision_id', function(done) {
       req.query = {};
       req.query.revisionId = '11111111-1111-1111-a111';
 
@@ -85,14 +83,13 @@ describe('middleware:fetchEntity', function() {
       var middleware = fetchEntity(db, query, entity);
       should.deepEqual(typeof middleware, "function");
 
-      middleware(req, res, function()
-      {
+      middleware(req, res, function() {
         req.entity.should.eql({e: 'sq'});
         done();
       });
     });
 
-    it('middleware fetchEntity not_found_error', function (done) {
+    it('middleware fetchEntity not_found_error', function(done) {
       function EntityNotFoundError() {
         this.message = "Entity not found";
       }
@@ -109,16 +106,15 @@ describe('middleware:fetchEntity', function() {
       var middleware = fetchEntity(db, query, entity);
       should.deepEqual(typeof middleware, "function");
 
-      middleware(req, res, function(err)
-      {
-        should.deepEqual(err.name,'NotFoundError');
+      middleware(req, res, function(err) {
+        should.deepEqual(err.name, 'NotFoundError');
         should.deepEqual(err.httpResponseCode, 404);
         done();
       });
 
     });
 
-    it('middleware fetchEntity db_error', function (done) {
+    it('middleware fetchEntity db_error', function(done) {
       query.entityFromPath = function(db, ent, acc, sp, rev, next) {
         next(new Error("Connection was ended during query"));
       };
@@ -126,15 +122,14 @@ describe('middleware:fetchEntity', function() {
       var middleware = fetchEntity(db, query, entity);
       should.deepEqual(typeof middleware, "function");
 
-      middleware(req, res, function(err)
-      {
-        should.deepEqual(err.name,'Error');
+      middleware(req, res, function(err) {
+        should.deepEqual(err.name, 'Error');
         done();
       });
 
     });
 
-    it('middleware fetchEntity db_error2', function (done) {
+    it('middleware fetchEntity db_error2', function(done) {
       function OtherKindOfError() {
         this.message = "Other kind of error";
       }
@@ -151,9 +146,8 @@ describe('middleware:fetchEntity', function() {
       var middleware = fetchEntity(db, query, entity);
       should.deepEqual(typeof middleware, "function");
 
-      middleware(req, res, function(err)
-      {
-        should.deepEqual(err.name,'OtherKindOfError');
+      middleware(req, res, function(err) {
+        should.deepEqual(err.name, 'OtherKindOfError');
         done();
       });
 
@@ -167,7 +161,7 @@ describe('middleware:fetchEntity', function() {
       req.creation = '$bonkers';
     });
 
-    it('middleware fetchEntity create', function (done) {
+    it('middleware fetchEntity create', function(done) {
       var entity = function() {
         return {e:'rr'};
       };
@@ -179,8 +173,7 @@ describe('middleware:fetchEntity', function() {
       var middleware = fetchEntity(db, query, entity);
       should.deepEqual(typeof middleware, "function");
 
-      middleware(req, res, function()
-      {
+      middleware(req, res, function() {
         req.entity.should.eql({e: 'rr'});
         done();
       });

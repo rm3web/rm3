@@ -11,8 +11,8 @@ require('mocha-steps');
 function quickQuery(db, querytext, next) {
   async.waterfall([
     db.connectWrap,
-    function(client, done, callback){
-      client.query(querytext, function(err, result){
+    function(client, done, callback) {
+      client.query(querytext, function(err, result) {
         done(err);
         callback(err, result);
       });
@@ -28,9 +28,9 @@ function stepGenericCreate(desc, path, ents, entidx, provisional, now) {
     ents[entidx].summary = {"title": "blrg",
       "abstract": "some text goes here"};
     ents[entidx].data.posting = longstr;
-    ents[entidx].addTag('navigation','navbar');
+    ents[entidx].addTag('navigation', 'navbar');
 
-    update.createEntity(db, ents[entidx], provisional, 'create', 
+    update.createEntity(db, ents[entidx], provisional, 'create',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -49,7 +49,7 @@ function stepGenericUpdate(desc, ents, startidx, nextidx) {
   ents[nextidx] = ents[startidx].clone();
   ents[nextidx].data.posting = "<div>blah blah blah</div>";
   step(desc, function(done) {
-    update.updateEntity(db, ents[startidx], ents[nextidx], true, 'update', 
+    update.updateEntity(db, ents[startidx], ents[nextidx], true, 'update',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -66,7 +66,7 @@ function stepGenericUpdate(desc, ents, startidx, nextidx) {
 
 function stepGenericMove(desc, ents, startidx, newpath, moveMark) {
   step(desc, function(done) {
-    update.moveEntity(db, ents[startidx], newpath, true, 'move', 
+    update.moveEntity(db, ents[startidx], newpath, true, 'move',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -99,10 +99,10 @@ function stepGenericDelete(desc, ent, delMark) {
 
 function stepValidatePermissionExistence(desc, path) {
   step(desc, function(done) {
-    var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = '" + 
+    var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = '" +
       path + "'";
     quickQuery(db, query, function(err, result) {
-      should.not.exist(err); 
+      should.not.exist(err);
       result.rows[0].role.should.equal('role');
       result.rows[0].permission.should.equal('permission');
       result.rows[0].path.should.equal(path);
@@ -113,7 +113,7 @@ function stepValidatePermissionExistence(desc, path) {
 
 function stepValidatePermissionNonExistence(desc, path) {
   step(desc, function(done) {
-    var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = '" + 
+    var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = '" +
       path + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
@@ -244,13 +244,12 @@ function checkLogUpdate(row, ent, ent2) {
 }
 
 describe('update', function() {
-  
   describe('create-create-delete', function() {
     var now = new Date();
     var ents = {};
     var delMark = {};
 
-    stepGenericCreate('create', new sitepath(['wh', 'create_create_delete']), ents, 
+    stepGenericCreate('create', new sitepath(['wh', 'create_create_delete']), ents,
       'one', true, now);
 
     stepValidateEntityExistence('check create', ents.one);
@@ -282,7 +281,7 @@ describe('update', function() {
       function(result) {
         var ent = ents.one;
         should.deepEqual(result.rowCount, 1);
-        checkLogCreate(result.rows[0],ent);
+        checkLogCreate(result.rows[0], ent);
       });
 
     stepGenericDelete('delete', ents.one, delMark);
@@ -294,8 +293,8 @@ describe('update', function() {
     stepGenericLogCheck('verify create and delete in log', ents.one, function(result) {
       result.rowCount.should.equal(2);
       var ent = ents.one;
-      checkLogCreate(result.rows[0],ent);
-      checkLogDelete(result.rows[1],ent,delMark);
+      checkLogCreate(result.rows[0], ent);
+      checkLogDelete(result.rows[1], ent, delMark);
       should.notDeepEqual(result.rows[0].revisionId, result.rows[1].revisionId);
       should.notDeepEqual(result.rows[0].revisionNum, result.rows[1].revisionNum);
     });
@@ -306,7 +305,7 @@ describe('update', function() {
     var ents = {};
     var delMark = {};
 
-    stepGenericCreate('create', new sitepath(['wh', 'create_update_delete']), ents, 
+    stepGenericCreate('create', new sitepath(['wh', 'create_update_delete']), ents,
       'start', true, now);
 
     stepValidateEntityExistence('check create', ents.start);
@@ -322,8 +321,8 @@ describe('update', function() {
       var ent2 = ents.next;
 
       should.deepEqual(result.rowCount, 2);
-      checkLogCreate(result.rows[0],ent);
-      checkLogUpdate(result.rows[1],ent, ent2);
+      checkLogCreate(result.rows[0], ent);
+      checkLogUpdate(result.rows[1], ent, ent2);
     });
 
     stepGenericDelete('delete', ents.next, delMark);
@@ -337,9 +336,9 @@ describe('update', function() {
       var ent2 = ents.next;
 
       should.deepEqual(result.rowCount, 3);
-      checkLogCreate(result.rows[0],ent);
-      checkLogUpdate(result.rows[1],ent, ent2);
-      checkLogDelete(result.rows[2],ent,delMark);
+      checkLogCreate(result.rows[0], ent);
+      checkLogUpdate(result.rows[1], ent, ent2);
+      checkLogDelete(result.rows[2], ent, delMark);
       should.notDeepEqual(result.rows[2].revisionId, result.rows[1].revisionId);
       should.notDeepEqual(result.rows[2].revisionNum, result.rows[1].revisionNum);
     });
@@ -350,9 +349,9 @@ describe('update', function() {
     var ents = {};
     var moveMark = {};
     var delMark = {};
-    var newpath = new sitepath(['wh','create_move_delete2']);
+    var newpath = new sitepath(['wh', 'create_move_delete2']);
 
-    stepGenericCreate('create', new sitepath(['wh', 'create_move_delete']), ents, 
+    stepGenericCreate('create', new sitepath(['wh', 'create_move_delete']), ents,
       'start', true, now);
 
     stepValidateEntityExistence('check create', ents.start);
@@ -369,7 +368,7 @@ describe('update', function() {
       var query = "SELECT \"entityId\", \"revisionId\", \"revisionNum\" FROM wh_entity WHERE path = '" +
         newpath.toDottedPath() + "'";
       quickQuery(db, query, function(err, result) {
-        if(err) {
+        if (err) {
           return done(err);
         }
         var ent = ents.start;
@@ -386,7 +385,7 @@ describe('update', function() {
       var ent = ents.start;
 
       should.deepEqual(result.rowCount, 2);
-      checkLogCreate(result.rows[0],ent);
+      checkLogCreate(result.rows[0], ent);
 
       should.deepEqual(result.rows[1].evtClass, 'move');
       should.deepEqual(result.rows[1].entityId, ent._entityId);
@@ -415,7 +414,7 @@ describe('update', function() {
       var ent = ents.start;
 
       should.deepEqual(result.rowCount, 1);
-      checkLogDelete(result.rows[0],ent,delMark);
+      checkLogDelete(result.rows[0], ent, delMark);
     });
   });
 
@@ -425,7 +424,7 @@ describe('update', function() {
     var delMark = {};
     var commitMark = {};
 
-    stepGenericCreate('create', new sitepath(['wh', 'pcreate']), ents, 
+    stepGenericCreate('create', new sitepath(['wh', 'pcreate']), ents,
       'start', false, now);
 
     stepValidateNonEntityExistence('validate provisional wont create', ents.start);
@@ -434,7 +433,7 @@ describe('update', function() {
       var ent = ents.start;
 
       should.deepEqual(result.rowCount, 1);
-      checkLogPcreate(result.rows[0],ent);
+      checkLogPcreate(result.rows[0], ent);
     });
 
     stepValidateTagNonExistence('check tag non creation', ents.start);
@@ -458,7 +457,7 @@ describe('update', function() {
       var ent = ents.start;
 
       should.deepEqual(result.rowCount, 1);
-      checkLogCreate(result.rows[0],ent);
+      checkLogCreate(result.rows[0], ent);
     });
 
     stepValidateTagExistence('check tag create', ents.start);
@@ -468,7 +467,7 @@ describe('update', function() {
 
   it('fails on invalid revisionNum', function(done) {
     update.commitEntityRev(db, uuid.v1(), function(err) {
-      if(err) {
+      if (err) {
         should.deepEqual(err.name, 'RevisionIdNotFoundError');
       } else {
         should.fail('Did not fail when passed an invalid revision id');
@@ -483,9 +482,8 @@ describe('update', function() {
     var permissionRec = {};
 
     step('permit', function(done) {
-      update.addPermissionToRole(db, "role", "permission", path, "note", 
-        function(err, entityId, revisionId, revisionNum)
-        {
+      update.addPermissionToRole(db, "role", "permission", path, "note",
+        function(err, entityId, revisionId, revisionNum) {
           revisionId.should.be.an.instanceof(String);
           revisionNum.should.be.an.instanceof(Number);
           permissionRec.revisionId = revisionId;
@@ -497,7 +495,7 @@ describe('update', function() {
 
     stepValidatePermissionExistence('validate addPermissionToRole', path);
 
-    stepGenericRevidCheck('validate log', permissionRec, function(result){
+    stepGenericRevidCheck('validate log', permissionRec, function(result) {
       should.deepEqual(result.rowCount, 1);
       should.deepEqual(result.rows[0].evtFinal, true);
       should.notDeepEqual(result.rows[0].evtEnd, null);
@@ -505,9 +503,8 @@ describe('update', function() {
     });
 
     step('permit again', function(done) {
-      update.addPermissionToRole(db, "role", "permission", path, "note", 
-        function(err, entityId, revisionId, revisionNum)
-        {
+      update.addPermissionToRole(db, "role", "permission", path, "note",
+        function(err, entityId, revisionId, revisionNum) {
           if (err) {
             should.deepEqual(err.name, 'DbDuplicateRecordError');
             done();
@@ -521,9 +518,8 @@ describe('update', function() {
     stepValidatePermissionExistence('validate failure is ok', path);
 
     step('remove', function(done) {
-      update.removePermissionFromRole(db, "role", "permission", path, "note", 
-        function(err, entityId, revisionId, revisionNum)
-        {
+      update.removePermissionFromRole(db, "role", "permission", path, "note",
+        function(err, entityId, revisionId, revisionNum) {
           revisionId.should.be.an.instanceof(String);
           revisionNum.should.be.an.instanceof(Number);
           permissionRec.revisionId = revisionId;
@@ -551,7 +547,7 @@ describe('update', function() {
     step('check assign', function checkAssign(done) {
       var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quickQuery(db, query, function(err, result) {
-        if(err) {
+        if (err) {
           should.fail(err);
         }
         should.deepEqual(result.rowCount, 1);
@@ -564,8 +560,8 @@ describe('update', function() {
     stepGenericLogCheck('check create log', ents.one, function(result) {
       var ent = ents.one;
       should.deepEqual(result.rowCount, 2);
-      checkLogCreate(result.rows[1],ent);
-      should.deepEqual(result.rows[0].evtClass,'assign');
+      checkLogCreate(result.rows[1], ent);
+      should.deepEqual(result.rows[0].evtClass, 'assign');
     });
 
     step('assign again', function createAssignmentResourceAgain(done) {
@@ -575,7 +571,7 @@ describe('update', function() {
     step('check assign again', function checkAssignAgain(done) {
       var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quickQuery(db, query, function(err, result) {
-        if(err) {
+        if (err) {
           should.fail(err);
         }
         should.deepEqual(result.rowCount, 2);
@@ -594,7 +590,7 @@ describe('update', function() {
     step('check assign after 1 de-assign', function checkAssignAfter1(done) {
       var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quickQuery(db, query, function(err, result) {
-        if(err) {
+        if (err) {
           should.fail(err);
         }
         should.deepEqual(result.rowCount, 1);
@@ -611,7 +607,7 @@ describe('update', function() {
     step('check assign after 2 de-assigns', function checkAssignAfter2(done) {
       var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quickQuery(db, query, function(err, result) {
-        if(err) {
+        if (err) {
           should.fail(err);
         }
         should.deepEqual(result.rowCount, 0);
