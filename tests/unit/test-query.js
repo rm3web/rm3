@@ -25,7 +25,7 @@ describe('query gen', function() {
   describe('generates the correct queries', function() {
     var tests = [
       {args: [root, 'wh','child','entity',{},undefined,undefined],
-       expected: 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC'},
       {args: [root, 'wh','child','count',{},undefined,undefined],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)'},
       {args: [root, 'wh','parents','count',{},undefined,undefined],
@@ -43,13 +43,13 @@ describe('query gen', function() {
       {args: [root, 'wh','child','count',{after: 123},undefined,undefined],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (created >= $2)'},
       {args: [root, 'wh','child','count',{navbar: true},undefined,undefined],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag.subj_path = wh_entity.path) WHERE (wh_entity.path <@ $1) AND (pred_path = \'navigation\') AND (obj_str = \'navbar\')'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\') AND ("objStr" = \'navbar\')'},
       {args: [root, 'wh','child','count',{tag: 'bears'},undefined,undefined],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag.subj_path = wh_entity.path) WHERE (wh_entity.path <@ $1) AND (pred_path = \'plain\') AND (obj_str = $2)'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'plain\') AND ("objStr" = $2)'},
       {args: [root, 'wh','child','entity',{},'changed',undefined],
-       expected: 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY modified ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY modified ASC'},
       {args: [root, 'wh','child','entity',{},'created',undefined],
-       expected: 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY created ASC'}
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY created ASC'}
     ];
     
     tests.forEach(function(test, index) {
@@ -66,7 +66,7 @@ describe('query', function() {
   it('#entity_from_path()', function (done) {
     var plan = new Plan(2, done);
     
-    var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
+    var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
     
     var entpath = new sitepath(['wh','rq']);
 
@@ -130,7 +130,7 @@ describe('query', function() {
 
   it('query from_db not_found', function (done) {
     var plan = new Plan(2, done);
-    var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
+    var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
     
     var entpath = new sitepath(['wh','rq']);
 
@@ -167,7 +167,7 @@ describe('query', function() {
 
   it('query from_db error', function (done) {
     var plan = new Plan(2, done);
-    var select_query = "SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)";
+    var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (path = $1)';
     
     var entpath = new sitepath(['wh','rq']);
 
@@ -203,9 +203,9 @@ describe('query', function() {
 
   it('query from_db not_found log', function (done) {
     var plan = new Plan(2, done);
-    var select_query = "SELECT path, entity_id, note, base_revision_id, replace_revision_id, \
-revision_id, revision_num, evt_start, evt_end, evt_touched, evt_class, evt_final, data \
-FROM wh_log WHERE (revision_id = $1)";
+    var select_query = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
+"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", data \
+FROM wh_log WHERE ("revisionId" = $1)';
 
     var entpath = new sitepath(['wh','rq']);
 
@@ -241,9 +241,9 @@ FROM wh_log WHERE (revision_id = $1)";
 
   it('query from_db error log', function (done) {
     var plan = new Plan(2, done);
-    var select_query = "SELECT path, entity_id, note, base_revision_id, replace_revision_id, \
-revision_id, revision_num, evt_start, evt_end, evt_touched, evt_class, evt_final, data \
-FROM wh_log WHERE (revision_id = $1)";
+    var select_query = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
+"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", data \
+FROM wh_log WHERE ("revisionId" = $1)';
     
     var entpath = new sitepath(['wh','rq']);
 
@@ -279,7 +279,7 @@ FROM wh_log WHERE (revision_id = $1)";
 
   it('query', function (done) {
     var plan = new Plan(3, done);
-    var select_query = 'SELECT path, stub, hidden, entity_id, revision_id, revision_num, proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC';
+    var select_query = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC';
 
     var entpath = new sitepath(['wh']);
 
@@ -287,9 +287,9 @@ FROM wh_log WHERE (revision_id = $1)";
 
     var rec = { path: 'wh.query',
       stub: false,
-      entity_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
-      revision_id: 'f5f2e2e1-57cf-11e4-bca4-e7af6fd7ffe4',
-      revision_num: 1,
+      entityId: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+      revisionId: 'f5f2e2e1-57cf-11e4-bca4-e7af6fd7ffe4',
+      revisionNum: 1,
       proto: 'base',
       modified: new Date(),
       created: new Date(),
@@ -319,7 +319,7 @@ FROM wh_log WHERE (revision_id = $1)";
     resp.on('article', function(article) {
       should.deepEqual(article.title, rec.summary.title);
       should.deepEqual(article.summary, rec.summary.abstract);
-      should.deepEqual(article.guid, rec.entity_id);
+      should.deepEqual(article.guid, rec.entityId);
       plan.ok(true);
     });
     resp.on('error', function(err) {
@@ -374,25 +374,25 @@ FROM wh_log WHERE (revision_id = $1)";
 
   it('query_history', function (done) {
     var plan = new Plan(3, done);
-    var select_query = 'SELECT path, entity_id, note, base_revision_id, \
-replace_revision_id, revision_id, revision_num, evt_start, evt_end, \
-evt_touched, evt_class, evt_final, data FROM wh_log WHERE (path = $1) ORDER BY revision_num ASC';
+    var select_query = 'SELECT path, "entityId", note, "baseRevisionId", \
+"replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", \
+"evtTouched", "evtClass", "evtFinal", data FROM wh_log WHERE (path = $1) ORDER BY "revisionNum" ASC';
 
     var entpath = new sitepath(['wh']);
 
     var db = {};
 
-    var rec = { entity_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+    var rec = { entityId: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
             note: 'test',
-            base_revision_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
-            replace_revision_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
-            revision_id: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
-            revision_num: 1,
-            evt_start: new Date(),
-            evt_end: new Date(),
-            evt_touched: new Date(),
-            evt_class: 'test',
-            evt_final: true,
+            baseRevisionId: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+            replaceRevisionId: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+            revisionId: 'f5f2e2e0-57cf-11e4-bca4-e7af6fd7ffe4',
+            revisionNum: 1,
+            evtStart: new Date(),
+            evtEnd: new Date(),
+            evtTouched: new Date(),
+            evtClass: 'test',
+            evtFinal: true,
             data: {}};
 
     db.connectWrap = function (queryfunc) {
@@ -416,7 +416,7 @@ evt_touched, evt_class, evt_final, data FROM wh_log WHERE (path = $1) ORDER BY r
     resp.on('article', function(article) {
       should.deepEqual(article.note, rec.note);
       should.deepEqual(article.data, rec.data);
-      should.deepEqual(article.revision_id, rec.revision_id);
+      should.deepEqual(article.revisionId, rec.revisionId);
       plan.ok(true);
     });
     resp.on('error', function(err) {

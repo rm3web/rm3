@@ -59,7 +59,7 @@ exports = module.exports = function(dust, db, query) {
         longstr = longstr + '<div class="pure-menu pure-menu-open">\
         <a class="pure-menu-heading">Admin</a>\
     <ul>';
-        var sitepathquery = ctx.get('meta.site_path');
+        var sitepathquery = ctx.get('meta.sitePath');
         var path = new SitePath(sitepathquery);
         var baseurl = path.toUrl('/',1);
         if (baseurl === '/') {
@@ -95,7 +95,7 @@ exports = module.exports = function(dust, db, query) {
     }
     dust.helpers.basic_query = function (chunk, ctx, bodies, params) {
         return chunk.map(function(chunk) {
-            var baseurl = ctx.get('meta.site_path');
+            var baseurl = ctx.get('meta.sitePath');
             path = new SitePath(baseurl);
             var security = {context: 'STANDARD'};
             var user = ctx.get('user');
@@ -151,7 +151,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.history = function (chunk, ctx, bodies, params) {
         return chunk.map(function(chunk) {
-            var baseurl = ctx.get('meta.site_path');
+            var baseurl = ctx.get('meta.sitePath');
             var revision_id = ctx.get('meta.revision_id')
             path = new SitePath(baseurl);
             var security = {user: ctx.get('user'),
