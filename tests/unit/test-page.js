@@ -5,7 +5,7 @@ var should = require('should');
 function mockReq() {
   var req = {scheme: {}, entity: {}, sitepath: {}, method: 'GET'};
   req.sitepath.page = null;
-  req.scheme.render = function (view, data, callback) {
+  req.scheme.render = function(view, data, callback) {
     should.fail('should not try to render');
   };
 
@@ -24,11 +24,11 @@ function mockReqView(req) {
 }
 
 function mockReqScheme(req) {
-  req.scheme.render = function (view, data, callback) {
+  req.scheme.render = function(view, data, callback) {
     should.deepEqual(typeof callback, "function");
     var outstream = new events.EventEmitter();
     callback(null, outstream);
-    outstream.emit("data","thunk");
+    outstream.emit("data", "thunk");
     outstream.emit("end");
   };
 }
@@ -36,16 +36,13 @@ function mockReqScheme(req) {
 function mockRes() {
   var res = {};
 
-  res.writeHead = function(type, data)
-  {
+  res.writeHead = function(type, data) {
     should.fail('should not try to writeHead');
   };
-  res.write = function(data)
-  {
+  res.write = function(data) {
     should.fail('should not try to write');
   };
-  res.end = function()
-  {
+  res.end = function() {
     should.fail('should not try to end');
   };
 
@@ -66,91 +63,80 @@ describe('page', function() {
       mockReqScheme(req);
     });
     beforeEach(function() {
-      res.writeHead = function(type, data)
-      {
-        should.deepEqual(type,200);
-        should.deepEqual(data,{'Content-Type': 'text/html'});
+      res.writeHead = function(type, data) {
+        should.deepEqual(type, 200);
+        should.deepEqual(data, {'Content-Type': 'text/html'});
       };
-      res.write = function(data)
-      {
-        should.deepEqual(data,"thunk");
+      res.write = function(data) {
+        should.deepEqual(data, "thunk");
       };
     });
 
-    it('should render', function (done) {
-      res.end = function()
-      {
+    it('should render', function(done) {
+      res.end = function() {
         done();
       };
-      
+
       var page = new Page();
-      page.viewRouter.get('', function(req, res, next) 
-      {
+      page.viewRouter.get('', function(req, res, next) {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
         next();
       });
 
-      page.render(req,res, function() {});
+      page.render(req, res, function() {});
     });
 
-    it('should render a view', function (done) {
+    it('should render a view', function(done) {
       req.sitepath.page = 'glitter.html';
 
-      res.end = function()
-      {
+      res.end = function() {
         done();
       };
-      
+
       var page = new Page();
-      page.viewRouter.get('glitter.html', function(req, res, next) 
-      {
+      page.viewRouter.get('glitter.html', function(req, res, next) {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
         next();
       });
 
-      page.viewRouter.get('', function(req, res, page, next) 
-      {
+      page.viewRouter.get('', function(req, res, page, next) {
         should.fail();
       });
 
-      page.render(req,res,function() {});
+      page.render(req, res, function() {});
     });
 
-    it('should map a command', function (done) {
+    it('should map a command', function(done) {
       req.sitepath.page = 'glitter.html';
       req.method = 'POST';
 
-      res.end = function()
-      {
+      res.end = function() {
         done();
       };
-      
+
       var page = new Page();
-      page.commandRouter.post('glitter.html', function(req, res, next)
-      {
+      page.commandRouter.post('glitter.html', function(req, res, next) {
         next();
       });
 
-      page.viewRouter.routeAll('glitter.html', function(req, res, next) 
-      {
+      page.viewRouter.routeAll('glitter.html', function(req, res, next) {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
         next();
       });
 
-      page.viewRouter.routeAll('', function(req, res, next) 
-      {
+      page.viewRouter.routeAll('', function(req, res, next) {
         should.fail();
       });
 
-      page.render(req,res, function() {});
+      page.render(req, res, function() {});
     });
   });
 
   context('without view', function() {
-    it('should throw an error', function (done) {
+    it('should throw an error', function(done) {
       var page = new Page();
 
       page.render(req, res, function(err) {

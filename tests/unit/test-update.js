@@ -22,7 +22,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
     ent.summary = {"title": "blrg",
       "abstract": "some text goes here"};
     ent.data.posting = '<div></div>';
-    ent.addTag('navigation','navbar');
+    ent.addTag('navigation', 'navbar');
 
     var db = {};
     db.openTransaction = function(client, done, callback) {
@@ -33,10 +33,10 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
       callback(null);
     };
 
-    db.connectWrap = function (queryfunc) {
+    db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        if(spec.name === 'insert_entity_query') {
+        if (spec.name === 'insert_entity_query') {
           should.deepEqual(spec.text, insertQuery);
           should.deepEqual(spec.name, 'insert_entity_query');
           should.deepEqual(spec.values[0], 'wh'); //path
@@ -69,14 +69,11 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
           func(null, {});
         }
       };
-      queryfunc(null, client, function()
-        {
-          
-      });
+      queryfunc(null, client, function() { });
     };
 
-    update.createEntity(db, ent, true, 'create', function(err, entityId, revisionId, revisionNum){
-      if(err) {
+    update.createEntity(db, ent, true, 'create', function(err, entityId, revisionId, revisionNum) {
+      if (err) {
         should.fail(err);
       } else {
       }
@@ -96,4 +93,4 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
       }
     });
   });
-}); 
+});
