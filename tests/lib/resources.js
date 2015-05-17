@@ -3,7 +3,7 @@ var entity = require('../../lib/entity');
 var db = require('../../lib/db');
 var update = require('../../lib/update');
 
-exports.entity_resource = function entity_resource(path, ents, entidx, provisional, now, func) {
+exports.entityResource = function entityResource(path, ents, entidx, provisional, now, func) {
   var ent = new entity.Entity();
   ent.createNew(path, 'base', now);
   ent.summary = {"title": entidx,
@@ -15,7 +15,7 @@ exports.entity_resource = function entity_resource(path, ents, entidx, provision
     func(ent);
   }
 
-  before(function createEntity_resource(done) {
+  before(function createEntityResource(done) {
     update.createEntity(db, ent, true, 'create', 
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
@@ -25,7 +25,7 @@ exports.entity_resource = function entity_resource(path, ents, entidx, provision
     });
   });
 
-  after(function deleteEntity_resource(done) {
+  after(function deleteEntityResource(done) {
     update.deleteEntity(db, ent, true, 'delete', done);
     delete ents[entidx];
   });
