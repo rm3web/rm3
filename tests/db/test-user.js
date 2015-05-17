@@ -27,7 +27,7 @@ describe('user', function() {
   var ents = {};
   var userpath = new sitepath(['wh', 'users']);
 
-  resources.user_resource(userpath, 'test', ents, 'user', now);
+  resources.userResource(userpath, 'test', ents, 'user', now);
 
   describe('user login', function() {
     step('#findByUsername', function(done) {
