@@ -15,12 +15,12 @@
         <tr class="pure-table-even">
     {/eq}
 {/math}
-<td></td><td>{pred_class}: {pred_key}</td><td>{obj_key}</td>
+<td></td><td>{predClass}: {predKey}</td><td>{objKey}</td>
 <td>
     <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
     <input type="hidden" name="action" value="rmtag" />
-    <input type="hidden" name="pred_class" value="{predClass}" />
-    <input type="hidden" name="pred_key" value="{predKey}" />
+    <input type="hidden" name="predClass" value="{predClass}" />
+    <input type="hidden" name="predKey" value="{predKey}" />
     <input type="hidden" name="objKey" value="{objKey}" />
     <button type="submit" class="pure-button pure-button-primary">Delete</button>
     </form>

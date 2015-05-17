@@ -62,22 +62,22 @@ exports.user_resource = function user_resource(userpath, username, ents, entidx,
 
 exports.permission_resource = function permission_resource(role, permission, path) {
   before(function create_permission_resource(done) {
-    update.add_permission_to_role(db, role, permission, path, "note", done);
+    update.addPermissionToRole(db, role, permission, path, "note", done);
   });
 
   after(function delete_permission_resource(done) {
-    update.remove_permission_from_role(db, role, permission, path, "note", done);
+    update.removePermissionFromRole(db, role, permission, path, "note", done);
   });
 };
 
 exports.assignment_resource = function assignment_resource(userpath, username, role) {
   before(function create_assignment_resource(done) {
     var path = userpath.down(username);
-    update.assign_user_to_role(db, path, role, 'note', done);
+    update.assignUserToRole(db, path, role, 'note', done);
   });
 
   after(function delete_assignment_resource(done) {
     var path = userpath.down(username);
-    update.remove_user_from_role(db, path, role, 'note', done);
+    update.removeUserFromRole(db, path, role, 'note', done);
   });
 };
