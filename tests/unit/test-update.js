@@ -87,7 +87,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
     var logentry = {
       evtClass: 'this_is_not_valid'
     };
-    update._private.exec_logentry(true, undefined, undefined, logentry, function(err) {
+    update._private.execLogentry(true, undefined, undefined, logentry, function(err) {
       if (err) {
         should.deepEqual(err.name, 'InvalidLogClass');
         done();

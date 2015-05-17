@@ -66,7 +66,7 @@ function step_generic_update(desc, ents, startidx, nextidx) {
 
 function step_generic_move(desc, ents, startidx, newpath, move_mark) {
   step(desc, function(done) {
-    update.move_entity(db, ents[startidx], newpath, true, 'move', 
+    update.moveEntity(db, ents[startidx], newpath, true, 'move', 
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -440,7 +440,7 @@ describe('update', function() {
     step_validate_tag_non_existence('check tag non creation', ents.start);
 
     step('commit', function(done) {
-      update.commit_entity_rev(db, ents.start._revisionId,
+      update.commitEntityRev(db, ents.start._revisionId,
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           entityId.should.equal(ents.start._entityId);
@@ -467,7 +467,7 @@ describe('update', function() {
   });
 
   it('fails on invalid revisionNum', function(done) {
-    update.commit_entity_rev(db, uuid.v1(), function(err) {
+    update.commitEntityRev(db, uuid.v1(), function(err) {
       if(err) {
         should.deepEqual(err.name, 'RevisionIdNotFoundError');
       } else {
@@ -483,7 +483,7 @@ describe('update', function() {
     var permission_rec = {};
 
     step('permit', function(done) {
-      update.add_permission_to_role(db, "role", "permission", path, "note", 
+      update.addPermissionToRole(db, "role", "permission", path, "note", 
         function(err, entityId, revisionId, revisionNum)
         {
           revisionId.should.be.an.instanceof(String);
@@ -495,7 +495,7 @@ describe('update', function() {
       );
     });
 
-    step_validate_permission_existence('validate add_permission_to_role', path);
+    step_validate_permission_existence('validate addPermissionToRole', path);
 
     step_generic_revid_check('validate log', permission_rec, function(result){
       should.deepEqual(result.rowCount, 1);
@@ -505,7 +505,7 @@ describe('update', function() {
     });
 
     step('permit again', function(done) {
-      update.add_permission_to_role(db, "role", "permission", path, "note", 
+      update.addPermissionToRole(db, "role", "permission", path, "note", 
         function(err, entityId, revisionId, revisionNum)
         {
           if (err) {
@@ -521,7 +521,7 @@ describe('update', function() {
     step_validate_permission_existence('validate failure is ok', path);
 
     step('remove', function(done) {
-      update.remove_permission_from_role(db, "role", "permission", path, "note", 
+      update.removePermissionFromRole(db, "role", "permission", path, "note", 
         function(err, entityId, revisionId, revisionNum)
         {
           revisionId.should.be.an.instanceof(String);
@@ -545,7 +545,7 @@ describe('update', function() {
     step_generic_create('create', userpath, ents, 'one', true, now);
 
     step('assign', function create_assignment_resource(done) {
-      update.assign_user_to_role(db, userpath, 'role', 'note', done);
+      update.assignUserToRole(db, userpath, 'role', 'note', done);
     });
 
     step('check assign', function check_assign(done) {
@@ -569,7 +569,7 @@ describe('update', function() {
     });
 
     step('assign again', function create_assignment_resource(done) {
-      update.assign_user_to_role(db, userpath, 'role2', 'note', done);
+      update.assignUserToRole(db, userpath, 'role2', 'note', done);
     });
 
     step('check assign again', function check_assign(done) {
@@ -588,7 +588,7 @@ describe('update', function() {
     });
 
     step('de-assign', function delete_assignment_resource(done) {
-      update.remove_user_from_role(db, userpath, 'role', 'note', done);
+      update.removeUserFromRole(db, userpath, 'role', 'note', done);
     });
 
     step('check assign after 1 de-assign', function check_assign(done) {
@@ -605,7 +605,7 @@ describe('update', function() {
     });
 
     step('de-assign', function delete_assignment_resource(done) {
-      update.remove_user_from_role(db, userpath, 'role2', 'note', done);
+      update.removeUserFromRole(db, userpath, 'role2', 'note', done);
     });
 
     step('check assign after 2 de-assigns', function check_assign(done) {
