@@ -49,7 +49,7 @@ gulp.task('coverage', ['create-db', 'build-schema'], function (cb) {
     .pipe(istanbul()) // Covering files
     .pipe(istanbul.hookRequire()) // Force `require` to return covered files
     .on('finish', function () {
-      gulp.src(['tests/**/*.js'])
+      gulp.src(['tests/unit/*.js', 'tests/db/*.js'])
         .pipe(mocha())
         .pipe(istanbul.writeReports()) // Creating the reports after tests runned
         .on('end', cb);
@@ -62,7 +62,7 @@ gulp.task('coveralls', ['create-db', 'build-schema'], function (cb) {
     .pipe(istanbul()) // Covering files
     .pipe(istanbul.hookRequire()) // Force `require` to return covered files
     .on('finish', function () {
-      gulp.src(['tests/**/*.js'])
+      gulp.src(['tests/unit/*.js', 'tests/db/*.js'])
         .pipe(mocha())
         .pipe(istanbul.writeReports()) // Creating the reports after tests runned
         .on('end', function() {
