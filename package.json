@@ -24,6 +24,7 @@
     "errs": "~0.3.2",
     "express": "~4.12.3",
     "express-session": "~1.11.1",
+    "express-winston": "^0.3.1",
     "intl": "~0.1.4",
     "method-override": "~2.3.2",
     "morgan": "~1.5.2",
@@ -41,7 +42,8 @@
     "squel": "~3.10.0",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "validator": "~3.39.0",
-    "winston": "~1.0.0"
+    "winston": "~1.0.0",
+    "winston-context": "0.0.4"
   },
   "devDependencies": {
     "casperjs": "^1.1.0-beta3",
