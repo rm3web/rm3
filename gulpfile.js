@@ -112,12 +112,12 @@ gulp.task('develop', function () {
 gulp.task('casper-tests', function(cb) {
   var server = gls.new('lib/front.js');
 
-  var tests = ['./tests/casper/test.js'];
+  var tests = ['./tests/casper/*'];
 
   server.start();
   setTimeout(function() {
 
-    var casperChild = spawn('casperjs', ['test'].concat(tests));
+    var casperChild = spawn('./node_modules/.bin/mocha-casperjs', tests);
 
     casperChild.stdout.on('data', function (data) {
         gutil.log('CasperJS:', data.toString().slice(0, -1));

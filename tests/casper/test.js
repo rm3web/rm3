@@ -1,9 +1,15 @@
-casper.test.begin('Validate page render', 1, function suite(test) {
-    casper.start("http://127.0.0.1:4000/", function() {
-        test.assertTitle("Welcome to rm3", "Rendering a page");
-    });
+var should = require('should');
+/* global casper */
+/*jshint expr:true */
 
-    casper.run(function() {
-        test.done();
+describe('Base page', function() {
+  before(function() {
+    casper.start('http://127.0.0.1:4000/');
+  });
+
+  it('should respond', function() {
+    casper.then(function() {
+      'Welcome to rm3'.should.matchTitle;
     });
+  });
 });
