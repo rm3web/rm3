@@ -6,7 +6,11 @@ var gulp = require('gulp')
   , mocha = require('gulp-mocha')
   , run = require('gulp-run')
   , jscs = require('gulp-jscs')
+  , gls = require('gulp-live-server')
+  , gutil = require('gulp-util');
   ;
+
+var spawn = require('child_process').spawn;
 
 var lintable = ['lib/**/*.js', 'tests/**/*.js'];
 
@@ -103,3 +107,37 @@ gulp.task('develop', function () {
       console.log('restarted!')
     })
 })
+
+
+gulp.task('casper-tests', function(cb) {
+  var server = gls.new('lib/front.js');
+
+  var tests = ['./tests/casper/test.js'];
+
+  server.start();
+  setTimeout(function() {
+
+    var casperChild = spawn('casperjs', ['test'].concat(tests));
+
+    casperChild.stdout.on('data', function (data) {
+        gutil.log('CasperJS:', data.toString().slice(0, -1));
+    });
+
+    casperChild.on('close', function (code) {
+        var success = code === 0; // Will be 1 in the event of failure
+
+        if (success) {
+          console.log('sfs');
+        } else {
+          console.log('ffs');
+        }
+        console.log('killing server');
+
+        // Do something with success here
+        server.stop().then(function() {
+          cb();
+        });
+    });
+  }, 2000);
+
+});
