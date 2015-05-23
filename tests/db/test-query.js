@@ -293,7 +293,7 @@ describe('query', function() {
 
     describe('#permissionsForUser', function() {
       it('works', function(done) {
-        var resp = query.permissionsForUser(db, ents.user.path());
+        var resp = query.permissionsForUser(db, {}, ents.user.path());
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -312,7 +312,7 @@ describe('query', function() {
 
     describe('#listRoles', function() {
       it('works', function(done) {
-        var resp = query.listRoles(db);
+        var resp = query.listRoles(db, {});
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -331,7 +331,7 @@ describe('query', function() {
 
     describe('#listUsersInRole', function() {
       it('works', function(done) {
-        var resp = query.listUsersInRole(db, 'query-role');
+        var resp = query.listUsersInRole(db, {}, 'query-role');
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -349,7 +349,7 @@ describe('query', function() {
 
     describe('#listPermissionsInRole', function() {
       it('works', function(done) {
-        var resp = query.listPermissionsInRole(db, 'query-role');
+        var resp = query.listPermissionsInRole(db, {}, 'query-role');
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
