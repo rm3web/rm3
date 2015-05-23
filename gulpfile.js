@@ -65,7 +65,7 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
     env: clone(process.env)
   }
   ctx.env.RM3_PG = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
-  var server = spawn('/home/wirehead/src/rm3/node_modules/.bin/istanbul', 
+  var server = spawn('./node_modules/.bin/istanbul', 
     ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'lib/front.js'],
     ctx);
 
@@ -109,7 +109,7 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
 });
 
 gulp.task('coverage', ['base-coverage', 'casper-coverage'], function(cb) {
-  run('./node_modules/.bin/istanbul report').exec()
+  run('./node_modules/.bin/istanbul report lcov text').exec()
     .pipe(gulp.dest('output'))
     .on('end', cb)
     .on('error', gutil.log);
@@ -136,14 +136,14 @@ gulp.task('jshint', function (cb) {
     .on('end', cb);
 })
 
-gulp.task('lint', ['jshint', 'jscs'])
-
-gulp.task('travis', ['lint', 'coveralls'])
-
 gulp.task('bower', function() { 
     return bower()
          .pipe(gulp.dest('./bower_components')) 
 });
+
+gulp.task('lint', ['jshint', 'jscs'])
+
+gulp.task('travis', ['bower', 'lint', 'coveralls'])
 
 gulp.task('develop', function () {
   nodemon(
