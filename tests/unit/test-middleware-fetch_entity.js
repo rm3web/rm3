@@ -8,6 +8,7 @@ function mockReq(path) {
   var req = {};
   req.sitepath = new sitepath(path);
   req.user = {};
+  req.ctx = {};
   req.user.path = function() {
     return 'wh';
   };
