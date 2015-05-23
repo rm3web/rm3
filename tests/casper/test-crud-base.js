@@ -53,6 +53,26 @@ describe('Base type', function() {
     casper.then(function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       'div.pure-u-2-3'.should.contain.text('post data here do stuff etc');
+      this.click('a[href*=edit]');
+    });
+
+    casper.then(function() {
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'textarea[name=posting]'.should.be.inDOM.and.be.visible;
+      this.fill('form[action*=edit]',
+        {posting: '# edited\n\ndid some stuff',
+         textblockFormat: 'markdown'}, true);
+    });
+
+    casper.then(function() {
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'textarea[name=posting]'.should.be.inDOM.and.be.visible;
+    });
+
+    casper.thenOpen('http://127.0.0.1:4000/casperjs_test/', function() {
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'div.pure-u-2-3 h1'.should.contain.text('edited');
+      'div.pure-u-2-3'.should.contain.text('did some stuff');
       //this.click('a[href*=casperjs_test/delete]');
     });
 
