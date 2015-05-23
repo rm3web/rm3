@@ -13,6 +13,24 @@ describe('middleware:errorHandle', function() {
     res = {};
   });
 
+  it('will obey HEAD', function(cb) {
+    var err = new Error();
+    req.method = 'HEAD';
+    res.writeHead = function(code, str, data) {
+      code.should.equal(500);
+      str.should.equal('Internal Error');
+    };
+    res.write = function(str) {
+      should.fail();
+    };
+    res.end = function() {
+      cb();
+    };
+    middleware(err, req, res, function() {
+      should.fail();
+    });
+  });
+
   it('will throw a 500 with random exceptions', function(cb) {
     var err = new Error();
     res.writeHead = function(code, str, data) {
