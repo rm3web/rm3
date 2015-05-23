@@ -44,7 +44,7 @@ gulp.task('db-tests', ['create-db', 'build-schema'], function (cb) {
 
 gulp.task('test', ['unit-tests', 'db-tests']);
 
-gulp.task('coverage', ['create-db', 'build-schema'], function (cb) {
+gulp.task('base-coverage', ['create-db', 'build-schema'], function (cb) {
   process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
   gulp.src(['lib/**/*.js'])
     .pipe(istanbul()) // Covering files
@@ -95,12 +95,11 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
           console.log('Casper tests passed');
         } else {
           console.log('Casper tests failed');
+          serverlog.forEach(function(element, index, array) {
+            gutil.log('Server:', element.toString());
+          });
         }
         console.log('killing server');
-
-        serverlog.forEach(function(element, index, array) {
-          gutil.log('Server:', element.toString());
-        });
 
         // Do something with success here
         server.kill('SIGINT');
@@ -109,28 +108,24 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
   }, 20000);
 });
 
-gulp.task('coveralls', ['create-db', 'build-schema'], function (cb) {
-  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  gulp.src(['lib/**/*.js'])
-    .pipe(istanbul()) // Covering files
-    .pipe(istanbul.hookRequire()) // Force `require` to return covered files
-    .on('finish', function () {
-      gulp.src(['tests/unit/*.js', 'tests/db/*.js'])
-        .pipe(mocha())
-        .pipe(istanbul.writeReports()) // Creating the reports after tests runned
-        .on('end', function() {
-          run('cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage').exec()
-            .pipe(gulp.dest('output'))
-            .on('end', cb);
-        });
-    });
+gulp.task('coverage', ['base-coverage', 'casper-coverage'], function(cb) {
+  run('./node_modules/.bin/istanbul report').exec()
+    .pipe(gulp.dest('output'))
+    .on('end', cb)
+    .on('error', gutil.log);
+})
+
+gulp.task('coveralls', ['coverage'], function (cb) {
+  run('cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage').exec()
+    .pipe(gulp.dest('output'))
+    .on('end', cb)
+    .on('error', gutil.log);
 });
 
 
 gulp.task('jscs', function (cb) {
   gulp.src(lintable)
     .pipe(jscs())
-    .pipe(gulp.dest('src'))
     .on('end', cb);
 });
 
@@ -167,7 +162,6 @@ gulp.task('develop', function () {
 });
 
 gulp.task('casper-db', function(cb) {
-  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper';
   run('dropdb --if-exists rm3casper && createdb rm3casper').exec()
     .pipe(gulp.dest('output'))
     .on('end', cb);
@@ -181,30 +175,37 @@ gulp.task('casper-schema', ['casper-db'], function(cb) {
 })
 
 gulp.task('casper-fixtures', ['casper-db', 'casper-schema'], function(cb) {
-  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper';
+var ctx = { cwd: process.cwd(),
+    env: clone(process.env)
+  }
+  ctx.env.RM3_PG = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
   gulp.src('tests/page-fixtures/*.json')
-    .pipe(run('./bin/rm3load'))
+    .pipe(run('./bin/rm3load', ctx))
     .pipe(gulp.dest('output'))
     .on('end', cb)
     .on('error', gutil.log);
 })
 
 gulp.task('casper-users', ['casper-db', 'casper-schema', 'casper-fixtures'], function(cb) {
-  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper';
+var ctx = { cwd: process.cwd(),
+    env: clone(process.env)
+  }
+  ctx.env.RM3_PG = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
+  
   var setup = './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password'
   + '&& ./bin/rm3admin assign wirehead root'
   + '&& ./bin/rm3admin permit root edit \\*'
   + '&& ./bin/rm3admin permit root delete \\*'
   + '&& ./bin/rm3admin permit root view \\*'
   + '&& ./bin/rm3admin permit nobody view wh.!users'
-  run(setup).exec()
+  run(setup, ctx).exec()
     .pipe(gulp.dest('output'))
     .on('end', cb);
 })
 
 gulp.task('casper-tests', ['casper-users'], function(cb) {
   var server = gls.new('lib/front.js', 
-    {env: {RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper}'}});
+    {env: {RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'}});
 
   var tests = ['./tests/casper/*'];
 
