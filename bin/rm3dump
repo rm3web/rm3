@@ -25,11 +25,11 @@ program
 
 async.waterfall([
   function query_ent(callback) {
-    query.entity_from_path(db, entity.Entity, {context: 'ROOT'}, program.path, null, callback)
+    query.entity_from_path(db, entity.Entity, {}, {context: 'ROOT'}, program.path, null, callback)
   },
   function query_hist(ent, callback) {
     if (program.log) {
-      var resp = query.query_history(db, ent._path);
+      var resp = query.query_history(db, {}, {context: 'ROOT'}, ent._path);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);

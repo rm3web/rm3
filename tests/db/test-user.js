@@ -19,7 +19,7 @@ describe('user', function() {
 
   describe('user login', function() {
     step('#findByUsername', function(done) {
-      user.findByUsername(db, query, entity.Entity, userpath, 'test', function(err, ent2) {
+      user.findByUsername(db, {}, query, entity.Entity, userpath, 'test', function(err, ent2) {
         ents.req = ent2;
         if (err) {
           should.fail(err);
