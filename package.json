@@ -46,9 +46,12 @@
     "winston-context": "0.0.4"
   },
   "devDependencies": {
+    "casper-chai": "^0.2.1",
     "casperjs": "^1.1.0-beta3",
+    "chai": "^2.3.0",
     "coveralls": "^2.11.2",
     "gulp": "~3.8.8",
+    "gulp-bower": "0.0.10",
     "gulp-istanbul": "~0.7.0",
     "gulp-jscs": "^1.6.0",
     "gulp-jshint": "~1.8.5",
