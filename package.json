@@ -24,6 +24,7 @@
     "errs": "~0.3.2",
     "express": "~4.12.3",
     "express-session": "~1.11.1",
+    "express-winston": "^0.3.1",
     "intl": "~0.1.4",
     "method-override": "~2.3.2",
     "morgan": "~1.5.2",
@@ -41,7 +42,8 @@
     "squel": "~3.10.0",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "validator": "~3.39.0",
-    "winston": "~1.0.0"
+    "winston": "~1.0.0",
+    "winston-context": "0.0.4"
   },
   "devDependencies": {
     "casper-chai": "^0.2.1",
@@ -71,11 +73,11 @@
     "test-plan": "~0.1.1"
   },
   "scripts": {
-    "unit-tests": "RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/mocha tests/unit/*.js",
-    "db-tests": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/mocha tests/db/*.js",
+    "unit-tests": "./node_modules/.bin/gulp unit-tests",
+    "db-tests": "./node_modules/.bin/gulp db-tests",
     "benchmark": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/matcha benchmark/*.js",
-    "test": "npm run unit-tests && npm run db-tests",
-    "coverage": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha tests/unit/*.js tests/db/*.js",
+    "test": "./node_modules/.bin/gulp test",
+    "coverage": "./node_modules/.bin/gulp coverage",
     "travis": "./node_modules/.bin/gulp travis",
     "lint": "./node_modules/.bin/jshint lib tests bin && ./node_modules/.bin/jscs lib tests bin",
     "docs": "./node_modules/.bin/jsdox -A --output ./docs/api lib && ./node_modules/.bin/jsdox -A --output ./docs/api/middlware lib/middleware"

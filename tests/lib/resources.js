@@ -16,7 +16,7 @@ exports.entityResource = function entityResource(path, ents, entidx, provisional
   }
 
   before(function createEntityResource(done) {
-    update.createEntity(db, ent, true, 'create',
+    update.createEntity(db, {}, ent, true, 'create',
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
         ents[entidx]._revisionId = revisionId;
@@ -26,7 +26,7 @@ exports.entityResource = function entityResource(path, ents, entidx, provisional
   });
 
   after(function deleteEntityResource(done) {
-    update.deleteEntity(db, ent, true, 'delete', done);
+    update.deleteEntity(db, {}, ent, true, 'delete', done);
     delete ents[entidx];
   });
 };
@@ -45,7 +45,7 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
   });
 
   before(function createUserResource(done) {
-    update.createEntity(db, ent, true, 'create',
+    update.createEntity(db, {}, ent, true, 'create',
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
         ents[entidx]._revisionId = revisionId;
@@ -55,29 +55,29 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
   });
 
   after(function deleteUserResource(done) {
-    update.deleteEntity(db, ent, true, 'delete', done);
+    update.deleteEntity(db, {}, ent, true, 'delete', done);
     delete ents[entidx];
   });
 };
 
 exports.permissionResource = function permissionResource(role, permission, path) {
   before(function createPermissionResource(done) {
-    update.addPermissionToRole(db, role, permission, path, "note", done);
+    update.addPermissionToRole(db, {}, role, permission, path, "note", done);
   });
 
   after(function deletePermissionResource(done) {
-    update.removePermissionFromRole(db, role, permission, path, "note", done);
+    update.removePermissionFromRole(db, {}, role, permission, path, "note", done);
   });
 };
 
 exports.assignmentResource = function assignmentResource(userpath, username, role) {
   before(function createAssignmentResource(done) {
     var path = userpath.down(username);
-    update.assignUserToRole(db, path, role, 'note', done);
+    update.assignUserToRole(db, {}, path, role, 'note', done);
   });
 
   after(function deleteAssignmentResource(done) {
     var path = userpath.down(username);
-    update.removeUserFromRole(db, path, role, 'note', done);
+    update.removeUserFromRole(db, {}, path, role, 'note', done);
   });
 };

@@ -31,7 +31,7 @@ describe('query', function() {
     it('returns not found exceptions', function(done) {
       var badpath = new sitepath(['wh', 'rainbows']);
 
-      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, badpath, null, function(err, ent) {
+      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, badpath, null, function(err, ent) {
         should.deepEqual(err.name, 'EntityNotFoundError');
         should.deepEqual(err.path, badpath.toDottedPath());
         done();
@@ -39,7 +39,7 @@ describe('query', function() {
     });
 
     it('returns entities', function(done) {
-      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2) {
+      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2) {
         var ent = ents.one;
         entitiesShouldMostlyEqual(ent, ent2);
         should.deepEqual(ent2._created, now);
@@ -50,7 +50,7 @@ describe('query', function() {
 
     it('returns entities using revid', function(done) {
       var ent = ents.one;
-      query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, ent._revisionId, function(err, ent2) {
+      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, ent._revisionId, function(err, ent2) {
         entitiesShouldMostlyEqual(ent, ent2);
         should.deepEqual(ent2._created, now);
         should.deepEqual(ent2._modified, now);
@@ -75,7 +75,7 @@ describe('query', function() {
     });
 
     it('works', function(done) {
-      var resp = query.query(db, {context: "ROOT"}, path1, 'child', 'entity', {}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {}, undefined, undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -94,7 +94,7 @@ describe('query', function() {
     });
 
     it('works for the navbar', function(done) {
-      var resp = query.query(db, {context: "ROOT"}, path1, 'child', 'entity', {navbar: true}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {navbar: true}, undefined, undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -111,7 +111,7 @@ describe('query', function() {
     });
 
     it('works for plain tags', function(done) {
-      var resp = query.query(db, {context: "ROOT"}, path1, 'child', 'entity', {tag: 'navbar'}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {tag: 'navbar'}, undefined, undefined);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -140,7 +140,7 @@ describe('query', function() {
       ents.updated = ents.one.clone();
       ents.updated.data.posting = "<div>blah blah blah</div>";
       ents.updated.summary.title = 'updated';
-      update.updateEntity(db, ents.one, ents.updated, true, 'update',
+      update.updateEntity(db, {}, ents.one, ents.updated, true, 'update',
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           revisionId.should.be.an.instanceof(String);
@@ -154,7 +154,7 @@ describe('query', function() {
     });
 
     it('works', function(done) {
-      var resp = query.queryHistory(db, {}, path);
+      var resp = query.queryHistory(db, {}, {}, path);
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -194,7 +194,7 @@ describe('query', function() {
 
       it('filters out forbidden nodes', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
-        var resp = query.query(db, context, otherpath, 'child', 'entity', {}, undefined, undefined);
+        var resp = query.query(db, {}, context, otherpath, 'child', 'entity', {}, undefined, undefined);
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -210,7 +210,7 @@ describe('query', function() {
 
       it('lets allowed nodes through', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
-        var resp = query.query(db, context, ents.user.path(), 'child', 'entity', {}, undefined, undefined);
+        var resp = query.query(db, {}, context, ents.user.path(), 'child', 'entity', {}, undefined, undefined);
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -230,7 +230,7 @@ describe('query', function() {
       var entpath = new sitepath(['wh', 'query', 'roles', 'node']);
 
       it('fetches for a user', function(done) {
-        query.fetchEffectivePermissions(db, ents.user.path(), entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, {}, ents.user.path(), entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -241,7 +241,7 @@ describe('query', function() {
       });
 
       it('fetches for nobody', function(done) {
-        query.fetchEffectivePermissions(db, undefined, entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, {}, undefined, entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -253,7 +253,7 @@ describe('query', function() {
 
       it('fetches deeper permissions', function(done) {
         var entpath2 = new sitepath(['wh', 'query', 'roles', 'node', 'node2', 'node3']);
-        query.fetchEffectivePermissions(db, ents.user.path(), entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, {}, ents.user.path(), entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -267,7 +267,7 @@ describe('query', function() {
     describe('#fetch_entityFromPath', function() {
       var entpath = new sitepath(['wh', 'query', 'user', 'test']);
       it('fetches the permissions with a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {context: 'STANDARD', user: entpath},
+        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: entpath},
                                entpath, undefined, function(err, ent2) {
           if (err) {
             should.fail(err);
@@ -279,7 +279,7 @@ describe('query', function() {
       });
 
       it('fetches the permissions without a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {context: 'STANDARD', user: undefined},
+        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: undefined},
                                entpath, undefined, function(err, ent2) {
           if (err) {
             should.fail(err);
@@ -293,7 +293,7 @@ describe('query', function() {
 
     describe('#permissionsForUser', function() {
       it('works', function(done) {
-        var resp = query.permissionsForUser(db, ents.user.path());
+        var resp = query.permissionsForUser(db, {}, ents.user.path());
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -312,7 +312,7 @@ describe('query', function() {
 
     describe('#listRoles', function() {
       it('works', function(done) {
-        var resp = query.listRoles(db);
+        var resp = query.listRoles(db, {});
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -331,7 +331,7 @@ describe('query', function() {
 
     describe('#listUsersInRole', function() {
       it('works', function(done) {
-        var resp = query.listUsersInRole(db, 'query-role');
+        var resp = query.listUsersInRole(db, {}, 'query-role');
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -349,7 +349,7 @@ describe('query', function() {
 
     describe('#listPermissionsInRole', function() {
       it('works', function(done) {
-        var resp = query.listPermissionsInRole(db, 'query-role');
+        var resp = query.listPermissionsInRole(db, {}, 'query-role');
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
