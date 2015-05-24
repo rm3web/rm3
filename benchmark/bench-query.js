@@ -7,6 +7,11 @@ var db = require('../lib/db');
 var user = require('../lib/user');
 var resources = require('../tests/lib/resources.js');
 
+var winston = require('winston');
+
+winston.remove(winston.transports.Console);
+
+
 suite('query#entity_from_path', function() {
   var ents = {};
 
@@ -16,7 +21,7 @@ suite('query#entity_from_path', function() {
   resources.entityResource(path, ents, 'one', false, now);
 
   bench('simple query', function(done) {
-    query.entityFromPath(db, entity.Entity, {context: "ROOT"}, path, null, function(err, ent2){
+    query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2){
 
       done();
     });
@@ -40,7 +45,7 @@ suite('query#query', function () {
   });
 
   bench('simple query', function(done) {
-    var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{},undefined,undefined);
+    var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child','entity',{},undefined,undefined);
     var arts = [];
     resp.on('article', function(article) {
       arts.push(article);
@@ -54,7 +59,7 @@ suite('query#query', function () {
   });
 
   bench('navbar', function(done) {
-    var resp = query.query(db, {context: "ROOT"}, path1, 'child','entity',{navbar: true},undefined,undefined);
+    var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child','entity',{navbar: true},undefined,undefined);
     var arts = [];
     resp.on('article', function(article) {
       arts.push(article);
@@ -80,7 +85,7 @@ suite("query#query_history", function() {
     ents.updated = ents.one.clone();
     ents.updated.data.posting = "<div>blah blah blah</div>";
     ents.updated.summary.title = 'updated';
-    update.updateEntity(db, ents.one, ents.updated, true, 'update',
+    update.updateEntity(db, {}, ents.one, ents.updated, true, 'update',
       function(err, entityId, revisionId, revisionNum) {
         ents.updated._entityId = entityId;
         ents.updated._revisionId = revisionId;
@@ -91,7 +96,7 @@ suite("query#query_history", function() {
   });
 
   bench('query', function(done){
-    var resp = query.queryHistory(db, {}, path);
+    var resp = query.queryHistory(db, {}, {}, path);
     var arts = [];
     resp.on('article', function(article) {
       arts.push(article);
