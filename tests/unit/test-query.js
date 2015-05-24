@@ -88,7 +88,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.fail(err);
       } else {
@@ -117,7 +117,7 @@ describe('query', function() {
       });
     };
 
-    query.fetchEffectivePermissions(db, user, entpath, function(err, entity) {
+    query.fetchEffectivePermissions(db, {}, user, entpath, function(err, entity) {
       if (err) {
         should.fail(err);
       } else {
@@ -151,7 +151,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'EntityNotFoundError');
         should.deepEqual(err.path, entpath.toDottedPath());
@@ -187,7 +187,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'QueryError');
       } else {
@@ -224,7 +224,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
       });
     };
 
-    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, '1234', function(err, entity) {
+    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, '1234', function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'RevisionIdNotFoundError');
       } else {
@@ -261,7 +261,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
       });
     };
 
-    query.entityFromPath(db, Entclass, {context: "ROOT"}, entpath, '1535', function(err, entity) {
+    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, '1535', function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'QueryError');
       } else {
@@ -308,7 +308,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var root = {context: "ROOT"};
 
-    var resp = query.query(db, root, entpath, 'child', 'entity', {}, undefined, undefined);
+    var resp = query.query(db, {}, root, entpath, 'child', 'entity', {}, undefined, undefined);
     resp.on('article', function(article) {
       should.deepEqual(article.title, rec.summary.title);
       should.deepEqual(article.summary, rec.summary.abstract);
@@ -351,7 +351,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var root = {context: "ROOT"};
 
-    var resp = query.query(db, root, entpath, 'child', 'count', {}, undefined, undefined);
+    var resp = query.query(db, {}, root, entpath, 'child', 'count', {}, undefined, undefined);
     resp.on('count', function(article) {
       should.deepEqual(article.count, '2');
       plan.ok(true);
@@ -403,7 +403,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
       });
     };
 
-    var resp = query.queryHistory(db, {}, entpath);
+    var resp = query.queryHistory(db, {}, {}, entpath);
     resp.on('article', function(article) {
       should.deepEqual(article.note, rec.note);
       should.deepEqual(article.data, rec.data);

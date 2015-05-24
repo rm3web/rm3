@@ -16,7 +16,7 @@ describe('middleware:pathMap', function() {
 
   tests.forEach(function(test) {
     it('correctly maps ' + test.args, function(done) {
-      var req = {path: test.args};
+      var req = {path: test.args, ctx: {}};
       middleware(req, res, function() {
         req.sitepath.should.eql(test.expected);
         if (test.hasOwnProperty('creation')) {

@@ -26,7 +26,7 @@ function loadData(parsedData) {
   if (program.path) {
     ent._path = program.path
   }
-  update.createEntity(db, ent, true, 'loaded via rm3load', function(){
+  update.createEntity(db, {}, ent, true, 'loaded via rm3load', function(){
     console.log('done')
     db.gunDatabase();
   });

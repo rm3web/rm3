@@ -13,6 +13,10 @@ var gulp = require('gulp')
   , clone = require('clone');
   ;
 
+var winston = require('winston');
+
+winston.remove(winston.transports.Console);
+
 var lintable = ['lib/**/*.js', 'tests/**/*.js'];
 
 gulp.task('unit-tests', function (cb) {

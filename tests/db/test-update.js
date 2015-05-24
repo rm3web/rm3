@@ -30,7 +30,7 @@ function stepGenericCreate(desc, path, ents, entidx, provisional, now) {
     ents[entidx].data.posting = longstr;
     ents[entidx].addTag('navigation', 'navbar');
 
-    update.createEntity(db, ents[entidx], provisional, 'create',
+    update.createEntity(db, {}, ents[entidx], provisional, 'create',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -49,7 +49,7 @@ function stepGenericUpdate(desc, ents, startidx, nextidx) {
   ents[nextidx] = ents[startidx].clone();
   ents[nextidx].data.posting = "<div>blah blah blah</div>";
   step(desc, function(done) {
-    update.updateEntity(db, ents[startidx], ents[nextidx], true, 'update',
+    update.updateEntity(db, {}, ents[startidx], ents[nextidx], true, 'update',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -66,7 +66,7 @@ function stepGenericUpdate(desc, ents, startidx, nextidx) {
 
 function stepGenericMove(desc, ents, startidx, newpath, moveMark) {
   step(desc, function(done) {
-    update.moveEntity(db, ents[startidx], newpath, true, 'move',
+    update.moveEntity(db, {}, ents[startidx], newpath, true, 'move',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -82,7 +82,7 @@ function stepGenericMove(desc, ents, startidx, newpath, moveMark) {
 
 function stepGenericDelete(desc, ent, delMark) {
   step(desc, function(done) {
-    update.deleteEntity(db, ent, true, 'delete',
+    update.deleteEntity(db, {}, ent, true, 'delete',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -263,7 +263,7 @@ describe('update', function() {
     });
 
     step('try to create again', function(done) {
-      update.createEntity(db, ents.one, true, 'create', function(err) {
+      update.createEntity(db, {}, ents.one, true, 'create', function(err) {
         if (err) {
           should.deepEqual(err.name, 'DbDuplicateRecordError');
         } else {
@@ -396,7 +396,7 @@ describe('update', function() {
     step('delete', function(done) {
       var ent = ents.start;
       ent._path = newpath;
-      update.deleteEntity(db, ent, true, 'delete',
+      update.deleteEntity(db, {}, ent, true, 'delete',
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           entityId.should.equal(ent._entityId);
@@ -439,7 +439,7 @@ describe('update', function() {
     stepValidateTagNonExistence('check tag non creation', ents.start);
 
     step('commit', function(done) {
-      update.commitEntityRev(db, ents.start._revisionId,
+      update.commitEntityRev(db, {}, ents.start._revisionId,
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           entityId.should.equal(ents.start._entityId);
@@ -466,7 +466,7 @@ describe('update', function() {
   });
 
   it('fails on invalid revisionNum', function(done) {
-    update.commitEntityRev(db, uuid.v1(), function(err) {
+    update.commitEntityRev(db, {}, uuid.v1(), function(err) {
       if (err) {
         should.deepEqual(err.name, 'RevisionIdNotFoundError');
       } else {
@@ -482,7 +482,7 @@ describe('update', function() {
     var permissionRec = {};
 
     step('permit', function(done) {
-      update.addPermissionToRole(db, "role", "permission", path, "note",
+      update.addPermissionToRole(db, {}, "role", "permission", path, "note",
         function(err, entityId, revisionId, revisionNum) {
           revisionId.should.be.an.instanceof(String);
           revisionNum.should.be.an.instanceof(Number);
@@ -503,7 +503,7 @@ describe('update', function() {
     });
 
     step('permit again', function(done) {
-      update.addPermissionToRole(db, "role", "permission", path, "note",
+      update.addPermissionToRole(db, {}, "role", "permission", path, "note",
         function(err, entityId, revisionId, revisionNum) {
           if (err) {
             should.deepEqual(err.name, 'DbDuplicateRecordError');
@@ -518,7 +518,7 @@ describe('update', function() {
     stepValidatePermissionExistence('validate failure is ok', path);
 
     step('remove', function(done) {
-      update.removePermissionFromRole(db, "role", "permission", path, "note",
+      update.removePermissionFromRole(db, {}, "role", "permission", path, "note",
         function(err, entityId, revisionId, revisionNum) {
           revisionId.should.be.an.instanceof(String);
           revisionNum.should.be.an.instanceof(Number);
@@ -541,7 +541,7 @@ describe('update', function() {
     stepGenericCreate('create', userpath, ents, 'one', true, now);
 
     step('assign', function createAssignmentResource(done) {
-      update.assignUserToRole(db, userpath, 'role', 'note', done);
+      update.assignUserToRole(db, {}, userpath, 'role', 'note', done);
     });
 
     step('check assign', function checkAssign(done) {
@@ -565,7 +565,7 @@ describe('update', function() {
     });
 
     step('assign again', function createAssignmentResourceAgain(done) {
-      update.assignUserToRole(db, userpath, 'role2', 'note', done);
+      update.assignUserToRole(db, {}, userpath, 'role2', 'note', done);
     });
 
     step('check assign again', function checkAssignAgain(done) {
@@ -584,7 +584,7 @@ describe('update', function() {
     });
 
     step('de-assign', function deleteAssignmentResource(done) {
-      update.removeUserFromRole(db, userpath, 'role', 'note', done);
+      update.removeUserFromRole(db, {}, userpath, 'role', 'note', done);
     });
 
     step('check assign after 1 de-assign', function checkAssignAfter1(done) {
@@ -601,7 +601,7 @@ describe('update', function() {
     });
 
     step('de-assign', function deleteAssignmentResource2(done) {
-      update.removeUserFromRole(db, userpath, 'role2', 'note', done);
+      update.removeUserFromRole(db, {}, userpath, 'role2', 'note', done);
     });
 
     step('check assign after 2 de-assigns', function checkAssignAfter2(done) {
