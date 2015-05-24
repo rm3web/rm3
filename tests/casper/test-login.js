@@ -33,6 +33,31 @@ describe('User', function() {
     });
   });
 
+
+  it('should reject invalid accounts', function() {
+    casper.then(function() {
+      'Welcome to rm3'.should.matchTitle;
+      'a[href*=login]'.should.be.inDOM.and.be.visible;
+      'div.footer'.should.be.inDOM.and.be.visible;
+      this.click('a[href*=login]');
+    });
+
+    casper.then(function() {
+      'form[action*=login]'.should.be.inDOM.and.be.visible;
+      'div.footer'.should.be.inDOM.and.be.visible;
+      this.fill('form[action*=login]',
+        {username: 'sparkleprincess',
+         password: 'pass'}, true);
+    });
+
+    casper.then(function() {
+      'form[action*=login]'.should.be.inDOM.and.be.visible;
+      'div.errormessage'.should.be.inDOM.and.contain.text('Error: Password Validation failed');
+      'div.footer'.should.be.inDOM.and.be.visible;
+    });
+  });
+
+
   it('should be able to log in and out', function() {
     casper.then(function() {
       'Welcome to rm3'.should.matchTitle;
