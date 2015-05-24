@@ -140,7 +140,7 @@ describe('query', function() {
       ents.updated = ents.one.clone();
       ents.updated.data.posting = "<div>blah blah blah</div>";
       ents.updated.summary.title = 'updated';
-      update.updateEntity(db, ents.one, ents.updated, true, 'update',
+      update.updateEntity(db, {}, ents.one, ents.updated, true, 'update',
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           revisionId.should.be.an.instanceof(String);
