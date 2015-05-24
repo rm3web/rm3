@@ -72,7 +72,7 @@ program
         return;
       }
       
-      update.createEntity(db, ent, true, 
+      update.createEntity(db, {}, ent, true, 
                            'cli', function(err, entity_id, revision_id, revision_num) {
         if (err) {
           console.log('error:');
@@ -95,7 +95,7 @@ program
       console.log('Name and role are required')
       return;
     }
-    update.assignUserToRole(db, options.userroot.down(name), role,
+    update.assignUserToRole(db, {}, options.userroot.down(name), role,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
@@ -189,7 +189,7 @@ program
       console.log('Name and role are required')
       return;
     }
-    update.removeUserFromRole(db, options.userroot.down(name), role,
+    update.removeUserFromRole(db, {}, options.userroot.down(name), role,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
@@ -206,12 +206,11 @@ program
   .command('permit [role] [permission] [path]')
   .description('add a permission to a role')
   .action(function(role, permission, path, options){
-//exports.addPermissionToRole = function(db, role, permission, path, note, next) {
     if (!(permission && role && path)) {
       console.log('role, permission, and path are required')
       return;
     }
-    update.addPermissionToRole(db, role, permission, path,
+    update.addPermissionToRole(db, {}, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
@@ -231,7 +230,7 @@ program
       console.log('role, permission, and path are required')
       return;
     }
-    update.removePermissionFromRole(db, role, permission, path,
+    update.removePermissionFromRole(db, {}, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
