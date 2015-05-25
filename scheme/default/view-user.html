@@ -3,9 +3,9 @@
 
 <div class="pure-u-2-3">
 
-Full name: {summary.title}<br >
-Profile URL: {summary.profileUrl}<br />
-Description: {summary.abstract}<br />
+{@formatMessage _key="FULL_NAME"/}: {summary.title}<br >
+{@formatMessage _key="PROFILE_URL"/}: {summary.profileUrl}<br />
+{@formatMessage _key="DESCRIPTION"/}: {summary.abstract}<br />
 
 </div>
 
@@ -15,7 +15,7 @@ Description: {summary.abstract}<br />
             <!--{~n}
 {~n}
 function ConfirmChoice(path) {{~n}
-  answer = confirm("Do you really want to go here?"){~n}
+  answer = confirm("{@formatMessage _key="DO_YOU_REALLY_WANT_TO_GO_HERE"/}"){~n}
     if (answer !=0) {{~n}
         location = path + "?sure=yes"{~n}
      }{~n}

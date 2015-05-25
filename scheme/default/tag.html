@@ -3,7 +3,7 @@
 <div class="pure-u-2-3">
   <table class="pure-table">
   <thead>
-<th></th><th>Predicate</th><th>Object</th><td></th>
+<th></th><th>{@formatMessage _key="PREDICATE"/}</th><th>{@formatMessage _key="OBJECT"/}</th><td></th>
 </thead>
 
   {@tags obj=tags}
@@ -22,28 +22,28 @@
     <input type="hidden" name="predClass" value="{predClass}" />
     <input type="hidden" name="predKey" value="{predKey}" />
     <input type="hidden" name="objKey" value="{objKey}" />
-    <button type="submit" class="pure-button pure-button-primary">Delete</button>
+    <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="DELETE"/}</button>
     </form>
 </td>
 </tr>
   {/tags}
 <tr>
   <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
-    <td>Add:</td>
+    <td>{@formatMessage _key="ADD"/}:</td>
   <td colspan="2">
     <input type="hidden" name="action" value="addtag" />
-    <input class="pure-input-1" type="text" name="objKey" placeholder="Tag"/>
+    <input class="pure-input-1" type="text" name="objKey" placeholder="{@formatMessage _key="TAG"/}"/>
   </td>
   <td>
-    <button type="submit" class="pure-button pure-button-primary">Add tag</button>
+    <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="ADD_TAG"/}</button>
   </td>
 </form></tr>
 
   <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
-    <td>Navbar:</td>
+    <td>{@formatMessage _key="NAVBAR"/}:</td>
   <td colspan="3">
     <input type="hidden" name="action" value="navbar" />
-    <button type="submit" class="pure-button pure-button-primary">Add to navbar</button>
+    <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="ADD_TO_NAVBAR"/}</button>
   </td>
 </form></tr>
 
