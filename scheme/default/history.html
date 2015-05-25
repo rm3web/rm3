@@ -2,11 +2,11 @@
 {<main}
 
 <div class="pure-u-2-3">
-<h1>History</h1>
+<h1>{@formatMessage _key="HISTORY"/}</h1>
 
 <table class="pure-table">
   <thead>
-<tr><th></th><th>Event type</th><th>Revision Num</th><th>Revision ID</th><th>Time</th><th></th></tr>
+<tr><th></th><th>{@formatMessage _key="EVENT_TYPE"/}</th><th>{@formatMessage _key="REVISION_NUM"/}</th><th>{@formatMessage _key="REVISION_ID"/}</th><th>{@formatMessage _key="TIME"/}</th><th></th></tr>
 </thead>
 <tbody>
 {@history}
@@ -54,7 +54,7 @@
             <!--{~n}
 {~n}
 function ConfirmChoice(path) {{~n}
-  answer = confirm("Do you really want to go here?"){~n}
+  answer = confirm("{@formatMessage _key="DO_YOU_REALLY_WANT_TO_GO_HERE"/}"){~n}
     if (answer !=0) {{~n}
         location = path + "?sure=yes"{~n}
      }{~n}
