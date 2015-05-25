@@ -1,7 +1,6 @@
-{>base/}
-{<main}
+{>layouts-full_with_nav/}
+{<view-content}
 
-<div class="pure-u-2-3">
 <h1>{@formatMessage _key="HISTORY"/}</h1>
 
 <table class="pure-table">
@@ -46,31 +45,5 @@
 {/history}
 </tbody>
 </table>
-</div>
 
-<div class="pure-u-1-3">
-
-          <script language="JavaScript">
-            <!--{~n}
-{~n}
-function ConfirmChoice(path) {{~n}
-  answer = confirm("{@formatMessage _key="DO_YOU_REALLY_WANT_TO_GO_HERE"/}"){~n}
-    if (answer !=0) {{~n}
-        location = path + "?sure=yes"{~n}
-     }{~n}
-   }{~n}
-{~n}
-    //Done Hiding-->
-          </script>
-    {@menu}{/menu}
-    <ul>
-    {@basic_query}
-     <li><a href="{path}">{article.title}</a></li>
-    {/basic_query}
-     </ul>
-        </div>
-
-
-</div>
-
-{/main}
+{/view-content}
