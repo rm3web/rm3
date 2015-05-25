@@ -26,6 +26,8 @@
     "express-session": "~1.11.1",
     "express-winston": "^0.3.1",
     "intl": "~0.1.4",
+    "intl-format-cache": "^2.0.4",
+    "intl-messageformat": "^1.1.0",
     "method-override": "~2.3.2",
     "morgan": "~1.5.2",
     "node-uuid": "^1.4.3",
