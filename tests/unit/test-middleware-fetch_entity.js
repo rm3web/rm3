@@ -108,7 +108,7 @@ describe('middleware:fetchEntity', function() {
       should.deepEqual(typeof middleware, "function");
 
       middleware(req, res, function(err) {
-        should.deepEqual(err.name, 'NotFoundError');
+        should.deepEqual(err.name, 'PathNotFoundError');
         should.deepEqual(err.httpResponseCode, 404);
         done();
       });
