@@ -28,7 +28,7 @@ describe('User', function() {
 
     casper.then(function() {
       'form[action*=login]'.should.be.inDOM.and.be.visible;
-      'div.errormessage'.should.be.inDOM.and.contain.text('Error: Password Validation failed');
+      'div.errormessage'.should.be.inDOM.and.contain.text('Error: Password validation failed');
       'div.footer'.should.be.inDOM.and.be.visible;
     });
   });
@@ -52,7 +52,7 @@ describe('User', function() {
 
     casper.then(function() {
       'form[action*=login]'.should.be.inDOM.and.be.visible;
-      'div.errormessage'.should.be.inDOM.and.contain.text('Error: Password Validation failed');
+      'div.errormessage'.should.be.inDOM.and.contain.text('Error: Password validation failed');
       'div.footer'.should.be.inDOM.and.be.visible;
     });
   });

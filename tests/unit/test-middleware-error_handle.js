@@ -102,7 +102,7 @@ describe('middleware:errorHandle', function() {
 
       beforeEach(function() {
         req.scheme = {};
-        req.scheme.render_sync = function(view, data, callback) {
+        req.scheme.renderSync = function(view, data, callback) {
           plan.ok(true);
           callback(null,'render_sync output');
         };
