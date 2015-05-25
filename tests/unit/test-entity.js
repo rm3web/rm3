@@ -90,7 +90,8 @@ describe('entity', function() {
          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
       summary: {title: 'blrg', abstract: 'some text goes here'},
       data: {posting: '<div>Test test</div>'},
-      tags: {}};
+      tags: {},
+      permissions: {}};
 
       v.should.be.eql(e.view());
     });
@@ -140,7 +141,8 @@ describe('entity', function() {
          created: now},
       summary: {title: 'blrg', abstract: 'some text goes here'},
       data: {posting: '<div>Test test</div>'},
-      tags: {}};
+      tags: {},
+      permissions: {}};
 
       v.should.be.eql(e.view());
     });

@@ -18,24 +18,15 @@
 
 <body>
   <div class="pure-g">
-    <div class="pure-u-1 header pure-hidden-phone">
-    </div>
-
-    {+pageheader}
-    <div class="pure-u-1 headermenu">
-      <div class="pure-menu pure-menu-open pure-menu-horizontal">
-       <a class="pure-menu-heading" href="/">WireWorld</a>
-       <ul>
-    {@navbar_query}
-     <li><a href="{path}">{article.title}</a></li>
-    {/navbar_query}
-       </ul>
-    </div>
-  </div>
-  {/pageheader}
+    {+masthead}
+    {>"sections-masthead"/}
+    {/masthead}
+    {+navhead}
+    {>"sections-navhead"/}
+    {/navhead}
 
 {+flash_header}
-{>"flash"/}
+{>"sections-flash"/}
 {/flash_header}
 
 {+main}
@@ -43,13 +34,7 @@
 </div>
 
 {+pagefooter}
-<div class="pure-g">
- <div class="pure-u-1 footer">
-  <p>{@formatMessage _key="LAST_UPDATED"/}: <span>{@formatRelative val=meta.modified/}</span>
-  <br />{@formatMessage _key="POSTED"/}: <span>{@formatRelative val=meta.created/}</span></p>
-
-  </div>
-</div>
+{>"sections-navfoot"/}
 {/pagefooter}
 </body>
 
