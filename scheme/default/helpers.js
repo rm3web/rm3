@@ -2,19 +2,6 @@ var SitePath = require ('../../lib/sitepath');
 var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
 
-function gen_link(base, url, disabled, title, confirm) {
-    if (disabled) {
-        return '<li class="pure-menu-disabled"><a href="#">' + title + '</a></li>'
-    } else {
-        if (confirm) {
-            return '<li><a href="'+ base + url + '" onclick="ConfirmChoice(\''
-                    + base + url + '\'); return false;">' + title + '</a></li>';
-        } else {
-            return '<li><a href="' + base + url + '">' + title +  '</a></li>'
-        }
-    }
-}
-
 exports = module.exports = function(dust, db, query) {
     dust.helpers.textblock_edit = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
@@ -54,31 +41,80 @@ exports = module.exports = function(dust, db, query) {
         return chunk.write(textblocks.outputTextBlock(textblock));
     }
 
-    dust.helpers.menu = function (chunk, context, bodies, params) {
-        var longstr = '<div class="l-box">';
-        longstr = longstr + '<div class="pure-menu pure-menu-open">\
-        <a class="pure-menu-heading">Admin</a>\
-    <ul>';
+    dust.helpers.admin_link = function(chunk, context, bodies, params) {
+        var longstr = '<ul>';
         var sitepathquery = context.get('meta.sitePath');
         var path = new SitePath(sitepathquery);
         var baseurl = path.toUrl('/',1);
         if (baseurl === '/') {
             baseurl = '';
         }
-        longstr = longstr + gen_link(baseurl, '/edit.html', context.get('section') === 'edit','Edit', false);
-        longstr = longstr + gen_link(baseurl, '/tag.html', context.get('section') === 'tag', 'Tag', false);
-        longstr = longstr + gen_link(baseurl, '/delete.html', false, 'Delete', true);
-        longstr = longstr + gen_link(baseurl, '/move.html', true, 'Move', false);
-        longstr = longstr + gen_link(baseurl, '/history.html', false, 'History', false);
-        longstr = longstr + '<li><a href="#" data-dropdown="#dropdown-1">Create &#x25BC;</a></li>';
-        longstr = longstr + '<li class="pure-menu-heading">User</li>'
+        var path = context.resolve(params.path);
+        var confirm = context.resolve(params.confirm);
+        var requiresAuth = context.resolve(params.requiresAuth);
+        var permission = context.resolve(params.permission);
+        var sectionDisable = context.resolve(params.sectionDisable);
+        var disabled = context.resolve(params.disabled);
+
+        user = context.get('user');
+        permissions = context.get('permissions');
+
+        if (sectionDisable && context.get('section') === sectionDisable) {
+            disabled = true;
+        }
+
+        if (requiresAuth && !user) {
+            disabled = true;
+        }
+
+        if (permission && !permissions.hasOwnProperty(permission)) {
+            disabled = true;
+        }
+
+        if (disabled) {
+            chunk.write('<li class="pure-menu-disabled"><a href="#">');
+        } else {
+            if (confirm) {
+                chunk.write('<li><a href="'+ baseurl + path + '" onclick="ConfirmChoice(\''
+                        + baseurl + path + '\'); return false;">');
+            } else {
+                chunk.write('<li><a href="' + baseurl + path + '">');
+            }
+        }
+        chunk.render(bodies.block, context);
+        return chunk.write('</a></li>');
+    }
+
+    dust.helpers.proto_menu = function (chunk, context, bodies, params) {
+        user = context.get('user');
+        if (user) {
+            chunk.write('<li><a href="#" data-dropdown="#dropdown-1">');
+        } else {
+            chunk.write('<li class="pure-menu-disabled"><a href="#">')
+        }
+        chunk.render(bodies.block, context);
+        return chunk.write('</a></li>');
+    }
+
+    dust.helpers.user_menu = function(chunk, context, bodies, params) {
+        var longstr = ''
         user = context.get('user');
         if (user) {
             longstr = longstr + '<li><a href="/$logout/">Log Out</a></li>'
         } else {
             longstr = longstr + '<li><a href="/$login/">Log In</a></li>'
         }
-        longstr = longstr + '</ul></div><div id="dropdown-1" class="dropdown dropdown-tip">\
+        return chunk.write(longstr);
+    }
+
+    dust.helpers.proto_dropdown = function(chunk, context, bodies, params) {
+        var sitepathquery = context.get('meta.sitePath');
+        var path = new SitePath(sitepathquery);
+        var baseurl = path.toUrl('/',1);
+        if (baseurl === '/') {
+            baseurl = '';
+        }
+        var longstr = '<div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
         protos = Protoset.listProtos();
         for(var proto in protos) {
@@ -88,9 +124,7 @@ exports = module.exports = function(dust, db, query) {
                 longstr = longstr + protos[proto].desc + '</a></li>'
             }
         }
-        longstr = longstr + '</ul>\
-</div>';
-
+        longstr = longstr + '</ul></div>';
         return chunk.write(longstr);
     }
     dust.helpers.basic_query = function (chunk, context, bodies, params) {
