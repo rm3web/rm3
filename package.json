@@ -40,7 +40,7 @@
     "serve-index": "~1.6.3",
     "serve-static": "~1.9.2",
     "speakingurl": "~4.0.0",
-    "squel": "~3.10.0",
+    "squel": "~4.0.0",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "validator": "~3.40.0",
     "winston": "~1.0.0",
