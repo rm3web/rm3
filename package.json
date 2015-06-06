@@ -39,12 +39,12 @@
     "serve-favicon": "~2.2.0",
     "serve-index": "~1.6.3",
     "serve-static": "~1.9.2",
-    "speakingurl": "~3.0.0",
+    "speakingurl": "~4.0.0",
     "squel": "~3.10.0",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "validator": "~3.40.0",
     "winston": "~1.0.0",
-    "winston-context": "0.0.4"
+    "winston-context": "0.0.5"
   },
   "devDependencies": {
     "casper-chai": "^0.2.1",
