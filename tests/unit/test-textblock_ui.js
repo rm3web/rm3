@@ -21,6 +21,16 @@ placeholder=\"Posting\"># get</textarea>\
 <option selected=\"selected\" value=\"markdown\">Markdown</option>\
 </select>",
       desc: 'a single markdown section'
+    },
+    {textblock: {"blocks":
+      [{source:"# humans make good pets",
+        htmltext:"<h1>humans make good pets</h1>",
+        format:"markdown"},
+        {htmltext:"<strong>html section</strong>",
+        format:"html"}],
+      format:"section"},
+      expected: '<input type="hidden" value="section" name="posting[format]" /><input type="hidden" value="2" name="numblocks" /><textarea rows="30" class="pure-input-1" name="posting[blocks][0][source]" placeholder="Posting"># humans make good pets</textarea><select name="posting[blocks][0][format]" size="1"><option value="html">HTML</option><option selected="selected" value="markdown">Markdown</option></select><textarea rows="30" class="pure-input-1" name="posting[blocks][1][source]" placeholder="Posting">&lt;strong&gt;html section&lt;&#x2F;strong&gt;</textarea><select name="posting[blocks][1][format]" size="1"><option selected="selected" value="html">HTML</option><option value="markdown">Markdown</option></select>',
+      desc: 'a html and markdown section'
     }
   ];
 
