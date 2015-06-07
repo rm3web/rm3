@@ -2,7 +2,7 @@
 /* global expect */
 /*jshint expr:true */
 
-describe('Base type', function() {
+describe('Base type CRUD', function() {
   before(function() {
     casper.start('http://127.0.0.1:4000/');
   });
@@ -42,7 +42,7 @@ describe('Base type', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=create]',
         {title: 'CasperJS Test',
-         posting: 'post data here do stuff etc'}, true);
+         'posting[source]': 'post data here do stuff etc'}, true);
     });
 
     casper.then(function() {
@@ -58,15 +58,15 @@ describe('Base type', function() {
 
     casper.then(function() {
       'div.footer'.should.be.inDOM.and.be.visible;
-      'textarea[name=posting]'.should.be.inDOM.and.be.visible;
+      'textarea[name=posting\\[source\\]]'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=edit]',
-        {posting: '# edited\n\ndid some stuff',
-         textblockFormat: 'markdown'}, true);
+        {'posting[source]': '# edited\n\ndid some stuff',
+         'posting[format]': 'markdown'}, true);
     });
 
     casper.then(function() {
       'div.footer'.should.be.inDOM.and.be.visible;
-      'textarea[name=posting]'.should.be.inDOM.and.be.visible;
+      'textarea[name=posting\\[source\\]]'.should.be.inDOM.and.be.visible;
     });
 
     casper.thenOpen('http://127.0.0.1:4000/casperjs_test/', function() {

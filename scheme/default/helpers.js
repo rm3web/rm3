@@ -1,23 +1,12 @@
 var SitePath = require ('../../lib/sitepath');
 var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
+var textblockUi = require('../../lib/textblock_ui');
 
 exports = module.exports = function(dust, db, query) {
     dust.helpers.textblock_edit = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
-        var sr1 = '<textarea rows="30" class="pure-input-1" name="posting" placeholder="posting">'
-        var sr2 = '</textarea>\
-<select name="textblockFormat" size="1">'
-        var sr3a = '<option value="html" selected="true">HTML</option>\
-<option value="markdown">Markdown</option>'
-        var sr3b = '<option value="html">HTML</option>\
-<option value="markdown" selected="true">Markdown</option>'
-        var sr4 = '</select>'
-        if (textblock.hasOwnProperty('source')) {
-            return chunk.write(sr1 + textblock.source + sr2 + sr3b + sr4);
-        } else {
-            return chunk.write(sr1 + textblock.htmltext + sr2 + sr3a + sr4);
-        }
+        return chunk.write(textblockUi.generateEditor('posting', textblock));
     }
 
     dust.helpers.disabled_mode = function(chunk, context, bodies, params) {

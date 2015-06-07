@@ -10,7 +10,9 @@ var gulp = require('gulp')
   , gutil = require('gulp-util')
   , bower = require('gulp-bower')
   , spawn = require('child_process').spawn
-  , clone = require('clone');
+  , clone = require('clone')
+  , source = require('vinyl-source-stream')
+  , browserify = require('browserify')
   ;
 
 var winston = require('winston');
@@ -24,6 +26,15 @@ gulp.task('unit-tests', function (cb) {
   var unit = gulp.src('tests/unit/*.js', {read: false})
         .pipe(mocha({}))
         .on('end', cb);
+});
+ 
+gulp.task('browserify', function() {
+    return browserify('./scheme/default/bundles/base.js')
+        .bundle()
+        //Pass desired output filename to vinyl-source-stream
+        .pipe(source('base.js'))
+        // Start piping stream to tasks!
+        .pipe(gulp.dest('./scheme/default/static/'));
 });
 
 gulp.task('create-db', function (cb){
@@ -140,14 +151,14 @@ gulp.task('jshint', function (cb) {
     .on('end', cb);
 })
 
-gulp.task('bower', function() { 
-    return bower()
-         .pipe(gulp.dest('./bower_components')) 
+gulp.task('bower', function() {
+  return bower()
+    .pipe(gulp.dest('./bower_components'));
 });
 
 gulp.task('lint', ['jshint', 'jscs'])
 
-gulp.task('travis', ['bower', 'lint', 'coveralls'])
+gulp.task('travis', ['bower', 'browserify', 'lint', 'coveralls'])
 
 gulp.task('develop', function () {
   nodemon(
@@ -159,7 +170,7 @@ gulp.task('develop', function () {
         "scheme/default/",
         "scheme/default/static/"
       ] })
-    .on('change', ['lint'])
+    .on('change', ['browserify'])
     .on('restart', function () {
       console.log('restarted!')
     })

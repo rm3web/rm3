@@ -25,17 +25,16 @@
     </div>
     </fieldset>
 
-
-    <fieldset>
-    <textarea rows="30" class="pure-input-1" name="posting" placeholder="{@formatMessage _key="POSTING"/}">
-{posting}
-</textarea>
-<select name="textblockFormat" size="1">
-<option value="html">{@formatMessage _key="HTML"/}</option>
-<option value="markdown">{@formatMessage _key="MARKDOWN"/}</option>
-</select>
-
+<fieldset id="textblocks">
+{@textblock_edit field=data.posting}{/textblock_edit}
 </fieldset>
+
+  <fieldset>
+    <div class="pure-g-r">
+      <button class="pure-button" id="addText">Add Text Section</button>
+    </div>
+  </fieldset>
+
 
 <fieldset>
 <div class="pure-g-r">
