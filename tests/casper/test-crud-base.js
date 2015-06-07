@@ -59,20 +59,27 @@ describe('Base type CRUD', function() {
     casper.then(function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       'textarea[name=posting\\[source\\]]'.should.be.inDOM.and.be.visible;
+      this.click('#addText');
+    });
+
+    casper.then(function() {
       this.fill('form[action*=edit]',
-        {'posting[source]': '# edited\n\ndid some stuff',
-         'posting[format]': 'markdown'}, true);
+        {'posting[blocks][0][source]': '# edited\n\ndid some stuff',
+         'posting[blocks][0][format]': 'markdown',
+         'posting[blocks][1][source]': '<strong>html stuff</strong>',
+         'posting[blocks][1][format]': 'html'}, true);
     });
 
     casper.then(function() {
       'div.footer'.should.be.inDOM.and.be.visible;
-      'textarea[name=posting\\[source\\]]'.should.be.inDOM.and.be.visible;
+      'textarea[name=posting\\[blocks\\]\\[1\\]\\[source\\]]'.should.be.inDOM.and.be.visible;
     });
 
     casper.thenOpen('http://127.0.0.1:4000/casperjs_test/', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       'div.pure-u-2-3 h1'.should.contain.text('edited');
       'div.pure-u-2-3'.should.contain.text('did some stuff');
+      'div.pure-u-2-3'.should.contain.text('html stuff');
       //this.click('a[href*=casperjs_test/delete]');
     });
 
