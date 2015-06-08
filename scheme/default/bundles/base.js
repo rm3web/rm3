@@ -12,7 +12,7 @@ function convertSoloToSection(prefix) {
   <input type="hidden" value="1" name="numblocks" />'
   
   $("#textblocks").replaceWith('<fieldset id="textblocks">' +
-    hidden + block + format + textblockUi.generateChildBlock('posting', 1, '', 'html') + '</fieldset>');
+    hidden + block + format + '</fieldset>');
 }
 
 $( "#addText" ).on( "click", function( event ) {
@@ -22,6 +22,20 @@ $( "#addText" ).on( "click", function( event ) {
     $("#textblocks").append( textblockUi.generateChildBlock('posting', num, '', 'html') );
   } else {
     convertSoloToSection('posting');
+    $("#textblocks").append( textblockUi.generateChildBlock('posting', 1, '', 'html') );
+  }
+  
+  return false;
+});
+
+$( "#addQuery" ).on( "click", function( event ) {
+  if ($("input[name='posting\[format\]']").val() === 'section') {
+    var num = parseInt($("input[name='numblocks']").val(),10) + 1;
+    $("input[name='numblocks']").val(num)
+    $("#textblocks").append( textblockUi.generateSearchBlock('posting[blocks][' + num +']', {}) );
+  } else {
+    convertSoloToSection('posting');
+    $("#textblocks").append( textblockUi.generateSearchBlock('posting[blocks][1]', {}) );
   }
   
   return false;
