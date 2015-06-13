@@ -9,20 +9,18 @@ var LoginForm = forms.Form.extend({
   username: forms.CharField({required: true,
    label:  i10n.formatMessage('USERNAME',{})}),
   password: forms.CharField({widget: forms.PasswordInput, required: true, 
-    label:  i10n.formatMessage('PASSWORD',{})})
+    label:  i10n.formatMessage('PASSWORD',{})}),
 });
 
-var intlData=i10n.getIntl();
-
-var MyComponent = React.createClass({
+var LoginFormComponent = React.createClass({
   mixins: [IntlMixin],
   render: function() {
     return (<form action="/$login/" method="post" onSubmit={this.onSubmit}>
       <forms.RenderForm form={LoginForm} ref="loginForm"/>
       <button> <FormattedMessage
-                    message={intlData.messages['SUBMIT']}  /></button>
+                    message={this.getIntlMessage('SUBMIT')}  /></button>
     </form>);
   }
 });
 
-module.exports = MyComponent;
+module.exports = LoginFormComponent;
