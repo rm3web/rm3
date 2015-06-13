@@ -1,20 +1,9 @@
 {>layouts-full_tiny_sidebar/}
 {<view-content}
 
-<form action="/$login/" method="post">
-<div>
-<label>{@formatMessage _key="USERNAME"/}:</label>
-<input type="text" name="username"/><br/>
-</div>
-<div>
-<label>{@formatMessage _key="PASSWORD"/}:</label>
-<input type="password" name="password"/>
-</div>
-<div>
-<input type="submit" value="{@formatMessage _key="SUBMIT"/}"/>
-</div>
-</form>
+<div id="loginform">{@react component="login.jsx" /}</div>
 
+<script src="/resources/login.js"></script>
 
 {/view-content}
 
