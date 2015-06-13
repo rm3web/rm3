@@ -5,6 +5,9 @@ var renderTarget = document.getElementById('loginform');
 var LoginFactory = React.createFactory(MyComponent);
 
 var renderedComponent = React.render(
-  LoginFactory(),
+  LoginFactory({
+    locales: intl.locales,
+    messages: intl.messages
+  }),
   renderTarget
 );
