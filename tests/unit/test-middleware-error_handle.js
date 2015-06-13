@@ -76,7 +76,7 @@ describe('middleware:errorHandle', function() {
       it('will render with a failed scheme object', function(cb) {
         var err = new Error();
         req.scheme = {};
-        req.scheme.render_sync = function(view, data, callback) {
+        req.scheme.renderSync = function(view, data, callback) {
           callback(new Error());
         };
         res.writeHead = function(code, str, data) {
@@ -104,7 +104,7 @@ describe('middleware:errorHandle', function() {
         req.scheme = {};
         req.scheme.renderSync = function(view, data, callback) {
           plan.ok(true);
-          callback(null,'render_sync output');
+          callback(null, 'render_sync output');
         };
       });
 

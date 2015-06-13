@@ -12,7 +12,10 @@ var gulp = require('gulp')
   , spawn = require('child_process').spawn
   , clone = require('clone')
   , source = require('vinyl-source-stream')
+  , glob = require('glob')
   , browserify = require('browserify')
+  , async = require('async')
+  , path = require('path')
   ;
 
 var winston = require('winston');
@@ -21,40 +24,38 @@ winston.remove(winston.transports.Console);
 
 var lintable = ['lib/**/*.js', 'tests/**/*.js'];
 
-gulp.task('unit-tests', function (cb) {
+gulp.task('unit-tests', function () {
   process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  var unit = gulp.src('tests/unit/*.js', {read: false})
-        .pipe(mocha({}))
-        .on('end', cb);
+  return gulp.src('tests/unit/*.js', {read: false})
+        .pipe(mocha({}));
 });
  
-gulp.task('browserify', function() {
-    return browserify('./scheme/default/bundles/base.js')
-        .bundle()
-        //Pass desired output filename to vinyl-source-stream
-        .pipe(source('base.js'))
-        // Start piping stream to tasks!
-        .pipe(gulp.dest('./scheme/default/static/'));
+gulp.task('browserify', function(cb) {
+  var files = glob.sync('./scheme/default/bundles/*.js', {});
+  async.each(files, function(file, next){
+    return browserify(file)
+      .bundle()
+      //Pass desired output filename to vinyl-source-stream
+      .pipe(source(path.basename(file)))
+      // Start piping stream to tasks!
+      .pipe(gulp.dest('./scheme/default/static/'))
+      .on('end', next);
+  }, cb)
 });
 
-gulp.task('create-db', function (cb){
-  run('dropdb --if-exists rm3unit && createdb rm3unit').exec()
-    .pipe(gulp.dest('output'))
-    .on('end', cb);
+gulp.task('create-db', function (){
+  return run('dropdb --if-exists rm3unit && createdb rm3unit').exec()
 });
 
-gulp.task('build-schema', ['create-db'], function (cb){
-  gulp.src('db-schema.sql')
-    .pipe(run('psql rm3unit'))
-    .pipe(gulp.dest('output'))
-    .on('end', cb);
+gulp.task('build-schema', ['create-db'], function () {
+  return gulp.src('db-schema.sql')
+    .pipe(run('psql rm3unit'));
 });
 
-gulp.task('db-tests', ['create-db', 'build-schema'], function (cb) {
+gulp.task('db-tests', ['create-db', 'build-schema'], function () {
   process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  var unit = gulp.src('tests/db/*.js', {read: false})
-        .pipe(mocha({}))
-        .on('end', cb);
+  return gulp.src('tests/db/*.js', {read: false})
+        .pipe(mocha({}));
 });
 
 gulp.task('test', ['unit-tests', 'db-tests']);
@@ -123,32 +124,24 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
   }, 20000);
 });
 
-gulp.task('coverage', ['base-coverage', 'casper-coverage'], function(cb) {
-  run('./node_modules/.bin/istanbul report lcov text').exec()
-    .pipe(gulp.dest('output'))
-    .on('end', cb)
-    .on('error', gutil.log);
+gulp.task('coverage', ['base-coverage', 'casper-coverage'], function() {
+  return run('./node_modules/.bin/istanbul report lcov text').exec();
 })
 
-gulp.task('coveralls', ['coverage'], function (cb) {
-  run('cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage').exec()
-    .pipe(gulp.dest('output'))
-    .on('end', cb)
-    .on('error', gutil.log);
+gulp.task('coveralls', ['coverage'], function () {
+  return run('cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage').exec();
 });
 
 
-gulp.task('jscs', function (cb) {
-  gulp.src(lintable)
-    .pipe(jscs())
-    .on('end', cb);
+gulp.task('jscs', function () {
+  return gulp.src(lintable)
+    .pipe(jscs());
 });
 
-gulp.task('jshint', function (cb) {
-  gulp.src(lintable)
+gulp.task('jshint', function () {
+  return gulp.src(lintable)
     .pipe(jshint())
-    .pipe(jshint.reporter('default'))
-    .on('end', cb);
+    .pipe(jshint.reporter('default'));
 })
 
 gulp.task('bower', function() {
@@ -176,32 +169,25 @@ gulp.task('develop', function () {
     })
 });
 
-gulp.task('casper-db', function(cb) {
-  run('dropdb --if-exists rm3casper && createdb rm3casper').exec()
-    .pipe(gulp.dest('output'))
-    .on('end', cb);
+gulp.task('casper-db', function() {
+  return run('dropdb --if-exists rm3casper && createdb rm3casper').exec();
 });
 
-gulp.task('casper-schema', ['casper-db'], function(cb) {
-  gulp.src('db-schema.sql')
-    .pipe(run('psql rm3casper'))
-    .pipe(gulp.dest('output'))
-    .on('end', cb);
+gulp.task('casper-schema', ['casper-db'], function() {
+  return gulp.src('db-schema.sql')
+    .pipe(run('psql rm3casper'));
 })
 
-gulp.task('casper-fixtures', ['casper-db', 'casper-schema'], function(cb) {
+gulp.task('casper-fixtures', ['casper-db', 'casper-schema'], function() {
 var ctx = { cwd: process.cwd(),
     env: clone(process.env)
   }
   ctx.env.RM3_PG = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
-  gulp.src('tests/page-fixtures/*.json')
+  return gulp.src('tests/page-fixtures/*.json')
     .pipe(run('./bin/rm3load', ctx))
-    .pipe(gulp.dest('output'))
-    .on('end', cb)
-    .on('error', gutil.log);
 })
 
-gulp.task('casper-users', ['casper-db', 'casper-schema', 'casper-fixtures'], function(cb) {
+gulp.task('casper-users', ['casper-db', 'casper-schema', 'casper-fixtures'], function() {
 var ctx = { cwd: process.cwd(),
     env: clone(process.env)
   }
@@ -213,9 +199,7 @@ var ctx = { cwd: process.cwd(),
   + '&& ./bin/rm3admin permit root delete \\*'
   + '&& ./bin/rm3admin permit root view \\*'
   + '&& ./bin/rm3admin permit nobody view wh.!users'
-  run(setup, ctx).exec()
-    .pipe(gulp.dest('output'))
-    .on('end', cb);
+  return run(setup, ctx).exec();
 })
 
 gulp.task('casper-tests', ['casper-users'], function(cb) {
