@@ -19,12 +19,6 @@ exports = module.exports = function(dust, db, query) {
         }
     }
 
-    dust.helpers.combo_form = function(chunk, context, bodies, params) {
-        var section = context.get('section');
-        var path = context.resolve(params[section]);
-        return chunk.write('<form id="draft" method="post" action="' + path + '" class="pure-form pure-form-stacked">');
-    }
-
     dust.helpers.textblock = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
         return chunk.write(textblocks.outputTextBlock(textblock));
