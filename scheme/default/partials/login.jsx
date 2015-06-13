@@ -12,7 +12,7 @@ var LoginForm = forms.Form.extend({
     label:  i10n.formatMessage('PASSWORD',{})}),
 });
 
-var MyComponent = React.createClass({
+var LoginFormComponent = React.createClass({
   mixins: [IntlMixin],
   render: function() {
     return (<form action="/$login/" method="post" onSubmit={this.onSubmit}>
@@ -23,4 +23,4 @@ var MyComponent = React.createClass({
   }
 });
 
-module.exports = MyComponent;
+module.exports = LoginFormComponent;
