@@ -1,16 +1,9 @@
 var React = require('react');
 var ReactIntl = require('react-intl');
 var forms = require('newforms');
-var i10n = require('../../../lib/i10n');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
-
-var LoginForm = forms.Form.extend({
-  username: forms.CharField({required: true,
-   label:  i10n.formatMessage('USERNAME',{})}),
-  password: forms.CharField({widget: forms.PasswordInput, required: true, 
-    label:  i10n.formatMessage('PASSWORD',{})}),
-});
+var LoginForm = require('../../../lib/forms/login.js')
 
 var LoginFormComponent = React.createClass({
   mixins: [IntlMixin],
