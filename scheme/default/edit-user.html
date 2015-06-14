@@ -1,7 +1,12 @@
 {>layouts-full_with_nav/}
 {<view-content}
 
-{@combo_form create="create.html?type={meta.proto}" edit="edit.html"}{/combo_form}
+{@eq key=section value="create"}
+<form id="draft" method="post" action="create.html?type={meta.proto}" class="pure-form pure-form-stacked">
+{/eq}
+{@eq key=section value="edit"}
+<form id="draft" method="post" action="edit.html" class="pure-form pure-form-stacked">
+{/eq}
   <fieldset>
     <label for="username" class="pure-input-1">{@formatMessage _key="LOGIN_ASCII_TEXT_NOSPACES"/}:</label>
     <input id="username" class="pure-input-1" type="text" name="username" placeholder="{@formatMessage _key="USERNAME"/}" value="{leaf}" {@disabled_mode edit="true"}{/disabled_mode}>
