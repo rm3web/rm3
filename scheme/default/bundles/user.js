@@ -8,14 +8,8 @@ var renderedComponent = React.render(
   UserFactory({
     locales: intl.locales,
     messages: intl.messages,
-    section: section
-    /*,
-    username: username,
-    fullname: fullname,
-    profileUrl: profileUrl,
-    email: email,
-    profileText: profileText
-    */
+    section: section,
+    proto: 'user'
   }),
   renderTarget
 );
