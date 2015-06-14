@@ -6,6 +6,10 @@ describe('History', function() {
     casper.start('http://127.0.0.1:4000/');
   });
 
+  after(function() {
+    casper.thenOpen('http://127.0.0.1:4000/$logout/');
+  });
+
   it('should be viewable', function() {
     casper.then(function() {
       'Welcome to rm3'.should.matchTitle;
