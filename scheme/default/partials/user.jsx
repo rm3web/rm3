@@ -37,29 +37,37 @@ var UserForm = forms.Form.extend({
 var Username =  React.createClass({
   render: function() {
     if (this.props.section === 'edit') {
-      return <span>Username: {this.props.username}</span>
+      return <span>Username: <span id="userform-username">{this.props.username}</span> </span>
     } else {
-      return <span>Create </span>
+      return <span></span>
     }
   }
 });
 
 var LoginFormComponent = React.createClass({
   mixins: [IntlMixin],
-  getInitialState: function() {
-    return {
-      username: this.props.username,
-      fullname: this.props.fullname,
-      profileUrl: this.props.profileUrl,
-      email: this.props.email,
-      profileText: this.props.profileText
-    }
-  },
   render: function() {
     var buttonMessage = 'submit';
     var action = 'create.html?type={meta.proto}'
 
-    var form = new UserForm();
+    var data;
+
+    if (this.props.hasOwnProperty('username')) {
+      data = {data: {
+        username: this.props.username,
+        fullname: this.props.fullname,
+        profileUrl: this.props.profileUrl,
+        email: this.props.email,
+        profileText: this.props.profileText
+      }}
+    }
+
+    var form = new UserForm(data);
+
+    if (!this.props.hasOwnProperty('username') && form.isInitialRender) {
+      form.validate(document.getElementById('userform-form'));
+      this.props.username = document.getElementById('userform-username').innerHTML;
+    }
 
     if (this.props.section === 'edit') {
       delete form.fields.username;
@@ -67,7 +75,7 @@ var LoginFormComponent = React.createClass({
       action = 'edit.html'
     }
 
-    return (<form action={action} method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
+    return (<form action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
       <Username section={this.props.section} username={this.props.username} />
       <forms.RenderForm form={form} />
       <button> <FormattedMessage
