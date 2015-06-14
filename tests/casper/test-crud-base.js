@@ -8,7 +8,7 @@ describe('Base type CRUD', function() {
   });
 
   after(function() {
-    casper.thenOpen('http://127.0.0.1:4000/$logout');
+    casper.thenOpen('http://127.0.0.1:4000/$logout/');
   });
 
   it('should CRUD', function() {
