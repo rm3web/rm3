@@ -49,7 +49,6 @@ var LoginFormComponent = React.createClass({
   render: function() {
     var buttonMessage = 'submit';
     var action = 'create.html?type={meta.proto}'
-
     var data;
 
     if (this.props.hasOwnProperty('username')) {
@@ -63,10 +62,13 @@ var LoginFormComponent = React.createClass({
     }
 
     var form = new UserForm(data);
+    var username;
 
     if (!this.props.hasOwnProperty('username') && form.isInitialRender) {
       form.validate(document.getElementById('userform-form'));
-      this.props.username = document.getElementById('userform-username').innerHTML;
+      username = document.getElementById('userform-username').innerHTML;
+    } else {
+      username = this.props.username;
     }
 
     if (this.props.section === 'edit') {
@@ -76,7 +78,7 @@ var LoginFormComponent = React.createClass({
     }
 
     return (<form action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
-      <Username section={this.props.section} username={this.props.username} />
+      <Username section={this.props.section} username={username} />
       <forms.RenderForm form={form} />
       <button> <FormattedMessage
                     message={buttonMessage} /></button>
