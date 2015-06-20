@@ -156,11 +156,14 @@ gulp.task('travis', ['bower', 'browserify', 'lint', 'coveralls'])
 gulp.task('develop', function () {
   nodemon(
     { script: 'lib/front.js', 
-      ext: 'js css html', 
+      ext: 'js jsx css html', 
       watch: [
         "lib/", 
         "lib/middleware/",
         "scheme/default/",
+        "scheme/default/layouts/",
+        "scheme/default/partials/",
+        "scheme/default/sections/",
         "scheme/default/static/"
       ] })
     .on('change', ['browserify'])

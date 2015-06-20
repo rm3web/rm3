@@ -41,7 +41,7 @@
     "jquery-browserify": "^1.8.1",
     "method-override": "~2.3.2",
     "morgan": "~1.5.2",
-    "newforms": "^0.12.1",
+    "node-jsx": "^0.13.3",
     "node-uuid": "^1.4.3",
     "page-router": "git://github.com/wirehead/page-router.git#master",
     "passport": "~0.2.1",
