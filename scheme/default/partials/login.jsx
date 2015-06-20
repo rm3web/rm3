@@ -1,26 +1,27 @@
 var React = require('react');
 var ReactIntl = require('react-intl');
-var forms = require('newforms');
-var i10n = require('../../../lib/i10n');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
-
-var LoginForm = forms.Form.extend({
-  username: forms.CharField({required: true,
-   label:  i10n.formatMessage('USERNAME',{})}),
-  password: forms.CharField({widget: forms.PasswordInput, required: true, 
-    label:  i10n.formatMessage('PASSWORD',{})}),
-});
 
 var LoginFormComponent = React.createClass({
   mixins: [IntlMixin],
   render: function() {
-    return (<form action="/$login/" method="post" onSubmit={this.onSubmit}>
-      <forms.RenderForm form={LoginForm} ref="loginForm"/>
-      <button> <FormattedMessage
+    return (
+    <form action="/$login/" method="post">
+    <div>
+    <label><FormattedMessage message={this.getIntlMessage('USERNAME')} />:</label>
+    <input type="text" name="username" /><br/>
+    </div>
+    <div>
+    <label><FormattedMessage message={this.getIntlMessage('PASSWORD')} />:</label>
+    <input type="password" name="password" />
+    </div>
+    <div>
+    <button> <FormattedMessage
                     message={this.getIntlMessage('SUBMIT')}  /></button>
-    </form>);
+    </div>
+    </form>
+    );
   }
-});
-
+})
 module.exports = LoginFormComponent;
