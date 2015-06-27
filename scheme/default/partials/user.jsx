@@ -25,7 +25,6 @@ var SingleError = React.createClass({
 var ErrorsList = React.createClass({
   mixins: [IntlMixin],
   render: function() {
-    console.log(this.props.errors)
     if (this.props.errors) {
       return (<div><ul>
       {this.props.errors.map(function(error, i){
