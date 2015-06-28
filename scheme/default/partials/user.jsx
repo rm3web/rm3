@@ -56,7 +56,7 @@ var UserFormComponent = React.createClass({
     var body = {};
     if (this.props.body) {
       body = this.props.body;
-      ['username', 'fullname', 'profileUrl', 'abstract'].forEach(function(field) {
+      ['username', 'fullname', 'email', 'profileUrl', 'abstract'].forEach(function(field) {
         if (!self.props[field] && body.hasOwnProperty(field)) {
           self.props[field] = body[field];
         }
