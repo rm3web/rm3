@@ -22,6 +22,7 @@ var renderedComponent = React.render(
     email: email,
     profileText: profileText,
     body: {}
+    errors: errors
   }),
   renderTarget
 );
