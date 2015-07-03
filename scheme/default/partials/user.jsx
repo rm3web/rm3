@@ -7,7 +7,7 @@ var Username =  React.createClass({
   mixins: [IntlMixin],
   render: function() {
     if (this.props.section === 'edit') {
-      return <input id="username" className="pure-input-1" type="text" name="username" value={this.props.username} disabled="true"/>
+      return <input id="username" className="pure-input-1" type="text" name="username" defaultValue={this.props.username} disabled="true"/>
     } else {
       return <input id="username" className="pure-input-1" type="text" name="username" placeholder={this.getIntlMessage('USERNAME')} defaultValue={this.props.username} />
     }
@@ -72,7 +72,7 @@ var UserFormComponent = React.createClass({
 
       <fieldset>
         <label htmlFor="fullname" className="pure-input-1"><FormattedMessage message={this.getIntlMessage('FULL_NAME')} />:</label>
-        <input className="pure-input-1" type="text" name="fullname" placeholder={this.getIntlMessage('FULL_NAME')} defaultValue={this.props.fullname} />
+        <input className="pure-input-1" id="fullname" type="text" name="fullname" placeholder={this.getIntlMessage('FULL_NAME')} defaultValue={this.props.fullname} />
         <ErrorsList errors={errors.fullname} />
       </fieldset>
 
@@ -97,8 +97,8 @@ var UserFormComponent = React.createClass({
       </fieldset>
 
       <fieldset>
-        <label htmlFor="abstract" className="pure-input-1"><FormattedMessage message={this.getIntlMessage('PROFILE_TEXT')} />:</label>
-        <textarea defaultValue={this.props.profileText} rows="5" className="pure-input-1" name="abstract" placeholder={this.getIntlMessage("PROFILE_TEXT")} >
+        <label htmlFor="profileText" className="pure-input-1"><FormattedMessage message={this.getIntlMessage('PROFILE_TEXT')} />:</label>
+        <textarea defaultValue={this.props.profileText} rows="5" className="pure-input-1" id="profileText" name="profileText" placeholder={this.getIntlMessage("PROFILE_TEXT")} >
         </textarea>
         <ErrorsList errors={errors.profileText} />
       </fieldset>
