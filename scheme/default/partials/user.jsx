@@ -2,12 +2,13 @@ var React = require('react');
 var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
+var UserForm = require('../../../lib/forms/user')
 
 var Username =  React.createClass({
   mixins: [IntlMixin],
   render: function() {
     if (this.props.section === 'edit') {
-      return <input id="username" className="pure-input-1" type="text" name="username" defaultValue={this.props.username} disabled="true"/>
+      return <input id="username" className="pure-input-1" type="text" name="username" value={this.props.username} disabled="true"/>
     } else {
       return <input id="username" className="pure-input-1" type="text" name="username" placeholder={this.getIntlMessage('USERNAME')} defaultValue={this.props.username} />
     }
@@ -104,8 +105,7 @@ var UserFormComponent = React.createClass({
       </fieldset>
 
       <ErrorsList errors={errors.__all__} />
-      <button> <FormattedMessage
-                    message={buttonMessage} /></button>
+      <input type="submit" value="submit" />
     </form>);
   }
 });
