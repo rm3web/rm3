@@ -13,9 +13,12 @@ var gulp = require('gulp')
   , clone = require('clone')
   , source = require('vinyl-source-stream')
   , glob = require('glob')
+  , imagemin = require('gulp-imagemin')
+  , rsvg_convert = require('gulp-rsvg')
   , browserify = require('browserify')
   , async = require('async')
   , path = require('path')
+  , rename = require("gulp-rename")
   ;
 
 var winston = require('winston');
@@ -29,6 +32,21 @@ gulp.task('unit-tests', function () {
   return gulp.src('tests/unit/*.js', {read: false})
         .pipe(mocha({}));
 });
+
+gulp.task('icon', function() {
+    return gulp.src('./scheme/default/images/icon-*.svg')
+        .pipe(rsvg_convert({width: 75, height:75}))
+        .pipe(rename(function (path) {
+          path.basename += "-75";
+        }))
+        .pipe(gulp.dest('./scheme/default/static/images/'));
+});
+
+gulp.task('imagemin', function () { 
+    return gulp.src('./scheme/default/images/*.svg')
+        .pipe(imagemin({}))
+        .pipe(gulp.dest('./scheme/default/static/images/'));
+});
  
 gulp.task('browserify', function(cb) {
   var files = glob.sync('./scheme/default/bundles/*.js', {});
@@ -38,7 +56,7 @@ gulp.task('browserify', function(cb) {
       //Pass desired output filename to vinyl-source-stream
       .pipe(source(path.basename(file)))
       // Start piping stream to tasks!
-      .pipe(gulp.dest('./scheme/default/static/'))
+      .pipe(gulp.dest('./scheme/default/static/bundles/'))
       .on('end', next);
   }, cb)
 });
@@ -151,7 +169,7 @@ gulp.task('bower', function() {
 
 gulp.task('lint', ['jshint', 'jscs'])
 
-gulp.task('travis', ['bower', 'browserify', 'lint', 'coveralls'])
+gulp.task('travis', ['bower', 'imagemin', 'icon', 'browserify', 'lint', 'coveralls'])
 
 gulp.task('develop', function () {
   nodemon(
