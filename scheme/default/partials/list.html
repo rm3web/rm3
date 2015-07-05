@@ -1,11 +1,11 @@
 <div class="hentry">
-  <a href="{path}">
-    <img src="http://placehold.it/75x75" align="left" height="75" width="75" border="0"/>
+  <a class="icon" href="{path}">
+    {@icon/}
   </a>
   <span class="entry-title">
     <a href="{path}" rel="bookmark">{article.title}</a>
   </span>
-  <span class="updated">{@formatRelative val=article.date/}</span>
+  <time class="updated" datetime="{article.date}">{@formatRelative val=article.date/}</time>
   <div class="entry-summary">
     {article.summary}
   </div>

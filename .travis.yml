@@ -6,6 +6,9 @@ node_js:
   - "iojs"
 addons:
   postgresql: "9.3"
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y librsvg2-dev  
 before_script:
   - psql -c 'create database rm3unit;' -U postgres
   - psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres
