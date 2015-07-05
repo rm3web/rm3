@@ -22,15 +22,11 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.icon = function(chunk, context, bodies, params) {
         var svgicon = context.get('icon.svg');
         var imgicon = context.get('icon.sq');
-        console.log(svgicon);
-        console.log(imgicon);
         if (svgicon) {
             return chunk.write('<img src="' + svgicon + '" alt="' + imgicon +'"  height="75" width="75" border="0" />')
         } else {
             return chunk.write('<img src="' + imgicon + '"  height="75" width="75" border="0" />')
         }
-        
-            //<img src="{icon.svg}" align="left" height="75" width="75" border="0"/>
     }
 
     dust.helpers.textblock = function(chunk, context, bodies, params) {
