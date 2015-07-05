@@ -20,8 +20,12 @@ exports = module.exports = function(dust, db, query) {
     }
 
     dust.helpers.icon = function(chunk, context, bodies, params) {
-        var svgicon = context.get('icon.svg');
-        var imgicon = context.get('icon.sq');
+        var size = context.resolve(params.size);
+        if (!size) {
+            size = 'sq';
+        }
+        var svgicon = context.get('icon.' + size + '.svg');
+        var imgicon = context.get('icon.' + size + '.alt');
         if (svgicon) {
             return chunk.write('<img src="' + svgicon + '" alt="' + imgicon +'"  height="75" width="75" border="0" />')
         } else {
