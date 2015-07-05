@@ -125,11 +125,11 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
 });
 
 gulp.task('coverage', ['base-coverage', 'casper-coverage'], function() {
-  return run('./node_modules/.bin/istanbul report').exec();
+  return run('./node_modules/.bin/istanbul report json text').exec();
 })
 
 gulp.task('coveralls', ['coverage'], function () {
-  return run('cat ./coverage/coverage.json |  ./node_modules/codecov.io/bin/codecov.io.js').exec();
+  return run('cat ./coverage/coverage-final.json |  ./node_modules/codecov.io/bin/codecov.io.js').exec();
 });
 
 
