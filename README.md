@@ -1,7 +1,7 @@
 rm3
 ===
 
-[![Build Status](https://travis-ci.org/wirehead/rm3.svg?branch=master)](https://travis-ci.org/wirehead/rm3) [![Coverage Status](https://coveralls.io/repos/wirehead/rm3/badge.svg?branch=master)](https://coveralls.io/r/wirehead/rm3?branch=master) [![Dependency Status](https://david-dm.org/wirehead/rm3.svg)](https://david-dm.org/wirehead/rm3)
+[![Build Status](https://travis-ci.org/wirehead/rm3.svg?branch=master)](https://travis-ci.org/wirehead/rm3) [![codecov.io](http://codecov.io/github/wirehead/rm3/coverage.svg?branch=master)](http://codecov.io/github/wirehead/rm3?branch=master) [![Dependency Status](https://david-dm.org/wirehead/rm3.svg)](https://david-dm.org/wirehead/rm3)
 
 What is it?
 -----------
