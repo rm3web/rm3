@@ -125,7 +125,7 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
 });
 
 gulp.task('coverage', ['base-coverage', 'casper-coverage'], function() {
-  return run('./node_modules/.bin/istanbul report lcov text').exec();
+  return run('./node_modules/.bin/istanbul report').exec();
 })
 
 gulp.task('coveralls', ['coverage'], function () {
