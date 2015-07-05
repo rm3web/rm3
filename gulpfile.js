@@ -129,7 +129,7 @@ gulp.task('coverage', ['base-coverage', 'casper-coverage'], function() {
 })
 
 gulp.task('coveralls', ['coverage'], function () {
-  return run('cat ./coverage/coverage-final.json |  ./node_modules/codecov.io/bin/codecov.io.js').exec();
+  return run('cat ./coverage/lcov.info |  ./node_modules/codecov.io/bin/codecov.io.js').exec();
 });
 
 
