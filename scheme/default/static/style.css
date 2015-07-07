@@ -1,5 +1,14 @@
 .hentry {
-    padding: 1em;
+    clear: left;
+}
+
+.hentry .updated {
+    margin-left: .5em;
+}
+
+.hentry .icon {
+    border-radius: 0;
+    float: left;
 }
 
 .l-box {
@@ -9,7 +18,7 @@
 .header {
     border-bottom-color: black;
     border-radius: 0;
-    background: url('/resources/nighttime-vector.svg') #151547;
+    background: url('/resources/images/nighttime-vector.svg') #151547;
     background-size: 100% 256px ;
     height: 256px;
 }
