@@ -87,4 +87,26 @@ describe('Post component', function() {
     submitButton.props.children.props.message.should.equal('submit');
   });
 
+  it('should render errors', function() {
+    var intl = i10n.getIntl();
+    var form = createComponent(UserFormComponent, {
+      locales: intl.locales,
+      messages: intl.messages,
+      section: 'create',
+      proto: 'user',
+      username: 'username',
+      fullname: 'fullname',
+      profileUrl: 'profileUrl',
+      email: 'email',
+      profileText: 'profileText',
+      body: {},
+      errors: {'username': ['this is an error']}
+    });
+
+    var usernameFieldSet = form.props.children[0];
+    usernameFieldSet.type.should.equal('fieldset');
+    var userErrors = usernameFieldSet.props.children[2];
+    userErrors.type.displayName.should.equal('ErrorsList');
+    userErrors.props.errors.should.equal('this is an error');
+  });
 });
