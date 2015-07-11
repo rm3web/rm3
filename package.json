@@ -35,7 +35,7 @@
     "express-session": "~1.11.1",
     "express-state": "^1.2.0",
     "express-winston": "^0.3.1",
-    "intl": "~0.1.4",
+    "intl": "^0.1.4",
     "intl-format-cache": "^2.0.4",
     "intl-messageformat": "^1.1.0",
     "jquery-browserify": "^1.8.1",

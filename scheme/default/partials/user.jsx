@@ -88,7 +88,7 @@ var UserFormComponent = React.createClass({
         }
       });
     }
-    
+
     return (<form action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
       <fieldset>
         <label htmlFor="username" className="pure-input-1"><FormattedMessage message={this.getIntlMessage('LOGIN_ASCII_TEXT_NOSPACES')} />:</label>
