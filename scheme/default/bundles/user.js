@@ -10,6 +10,10 @@ var profileUrl = document.getElementById('profileUrl').value;
 var email = document.getElementById('email').value;
 var profileText = document.getElementById('profileText').innerHTML;
 
+if (!window.hasOwnProperty('errors')) {
+  errors = {}
+}
+
 var renderedComponent = React.render(
   UserFactory({
     locales: intl.locales,
@@ -21,7 +25,7 @@ var renderedComponent = React.render(
     profileUrl: profileUrl,
     email: email,
     profileText: profileText,
-    body: {}
+    body: {},
     errors: errors
   }),
   renderTarget
