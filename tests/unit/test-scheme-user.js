@@ -107,6 +107,6 @@ describe('Post component', function() {
     usernameFieldSet.type.should.equal('fieldset');
     var userErrors = usernameFieldSet.props.children[2];
     userErrors.type.displayName.should.equal('ErrorsList');
-    userErrors.props.errors.should.equal('this is an error');
+    userErrors.props.errors[0].should.equal('this is an error');
   });
 });
