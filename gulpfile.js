@@ -21,6 +21,12 @@ var gulp = require('gulp')
   , rename = require("gulp-rename")
   ;
 
+  // Load and use polyfill for ECMA-402.
+if (!global.Intl) {
+  global.Intl = require('intl');
+}
+
+
 var winston = require('winston');
 
 winston.remove(winston.transports.Console);
