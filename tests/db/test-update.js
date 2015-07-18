@@ -441,6 +441,9 @@ describe('update', function() {
     step('commit', function(done) {
       update.commitEntityRev(db, {}, ents.start._revisionId,
         function(err, entityId, revisionId, revisionNum) {
+          if (err) {
+            should.fail(err);
+          }
           entityId.should.be.an.instanceof(String);
           entityId.should.equal(ents.start._entityId);
           revisionId.should.be.an.instanceof(String);
@@ -560,8 +563,8 @@ describe('update', function() {
     stepGenericLogCheck('check create log', ents.one, function(result) {
       var ent = ents.one;
       should.deepEqual(result.rowCount, 2);
-      checkLogCreate(result.rows[1], ent);
-      should.deepEqual(result.rows[0].evtClass, 'assign');
+      checkLogCreate(result.rows[0], ent);
+      should.deepEqual(result.rows[1].evtClass, 'assign');
     });
 
     step('assign again', function createAssignmentResourceAgain(done) {
