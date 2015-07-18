@@ -5,7 +5,7 @@
 
 <table class="pure-table">
   <thead>
-<tr><th></th><th>{@formatMessage _key="EVENT_TYPE"/}</th><th>{@formatMessage _key="REVISION_NUM"/}</th><th>{@formatMessage _key="REVISION_ID"/}</th><th>{@formatMessage _key="TIME"/}</th><th></th></tr>
+<tr><th></th><th>{@formatMessage _key="USER"/}</th><th>{@formatMessage _key="EVENT_TYPE"/}</th><th>{@formatMessage _key="REVISION_NUM"/}</th><th>{@formatMessage _key="REVISION_ID"/}</th><th>{@formatMessage _key="TIME"/}</th><th></th></tr>
 </thead>
 <tbody>
 {@history}
@@ -22,6 +22,7 @@
 {:else}
  {/eq}
 </td>
+    <td>{rec.actorPath}</td>
     <td>{rec.evtClass}</td>
     <td>{rec.revisionNum}</td>
     <td>{rec.revisionId}</td>
@@ -41,7 +42,7 @@
         <tr class="pure-table-even">
     {/eq}
 {/math}
-<td colspan="4">{rec.note}</td></tr>
+<td colspan="5">{rec.note}</td></tr>
 {/history}
 </tbody>
 </table>

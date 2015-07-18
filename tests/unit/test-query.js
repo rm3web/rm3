@@ -200,7 +200,7 @@ describe('query', function() {
   it('query fromDb not_found log', function(done) {
     var plan = new Plan(2, done);
     var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
-"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", data \
+"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data \
 FROM wh_log WHERE ("revisionId" = $1)';
 
     var entpath = new sitepath(['wh', 'rq']);
@@ -237,7 +237,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
   it('query fromDb error log', function(done) {
     var plan = new Plan(2, done);
     var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
-"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", data \
+"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data \
 FROM wh_log WHERE ("revisionId" = $1)';
 
     var entpath = new sitepath(['wh', 'rq']);
@@ -368,7 +368,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     var plan = new Plan(3, done);
     var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", \
 "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", \
-"evtTouched", "evtClass", "evtFinal", data FROM wh_log WHERE (path = $1) ORDER BY "revisionNum" ASC';
+"evtTouched", "evtClass", "evtFinal", "actorPath", data FROM wh_log WHERE (path = $1) ORDER BY "revisionNum" ASC';
 
     var entpath = new sitepath(['wh']);
 
