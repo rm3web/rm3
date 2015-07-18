@@ -30,7 +30,7 @@ function stepGenericCreate(desc, path, ents, entidx, provisional, now) {
     ents[entidx].data.posting = longstr;
     ents[entidx].addTag('navigation', 'navbar');
 
-    update.createEntity(db, {}, ents[entidx], provisional, 'create',
+    update.createEntity(db, {}, {context: 'ROOT'}, ents[entidx], provisional, 'create',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -82,7 +82,7 @@ function stepGenericMove(desc, ents, startidx, newpath, moveMark) {
 
 function stepGenericDelete(desc, ent, delMark) {
   step(desc, function(done) {
-    update.deleteEntity(db, {}, ent, true, 'delete',
+    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -263,7 +263,7 @@ describe('update', function() {
     });
 
     step('try to create again', function(done) {
-      update.createEntity(db, {}, ents.one, true, 'create', function(err) {
+      update.createEntity(db, {}, {context: 'ROOT'}, ents.one, true, 'create', function(err) {
         if (err) {
           should.deepEqual(err.name, 'DbDuplicateRecordError');
         } else {
@@ -396,7 +396,7 @@ describe('update', function() {
     step('delete', function(done) {
       var ent = ents.start;
       ent._path = newpath;
-      update.deleteEntity(db, {}, ent, true, 'delete',
+      update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete',
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           entityId.should.equal(ent._entityId);

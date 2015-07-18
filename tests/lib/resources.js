@@ -16,7 +16,7 @@ exports.entityResource = function entityResource(path, ents, entidx, provisional
   }
 
   before(function createEntityResource(done) {
-    update.createEntity(db, {}, ent, true, 'create',
+    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'create',
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
         ents[entidx]._revisionId = revisionId;
@@ -26,7 +26,7 @@ exports.entityResource = function entityResource(path, ents, entidx, provisional
   });
 
   after(function deleteEntityResource(done) {
-    update.deleteEntity(db, {}, ent, true, 'delete', done);
+    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', done);
     delete ents[entidx];
   });
 };
@@ -45,7 +45,7 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
   });
 
   before(function createUserResource(done) {
-    update.createEntity(db, {}, ent, true, 'create',
+    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'create',
       function(err, entityId, revisionId, revisionNum) {
         ents[entidx]._entityId = entityId;
         ents[entidx]._revisionId = revisionId;
@@ -55,7 +55,7 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
   });
 
   after(function deleteUserResource(done) {
-    update.deleteEntity(db, {}, ent, true, 'delete', done);
+    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', done);
     delete ents[entidx];
   });
 };
