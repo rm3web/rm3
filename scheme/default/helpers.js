@@ -93,6 +93,15 @@ exports = module.exports = function(dust, db, query) {
         return chunk.write('</a></li>');
     }
 
+    dust.helpers.ifdef = function (chunk, context, bodies, params) {
+        var test = context.resolve(params.key);
+        if (test) {
+            return chunk.render(bodies.block, context);
+        } else {
+            return chunk.render(bodies["else"], context);
+        }
+    }
+
     dust.helpers.user_menu = function(chunk, context, bodies, params) {
         var longstr = ''
         user = context.get('user');
