@@ -1,8 +1,19 @@
-{>layouts-full_with_nav/}
+{>layouts-two_col_with_nav/}
 {<view-content}
 
-{@formatMessage _key="FULL_NAME"/}: {summary.title}<br />
-{@formatMessage _key="PROFILE_URL"/}: {summary.profileUrl}<br />
-{@formatMessage _key="DESCRIPTION"/}: {summary.abstract}<br />
+<div class="l-box">
+    {@ifdef key=summary.profileUrl}<h2><a href="{summary.profileUrl|u}">{summary.title}</a></h2>{:else}<h2>{summary.title}</h2>{/ifdef}
+    
+
+{summary.abstract}
+</div>
 
 {/view-content}
+
+{<sidebar-content}
+
+<div class="l-box">
+<h2>Activity stream here...</h2>
+</div>
+
+{/sidebar-content}
