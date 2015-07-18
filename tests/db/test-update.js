@@ -49,7 +49,7 @@ function stepGenericUpdate(desc, ents, startidx, nextidx) {
   ents[nextidx] = ents[startidx].clone();
   ents[nextidx].data.posting = "<div>blah blah blah</div>";
   step(desc, function(done) {
-    update.updateEntity(db, {}, ents[startidx], ents[nextidx], true, 'update',
+    update.updateEntity(db, {}, {context: "ROOT"}, ents[startidx], ents[nextidx], true, 'update',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
