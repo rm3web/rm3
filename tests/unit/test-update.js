@@ -63,7 +63,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
           should.deepEqual(spec.values[6], 1); //revisionNum
           should.deepEqual(spec.values[10], 'create');
           should.deepEqual(spec.values[11], true);
-          var data = JSON.parse(spec.values[12]);
+          var data = JSON.parse(spec.values[13]);
           should.deepEqual(data.toData.summary, ent.summary);
           should.deepEqual(data.toData.data, ent.data);
           func(null, {});
@@ -72,7 +72,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
       queryfunc(null, client, function() { });
     };
 
-    update.createEntity(db, {}, ent, true, 'create', function(err, entityId, revisionId, revisionNum) {
+    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'create', function(err, entityId, revisionId, revisionNum) {
       if (err) {
         should.fail(err);
       } else {

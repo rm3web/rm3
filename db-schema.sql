@@ -30,6 +30,7 @@ CREATE TABLE wh_log (
 	"evtTouched" timestamp,
 	"evtClass" text,
 	"evtFinal" boolean,
+	"actorPath" ltree,
 	data json
 );
 

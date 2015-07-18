@@ -72,7 +72,7 @@ program
         return;
       }
       
-      update.createEntity(db, {}, ent, true, 
+      update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
                            'cli', function(err, entity_id, revision_id, revision_num) {
         if (err) {
           console.log('error:');
@@ -95,7 +95,7 @@ program
       console.log('Name and role are required')
       return;
     }
-    update.assignUserToRole(db, {}, options.userroot.down(name), role,
+    update.assignUserToRole(db, {}, {context: 'ROOT'}, options.userroot.down(name), role,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
@@ -189,7 +189,7 @@ program
       console.log('Name and role are required')
       return;
     }
-    update.removeUserFromRole(db, {}, options.userroot.down(name), role,
+    update.removeUserFromRole(db, {}, {context: 'ROOT'}, options.userroot.down(name), role,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
@@ -210,7 +210,7 @@ program
       console.log('role, permission, and path are required')
       return;
     }
-    update.addPermissionToRole(db, {}, role, permission, path,
+    update.addPermissionToRole(db, {}, {context: 'ROOT'}, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
@@ -230,7 +230,7 @@ program
       console.log('role, permission, and path are required')
       return;
     }
-    update.removePermissionFromRole(db, {}, role, permission, path,
+    update.removePermissionFromRole(db, {}, {context: 'ROOT'}, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         console.log('error:');
