@@ -46,7 +46,7 @@ describe('Types', function() {
       // User page type
       'a[href*=wirehead]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
-      'div.pure-u-2-3'.should.contain.text('Some profile text');
+      'div.pure-u-1-3'.should.contain.text('Some profile text');
     });
 
     casper.then(function() {
