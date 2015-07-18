@@ -62,22 +62,22 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
 
 exports.permissionResource = function permissionResource(role, permission, path) {
   before(function createPermissionResource(done) {
-    update.addPermissionToRole(db, {}, role, permission, path, "note", done);
+    update.addPermissionToRole(db, {}, {context: 'ROOT'}, role, permission, path, "note", done);
   });
 
   after(function deletePermissionResource(done) {
-    update.removePermissionFromRole(db, {}, role, permission, path, "note", done);
+    update.removePermissionFromRole(db, {}, {context: 'ROOT'}, role, permission, path, "note", done);
   });
 };
 
 exports.assignmentResource = function assignmentResource(userpath, username, role) {
   before(function createAssignmentResource(done) {
     var path = userpath.down(username);
-    update.assignUserToRole(db, {}, path, role, 'note', done);
+    update.assignUserToRole(db, {}, {context: 'ROOT'}, path, role, 'note', done);
   });
 
   after(function deleteAssignmentResource(done) {
     var path = userpath.down(username);
-    update.removeUserFromRole(db, {}, path, role, 'note', done);
+    update.removeUserFromRole(db, {}, {context: 'ROOT'}, path, role, 'note', done);
   });
 };
