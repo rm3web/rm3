@@ -66,7 +66,7 @@ function stepGenericUpdate(desc, ents, startidx, nextidx) {
 
 function stepGenericMove(desc, ents, startidx, newpath, moveMark) {
   step(desc, function(done) {
-    update.moveEntity(db, {}, ents[startidx], newpath, true, 'move',
+    update.moveEntity(db, {}, {context: 'ROOT'}, ents[startidx], newpath, true, 'move',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -482,7 +482,7 @@ describe('update', function() {
     var permissionRec = {};
 
     step('permit', function(done) {
-      update.addPermissionToRole(db, {}, "role", "permission", path, "note",
+      update.addPermissionToRole(db, {}, {context: 'ROOT'}, "role", "permission", path, "note",
         function(err, entityId, revisionId, revisionNum) {
           revisionId.should.be.an.instanceof(String);
           revisionNum.should.be.an.instanceof(Number);
@@ -503,7 +503,7 @@ describe('update', function() {
     });
 
     step('permit again', function(done) {
-      update.addPermissionToRole(db, {}, "role", "permission", path, "note",
+      update.addPermissionToRole(db, {}, {context: 'ROOT'}, "role", "permission", path, "note",
         function(err, entityId, revisionId, revisionNum) {
           if (err) {
             should.deepEqual(err.name, 'DbDuplicateRecordError');
@@ -518,7 +518,7 @@ describe('update', function() {
     stepValidatePermissionExistence('validate failure is ok', path);
 
     step('remove', function(done) {
-      update.removePermissionFromRole(db, {}, "role", "permission", path, "note",
+      update.removePermissionFromRole(db, {}, {context: 'ROOT'}, "role", "permission", path, "note",
         function(err, entityId, revisionId, revisionNum) {
           revisionId.should.be.an.instanceof(String);
           revisionNum.should.be.an.instanceof(Number);
@@ -541,7 +541,7 @@ describe('update', function() {
     stepGenericCreate('create', userpath, ents, 'one', true, now);
 
     step('assign', function createAssignmentResource(done) {
-      update.assignUserToRole(db, {}, userpath, 'role', 'note', done);
+      update.assignUserToRole(db, {}, {context: 'ROOT'}, userpath, 'role', 'note', done);
     });
 
     step('check assign', function checkAssign(done) {
@@ -565,7 +565,7 @@ describe('update', function() {
     });
 
     step('assign again', function createAssignmentResourceAgain(done) {
-      update.assignUserToRole(db, {}, userpath, 'role2', 'note', done);
+      update.assignUserToRole(db, {}, {context: 'ROOT'}, userpath, 'role2', 'note', done);
     });
 
     step('check assign again', function checkAssignAgain(done) {
@@ -584,7 +584,7 @@ describe('update', function() {
     });
 
     step('de-assign', function deleteAssignmentResource(done) {
-      update.removeUserFromRole(db, {}, userpath, 'role', 'note', done);
+      update.removeUserFromRole(db, {}, {context: 'ROOT'}, userpath, 'role', 'note', done);
     });
 
     step('check assign after 1 de-assign', function checkAssignAfter1(done) {
@@ -601,7 +601,7 @@ describe('update', function() {
     });
 
     step('de-assign', function deleteAssignmentResource2(done) {
-      update.removeUserFromRole(db, {}, userpath, 'role2', 'note', done);
+      update.removeUserFromRole(db, {}, {context: 'ROOT'}, userpath, 'role2', 'note', done);
     });
 
     step('check assign after 2 de-assigns', function checkAssignAfter2(done) {
