@@ -72,7 +72,7 @@ program
         return;
       }
       
-      update.createEntity(db, {}, ent, true, 
+      update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
                            'cli', function(err, entity_id, revision_id, revision_num) {
         if (err) {
           console.log('error:');
