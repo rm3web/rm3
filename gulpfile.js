@@ -143,7 +143,12 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
 
         // Do something with success here
         server.kill('SIGINT');
-        cb();
+        if (success) {
+          cb();
+        } else {
+          cb(new Error('fail'));
+        }
+        
     });
   }, 20000);
 });
