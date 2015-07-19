@@ -2,8 +2,12 @@ var SitePath = require ('../../lib/sitepath');
 var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
 var textblockUi = require('../../lib/textblock_ui');
+var ActivityFeed = require('../../lib/activityfeed');
 
 exports = module.exports = function(dust, db, query) {
+
+    ActivityFeed.installDust(dust, db, query);
+
     dust.helpers.textblock_edit = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
         return chunk.write(textblockUi.generateEditor('posting', textblock));
@@ -237,18 +241,21 @@ exports = module.exports = function(dust, db, query) {
             var baseurl = ['wh'];
             path = new SitePath(baseurl);
 
-            var resp = query.queryActivity(db, ctx, security, path, 'child', user.path());
+            var qr = query.queryActivity(db, ctx, security, path, 'child', user.path());
             var body = bodies.block;
 
+            resp = ActivityFeed.logToActivityFeed(qr);
             var idx = 0;
             resp.on('article', function(article) {
                 chunk.render(bodies.block, context.push(
-                    {path: article.path.toUrl('/',1),
+                    {//path: article.path.toUrl('/',1),
                      rec: article,
                      '$idx': idx }));
                 idx = idx + 1;
             });
             resp.on('error', function(err) {
+                console.log('errrrr')
+                console.log(err);
                 chunk.end();
             });
             resp.on('end', function() {
