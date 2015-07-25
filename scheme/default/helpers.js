@@ -2,8 +2,12 @@ var SitePath = require ('../../lib/sitepath');
 var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
 var textblockUi = require('../../lib/textblock_ui');
+var ActivityFeed = require('../../lib/activityfeed');
 
 exports = module.exports = function(dust, db, query) {
+
+    ActivityFeed.installDust(dust, db, query);
+
     dust.helpers.textblock_edit = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
         return chunk.write(textblockUi.generateEditor('posting', textblock));
@@ -133,6 +137,7 @@ exports = module.exports = function(dust, db, query) {
         longstr = longstr + '</ul></div>';
         return chunk.write(longstr);
     }
+
     dust.helpers.basic_query = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var baseurl = context.get('meta.sitePath');
@@ -196,8 +201,11 @@ exports = module.exports = function(dust, db, query) {
             var baseurl = context.get('meta.sitePath');
             var revisionId = context.get('meta.revisionId')
             path = new SitePath(baseurl);
-            var security = {user: context.get('user'),
-                            context: 'STANDARD'};
+            var security = {context: 'STANDARD'};
+            var user = context.get('user');
+            if (user != undefined) {
+                security.user = user.path();
+            }
             var ctx = context.get('ctx');
 
             var resp = query.queryHistory(db, ctx, security, path);
@@ -220,6 +228,42 @@ exports = module.exports = function(dust, db, query) {
             });
         })
     }
+
+    dust.helpers.activityFeed = function (chunk, context, bodies, params) {
+        return chunk.map(function(chunk) {
+            var security = {context: 'STANDARD'};
+            var user = context.get('user');
+            if (user != undefined) {
+                security.user = user.path();
+            }
+            var ctx = context.get('ctx');
+
+            var baseurl = ['wh'];
+            path = new SitePath(baseurl);
+
+            var qr = query.queryActivity(db, ctx, security, path, 'child', user.path());
+            var body = bodies.block;
+
+            resp = ActivityFeed.logToActivityFeed(qr);
+            var idx = 0;
+            resp.on('article', function(article) {
+                chunk.render(bodies.block, context.push(
+                    {//path: article.path.toUrl('/',1),
+                     rec: article,
+                     '$idx': idx }));
+                idx = idx + 1;
+            });
+            resp.on('error', function(err) {
+                console.log('errrrr')
+                console.log(err);
+                chunk.end();
+            });
+            resp.on('end', function() {
+                chunk.end();
+            });
+        })
+    }
+
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var tags = dust.helpers.tap(params.obj, chunk, context);
