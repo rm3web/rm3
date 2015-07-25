@@ -28,7 +28,7 @@ describe('activityfeed', function() {
         evtTouched: now,
         evtClass: 'post',
         evtFinal: true,
-        actorPath: 'wh.midnight.kitty',
+        actorPath:  new SitePath(['wh', 'midnight', 'kitty']),
         path: new SitePath(['wh', 'sunlit', 'pony']),
         data: {},
         actorProto: 'user',
@@ -70,7 +70,7 @@ describe('activityfeed', function() {
         evtTouched: now,
         evtClass: 'post',
         evtFinal: false,
-        actorPath: 'wh.midnight.kitty',
+        actorPath:  new SitePath(['wh', 'midnight', 'kitty']),
         path: new SitePath(['wh', 'sunlit', 'pony']),
         data: {}
       };
