@@ -8,6 +8,13 @@ exports = module.exports = function(dust, db, query) {
 
     ActivityFeed.installDust(dust, db, query);
 
+    dust.filters.toDottedPath = function(value) {
+      if (value instanceof SitePath) {
+        return value.toDottedPath();
+      }
+      return value;
+    }
+
     dust.helpers.textblock_edit = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
         return chunk.write(textblockUi.generateEditor('posting', textblock));
@@ -200,16 +207,13 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.proto_dropdown = function(chunk, context, bodies, params) {
         var path = context.get('path');
         var baseurl = path.toUrl('/',1);
-        if (baseurl === '/') {
-            baseurl = '';
-        }
         var longstr = '<div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
         protos = Protoset.listProtos();
         for(var proto in protos) {
             if (protos.hasOwnProperty(proto)) {
                 longstr = longstr + '<li><a href="/$new' + baseurl;
-                longstr = longstr + '/create.html?type='+ proto +'">'
+                longstr = longstr + 'create.html?type='+ proto +'">'
                 longstr = longstr + protos[proto].desc + '</a></li>'
             }
         }
