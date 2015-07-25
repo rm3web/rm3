@@ -15,7 +15,7 @@
 <div class="l-box">
 <h2>Activity:</h2>
 <ul>
-{@activityFeed}
+{@activityFeed userPath=path}
 <li>{@activityActor key=rec.actor /} did "{@activityVerb key=rec.verb /}" to {@activityObject key=rec.object /} {@formatRelative val=rec.updated /}</li>
 {/activityFeed}
 </ul>

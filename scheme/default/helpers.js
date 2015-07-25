@@ -215,27 +215,42 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.activityFeed = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var security = context.get('security');
-            var user = context.get('user');
+            var userPath = context.get('user').path();
             var ctx = context.get('ctx');
 
             var baseurl = ['wh'];
-            path = new SitePath(baseurl);
+            var path = new SitePath(baseurl);
 
-            var qr = query.queryActivity(db, ctx, security, path, 'child', user.path());
+            if (params.userPath) {
+                var basePath = context.resolve(params.userPath);
+                if (typeof basePath === 'string') {
+                    userPath.fromDottedPath(basePath);
+                } else {
+                    userPath = basePath;
+                }
+            }
+
+            if (params.basePath) {
+                var basePath = context.resolve(params.basePath);
+                if (typeof basePath === 'string') {
+                    path.fromDottedPath(basePath);
+                } else {
+                    path = basePath;
+                }
+            }
+
+            var qr = query.queryActivity(db, ctx, security, path, 'child', userPath);
             var body = bodies.block;
 
             resp = ActivityFeed.logToActivityFeed(qr);
             var idx = 0;
             resp.on('article', function(article) {
                 chunk.render(bodies.block, context.push(
-                    {//path: article.path.toUrl('/',1),
-                     rec: article,
+                    {rec: article,
                      '$idx': idx }));
                 idx = idx + 1;
             });
             resp.on('error', function(err) {
-                console.log('errrrr')
-                console.log(err);
                 chunk.end();
             });
             resp.on('end', function() {
