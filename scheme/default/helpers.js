@@ -162,7 +162,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.navbar_query = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var path = context.get('path');
+            var path = new SitePath(['wh']);
             var security = context.get('security');
             var ctx = context.get('ctx');
             var resp = query.query(db, ctx, security, path,'dir','entity',{'navbar': true},undefined,undefined);
