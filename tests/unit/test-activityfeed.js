@@ -115,6 +115,24 @@ describe('activityfeed', function() {
 
       ee.emit('article', r);
     });
+
+    it('should pass end', function(cb) {
+      output.on('end', function() {
+        cb();
+      });
+      ee.emit('end');
+    });
+
+    it('should pass errors', function(cb) {
+      var ee = new events.EventEmitter();
+      var output = ActivityFeed.logToActivityFeed(ee);
+      var err = new Error('mockingbird');
+      output.on('error', function(e) {
+        e.should.equal(err);
+        cb();
+      });
+      ee.emit('error', err);
+    });
   });
 
   describe('helpers', function() {
@@ -125,6 +143,48 @@ describe('activityfeed', function() {
       db = {};
       query = {};
       ActivityFeed.installDust(dust, db, query);
+    });
+
+    describe('#activityActor', function() {
+      var chunk, context, params;
+
+      beforeEach(function() {
+        chunk = {};
+        context = {};
+        params = {key: 'blah'};
+      });
+
+      var tests = [
+        {desc: 'returns a string if given a string',
+        input: 'long noses',
+        output: 'long noses'},
+        {desc: 'returns root',
+        input: {objectType: 'site'},
+        output: 'root'},
+        {desc: 'returns an id and URL',
+        input: {url: 'url', id: 'id'},
+        output: '<a href="url">id</a>'},
+        {desc: 'returns an id',
+        input: {id: 'sad_id'},
+        output: 'sad_id'},
+        {desc: 'handles complete unknown situations',
+        input: {},
+        output: 'unknown'}
+      ];
+
+      tests.forEach(function(test, index) {
+        it(test.desc, function(cb) {
+          chunk.write = function(str) {
+            str.should.equal(test.output);
+            cb();
+          };
+          context.resolve = function(param) {
+            param.should.equal('blah');
+            return test.input;
+          };
+          dust.helpers.activityActor(chunk, context, {}, params);
+        });
+      });
     });
 
     describe('#activityObject', function() {
