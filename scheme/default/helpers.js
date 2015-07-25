@@ -56,8 +56,8 @@ exports = module.exports = function(dust, db, query) {
         var sectionDisable = context.resolve(params.sectionDisable);
         var disabled = context.resolve(params.disabled);
 
-        user = context.get('user');
-        permissions = context.get('permissions');
+        var user = context.get('user');
+        var permissions = context.get('permissions');
 
         if (sectionDisable && context.get('section') === sectionDisable) {
             disabled = true;
@@ -86,7 +86,7 @@ exports = module.exports = function(dust, db, query) {
     }
 
     dust.helpers.proto_menu = function (chunk, context, bodies, params) {
-        user = context.get('user');
+        var user = context.get('user');
         if (user) {
             chunk.write('<li><a href="#" data-dropdown="#dropdown-1">');
         } else {
@@ -107,7 +107,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.user_menu = function(chunk, context, bodies, params) {
         var longstr = ''
-        user = context.get('user');
+        var user = context.get('user');
         if (user) {
             longstr = longstr + '<li><a href="/$logout/">Log Out</a></li>'
         } else {
@@ -139,12 +139,8 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.basic_query = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var path = context.get('path');
-            var security = {context: 'STANDARD'};
-            var user = context.get('user');
+            var security = context.get('security');
             var ctx = context.get('ctx');
-            if (user != undefined) {
-                security.user = user.path();
-            }
             var resp = query.query(db, ctx, security, path,'dir','entity',{},undefined,undefined);
             var body = bodies.block;
             var idx = 0;
@@ -167,11 +163,7 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.navbar_query = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var path = context.get('path');
-            var security = {context: 'STANDARD'};
-            var user = context.get('user');
-            if (user != undefined) {
-                security.user = user.path();
-            }
+            var security = context.get('security');
             var ctx = context.get('ctx');
             var resp = query.query(db, ctx, security, path,'dir','entity',{'navbar': true},undefined,undefined);
             var body = bodies.block;
@@ -195,12 +187,8 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.history = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var path = context.get('path');
-            var security = {context: 'STANDARD'};
-            var user = context.get('user');
+            var security = context.get('security');
             var revisionId = context.get('meta.revisionId');
-            if (user != undefined) {
-                security.user = user.path();
-            }
             var ctx = context.get('ctx');
 
             var resp = query.queryHistory(db, ctx, security, path);
@@ -226,11 +214,8 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.activityFeed = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var security = {context: 'STANDARD'};
+            var security = context.get('security');
             var user = context.get('user');
-            if (user != undefined) {
-                security.user = user.path();
-            }
             var ctx = context.get('ctx');
 
             var baseurl = ['wh'];
