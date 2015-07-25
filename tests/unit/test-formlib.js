@@ -26,6 +26,8 @@ describe('formlib', function() {
     FormLib.nullOrValid(body, 'strawberries', valid, 'b', error);
     error.should.have.property('strawberries').with.lengthOf(1);
     error.strawberries[0].should.equal('b');
+    FormLib.nullOrValid(body, 'unicorns', valid, 'b', error);
+    error.should.not.have.property('unicorns');
   });
 
   it('should mark an error', function() {
