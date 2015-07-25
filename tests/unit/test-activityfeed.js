@@ -40,7 +40,7 @@ describe('activityfeed', function() {
       output.on('article', function(rec) {
         rec.should.have.properties(['object', 'verb', 'updated', 'startTime',
           'endTime', 'id', 'published', 'actor']);
-        rec.object.url.should.equal('/sunlit/pony');
+        rec.object.url.should.equal('/sunlit/pony/');
         rec.object.displayName.should.equal('Sunlit Ponies!');
         rec.object['rm3:proto'].should.equal('page');
         rec.verb.should.equal('post');
@@ -48,7 +48,7 @@ describe('activityfeed', function() {
         rec.id.should.equal('urn:uuid13566:1');
         rec.actor.should.have.properties('objectType', 'id', 'url');
         rec.actor.objectType.should.equal('person');
-        rec.actor.url.should.equal('/midnight/kitty');
+        rec.actor.url.should.equal('/midnight/kitty/');
         rec.actor['rm3:proto'].should.equal('user');
         rec.actor.displayName.should.equal('Midnight Kitty');
         cb();
@@ -79,13 +79,13 @@ describe('activityfeed', function() {
         rec.should.have.properties(['object', 'verb', 'updated', 'startTime',
           'endTime', 'id', 'actor']);
         rec.should.not.have.properties(['published']);
-        rec.object.url.should.equal('/sunlit/pony');
+        rec.object.url.should.equal('/sunlit/pony/');
         rec.verb.should.equal('post');
         rec.updated.should.equal(now);
         rec.id.should.equal('urn:uuid13566:1');
         rec.actor.should.have.properties('objectType', 'id', 'url');
         rec.actor.objectType.should.equal('person');
-        rec.actor.url.should.equal('/midnight/kitty');
+        rec.actor.url.should.equal('/midnight/kitty/');
         cb();
       });
 
@@ -113,7 +113,7 @@ describe('activityfeed', function() {
       output.on('article', function(rec) {
         rec.should.have.properties(['object', 'verb', 'updated', 'startTime',
           'endTime', 'id', 'published', 'actor']);
-        rec.object.url.should.equal('/sunlit/pony');
+        rec.object.url.should.equal('/sunlit/pony/');
         rec.verb.should.equal('post');
         rec.updated.should.equal(now);
         rec.id.should.equal('urn:uuid13566:1');
