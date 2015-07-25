@@ -215,7 +215,7 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.activityFeed = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var security = context.get('security');
-            var userPath = context.get('user').path();
+            var userPath = undefined;
             var ctx = context.get('ctx');
 
             var baseurl = ['wh'];
