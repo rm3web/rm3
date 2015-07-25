@@ -30,19 +30,27 @@ describe('activityfeed', function() {
         evtFinal: true,
         actorPath: 'wh.midnight.kitty',
         path: new SitePath(['wh', 'sunlit', 'pony']),
-        data: {}
+        data: {},
+        actorProto: 'user',
+        actorSummary: {'title': 'Midnight Kitty'},
+        objProto: 'page',
+        objSummary: {'title': 'Sunlit Ponies!'}
       };
 
       output.on('article', function(rec) {
         rec.should.have.properties(['object', 'verb', 'updated', 'startTime',
           'endTime', 'id', 'published', 'actor']);
         rec.object.url.should.equal('/sunlit/pony');
+        rec.object.displayName.should.equal('Sunlit Ponies!');
+        rec.object['rm3:proto'].should.equal('page');
         rec.verb.should.equal('post');
         rec.updated.should.equal(now);
         rec.id.should.equal('urn:uuid13566:1');
         rec.actor.should.have.properties('objectType', 'id', 'url');
         rec.actor.objectType.should.equal('person');
         rec.actor.url.should.equal('/midnight/kitty');
+        rec.actor['rm3:proto'].should.equal('user');
+        rec.actor.displayName.should.equal('Midnight Kitty');
         cb();
       });
 
@@ -164,6 +172,9 @@ describe('activityfeed', function() {
         {desc: 'returns an id and URL',
         input: {url: 'url', id: 'id'},
         output: '<a href="url">id</a>'},
+        {desc: 'returns a displayName and URL',
+        input: {url: 'url', id: 'id', displayName: 'pony'},
+        output: '<a href="url">pony</a>'},
         {desc: 'returns an id',
         input: {id: 'sad_id'},
         output: 'sad_id'},
@@ -203,6 +214,9 @@ describe('activityfeed', function() {
         {desc: 'returns an id and URL',
         input: {url: 'url', id: 'id'},
         output: '<a href="url">id</a>'},
+        {desc: 'returns a displayName and URL',
+        input: {url: 'url', id: 'id', displayName: 'kitten'},
+        output: '<a href="url">kitten</a>'},
         {desc: 'returns an id',
         input: {id: 'sad_id'},
         output: 'sad_id'},
