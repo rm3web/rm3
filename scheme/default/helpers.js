@@ -44,8 +44,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.admin_link = function(chunk, context, bodies, params) {
         var longstr = '<ul>';
-        var sitepathquery = context.get('meta.sitePath');
-        var path = new SitePath(sitepathquery);
+        var path = context.get('path');
         var baseurl = path.toUrl('/',1);
         if (baseurl === '/') {
             baseurl = '';
@@ -118,8 +117,7 @@ exports = module.exports = function(dust, db, query) {
     }
 
     dust.helpers.proto_dropdown = function(chunk, context, bodies, params) {
-        var sitepathquery = context.get('meta.sitePath');
-        var path = new SitePath(sitepathquery);
+        var path = context.get('path');
         var baseurl = path.toUrl('/',1);
         if (baseurl === '/') {
             baseurl = '';
@@ -140,8 +138,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.basic_query = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var baseurl = context.get('meta.sitePath');
-            path = new SitePath(baseurl);
+            var path = context.get('path');
             var security = {context: 'STANDARD'};
             var user = context.get('user');
             var ctx = context.get('ctx');
@@ -169,8 +166,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.navbar_query = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var baseurl = ['wh'];
-            path = new SitePath(baseurl);
+            var path = context.get('path');
             var security = {context: 'STANDARD'};
             var user = context.get('user');
             if (user != undefined) {
@@ -198,11 +194,10 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.history = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var baseurl = context.get('meta.sitePath');
-            var revisionId = context.get('meta.revisionId')
-            path = new SitePath(baseurl);
+            var path = context.get('path');
             var security = {context: 'STANDARD'};
             var user = context.get('user');
+            var revisionId = context.get('meta.revisionId');
             if (user != undefined) {
                 security.user = user.path();
             }
