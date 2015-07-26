@@ -1,11 +1,11 @@
 // Gulpfile.js
 var gulp = require('gulp')
   , nodemon = require('gulp-nodemon')
-  , jshint = require('gulp-jshint')
   , istanbul = require('gulp-istanbul')
   , mocha = require('gulp-mocha')
   , run = require('gulp-run')
-  , jscs = require('gulp-jscs')
+  , jscs = require('gulp-jsxcs')
+  , jshint = require('gulp-jshint')
   , gls = require('gulp-live-server')
   , gutil = require('gulp-util')
   , bower = require('gulp-bower')
@@ -31,7 +31,7 @@ var winston = require('winston');
 
 winston.remove(winston.transports.Console);
 
-var lintable = ['lib/**/*.js', 'tests/**/*.js'];
+var lintable = ['lib/**/*.js', 'tests/**/*.js', 'lib/**/*.jsx',];
 
 gulp.task('unit-tests', function () {
   process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
@@ -169,7 +169,7 @@ gulp.task('jscs', function () {
 
 gulp.task('jshint', function () {
   return gulp.src(lintable)
-    .pipe(jshint())
+    .pipe(jshint({ linter: require('jshint-jsx').JSXHINT }))
     .pipe(jshint.reporter('default'));
 })
 
