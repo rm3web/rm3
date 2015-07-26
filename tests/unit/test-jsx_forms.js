@@ -52,3 +52,41 @@ describe('PathNameComponent', function() {
     checkInput.props.children[0].props.defaultChecked.should.equal(false);
   });
 });
+
+describe('SingleError', function() {
+  it('should render', function() {
+    var intl = i10n.getIntl();
+    var form = createComponent(JsxForms.SingleError, {
+      error: 'stuff went wrong'
+    });
+
+    form.type.should.equal('li');
+    form.props.children.should.equal('stuff went wrong');
+  });
+});
+
+describe('ErrorsList', function() {
+  it('should render an empty list', function() {
+    var intl = i10n.getIntl();
+    var form = createComponent(JsxForms.ErrorsList, {
+      errors: []
+    });
+
+    form.type.should.equal('div');
+  });
+
+  it('should render', function() {
+    var intl = i10n.getIntl();
+    var form = createComponent(JsxForms.ErrorsList, {
+      errors: ['stuff went wrong']
+    });
+
+    form.type.should.equal('div');
+    var errorList = form.props.children;
+    errorList.type.should.equal('ul');
+    var singleError = errorList.props.children[0];
+    singleError.type.displayName.should.equal('SingleError');
+    singleError.props.error.should.equal('stuff went wrong');
+    singleError.key.should.equal('0');
+  });
+});

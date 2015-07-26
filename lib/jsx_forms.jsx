@@ -8,9 +8,9 @@ var PathNameComponent = React.createClass({
 
   getInitialState: function() {
     if (this.props.leaf) {
-      return {leaf: this.props.leaf, slug: false}
+      return {leaf: this.props.leaf, slug: false};
     } else {
-      return {slug: true}
+      return {slug: true};
     }
   },
 
