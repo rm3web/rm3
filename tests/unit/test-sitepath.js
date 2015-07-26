@@ -37,13 +37,20 @@ describe('sitepath', function() {
       var p = new sitepath(['wh', 'hat']);
 
       should.deepEqual(p.toUrl('http://www.wirewd.com/'),
-      'http://www.wirewd.com/wh/hat');
+      'http://www.wirewd.com/wh/hat/');
 
       should.deepEqual(p.toUrl('http://www.wirewd.com/', 1),
-      'http://www.wirewd.com/hat');
+      'http://www.wirewd.com/hat/');
 
       should.deepEqual(p.toUrl('/'),
-      '/wh/hat');
+      '/wh/hat/');
+    });
+
+    it('works for the top page', function() {
+      var p = new sitepath(['wh']);
+
+      should.deepEqual(p.toUrl('http://www.wirewd.com/', 1),
+      'http://www.wirewd.com/');
     });
   });
 
