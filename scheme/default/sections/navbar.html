@@ -18,11 +18,11 @@ function ConfirmChoice(path) {{~n}
   <div class="pure-menu pure-menu-open">
     <a class="pure-menu-heading">{@formatMessage _key="ADMIN"/}</a>
     <ul>
-      {@admin_link path="/edit.html" requiresAuth="true" permission="edit" sectionDisable="edit"}{@formatMessage _key="EDIT"/}{/admin_link}
-      {@admin_link path="/tag.html" requiresAuth="true" permission="edit" sectionDisable="tag"}{@formatMessage _key="TAG"/}{/admin_link}
-      {@admin_link path="/delete.html" confirm="true" requiresAuth="true" permission="delete"}{@formatMessage _key="DELETE"/}{/admin_link}
-      {@admin_link path="/move.html" requiresAuth="true" permission="move" disabled="true"}{@formatMessage _key="MOVE"/}{/admin_link}
-      {@admin_link path="/history.html" sectionDisable="history"}{@formatMessage _key="HISTORY"/}{/admin_link}
+      {@admin_link path="edit.html" requiresAuth="true" permission="edit" sectionDisable="edit"}{@formatMessage _key="EDIT"/}{/admin_link}
+      {@admin_link path="tag.html" requiresAuth="true" permission="edit" sectionDisable="tag"}{@formatMessage _key="TAG"/}{/admin_link}
+      {@admin_link path="delete.html" confirm="true" requiresAuth="true" permission="delete"}{@formatMessage _key="DELETE"/}{/admin_link}
+      {@admin_link path="move.html" requiresAuth="true" permission="move" disabled="true"}{@formatMessage _key="MOVE"/}{/admin_link}
+      {@admin_link path="history.html" sectionDisable="history"}{@formatMessage _key="HISTORY"/}{/admin_link}
       {@proto_menu}{@formatMessage _key="CREATE_ARROW"/}{/proto_menu}
     </ul>
     

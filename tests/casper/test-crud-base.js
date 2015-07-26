@@ -47,10 +47,6 @@ describe('Base type CRUD', function() {
 
     casper.then(function() {
       expect(casper.currentHTTPStatus).to.equal(200);
-      this.click('a[href*=casperjs_test]');
-    });
-
-    casper.then(function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       'div.pure-u-2-3'.should.contain.text('post data here do stuff etc');
       this.click('a[href*=edit]');
