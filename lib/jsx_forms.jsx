@@ -7,18 +7,15 @@ var PathNameComponent = React.createClass({
   mixins: [IntlMixin],
 
   getInitialState: function() {
-    var state = {};
-    state.leaf = this.props.leaf;
-    if (state.leaf) {
-      state.slug = false;
+    if (this.props.leaf) {
+      return {leaf: this.props.leaf, slug: false}
     } else {
-      state.slug = true;
+      return {slug: true}
     }
-    return state;
   },
 
   slugSwitch: function(event) {
-    this.setState({slug: !this.state.slug});
+    this.setState({slug: event.target.checked});
   },
 
   render: function() {
@@ -29,13 +26,12 @@ var PathNameComponent = React.createClass({
       </div>
       <div className="pure-u-1-3">
       <input className="pure-input-1" type="text"
-        defaultValue={this.state.leaf} disabled={!this.state.slug} name="leaf" id="leaf"
+        defaultValue={this.state.leaf} disabled={this.state.slug} name="leaf" id="leaf"
         placeholder={this.getIntlMessage("PATH")} />
       </div>
       <div className="pure-u-1-3">
       <label htmlFor="autogenSlug" className="pure-checkbox">
-        <input id="autogenSlug" name="autogenSlug" type="checkbox" 
-          checked={this.state.slug} value="true" onChange={this.slugSwitch} />
+        <input type="checkbox" onChange={this.slugSwitch} defaultChecked={this.state.slug} />
         <FormattedMessage message="AUTO_GENERATE_SLUG" />
       </label>
       </div>
