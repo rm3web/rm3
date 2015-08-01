@@ -3,6 +3,57 @@ var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 
+var TextBlockComponent = React.createClass({
+  mixins: [IntlMixin],
+
+  getInitialState: function() {
+    return (this.props.block);
+  },
+
+  render: function() {
+    if (this.state.format === 'section') {
+      var self = this;
+      var blocks = this.state.blocks.map(function(block, i) {
+          return (<TextBlockComponent key={i} 
+            prefix={self.props.prefix + '[' + i + ']'} 
+            block={block} />);
+        });
+      return (<fieldset>
+        <input type="hidden" value="section" name={this.props.prefix + '[format]'} />
+        <input type="hidden" value={this.state.blocks.length} name="numblocks" />
+        {blocks}
+      </fieldset>);
+    } else if (this.state.format === 'pragma') {
+      return (<fieldset>
+              <div style="background: rgb(198, 198, 237); padding: 1em;">
+              <input type="hidden" value="pragma" 
+               name={this.props.prefix + '[format]'} />
+               <select size="1">
+               <option value="child">Query Children</option>
+               <option value="parents">Query Parents</option>
+               <option value="dir">Directory</option>
+               </select></div>
+      </fieldset>);
+    } else {
+      var outstr = this.state.source;
+      if (this.state.format === 'html') {
+        outstr = this.state.htmltext;
+      }
+      return (<fieldset>
+        <textarea rows="30" name={this.props.prefix + '[source]'} 
+          className="pure-input-1" placeholder="Posting" 
+          defaultValue={outstr}>
+        </textarea>
+        <select size="1" name={this.props.prefix + '[format]'} 
+          defaultValue={this.state.format}>
+        <option value="html">HTML</option>
+        <option value="markdown">Markdown</option>
+        </select>
+      </fieldset>);
+    }
+  }
+});
+
 var PathNameComponent = React.createClass({
   mixins: [IntlMixin],
 
@@ -65,3 +116,4 @@ var ErrorsList = React.createClass({
 exports.SingleError = SingleError;
 exports.ErrorsList = ErrorsList;
 exports.PathNameComponent = PathNameComponent;
+exports.TextBlockComponent = TextBlockComponent;
