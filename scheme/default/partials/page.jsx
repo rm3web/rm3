@@ -38,7 +38,9 @@ var PageFormComponent = React.createClass({
       <ErrorsList errors={this.state.errors.title} />
       </fieldset>
       <fieldset>
-      <textarea rows="5" className="pure-input-1" id="abstract" name="abstract" placeholder={this.getIntlMessage("ABSTRACT")}>
+      <textarea rows="5" className="pure-input-1" id="abstract" name="abstract" 
+        placeholder={this.getIntlMessage("ABSTRACT")}
+        defaultValue={this.props.abstract}>
       </textarea>
       <ErrorsList errors={this.state.errors.abstract} />
       </fieldset>
