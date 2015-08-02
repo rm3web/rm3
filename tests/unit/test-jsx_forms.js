@@ -4,6 +4,7 @@ var TestUtils = React.addons.TestUtils;
 var createComponent = require('../lib/create-component');
 var JsxForms = require('../../lib/jsx_forms.jsx');
 var i10n = require('../../lib/i10n');
+var SitePath = require ('../../lib/sitepath');
 
 describe('TextBlockComponent', function() {
   it('should render a textblock when blank', function() {
@@ -184,6 +185,28 @@ describe('PathNameComponent', function() {
 
     var checkInput = form.props.children[2].props.children;
     checkInput.props.children[0].props.defaultChecked.should.equal(false);
+  });
+
+  it('should render with SitePath instead of string', function() {
+    var intl = i10n.getIntl();
+    var form = createComponent(JsxForms.PathNameComponent, {
+      locales: intl.locales,
+      messages: intl.messages,
+      path: new SitePath(['wh','cookie'])
+    });
+
+    form.type.should.equal('fieldset');
+
+    var rootInput = form.props.children[0].props.children;
+    rootInput.type.should.equal('input');
+    rootInput.props.value.should.equal('wh.cookie');
+
+    var leafInput = form.props.children[1].props.children;
+    leafInput.type.should.equal('input');
+    leafInput.props.disabled.should.equal(true);
+
+    var checkInput = form.props.children[2].props.children;
+    checkInput.props.children[0].props.defaultChecked.should.equal(true);
   });
 });
 
