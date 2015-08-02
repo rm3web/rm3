@@ -2,12 +2,17 @@ var React = require('react');
 var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
+var SitePath = require ('./sitepath');
 
 var TextBlockComponent = React.createClass({
   mixins: [IntlMixin],
 
   getInitialState: function() {
-    return (this.props.block);
+    if (this.props.block) {
+      return this.props.block;
+    } else {
+      return {};
+    }
   },
 
   render: function() {
@@ -70,9 +75,14 @@ var PathNameComponent = React.createClass({
   },
 
   render: function() {
+    var path = this.props.path;
+    console.log(path);
+    if (path instanceof SitePath) {
+      path = this.props.path.toDottedPath();
+    }
     return (<fieldset>
       <div className="pure-u-1-3">
-      <input className="pure-input-1" name="root" type="text" value={this.props.path} 
+      <input className="pure-input-1" name="root" type="text" value={path} 
         readOnly disabled />
       </div>
       <div className="pure-u-1-3">
@@ -83,7 +93,7 @@ var PathNameComponent = React.createClass({
       <div className="pure-u-1-3">
       <label htmlFor="autogenSlug" className="pure-checkbox">
         <input type="checkbox" onChange={this.slugSwitch} defaultChecked={this.state.slug} />
-        <FormattedMessage message="AUTO_GENERATE_SLUG" />
+        <FormattedMessage message={this.getIntlMessage('AUTO_GENERATE_SLUG')} />
       </label>
       </div>
       </fieldset>);
