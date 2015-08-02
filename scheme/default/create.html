@@ -2,58 +2,8 @@
 {<view-content}
 <div class="pure-u-4-5">
 
-<form id="draft" method="post" action="create.html?type={meta.proto}" class="pure-form pure-form-stacked">
-    <fieldset>
-    <h1>
-    <textarea class="pure-input-1" placeholder="{@formatMessage _key="TITLE"/}" name="title" id="title">{summary.title}</textarea></h1>
-    <textarea rows="5" class="pure-input-1" name="abstract" placeholder="{@formatMessage _key="ABSTRACT"/}">
-{summary.abstract}
-</textarea>
-    </fieldset>
-    <fieldset>
-    <div class="pure-u-1-3">
-    <input class="pure-input-1" type="text" value="{path|toDottedPath}" readonly>
-    </div>
-    <div class="pure-u-1-3">
-    <input class="pure-input-1" type="text" name="path" placeholder="{@formatMessage _key="PATH"/}">
-    </div>
-    <div class="pure-u-1-3">
-    <label for="autogenSlug" class="pure-checkbox">
-        <input id="autogenSlug" name="autogenSlug" type="checkbox" checked="true" value="true" />
-        {@formatMessage _key="AUTO_GENERATE_SLUG"/}
-    </label>
-    </div>
-    </fieldset>
-
-<fieldset id="textblocks">
-{@textblock_edit field=data.posting}{/textblock_edit}
-</fieldset>
-
-  <fieldset>
-    <div class="pure-g-r">
-      <button class="pure-button" id="addText">Add Text Section</button>
-      {@eq key=meta.proto value="index"}
-      <button class="pure-button" id="addQuery">Add Query Section</button>
-      {/eq}
-    </div>
-  </fieldset>
-
-
-<fieldset>
-<div class="pure-g-r">
-            <div class="pure-u-1-3">
-            <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="CREATE"/}</button>
-            </div>
-            <div class="pure-u-2-3">
-             <label for="save-as-draft" class="pure-checkbox">
-                    <input id="save-as-draft" name="save-as-draft" type="checkbox" value="true" />
-                    {@formatMessage _key="SAVE_AS_DRAFT"/}
-    </label>
-            </div>
-            </fieldset>
-
-</form>
-
+<div id="pageform">{@react component="page.jsx" locales=intl.locales messages=intl.messages section=section path=path title=summary.title abstract=summary.abstract block=data.posting proto=meta.proto errors=errors noCache="true" /}</div>
 </div>
+<script src="/resources/bundles/page.js"></script>
 
 {/view-content}

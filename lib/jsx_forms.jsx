@@ -61,11 +61,12 @@ var TextBlockComponent = React.createClass({
       var self = this;
       var blocks = this.state.blocks.map(function(block, i) {
           return (<TextBlockComponent key={i}
-            prefix={self.props.prefix + '[' + i + ']'}
+            prefix={self.props.prefix + '[blocks][' + i + ']'}
             block={block} child="true" />);
         });
       return (<fieldset>
-        <input type="hidden" value="section" name={this.props.prefix + '[format]'} />
+        <input type="hidden" value="section" name={this.props.prefix + '[format]'}
+          id={this.props.prefix + '[format]'} />
         <input type="hidden" id="numblocks" value={this.state.blocks.length} name="numblocks" />
         {blocks}
         {buttons}
@@ -73,9 +74,10 @@ var TextBlockComponent = React.createClass({
     } else if (this.state.format === 'pragma') {
       return (<fieldset>
         <div className="textblockbox">
-        <input type="hidden" value="pragma" 
+        <input type="hidden" value="pragma" id={this.props.prefix + '[format]'}
          name={this.props.prefix + '[format]'} />
-        <select size="1">
+        <select name={this.props.prefix + '[query]'} 
+          id={this.props.prefix + '[query]'} size="1">
          <option value="child">Query Children</option>
          <option value="parents">Query Parents</option>
          <option value="dir">Directory</option>
@@ -137,7 +139,7 @@ var PathNameComponent = React.createClass({
       <div className="pure-u-1-3">
       <label htmlFor="autogenSlug" className="pure-checkbox">
         <input type="checkbox" onChange={this.slugSwitch} 
-         defaultChecked={this.state.slug} id="slug" />
+         defaultChecked={this.state.slug} name="autogenSlug" id="slug" />
         <FormattedMessage message={this.getIntlMessage('AUTO_GENERATE_SLUG')} />
       </label>
       </div>
