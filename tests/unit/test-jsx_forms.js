@@ -192,7 +192,7 @@ describe('PathNameComponent', function() {
     var form = createComponent(JsxForms.PathNameComponent, {
       locales: intl.locales,
       messages: intl.messages,
-      path: new SitePath(['wh','cookie'])
+      path: new SitePath(['wh', 'cookie'])
     });
 
     form.type.should.equal('fieldset');
