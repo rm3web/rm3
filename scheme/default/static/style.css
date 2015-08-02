@@ -44,3 +44,9 @@
     width:100%;
     border:1px dotted #DFDFDF;
 }
+
+.textblockbox 
+{ 
+    background: rgb(198, 198, 237); 
+    padding: 1em;
+}
