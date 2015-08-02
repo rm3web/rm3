@@ -126,14 +126,14 @@ describe('TextBlockComponent', function() {
 
     var blocklist = form.props.children[2];
     blocklist[0].type.displayName.should.equal('TextBlockComponent');
-    blocklist[0].props.prefix.should.equal('plastic_makes_perfect[0]');
+    blocklist[0].props.prefix.should.equal('plastic_makes_perfect[blocks][0]');
     blocklist[0].props.block.should.have.properties({source:"# humans make good pets",
         htmltext:"<h1>humans make good pets</h1>",
         format:"markdown"});
     blocklist[0].key.should.equal('0');
 
     blocklist[1].type.displayName.should.equal('TextBlockComponent');
-    blocklist[1].props.prefix.should.equal('plastic_makes_perfect[1]');
+    blocklist[1].props.prefix.should.equal('plastic_makes_perfect[blocks][1]');
     blocklist[1].props.block.should.have.properties({htmltext:"<strong>html section</strong>",
         format:"html"});
     blocklist[1].key.should.equal('1');
