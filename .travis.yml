@@ -9,6 +9,7 @@ addons:
     packages:
       - librsvg2-dev
 before_script:
+  - phantomjs --version
   - psql -c 'create database rm3unit;' -U postgres
   - psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres
   - psql -c "GRANT ALL PRIVILEGES ON database rm3unit TO wirehead;" -U postgres
