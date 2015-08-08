@@ -7,16 +7,6 @@ describe('Base type CRUD', function() {
     //casper.options.verbose = true;
     casper.start('http://127.0.0.1:4000/');
 
-/*
-    casper.on('page.error', function(msg, trace) {
-      this.echo('Error: ' + msg, 'ERROR');
-    });
-
-    casper.on('remote.message', function(msg) {
-      this.echo('Console: ' + msg, 'ERROR');
-    });
-*/
-
     // http://stackoverflow.com/questions/25359247/casperjs-bind-issue
     // This polyfill hacks around the lack of ES5 in PhantomJS 1.x
     // and CasperJS 1.1beata4.
