@@ -109,7 +109,7 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
     ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'lib/front.js'],
     ctx);
 
-  var tests = ['./tests/casper/*', '--web-security=no', '--version'];
+  var tests = ['./tests/casper/*'];
 
   var serverlog = [];
 
