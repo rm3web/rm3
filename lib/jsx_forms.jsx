@@ -15,6 +15,10 @@ var TextBlockComponent = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    this.setState({mounted:true});
+  },
+
   addText: function(e) {
     e.preventDefault();
     var blocks;
@@ -44,7 +48,7 @@ var TextBlockComponent = React.createClass({
 
   render: function() {
     var buttons;
-    if (!this.props.child) {
+    if (!this.props.child && this.state.mounted) {
       if (this.props.proto === 'index') {
         buttons = (<div className="pure-g-r">
           <button onClick={this.addText} className="pure-button" id="addText">Add Text Section</button>
