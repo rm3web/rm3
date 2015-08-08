@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - "0.12"
   - "0.10"
-  - "iojs"
+  - "iojs-v2.0"
 addons:
   postgresql: "9.3"
   apt:
@@ -16,7 +16,6 @@ before_install:
   - ls /usr/local/phantomjs/bin
   - chmod a+x /usr/local/phantomjs/bin/phantomjs
   - which phantomjs
-  - more `which phantomjs`
   - phantomjs --version
 before_script:
   - psql -c 'create database rm3unit;' -U postgres
