@@ -3,6 +3,7 @@ var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 var JsxForms = require('../../../lib/jsx_forms.jsx');
+var TextBlockComponent = require('../../../lib/textblocks_forms.jsx').TextBlockComponent;
 var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
 
@@ -45,7 +46,7 @@ var PageFormComponent = React.createClass({
       <ErrorsList errors={this.state.errors.abstract} />
       </fieldset>
       {pathBit}
-      <JsxForms.TextBlockComponent prefix="posting" proto={this.props.proto} block={this.props.block} />
+      <TextBlockComponent prefix="posting" proto={this.props.proto} block={this.props.block} />
 
       <ErrorsList errors={this.state.errors.__all__} />
       <fieldset>
