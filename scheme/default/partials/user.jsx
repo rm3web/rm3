@@ -2,7 +2,10 @@ var React = require('react');
 var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
-var UserForm = require('../../../lib/forms/user')
+var UserForm = require('../../../lib/forms/user');
+var JsxForms = require('../../../lib/jsx_forms.jsx');
+var SingleError = JsxForms.SingleError;
+var ErrorsList = JsxForms.ErrorsList;
 
 var Username =  React.createClass({
   mixins: [IntlMixin],
@@ -15,28 +18,6 @@ var Username =  React.createClass({
   }
 });
 
-var SingleError = React.createClass({
-  render: function() {
-    return (<li>
-      {this.props.error}
-      </li>);
-  }
-});
-
-var ErrorsList = React.createClass({
-  mixins: [IntlMixin],
-  render: function() {
-    if (this.props.errors) {
-      return (<div><ul>
-      {this.props.errors.map(function(error, i){
-          return (<SingleError key={i} error={error} />);
-      })}
-      </ul></div>);
-    } else {
-      return <div />
-    }
-  }
-});
 
 var UserFormComponent = React.createClass({
   mixins: [IntlMixin],

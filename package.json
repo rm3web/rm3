@@ -71,8 +71,8 @@
     "gulp-bower": "0.0.10",
     "gulp-imagemin": "^2.3.0",
     "gulp-istanbul": "~0.10.0",
-    "gulp-jscs": "^1.6.0",
     "gulp-jshint": "~1.11.0",
+    "gulp-jsxcs": "^0.1.9",
     "gulp-live-server": "0.0.14",
     "gulp-mocha": "~2.1.1",
     "gulp-nodemon": "~2.0.3",
@@ -84,7 +84,8 @@
     "jscs": "^1.13.1",
     "jscs-jsdoc": "^1.0.1",
     "jsdox": "~0.4.2",
-    "jshint": "~2.7.0",
+    "jshint": "^2.8.0",
+    "jshint-jsx": "^0.4.1",
     "matcha": "^0.6.0",
     "mocha": "~2.2.1",
     "mocha-casperjs": "^0.5.3",
@@ -100,7 +101,7 @@
     "test": "./node_modules/.bin/gulp test",
     "coverage": "./node_modules/.bin/gulp coverage",
     "travis": "./node_modules/.bin/gulp travis",
-    "lint": "./node_modules/.bin/jshint lib tests bin && ./node_modules/.bin/jscs lib tests bin",
+    "lint": "./node_modules/.bin/gulp lint",
     "docs": "./node_modules/.bin/jsdox -A --output ./docs/api lib && ./node_modules/.bin/jsdox -A --output ./docs/api/middlware lib/middleware"
   },
   "keywords": [

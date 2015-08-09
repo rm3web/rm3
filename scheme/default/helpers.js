@@ -1,7 +1,6 @@
 var SitePath = require ('../../lib/sitepath');
 var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
-var textblockUi = require('../../lib/textblock_ui');
 var ActivityFeed = require('../../lib/activityfeed');
 
 exports = module.exports = function(dust, db, query) {
@@ -13,11 +12,6 @@ exports = module.exports = function(dust, db, query) {
         return value.toDottedPath();
       }
       return value;
-    }
-
-    dust.helpers.textblock_edit = function(chunk, context, bodies, params) {
-        var textblock = context.resolve(params.field);
-        return chunk.write(textblockUi.generateEditor('posting', textblock));
     }
 
     dust.helpers.disabled_mode = function(chunk, context, bodies, params) {
