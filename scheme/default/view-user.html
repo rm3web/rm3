@@ -2,7 +2,7 @@
 {<view-content}
 
 <div class="l-box">
-    {@ifdef key=summary.profileUrl}<h2><a href="{summary.profileUrl|u}">{summary.title}</a></h2>{:else}<h2>{summary.title}</h2>{/ifdef}
+    {?summary.profileUrl}<h2><a href="{summary.profileUrl|u}">{summary.title}</a></h2>{:else}<h2>{summary.title}</h2>{/summary.profileUrl}
 {@isThisUser}
 <div>(this is your account's page)</div>
 {/isThisUser}
