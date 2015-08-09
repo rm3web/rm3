@@ -4,7 +4,54 @@
 
 describe('Base type CRUD', function() {
   before(function() {
+    //casper.options.verbose = true;
     casper.start('http://127.0.0.1:4000/');
+
+    // http://stackoverflow.com/questions/25359247/casperjs-bind-issue
+    // This polyfill hacks around the lack of ES5 in PhantomJS 1.x
+    // and CasperJS 1.1beata4.
+    // At some point in the future, it can go, but it breaks function.bind
+    // right now.
+    casper.on('page.initialized', function() {
+      this.evaluate(function() {
+        var isFunction = function(o) {
+          return typeof o == 'function';
+        };
+
+        var bind,
+          slice = [].slice,
+          proto = Function.prototype,
+          featureMap;
+
+        featureMap = {
+          'function-bind': 'bind'
+        };
+
+        function has(feature) {
+          var prop = featureMap[feature];
+          return isFunction(proto[prop]);
+        }
+
+        // check for missing features
+        if (!has('function-bind')) {
+          // adapted from Mozilla Developer Network example at
+          // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
+          bind = function bind(obj) {
+            var args = slice.call(arguments, 1),
+              self = this,
+              nop = function() {
+              },
+              bound = function() {
+                return self.apply(this instanceof nop ? this : (obj || {}), args.concat(slice.call(arguments)));
+              };
+            nop.prototype = this.prototype || {}; // Firefox cries sometimes if prototype is undefined
+            bound.prototype = new nop();
+            return bound;
+          };
+          proto.bind = bind;
+        }
+      });
+    });
   });
 
   after(function() {
@@ -52,7 +99,7 @@ describe('Base type CRUD', function() {
       this.click('a[href*=edit]');
     });
 
-    casper.then(function() {
+    casper.waitUntilVisible('#addText', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       'textarea[name=posting\\[source\\]]'.should.be.inDOM.and.be.visible;
       this.click('#addText');

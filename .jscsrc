@@ -63,7 +63,8 @@
       "checkAnnotations": {
         "preset": "jsdoc3",
         "extra": {
-            "title": true
+            "title": true,
+            "jsx": true
         }
       },
       "checkParamNames": true,
