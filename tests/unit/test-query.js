@@ -310,9 +310,9 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var resp = query.query(db, {}, root, entpath, 'child', 'entity', {}, undefined, undefined);
     resp.on('article', function(article) {
-      should.deepEqual(article.title, rec.summary.title);
-      should.deepEqual(article.summary, rec.summary.abstract);
-      should.deepEqual(article.guid, rec.entityId);
+      should.deepEqual(article.summary.title, rec.summary.title);
+      should.deepEqual(article.summary.abstract, rec.summary.abstract);
+      should.deepEqual(article.entityId, rec.entityId);
       plan.ok(true);
     });
     resp.on('error', function(err) {
