@@ -3,9 +3,9 @@
   <div class="pure-menu pure-menu-open pure-menu-horizontal">
    <a class="pure-menu-heading" href="/">{site.name}</a>
    <ul>
-{@navbarQuery}
- <li><a href="{path}">{article.title}</a></li>
-{/navbarQuery}
+{@basicQuery rootpath="true" navbar="true"}
+  <li>{@titleLink /}</li>
+{/basicQuery}
    </ul>
 </div>
 </div>
