@@ -2,10 +2,12 @@ var SitePath = require ('../../lib/sitepath');
 var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
 var ActivityFeed = require('../../lib/activityfeed');
+var IndexFeed = require('../../lib/indexfeed');
 
 exports = module.exports = function(dust, db, query) {
 
     ActivityFeed.installDust(dust, db, query);
+    IndexFeed.installDust(dust, db, query);
 
     dust.filters.toDottedPath = function(value) {
       if (value instanceof SitePath) {
@@ -14,27 +16,21 @@ exports = module.exports = function(dust, db, query) {
       return value;
     }
 
-    dust.helpers.disabled_mode = function(chunk, context, bodies, params) {
-        var section = context.get('section');
-        var dis = context.resolve(params[section]);
-        if (dis) {
-            return chunk.write('disabled')
-        } else {
-            return chunk.write('');
-        }
-    }
-
     dust.helpers.icon = function(chunk, context, bodies, params) {
         var size = context.resolve(params.size);
         if (!size) {
             size = 'sq';
         }
-        var svgicon = context.get('icon.' + size + '.svg');
-        var imgicon = context.get('icon.' + size + '.alt');
+        var svgicon = context.get('meta.rm3\:icon.' + size + '.svg');
+        var imgicon = context.get('meta.rm3\:icon.' + size + '.alt');
+        var height = context.get('meta.rm3\:icon.' + size + '.height');
+        var width = context.get('meta.rm3\:icon.' + size + '.width');
         if (svgicon) {
-            return chunk.write('<img src="' + svgicon + '" alt="' + imgicon +'"  height="75" width="75" border="0" />')
+            return chunk.write('<img src="' + svgicon + '" alt="' + imgicon +
+                '"  height="' + height + '" width="' + width + '" border="0" />')
         } else {
-            return chunk.write('<img src="' + imgicon + '"  height="75" width="75" border="0" />')
+            return chunk.write('<img src="' + imgicon + '"  height="' + height + 
+                '" width="' + width + '" border="0" />')
         }
     }
 
@@ -204,53 +200,6 @@ exports = module.exports = function(dust, db, query) {
         }
         longstr = longstr + '</ul></div>';
         return chunk.write(longstr);
-    }
-
-    dust.helpers.basic_query = function (chunk, context, bodies, params) {
-        return chunk.map(function(chunk) {
-            var path = context.get('path');
-            var security = context.get('security');
-            var ctx = context.get('ctx');
-            var resp = query.query(db, ctx, security, path,'dir','entity',{},undefined,undefined);
-            var idx = 0;
-            resp.on('article', function(article) {
-                chunk.render(bodies.block, context.push(
-                    {path: article.path.toUrl('/',1),
-                     article: article,
-                     '$idx': idx }));
-                idx = idx + 1;
-            });
-            resp.on('error', function(err) {
-                chunk.end();
-            });
-            resp.on('end', function() {
-                chunk.end();
-            });
-        })
-    }
-
-    dust.helpers.navbar_query = function (chunk, context, bodies, params) {
-        return chunk.map(function(chunk) {
-            var path = new SitePath(['wh']);
-            var security = context.get('security');
-            var ctx = context.get('ctx');
-            var resp = query.query(db, ctx, security, path,'dir','entity',{'navbar': true},undefined,undefined);
-            var body = bodies.block;
-            var idx = 0;
-            resp.on('article', function(article) {
-                chunk.render(bodies.block, context.push(
-                    {path: article.path.toUrl('/',1),
-                     article: article,
-                     '$idx': idx }));
-                idx = idx + 1;
-            });
-            resp.on('error', function(err) {
-                chunk.end();
-            });
-            resp.on('end', function() {
-                chunk.end();
-            });
-        })
     }
 
     dust.helpers.history = function (chunk, context, bodies, params) {
