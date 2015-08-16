@@ -21,12 +21,16 @@ exports = module.exports = function(dust, db, query) {
         if (!size) {
             size = 'sq';
         }
-        var svgicon = context.get('icon.' + size + '.svg');
-        var imgicon = context.get('icon.' + size + '.alt');
+        var svgicon = context.get('meta.rm3\:icon.' + size + '.svg');
+        var imgicon = context.get('meta.rm3\:icon.' + size + '.alt');
+        var height = context.get('meta.rm3\:icon.' + size + '.height');
+        var width = context.get('meta.rm3\:icon.' + size + '.width');
         if (svgicon) {
-            return chunk.write('<img src="' + svgicon + '" alt="' + imgicon +'"  height="75" width="75" border="0" />')
+            return chunk.write('<img src="' + svgicon + '" alt="' + imgicon +
+                '"  height="' + height + '" width="' + width + '" border="0" />')
         } else {
-            return chunk.write('<img src="' + imgicon + '"  height="75" width="75" border="0" />')
+            return chunk.write('<img src="' + imgicon + '"  height="' + height + 
+                '" width="' + width + '" border="0" />')
         }
     }
 
