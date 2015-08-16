@@ -39,7 +39,7 @@ gulp.task('unit-tests', function () {
         .pipe(mocha({}));
 });
 
-gulp.task('icon', function() {
+gulp.task('icon-75', function() {
     return gulp.src('./scheme/default/images/icon-*.svg')
         .pipe(rsvg_convert({width: 75, height:75}))
         .pipe(rename(function (path) {
@@ -47,6 +47,19 @@ gulp.task('icon', function() {
         }))
         .pipe(gulp.dest('./scheme/default/static/images/'));
 });
+
+gulp.task('icon-24', function() {
+    return gulp.src('./scheme/default/images/icon-*.svg')
+        .pipe(rsvg_convert({width: 24, height:24}))
+        .pipe(rename(function (path) {
+          path.basename += "-24";
+        }))
+        .pipe(gulp.dest('./scheme/default/static/images/'));
+});
+
+gulp.task('icon', ['icon-75', 'icon-24'], function() {
+
+})
 
 gulp.task('imagemin', function () { 
     return gulp.src('./scheme/default/images/*.svg')

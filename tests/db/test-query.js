@@ -84,9 +84,9 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        should.deepEqual(arts[0].title, 'one');
+        should.deepEqual(arts[0].summary.title, 'one');
         should.deepEqual(arts[0].path.toDottedPath(), 'wh.query');
-        should.deepEqual(arts[1].title, 'two');
+        should.deepEqual(arts[1].summary.title, 'two');
         should.deepEqual(arts[1].path.toDottedPath(), 'wh.query.sub');
         should.deepEqual(arts.length, 2);
         done();
@@ -103,7 +103,7 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        should.deepEqual(arts[0].title, 'one');
+        should.deepEqual(arts[0].summary.title, 'one');
         should.deepEqual(arts[0].path.toDottedPath(), 'wh.query');
         should.deepEqual(arts.length, 1);
         done();
@@ -120,7 +120,7 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        should.deepEqual(arts[0].title, 'two');
+        should.deepEqual(arts[0].summary.title, 'two');
         should.deepEqual(arts[0].path.toDottedPath(), 'wh.query.sub');
         should.deepEqual(arts.length, 1);
         done();
@@ -220,7 +220,7 @@ describe('query', function() {
         });
         resp.on('end', function() {
           should.deepEqual(arts.length, 1);
-          should.deepEqual(arts[0].summary, 'i like unicorns and sparkles and ponies.');
+          should.deepEqual(arts[0].summary.abstract, 'i like unicorns and sparkles and ponies.');
           done();
         });
       });
