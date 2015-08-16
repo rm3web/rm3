@@ -30,7 +30,7 @@ describe('indexfeed', function() {
       };
 
       output.on('article', function(rec) {
-        rec['rm3:proto'].should.equal('base');
+        rec.meta['rm3:proto'].should.equal('base');
         rec.title.should.equal('blrg');
         rec.summary.should.equal('some text goes here');
         rec.guid.should.equal(r.entityId);
