@@ -57,7 +57,7 @@ gulp.task('icon-24', function() {
         .pipe(gulp.dest('./scheme/default/static/images/'));
 });
 
-gulp.task('icon', ['icon-75', 'icon-16'], function() {
+gulp.task('icon', ['icon-75', 'icon-24'], function() {
 
 })
 
