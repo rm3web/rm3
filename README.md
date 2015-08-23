@@ -41,7 +41,7 @@ How to get started?
       * `psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres`
     * You can set the RM3_PG environment variable to something different if you want a different database username and password (and definitely should, if you want to run this in production)
   * `createdb rm3test`
-  * `psql rm3test < db-schema.sql`
+  * `psql rm3test -U wirehead < db-schema.sql`
 * Load some default content
   * `./bin/rm3load -f default_frontpage.json`
   * `./bin/rm3load -f default_users.json`
