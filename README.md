@@ -34,11 +34,12 @@ How to get started?
 * `npm install`
 * Create the database in postgresql
   * Set up a password and user.
-    * Example database setup sequence, assuming the postgres user:
-      * `psql -c 'create database rm3unit;' -U postgres`
+    * The default setup is to assume it can connect to a database named `rm3test` with username `wirehead` and password `rm3test`.  An example database setup sequence, assuming the postgres user:
+      * `psql -c 'create database rm3test;' -U postgres`
       * `psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres`
-      * `psql -c "GRANT ALL PRIVILEGES ON database rm3unit TO wirehead;" -U postgres`
+      * `psql -c "GRANT ALL PRIVILEGES ON database rm3test TO wirehead;" -U postgres`
       * `psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres`
+    * You can set the RM3_PG environment variable to something different if you want a different database username and password (and definitely should, if you want to run this in production)
   * `createdb rm3test`
   * `psql rm3test < db-schema.sql`
 * Load some default content
