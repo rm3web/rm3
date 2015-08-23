@@ -80,11 +80,17 @@ var TextBlockComponent = React.createClass({
         <input type="hidden" value="pragma" id={this.props.prefix + '[format]'}
          name={this.props.prefix + '[format]'} />
         <select name={this.props.prefix + '[query]'} 
-          id={this.props.prefix + '[query]'} size="1">
+          id={this.props.prefix + '[query]'} size="1" defaultValue={this.state.query} >
          <option value="child">Query Children</option>
          <option value="parents">Query Parents</option>
          <option value="dir">Directory</option>
-        </select></div>
+        </select>
+        <label htmlFor={this.props.prefix + '[navbar]'} className="pure-checkbox">
+            <FormattedMessage message={this.getIntlMessage('NAVBAR')} />
+            <input type="checkbox" value="true" name={this.props.prefix + '[navbar]'}
+              id={this.props.prefix + '[navbar]'} defaultChecked={this.state.navbar} />
+        </label>
+        </div>
         {buttons}
       </fieldset>);
     } else {

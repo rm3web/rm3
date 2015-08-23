@@ -13,7 +13,8 @@ function fetchBlock(prefix) {
   var format = document.getElementById(prefix + "[format]").value;
   if (format === 'pragma') {
     var query = document.getElementById(prefix + "[query]").value;
-    return {query: query, format: format};
+    var navbar = document.getElementById(prefix + "[navbar]").value;
+    return {query: query, navbar: navbar, format: format};
   } else if (format === 'html') {
     var source = document.getElementById(prefix + "[source]").innerHTML;
     return {htmltext: source, format: format};
