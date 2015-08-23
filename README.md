@@ -34,6 +34,11 @@ How to get started?
 * `npm install`
 * Create the database in postgresql
   * Set up a password and user.
+    * Example database setup sequence, assuming the postgres user:
+      * `psql -c 'create database rm3unit;' -U postgres`
+      * `psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres`
+      * `psql -c "GRANT ALL PRIVILEGES ON database rm3unit TO wirehead;" -U postgres`
+      * `psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres`
   * `createdb rm3test`
   * `psql rm3test < db-schema.sql`
 * Load some default content
