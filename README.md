@@ -27,7 +27,9 @@ The next milestone is ALPHA, defined as:
 How to get started?
 -------------------
 
-* Install PostgreSQL 9.3 or later and node.js
+* Install PostgreSQL 9.3 or later.
+* Install node.js 0.10 or later.
+* Install LibRSVG library and header files (see https://www.npmjs.com/package/rsvg)
 * Git clone this repo
 * `npm install`
 * Create the database in postgresql
