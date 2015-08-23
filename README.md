@@ -55,7 +55,7 @@ How to get started?
 * Add permissions for the special 'nobody' group
   * `./bin/rm3admin permit nobody view wh.!users`
 * Run it
-  * `gulp develop`
+  * `./node_modules/.bin/gulp develop`
 
 [Docs](docs)
 ----
