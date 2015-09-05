@@ -4,7 +4,7 @@ var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 
 var TextBlockComponent = React.createClass({
-  mixins: [IntlMixin],
+  mixins: [IntlMixin, React.addons.LinkedStateMixin],
 
   getInitialState: function() {
     if (this.props.block) {
@@ -12,10 +12,6 @@ var TextBlockComponent = React.createClass({
     } else {
       return {};
     }
-  },
-
-  componentDidMount: function() {
-    this.setState({mounted:true});
   },
 
   addText: function(e) {
@@ -45,9 +41,17 @@ var TextBlockComponent = React.createClass({
       format: 'section'});
   },
 
+  handleTextareaChange: function(e) {
+    if (this.state.format === 'html') {
+      this.setState({source: e.target.value});
+    } else {
+      this.setState({htmltext: e.target.value});
+    }
+  },
+
   render: function() {
     var buttons;
-    if (!this.props.child && this.state.mounted) {
+    if (!this.props.child) {
       if (this.props.proto === 'index') {
         buttons = (<div className="pure-g-r">
           <button onClick={this.addText} className="pure-button" id="addText">Add Text Section</button>
@@ -70,17 +74,15 @@ var TextBlockComponent = React.createClass({
       return (<fieldset>
         <input type="hidden" value="section" name={this.props.prefix + '[format]'}
           id={this.props.prefix + '[format]'} />
-        <input type="hidden" id="numblocks" value={this.state.blocks.length} name="numblocks" />
         {blocks}
         {buttons}
       </fieldset>);
     } else if (this.state.format === 'pragma') {
       return (<fieldset>
         <div className="textblockbox">
-        <input type="hidden" value="pragma" id={this.props.prefix + '[format]'}
-         name={this.props.prefix + '[format]'} />
-        <select name={this.props.prefix + '[query]'} 
-          id={this.props.prefix + '[query]'} size="1" defaultValue={this.state.query} >
+        <input type="hidden" value="pragma" name={this.props.prefix + '[format]'} />
+        <select name={this.props.prefix + '[query]'} size="1" 
+          valueLink={this.linkState('query')}>
          <option value="child">Query Children</option>
          <option value="parents">Query Parents</option>
          <option value="dir">Directory</option>
@@ -88,7 +90,7 @@ var TextBlockComponent = React.createClass({
         <label htmlFor={this.props.prefix + '[navbar]'} className="pure-checkbox">
             <FormattedMessage message={this.getIntlMessage('NAVBAR')} />
             <input type="checkbox" value="true" name={this.props.prefix + '[navbar]'}
-              id={this.props.prefix + '[navbar]'} defaultChecked={this.state.navbar} />
+              checkedLink={this.linkState('navbar')} />
         </label>
         </div>
         {buttons}
@@ -99,12 +101,12 @@ var TextBlockComponent = React.createClass({
         outstr = this.state.htmltext;
       }
       return (<fieldset>
-        <textarea rows="30" id={this.props.prefix + '[source]'} name={this.props.prefix + '[source]'}
+        <textarea rows="30" name={this.props.prefix + '[source]'}
           className="pure-input-1" placeholder="Posting" 
-          defaultValue={outstr}>
+          value={outstr} onChange={this.handleTextareaChange}>
         </textarea>
-        <select size="1" name={this.props.prefix + '[format]'} id={this.props.prefix + '[format]'}
-          defaultValue={this.state.format}>
+        <select size="1" name={this.props.prefix + '[format]'}
+          valueLink={this.linkState('format')}>
         <option value="html">HTML</option>
         <option value="markdown">Markdown</option>
         </select>

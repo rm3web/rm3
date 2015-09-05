@@ -50,7 +50,7 @@ describe('TextBlockComponent', function() {
     textarea.props.rows.should.equal('30');
     textarea.props.name.should.equal('plastic_makes_perfect[source]');
     textarea.props.className.should.equal('pure-input-1');
-    textarea.props.defaultValue.should.equal('# get');
+    textarea.props.value.should.equal('# get');
 
     var select = form.props.children[1];
     select.type.should.equal('select');
@@ -62,7 +62,7 @@ describe('TextBlockComponent', function() {
     select.props.children[1].type.should.equal('option');
     select.props.children[1].props.value.should.equal('markdown');
     select.props.children[1].props.children.should.equal('Markdown');
-    select.props.defaultValue.should.equal('markdown');
+    select.props.valueLink.value.should.equal('markdown');
   });
 
   it('should render a single html textblock', function() {
@@ -82,7 +82,7 @@ describe('TextBlockComponent', function() {
     textarea.props.rows.should.equal('30');
     textarea.props.name.should.equal('plastic_makes_perfect[source]');
     textarea.props.className.should.equal('pure-input-1');
-    textarea.props.defaultValue.should.equal('<strong>html section</strong>');
+    textarea.props.value.should.equal('<strong>html section</strong>');
 
     var select = form.props.children[1];
     select.type.should.equal('select');
@@ -94,7 +94,7 @@ describe('TextBlockComponent', function() {
     select.props.children[1].type.should.equal('option');
     select.props.children[1].props.value.should.equal('markdown');
     select.props.children[1].props.children.should.equal('Markdown');
-    select.props.defaultValue.should.equal('html');
+    select.props.valueLink.value.should.equal('html');
   });
 
   it('should render a list of textblocks', function() {
@@ -118,12 +118,7 @@ describe('TextBlockComponent', function() {
     section.props.type.should.equal('hidden');
     section.props.name.should.equal('plastic_makes_perfect[format]');
 
-    var numblocks = form.props.children[1];
-    numblocks.props.type.should.equal('hidden');
-    numblocks.props.name.should.equal('numblocks');
-    numblocks.props.value.should.equal(2);
-
-    var blocklist = form.props.children[2];
+    var blocklist = form.props.children[1];
     blocklist[0].type.displayName.should.equal('TextBlockComponent');
     blocklist[0].props.prefix.should.equal('plastic_makes_perfect[blocks][0]');
     blocklist[0].props.block.should.have.properties({source:"# humans make good pets",
