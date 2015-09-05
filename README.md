@@ -27,13 +27,21 @@ The next milestone is ALPHA, defined as:
 How to get started?
 -------------------
 
-* Install PostgreSQL 9.3 or later and node.js
+* Install PostgreSQL 9.3 or later.
+* Install node.js 0.10 or later.
+* Install LibRSVG library and header files (see https://www.npmjs.com/package/rsvg)
 * Git clone this repo
 * `npm install`
 * Create the database in postgresql
   * Set up a password and user.
+    * The default setup is to assume it can connect to a database named `rm3test` with username `wirehead` and password `rm3test`.  An example database setup sequence, assuming that the default installed admin PostgreSQL user is `postgres`:
+      * `psql -c 'create database rm3test;' -U postgres`
+      * `psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres`
+      * `psql -c "GRANT ALL PRIVILEGES ON database rm3test TO wirehead;" -U postgres`
+      * `psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres`
+    * You can set the RM3_PG environment variable to something different if you want a different database username and password (and definitely should, if you want to run this in production)
   * `createdb rm3test`
-  * `psql rm3test < db-schema.sql`
+  * `psql rm3test -U wirehead < db-schema.sql`
 * Load some default content
   * `./bin/rm3load -f default_frontpage.json`
   * `./bin/rm3load -f default_users.json`
@@ -47,7 +55,7 @@ How to get started?
 * Add permissions for the special 'nobody' group
   * `./bin/rm3admin permit nobody view wh.!users`
 * Run it
-  * `gulp develop`
+  * `./node_modules/.bin/gulp develop`
 
 [Docs](docs)
 ----
@@ -74,6 +82,11 @@ To lint:
 To check coverage
 
 * `npm run coverage`
+
+If you want to do some development and not want to log in:
+
+* `RM3_DANGER_FORCE_AUTH='wirehead' gulp develop`
+  - **Warning: If you try to do this on a publicly accessible Internet port, you will get hacked**
 
 Benchmarks
 ----------

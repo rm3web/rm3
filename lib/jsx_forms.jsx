@@ -19,6 +19,10 @@ var PathNameComponent = React.createClass({
     this.setState({slug: event.target.checked});
   },
 
+  leafChange: function(event) {
+    this.setState({leaf: event.target.value});
+  },
+
   render: function() {
     var path = this.props.path;
     if (path instanceof SitePath) {
@@ -26,19 +30,19 @@ var PathNameComponent = React.createClass({
     }
     return (<fieldset>
       <div className="pure-u-1-3">
-      <input className="pure-input-1" name="root" type="text" value={path} id="root"
+      <input className="pure-input-1" name="root" type="text" value={path}
         readOnly disabled />
       </div>
       <div className="pure-u-1-3">
       <input className="pure-input-1" type="text"
-        defaultValue={this.state.leaf} disabled={this.state.slug} 
-        name="leaf" id="leaf"
+        value={this.state.leaf} disabled={this.state.slug} 
+        name="leaf" onChange={this.leafChange}
         placeholder={this.getIntlMessage("PATH")} />
       </div>
       <div className="pure-u-1-3">
       <label htmlFor="autogenSlug" className="pure-checkbox">
         <input type="checkbox" onChange={this.slugSwitch} 
-         defaultChecked={this.state.slug} name="autogenSlug" id="slug" />
+         checked={this.state.slug} name="autogenSlug" />
         <FormattedMessage message={this.getIntlMessage('AUTO_GENERATE_SLUG')} />
       </label>
       </div>

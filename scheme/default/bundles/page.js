@@ -6,42 +6,11 @@ if (!global.Intl) {
 var React = require('react');
 var PageFormComponent = require('../partials/page.jsx');
 
-var numblocks = document.getElementById('numblocks');
-var block;
+var block = formData.block;
+var root = formData.path;
 
-function fetchBlock(prefix) {
-  var format = document.getElementById(prefix + "[format]").value;
-  if (format === 'pragma') {
-    var query = document.getElementById(prefix + "[query]").value;
-    var navbar = document.getElementById(prefix + "[navbar]").value;
-    return {query: query, navbar: navbar, format: format};
-  } else if (format === 'html') {
-    var source = document.getElementById(prefix + "[source]").innerHTML;
-    return {htmltext: source, format: format};
-  } else {
-    var source = document.getElementById(prefix + "[source]").innerHTML;
-    return {source: source, format: format};
-  }
-}
-
-if (numblocks) {
-  var blocks = [];
-  for(var i = 0; i < numblocks.value; ++i) {
-    var prefix = 'posting[blocks][' + i + ']'
-    blocks.push(fetchBlock(prefix));
-  }
-  block = {format: 'section', blocks: blocks};
-} else {
-  block = fetchBlock('posting');
-}
-
-var root, slug;
-if (section !== 'edit') {
-  root = document.getElementById('root').value;
-  slug = document.getElementById('slug').value;
-}
-var title = document.getElementById('title').innerHTML;
-var abstract = document.getElementById('abstract').innerHTML;
+var title = formData.title;
+var abstract = formData.abstract;
 
 var renderTarget = document.getElementById('pageform');
 var PathFactory = React.createFactory(PageFormComponent);
