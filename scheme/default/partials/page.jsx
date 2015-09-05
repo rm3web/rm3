@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
@@ -8,14 +8,18 @@ var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
 
 var PageFormComponent = React.createClass({
-  mixins: [IntlMixin],
+  mixins: [IntlMixin, React.addons.LinkedStateMixin],
 
   getInitialState: function() {
+    var state = {};
     if (this.props.errors) {
-      return {errors: this.props.errors};
+      state.errors = this.props.errors;
     } else {
-      return {errors: {}};
+      state.errors = {};
     }
+    state.title = this.props.title;
+    state.abstract = this.props.abstract;
+    return state;
   },
 
   render: function() {
@@ -34,14 +38,15 @@ var PageFormComponent = React.createClass({
     return (
       <form id="draft" action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
       <fieldset><h1>
-       <textarea rows="1" className="pure-input-1" placeholder={this.getIntlMessage("TITLE")}
-        defaultValue={this.props.title} name="title" id="title" /></h1>
+       <textarea rows="1" className="pure-input-1" 
+        placeholder={this.getIntlMessage("TITLE")} name="title" 
+        valueLink={this.linkState('title')} /></h1>
       <ErrorsList errors={this.state.errors.title} />
       </fieldset>
       <fieldset>
-      <textarea rows="5" className="pure-input-1" id="abstract" name="abstract" 
+      <textarea rows="5" className="pure-input-1" name="abstract" 
         placeholder={this.getIntlMessage("ABSTRACT")}
-        defaultValue={this.props.abstract}>
+        valueLink={this.linkState('abstract')} >
       </textarea>
       <ErrorsList errors={this.state.errors.abstract} />
       </fieldset>

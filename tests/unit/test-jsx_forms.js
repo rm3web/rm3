@@ -26,7 +26,7 @@ describe('PathNameComponent', function() {
     leafInput.props.disabled.should.equal(true);
 
     var checkInput = form.props.children[2].props.children;
-    checkInput.props.children[0].props.defaultChecked.should.equal(true);
+    checkInput.props.children[0].props.checked.should.equal(true);
   });
 
   it('should render with leaf set', function() {
@@ -47,10 +47,10 @@ describe('PathNameComponent', function() {
     var leafInput = form.props.children[1].props.children;
     leafInput.type.should.equal('input');
     leafInput.props.disabled.should.equal(false);
-    leafInput.props.defaultValue.should.equal('chocolate');
+    leafInput.props.value.should.equal('chocolate');
 
     var checkInput = form.props.children[2].props.children;
-    checkInput.props.children[0].props.defaultChecked.should.equal(false);
+    checkInput.props.children[0].props.checked.should.equal(false);
   });
 
   it('should render with SitePath instead of string', function() {
@@ -72,7 +72,7 @@ describe('PathNameComponent', function() {
     leafInput.props.disabled.should.equal(true);
 
     var checkInput = form.props.children[2].props.children;
-    checkInput.props.children[0].props.defaultChecked.should.equal(true);
+    checkInput.props.children[0].props.checked.should.equal(true);
   });
 });
 

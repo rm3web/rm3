@@ -92,6 +92,8 @@ describe('Base type CRUD', function() {
          'posting[source]': 'post data here do stuff etc'}, true);
     });
 
+    casper.wait(100);
+
     casper.then(function() {
       expect(casper.currentHTTPStatus).to.equal(200);
       'div.footer'.should.be.inDOM.and.be.visible;
