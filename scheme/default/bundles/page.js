@@ -7,7 +7,6 @@ var React = require('react');
 var PageFormComponent = require('../partials/page.jsx');
 
 var block = formData.block;
-
 var root = formData.path;
 
 var title = formData.title;
