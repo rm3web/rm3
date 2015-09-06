@@ -34,6 +34,10 @@ CREATE TABLE wh_log (
 	data json
 );
 
+CREATE INDEX wh_log_evtEnd ON wh_log USING btree ("evtEnd");
+CREATE INDEX wh_log_revisionNum ON wh_log USING btree ("revisionNum");
+CREATE INDEX wh_log_revisionId ON wh_log USING btree ("revisionId");
+
 CREATE TABLE wh_tag (
 	"predPath" ltree,
 	"objStr" text,
