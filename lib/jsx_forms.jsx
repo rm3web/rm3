@@ -4,6 +4,17 @@ var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 var SitePath = require ('./sitepath');
 
+/**
+ * @class PathNameComponent
+ *
+ * A pathname control that will give the user the choice of
+ * an auto-generated slug or specifying the slug, with the
+ * root path fixed.
+ *
+ * @member {String|SitePath} path The root of the pathanme
+ * @member {String} leaf The 'slug' or final pathname
+ */
+
 var PathNameComponent = React.createClass({
   mixins: [IntlMixin],
 
@@ -50,6 +61,13 @@ var PathNameComponent = React.createClass({
   }
 });
 
+/**
+ * @class SingleError
+ *
+ * A single error
+ *
+ * @member {String} error The error to be displayed
+ */
 var SingleError = React.createClass({
   render: function() {
     return (<li>
@@ -58,6 +76,13 @@ var SingleError = React.createClass({
   }
 });
 
+/**
+ * @class ErrorsList
+ *
+ * A list of errors.
+ *
+ * @member {Array} errors The errors to be displayed
+ */
 var ErrorsList = React.createClass({
   mixins: [IntlMixin],
   render: function() {
