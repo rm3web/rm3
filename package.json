@@ -83,7 +83,7 @@
     "istanbul": "~0.3.13",
     "jscs": "^1.13.1",
     "jscs-jsdoc": "^1.0.1",
-    "jsdox": "~0.4.2",
+    "jsdox": "~0.4.9",
     "jshint": "^2.8.0",
     "jshint-jsx": "^0.4.1",
     "matcha": "^0.6.0",

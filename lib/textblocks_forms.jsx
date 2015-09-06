@@ -3,6 +3,17 @@ var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 
+/**
+ * @class TextBlockComponent
+ *
+ * This class will recursively interpret a textblock, thus it might hold
+ * some instances of itself.
+ *
+ * @member {String} prefix The prefix for all control names
+ * @member {String} proto The proto in use (determines if we should do index or not)
+ * @member {Object} block A Textblock.
+ */
+
 var TextBlockComponent = React.createClass({
   mixins: [IntlMixin, React.addons.LinkedStateMixin],
 
