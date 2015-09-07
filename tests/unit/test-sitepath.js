@@ -109,12 +109,12 @@ describe('sitepath', function() {
       p.fromUrlSegment('/suck/$/offset/15');
       should.deepEqual(p.path, ['suck']);
       should.deepEqual(p.page, null);
-      should.deepEqual(p.partial, '/offset/15');
+      should.deepEqual(p.partial, ['offset', '15']);
 
       p.fromUrlSegment('/suck/blah.txt/$/offset/15');
       should.deepEqual(p.path, ['suck']);
       should.deepEqual(p.page, 'blah.txt');
-      should.deepEqual(p.partial, '/offset/15');
+      should.deepEqual(p.partial, ['offset', '15']);
     });
     it('throws when there\'s an invalid string', function() {
       var p = new sitepath();
