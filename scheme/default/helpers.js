@@ -42,7 +42,8 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.admin_link = function(chunk, context, bodies, params) {
         var longstr = '<ul>';
         var path = context.get('path');
-        var baseurl = path.toUrl('/',1);
+        var site = context.get('site');
+        var baseurl = site.sitePathToUrl(path);
         if (baseurl === '/') {
             baseurl = '';
         }
@@ -187,7 +188,8 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.proto_dropdown = function(chunk, context, bodies, params) {
         var path = context.get('path');
-        var baseurl = path.toUrl('/',1);
+        var site = context.get('site');
+        var baseurl = site.sitePathToUrl(path);
         var longstr = '<div id="dropdown-1" class="dropdown dropdown-tip">\
     <ul class="dropdown-menu">'
         protos = Protoset.listProtos();
@@ -204,6 +206,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.history = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
+            var site = context.get('site');
             var path = context.get('path');
             var security = context.get('security');
             var revisionId = context.get('meta.revisionId');
@@ -215,7 +218,7 @@ exports = module.exports = function(dust, db, query) {
             var idx = 0;
             resp.on('article', function(article) {
                 chunk.render(bodies.block, context.push(
-                    {path: article.path.toUrl('/',1),
+                    {path: site.sitePathToUrl(article.path),
                      current: revisionId === article.revisionId,
                      rec: article,
                      '$idx': idx }));
@@ -234,6 +237,7 @@ exports = module.exports = function(dust, db, query) {
         return chunk.map(function(chunk) {
             var pagePath = context.get('path');
             var security = context.get('security');
+            var site = context.get('site');
             var userPath = undefined;
             var ctx = context.get('ctx');
             var baseurl = ['wh'];
@@ -284,7 +288,7 @@ exports = module.exports = function(dust, db, query) {
             if (bodies.begin){
                 chunk.render(bodies.begin, context);
             }
-            resp = ActivityFeed.logToActivityFeed(qr);
+            resp = ActivityFeed.logToActivityFeed(qr, site);
             var idx = 0;
             var lastArt = {};
             var more = false;
@@ -313,7 +317,7 @@ exports = module.exports = function(dust, db, query) {
                             lastArt.endTime.toISOString() + "_" + 
                             lastArt["rm3:revisionNum"] + "_" + 
                             lastArt["rm3:revisionId"];
-                        chunk.write('<a href="'+ pagePath.toUrl('/',1) + 
+                        chunk.write('<a href="'+ site.sitePathToUrl(pathPage) +
                             '$/' + pKey + '">next</a>');
                     }
                 }
