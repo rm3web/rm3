@@ -5,11 +5,16 @@ var events = require("events");
 
 describe('activityfeed', function() {
   describe('#logToActivityFeed', function() {
-    var ee, now, output;
+    var ee, now, output, site;
     beforeEach(function() {
+      site = {};
+      site.name = "WireWorld";
+      site.sitePathToUrl = function(sitepath) {
+        return sitepath.toUrl('/', 1);
+      };
       now = new Date();
       ee = new events.EventEmitter();
-      output = ActivityFeed.logToActivityFeed(ee);
+      output = ActivityFeed.logToActivityFeed(ee, site);
       output.on('error', function(err) {
         should.fail();
       });
