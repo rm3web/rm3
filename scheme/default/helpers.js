@@ -327,14 +327,27 @@ exports = module.exports = function(dust, db, query) {
     }
 
     dust.helpers.predTag = function(chunk, context, bodies, params) {
-        var predClass = context.resolve(params.predClass);
-        var predKey = context.resolve(params.predKey);
-        if (predKey === 'tag' && predKey === 'plain') {
+        var predClass = context.get('predClass');
+        var predKey = context.get('predKey');
+        if (predClass === 'tag' && predKey === 'plain') {
             chunk.write('');
         } else {
             chunk.write(predKey + ":" +predClass)
         }
     }
+
+    dust.helpers.objLink = function(chunk, context, bodies, params) {
+        var predClass = context.get('predClass');
+        var predKey = context.get('predKey');
+        var objKey = context.get('objKey');
+        if (predClass === 'tag' && predKey === 'plain') {
+            chunk.write('<a href="/tags.html/$/' + objKey + '">' + objKey +
+                "</a>");
+        } else {
+            chunk.write(objKey)
+        }
+    }
+
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var tags = dust.helpers.tap(params.obj, chunk, context);
