@@ -1,6 +1,11 @@
 <div class="pure-g">
  <div class="pure-u-1 footer">
-  <p>{@formatMessage _key="LAST_UPDATED"/}: <span>{@formatRelative val=meta.modified/}</span>
+  <p>Tags: 
+         {@tags showNav="false" obj=tags}
+<span class="tagPill">{predTag}{objKey}</span>
+  {/tags}
+  {@requirePermission permission="edit"}<span class="tagPill"><b><a href="tag.html">Edit Tags</a></b></span>{/requirePermission}
+  <br />{@formatMessage _key="LAST_UPDATED"/}: <span>{@formatRelative val=meta.modified/}</span>
   <br />{@formatMessage _key="POSTED"/}: <span>{@formatRelative val=meta.created/}</span></p>
 
   </div>

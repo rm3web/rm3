@@ -326,20 +326,38 @@ exports = module.exports = function(dust, db, query) {
         })
     }
 
+    dust.helpers.predTag = function(chunk, context, bodies, params) {
+        var predClass = context.resolve(params.predClass);
+        var predKey = context.resolve(params.predKey);
+        if (predKey === 'tag' && predKey === 'plain') {
+            chunk.write('');
+        } else {
+            chunk.write(predKey + ":" +predClass)
+        }
+    }
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var tags = dust.helpers.tap(params.obj, chunk, context);
+            var showNav = context.resolve(params.showNav);
             for (var predKey in tags) {
                 if (tags.hasOwnProperty(predKey)) {
                     var pred = tags[predKey];
                     for (var objKey in pred) {
                         var obj = pred[objKey];
                         var predClass = obj.predClass;
-                        chunk.render(bodies.block, context.push(
-                            {predKey: predKey,
-                             objKey: objKey,
-                             predClass: predClass, 
-                             obj:obj}));
+                        var render = true;
+                        if(showNav) {
+                            if (predClass === 'tag' && predKey === 'navigation') {
+                                render = false;
+                            }
+                        }
+                        if(render) {
+                            chunk.render(bodies.block, context.push(
+                                {predKey: predKey,
+                                 objKey: objKey,
+                                 predClass: predClass, 
+                                 obj:obj}));
+                        }
                     }
                 }
             }
