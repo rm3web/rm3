@@ -350,7 +350,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var tags = dust.helpers.tap(params.obj, chunk, context);
+            var tags = context.resolve(params.obj);
             var showNav = context.resolve(params.showNav);
             for (var predKey in tags) {
                 if (tags.hasOwnProperty(predKey)) {
