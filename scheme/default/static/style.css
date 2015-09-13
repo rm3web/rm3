@@ -15,6 +15,12 @@
     padding: 1em;
 }
 
+.tagPill { 
+  border-radius: 1;
+  border:1px solid #000;
+  margin: .2em;
+}
+
 .header {
     border-bottom-color: black;
     border-radius: 0;
