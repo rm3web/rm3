@@ -17,7 +17,7 @@
 {/math}
 <td></td><td>{predClass}: {predKey}</td><td>{objKey}</td>
 <td>
-    <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
+    <form method="post" action="tag.html" class="pure-form pure-form-stacked">
     <input type="hidden" name="action" value="rmtag" />
     <input type="hidden" name="predClass" value="{predClass}" />
     <input type="hidden" name="predKey" value="{predKey}" />
@@ -27,30 +27,19 @@
 </td>
 </tr>
   {/tags}
-<tr>
-  <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
-    <td>{@formatMessage _key="ADD"/}:</td>
-  <td colspan="2">
+</table>
+
+  <form id="addTag" method="post" action="tag.html" class="pure-form pure-form-stacked">
+    {@formatMessage _key="ADD"/}:
     <input type="hidden" name="action" value="addtag" />
     <input class="pure-input-1" type="text" name="objKey" placeholder="{@formatMessage _key="TAG"/}"/>
-  </td>
-  <td>
     <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="ADD_TAG"/}</button>
-  </td>
-</form></tr>
+  </form>
 
   <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
-    <td>{@formatMessage _key="NAVBAR"/}:</td>
-  <td colspan="3">
     <input type="hidden" name="action" value="navbar" />
     <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="ADD_TO_NAVBAR"/}</button>
-  </td>
-</form></tr>
-
-</table>
-  
-    </form>
-
+</form>
 
 {/view-content}
 

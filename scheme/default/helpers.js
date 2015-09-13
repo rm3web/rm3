@@ -3,6 +3,7 @@ var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
 var ActivityFeed = require('../../lib/activityfeed');
 var IndexFeed = require('../../lib/indexfeed');
+var TagHelpers = require('../../lib/taghelpers');
 
 exports = module.exports = function(dust, db, query) {
 
@@ -328,18 +329,27 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var tags = dust.helpers.tap(params.obj, chunk, context);
+            var tags = context.resolve(params.obj);
+            var showNav = context.resolve(params.showNav);
             for (var predKey in tags) {
                 if (tags.hasOwnProperty(predKey)) {
                     var pred = tags[predKey];
                     for (var objKey in pred) {
                         var obj = pred[objKey];
                         var predClass = obj.predClass;
-                        chunk.render(bodies.block, context.push(
-                            {predKey: predKey,
-                             objKey: objKey,
-                             predClass: predClass, 
-                             obj:obj}));
+                        var render = true;
+                        if(showNav) {
+                            if (predClass === 'tag' && predKey === 'navigation') {
+                                render = false;
+                            }
+                        }
+                        if(render) {
+                            chunk.render(bodies.block, context.push(
+                                {predKey: predKey,
+                                 objKey: objKey,
+                                 predClass: predClass, 
+                                 obj:obj}));
+                        }
                     }
                 }
             }
