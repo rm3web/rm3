@@ -3,6 +3,7 @@ var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
 var ActivityFeed = require('../../lib/activityfeed');
 var IndexFeed = require('../../lib/indexfeed');
+var TagHelpers = require('../../lib/taghelpers');
 
 exports = module.exports = function(dust, db, query) {
 
@@ -324,28 +325,6 @@ exports = module.exports = function(dust, db, query) {
                 chunk.end();
             });
         })
-    }
-
-    dust.helpers.predTag = function(chunk, context, bodies, params) {
-        var predClass = context.get('predClass');
-        var predKey = context.get('predKey');
-        if (predClass === 'tag' && predKey === 'plain') {
-            chunk.write('');
-        } else {
-            chunk.write(predKey + ":" +predClass)
-        }
-    }
-
-    dust.helpers.objLink = function(chunk, context, bodies, params) {
-        var predClass = context.get('predClass');
-        var predKey = context.get('predKey');
-        var objKey = context.get('objKey');
-        if (predClass === 'tag' && predKey === 'plain') {
-            chunk.write('<a href="/tags.html/$/' + objKey + '">' + objKey +
-                "</a>");
-        } else {
-            chunk.write(objKey)
-        }
     }
 
     dust.helpers.tags = function (chunk, context, bodies, params) {
