@@ -3,6 +3,7 @@ node_js:
   - "0.12"
   - "0.10"
   - "iojs-v2.0"
+  - "4.0"
 addons:
   postgresql: "9.3"
   apt:
