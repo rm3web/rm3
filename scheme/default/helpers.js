@@ -317,7 +317,7 @@ exports = module.exports = function(dust, db, query) {
                             lastArt.endTime.toISOString() + "_" + 
                             lastArt["rm3:revisionNum"] + "_" + 
                             lastArt["rm3:revisionId"];
-                        chunk.write('<a href="'+ site.sitePathToUrl(pathPage) +
+                        chunk.write('<a href="'+ site.sitePathToUrl(pagePath) +
                             '$/' + pKey + '">next</a>');
                     }
                 }

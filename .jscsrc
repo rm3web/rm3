@@ -56,9 +56,6 @@
   "disallowMultipleLineBreaks": true,
   "disallowNewlineBeforeBlockStatements": true,
 
-  "plugins": [
-      "jscs-jsdoc"
-  ],
   "jsDoc": {
       "checkAnnotations": {
         "preset": "jsdoc3",
