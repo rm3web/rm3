@@ -32,6 +32,7 @@ var winston = require('winston');
 winston.remove(winston.transports.Console);
 
 var lintable = ['lib/**/*.js', 'tests/**/*.js', 'lib/**/*.jsx',];
+var casperTests = ['./tests/casper/*'];
 
 gulp.task('unit-tests', function () {
   process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
@@ -111,59 +112,6 @@ gulp.task('base-coverage', ['create-db', 'build-schema'], function (cb) {
           })) // Creating the reports
         .on('end', cb);
     });
-});
-
-gulp.task('casper-coverage', ['casper-users'], function (cb) {
-  var ctx = { cwd: process.cwd(),
-    env: clone(process.env)
-  }
-  ctx.env.RM3_PG = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
-  var server = spawn('./node_modules/.bin/istanbul', 
-    ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'lib/front.js'],
-    ctx);
-
-  var tests = ['./tests/casper/*'];
-
-  var serverlog = [];
-
-  server.stderr.on('data', function (data) {
-    serverlog.push(data);
-  });
-
-  server.stdout.on('data', function (data) {
-    serverlog.push(data);
-  });
-
-  setTimeout(function() {
-    var casperChild = spawn('./node_modules/.bin/mocha-casperjs', tests);
-
-    casperChild.stdout.on('data', function (data) {
-        gutil.log('CasperJS:', data.toString().slice(0, -1));
-    });
-
-    casperChild.on('close', function (code) {
-        var success = code === 0; // Will be 1 in the event of failure
-
-        if (success) {
-          console.log('Casper tests passed');
-        } else {
-          console.log('Casper tests failed');
-          serverlog.forEach(function(element, index, array) {
-            gutil.log('Server:', element.toString());
-          });
-        }
-        console.log('killing server');
-
-        // Do something with success here
-        server.kill('SIGINT');
-        if (success) {
-          cb();
-        } else {
-          cb(new Error('fail'));
-        }
-        
-    });
-  }, 20000);
 });
 
 gulp.task('coverage', ['base-coverage', 'casper-coverage'], function() {
@@ -247,41 +195,85 @@ var ctx = { cwd: process.cwd(),
   return run(setup, ctx).exec();
 })
 
-gulp.task('casper-tests', ['casper-users'], function(cb) {
-  var server = gls.new('lib/front.js', 
-    {env: {RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'}});
+function spawnServerForTests(db, executable, params, timeout, setup, next) {
+  var ctx = { cwd: process.cwd(),
+    env: clone(process.env)
+  }
+  ctx.env.RM3_PG = db;
+  var server = spawn(executable, params,
+    ctx);
+  setup(server);
+  setTimeout(next.bind(this, server), timeout)  
+}
 
+function runCasperTests(tests, next) {
+  var casperChild = spawn('./node_modules/.bin/mocha-casperjs', tests);
+
+  casperChild.stdout.on('data', function (data) {
+      gutil.log('CasperJS:', data.toString().slice(0, -1));
+  });
+
+  casperChild.on('close', function (code) {
+    var success = code === 0; // Will be 1 in the event of failure
+    if (success) {
+      gutil.log('Casper tests passed');
+    } else {
+      gutil.log('Casper tests failed');
+    }
+    next(success);
+  });
+}
+
+gulp.task('casper-tests', ['casper-users'], function(cb) {
   var tests = ['./tests/casper/*'];
 
-  server.start();
-  setTimeout(function() {
-
-    var casperChild = spawn('./node_modules/.bin/mocha-casperjs', tests);
-
-    casperChild.stdout.on('data', function (data) {
-        gutil.log('CasperJS:', data.toString().slice(0, -1));
-    });
-
-    casperChild.on('close', function (code) {
-        var success = code === 0; // Will be 1 in the event of failure
-
+  spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
+    'node', ['lib/front.js'], 2000, function(server) {
+      server.stderr.on('data', function (data) {
+        gutil.log('ServerErr:', data.toString().slice(0, -1));;
+      });
+      server.stdout.on('data', function (data) {
+        gutil.log('Server:', data.toString().slice(0, -1));
+      });
+    }, function(server) {
+      runCasperTests(casperTests, function(success) {
+        gutil.log('killing server');
+        server.kill('SIGINT');
         if (success) {
-          console.log('Casper tests passed');
+          cb();
         } else {
-          console.log('Casper tests failed');
+          cb(new Error('fail'));
         }
-        
-        console.log('killing server');
-
-        // Do something with success here
-        server.stop().then(function() {
-          if (success) {
-            cb();
-          } else {
-            cb(new Error('fail'));
-          }
-        });
+      });
     });
-  }, 2000);
+});
 
+
+gulp.task('casper-coverage', ['casper-users'], function (cb) {
+  var serverlog = [];
+
+  spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
+    './node_modules/.bin/istanbul',
+    ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'lib/front.js'],
+    25000, function(server) {
+      server.stderr.on('data', function (data) {
+        serverlog.push(data);
+      });
+      server.stdout.on('data', function (data) {
+        serverlog.push(data);
+      });
+    }, function(server) {
+      runCasperTests(casperTests, function(success) {
+        serverlog.forEach(function(element, index, array) {
+          gutil.log('Server:', element.toString());
+        });
+        gutil.log('killing server');
+        server.kill('SIGINT');
+        if (success) {
+          cb();
+        } else {
+          cb(new Error('fail'));
+        }
+      });
+  });
 });
