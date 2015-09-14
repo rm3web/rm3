@@ -15,6 +15,10 @@ function ConfirmChoice(path) {{~n}
           </script>
 {/mid-sidebar}
 <div class="l-box">
+  {@basicQuery}
+     <div>{@titleLink style="pure-menu-link"}{:before}{@icon size="24" /}{/titleLink}</div>
+    {/basicQuery}
+    <br />
   <div class="pure-menu pure-menu-open">
     <a class="pure-menu-heading">{@formatMessage _key="ADMIN"/}</a>
     <ul>
@@ -31,9 +35,5 @@ function ConfirmChoice(path) {{~n}
     {@proto_dropdown}{/proto_dropdown}
 </div>
 {+bottom-sidebar}
-    <ul style="list-style:none">
-    {@basicQuery}
-     <li>{@icon size="24" /}{@titleLink/}</li>
-    {/basicQuery}
-     </ul>
+    
 {/bottom-sidebar}
