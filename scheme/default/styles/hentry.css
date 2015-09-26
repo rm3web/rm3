@@ -1,0 +1,12 @@
+.hentry {
+    clear: left;
+}
+
+.hentry .updated {
+    margin-left: .5em;
+}
+
+.hentry .icon {
+    border-radius: 0;
+    float: left;
+}

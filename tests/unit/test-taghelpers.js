@@ -42,7 +42,11 @@ describe('taghelpers', function() {
 
   describe('#objLink', function() {
     it('works for plain tags', function(cb) {
-      var chunk = {}, context = {}, params = {predClass: 'tag', predKey: 'plain', objKey: 'woof'};
+      var chunk = {}, context = {}
+      var params = {predClass: 'tag', predKey: 'plain', objKey: 'woof'};
+      context.resolve = function(param) {
+        return param;
+      }
       chunk.write = function(str) {
         str.should.equal('<a href="/tags.html/$/woof">woof</a>');
         cb();
@@ -55,7 +59,11 @@ describe('taghelpers', function() {
     });
 
     it('works for predicates', function(cb) {
-      var chunk = {}, context = {}, params = {predClass: 'boof', predKey: 'foof', objKey: 'woof'};
+      var chunk = {}, context = {}
+      var params = {predClass: 'boof', predKey: 'foof', objKey: 'woof'};
+      context.resolve = function(param) {
+        return param;
+      }
       chunk.write = function(str) {
         str.should.equal('woof');
         cb();

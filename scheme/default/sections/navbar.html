@@ -1,39 +1,47 @@
 {+top-sidebar}
 {/top-sidebar}
 {+mid-sidebar}
-          <script language="JavaScript">
-            <!--{~n}
-{~n}
-function ConfirmChoice(path) {{~n}
-  answer = confirm("{@formatMessage _key="DO_YOU_REALLY_WANT_TO_GO_HERE"/}"){~n}
-    if (answer !=0) {{~n}
-        location = path + "?sure=yes"{~n}
-     }{~n}
-   }{~n}
-{~n}
-    //Done Hiding-->
-          </script>
 {/mid-sidebar}
-<div class="l-box">
-  {@basicQuery}
-     <div>{@titleLink style="pure-menu-link"}{:before}{@icon size="24" /}{/titleLink}</div>
-    {/basicQuery}
-    <br />
-  <div class="pure-menu pure-menu-open">
-    <a class="pure-menu-heading">{@formatMessage _key="ADMIN"/}</a>
-    <ul>
-      {@admin_link path="edit.html" requiresAuth="true" permission="edit" sectionDisable="edit"}{@formatMessage _key="EDIT"/}{/admin_link}
-      {@admin_link path="delete.html" confirm="true" requiresAuth="true" permission="delete"}{@formatMessage _key="DELETE"/}{/admin_link}
-      {@admin_link path="move.html" requiresAuth="true" permission="move" disabled="true"}{@formatMessage _key="MOVE"/}{/admin_link}
-      {@admin_link path="history.html" sectionDisable="history"}{@formatMessage _key="HISTORY"/}{/admin_link}
-      {@proto_menu}{@formatMessage _key="CREATE_ARROW"/}{/proto_menu}
-    </ul>
-    
-    <a class="pure-menu-heading">{@formatMessage _key="USER"/}</a>
-    <ul>{@user_menu}{/user_menu}</ul>
+  <div class="navbar">
+  {@requireUser}
+  <div class="pure-g">
+  {@requirePermission permission="edit"}
+  <div class="pure-u-2-3"><div class="button-pad">
+  {@sectionDisable section="edit"}
+  <a class="pure-button pure-u-1" href="edit.html">{@formatMessage _key="EDIT"/}</a>
+  {:else}
+  <a class="pure-button pure-u-1 pure-button-disabled" href="#">{@formatMessage _key="EDIT"/}</a>
+  {/sectionDisable}
+  {/requirePermission}
+  </div></div>
+  <div class="pure-u-1-3"><div class="button-pad">
+  <span id="gearmenu">
+  <a class="pure-button pure-u-1 pure-button-disabled" href="#">Gear</a>  
+  </span>
+  </div></div>  
   </div>
-    {@proto_dropdown}{/proto_dropdown}
-</div>
+  {/requireUser}
+  <div class="pure-menu">
+    <ul class="pure-menu-list">
+  {@basicQuery}
+     <li class="pure-menu-item">{@titleLink linkclass="menu-wrap pure-menu-link"}{:before}{@icon size="24" /}{/titleLink}</li>
+    {/basicQuery}
+    </ul>    
+  </div>
+  {@requireUser}
+  {:else}
+  <a class="pure-button" href="/$login/">{@formatMessage _key="LOGIN"/}</a>
+  {/requireUser}
+  {@requireUser}
+  {@requirePermission permission="edit"}
+  <div class="pure-g">
+  <span id="protomenu">
+  <a class="pure-button pure-u-1 pure-button-disabled" href="#">{@formatMessage _key="CREATE"/}</a>  
+  </span>
+  </div>
+  {/requirePermission}
+  {/requireUser}
+  </div>
+
 {+bottom-sidebar}
-    
 {/bottom-sidebar}
