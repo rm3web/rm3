@@ -1,0 +1,73 @@
+.menu-wrap {
+    white-space: normal;
+}
+
+.button-pad {
+    margin: .1em;
+}
+
+.navbar {
+    padding: .1em;
+    border-radius: 1;
+}
+
+.tagPill { 
+    display: inline-block;
+    zoom: 1;
+    line-height: normal;
+    white-space: nowrap;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 100%;
+    border:1px solid #444;
+    margin: .2em;
+    border-radius: .5em;
+    padding: 0.5em 1em;
+}
+
+.header {
+    border-bottom-color: black;
+    border-radius: 0;
+    background: url('/resources/images/nighttime-vector.svg') #151547;
+    background-size: 100% 256px ;
+    height: 256px;
+}
+
+.footer {
+    border-bottom-color: black;
+    border-radius: 0;
+    background: rgb(198, 198, 237);
+}
+
+.headermenu .pure-menu {
+    border-bottom-color: black;
+    border-radius: 0;
+    background: rgb(217, 217, 237);
+}
+
+.textblockbox 
+{ 
+    background: rgb(198, 198, 237); 
+    background: rgba(198, 198, 237, 0.3); 
+    padding: 1em;
+    border: 1px solid #b7b7b7;
+}
+
+.errormessage
+{
+    background: rgb(255, 217, 217);
+}
+
+.infomessage
+{
+    background: rgb(237, 237, 217);
+}

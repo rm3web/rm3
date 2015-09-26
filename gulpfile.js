@@ -19,6 +19,9 @@ var gulp = require('gulp')
   , async = require('async')
   , path = require('path')
   , rename = require("gulp-rename")
+  , csslint = require('gulp-csslint')
+  , concat = require('gulp-concat')
+  , minifyCss = require('gulp-minify-css')
   ;
 
   // Load and use polyfill for ECMA-402.
@@ -57,6 +60,13 @@ gulp.task('icon-24', function() {
         }))
         .pipe(gulp.dest('./scheme/default/static/images/'));
 });
+
+gulp.task('cssbundle', function() {
+  return gulp.src(['./bower_components/pure/pure.css','./scheme/default/styles/*.css'])
+    .pipe(concat('bundle.css'))
+    .pipe(minifyCss())
+    .pipe(gulp.dest('./scheme/default/static/'));
+})
 
 gulp.task('icon', ['icon-75', 'icon-24'], function() {
 
@@ -122,7 +132,6 @@ gulp.task('coveralls', ['coverage'], function () {
   return run('cat ./coverage/lcov.info |  ./node_modules/codecov.io/bin/codecov.io.js').exec();
 });
 
-
 gulp.task('jscs', function () {
   return gulp.src(lintable)
     .pipe(jscs());
@@ -134,14 +143,20 @@ gulp.task('jshint', function () {
     .pipe(jshint.reporter('default'));
 })
 
+gulp.task('csslint', function() {
+  gulp.src('scheme/default/styles/*.css')
+    .pipe(csslint())
+    .pipe(csslint.reporter());
+});
+
 gulp.task('bower', function() {
   return bower()
     .pipe(gulp.dest('./bower_components'));
 });
 
-gulp.task('lint', ['jshint', 'jscs'])
+gulp.task('lint', ['jshint', 'jscs', 'csslint'])
 
-gulp.task('travis', ['bower', 'imagemin', 'icon', 'browserify', 'lint', 'coveralls'])
+gulp.task('travis', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify', 'lint', 'coveralls'])
 
 gulp.task('develop', function () {
   nodemon(
@@ -228,7 +243,7 @@ gulp.task('casper-tests', ['casper-users'], function(cb) {
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    'node', ['lib/front.js'], 2000, function(server) {
+    'node', ['lib/front.js'], 4000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });

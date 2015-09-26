@@ -2,11 +2,12 @@
  <div class="pure-u-1 footer">
   <p>Tags: 
          {@tags showNav="false" obj=tags}
-<span class="tagPill">{predTag}{@objLink/}</span>
+{@objLink linkclass="tagPill"/}
   {/tags}
-  {@requirePermission permission="edit"}<span class="tagPill"><b><a href="tag.html">Edit Tags</a></b></span>{/requirePermission}
-  <br />{@formatMessage _key="LAST_UPDATED"/}: <span>{@formatRelative val=meta.modified/}</span>
-  <br />{@formatMessage _key="POSTED"/}: <span>{@formatRelative val=meta.created/}</span></p>
+  {@requirePermission permission="edit"}<a class="pure-button" href="tag.html">Edit Tags</a>{/requirePermission}
+  <br />Revision: <a href="history.html"><span>{@formatNumber val=meta.revisionNum /}</span>:<span>{meta.revisionId}</span></a>
+  <br />{@formatMessage _key="LAST_UPDATED"/}: <time class="updated" datetime="{meta.modified}">{@formatRelative val=meta.modified/}</time>
+  <br />{@formatMessage _key="POSTED"/}: <time class="published" datetime="{meta.created}">{@formatRelative val=meta.created/}</time></p>
 
   </div>
 </div>

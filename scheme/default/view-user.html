@@ -1,7 +1,6 @@
 {>"layouts/two_col_with_nav"/}
 {<view-content}
 
-<div class="l-box">
     {?summary.profileUrl}<h2><a href="{summary.profileUrl|u}">{summary.title}</a></h2>{:else}<h2>{summary.title}</h2>{/summary.profileUrl}
 {@isThisUser}
 <div>(this is your account's page)</div>
@@ -29,13 +28,10 @@
 {/requirePermission}
 {/isThisUser}
 
-</div>
-
 {/view-content}
 
 {<sidebar-content}
 
-<div class="l-box">
 <h2>Activity:</h2>
 {@activityFeed userPath=path paginationKey="activity" paginationLimit="10"}
 <li>{@activityActor key=rec.actor /} did "{@activityVerb key=rec.verb /}" to {@activityObject key=rec.object /} {@formatRelative val=rec.updated /}</li>
@@ -44,6 +40,5 @@
 {:end}
 </ul>
 {/activityFeed}
-</div>
 
 {/sidebar-content}

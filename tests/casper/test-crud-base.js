@@ -4,7 +4,6 @@
 
 describe('Base type CRUD', function() {
   before(function() {
-    //casper.options.verbose = true;
     casper.start('http://127.0.0.1:4000/');
 
     // http://stackoverflow.com/questions/25359247/casperjs-bind-issue
@@ -78,14 +77,16 @@ describe('Base type CRUD', function() {
       'a[href*=logout]'.should.be.inDOM.and.be.visible;
       'div.infomessage'.should.be.inDOM.and.contain.text('You have been logged in');
       'div.footer'.should.be.inDOM.and.be.visible;
-      this.click('a[data-dropdown*=dropdown]');
+      this.click('#protomenu .pure-button');
     });
 
+    /*
     casper.then(function() {
-      this.click('a[href*=base]');
+      this.click('#PROTO_BASE');
     });
-
-    casper.then(function() {
+    */
+    casper.thenOpen('http://127.0.0.1:4000/$new/create.html?type=base', function() {
+      this.echo(this.getHTML());
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=create]',
         {title: 'CasperJS Test',

@@ -18,6 +18,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery-dropdown": "~1.0.5"
+    "pure": "~0.6.0"
   }
 }
