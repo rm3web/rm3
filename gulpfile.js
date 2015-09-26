@@ -160,16 +160,17 @@ gulp.task('develop', function () {
   nodemon(
     { script: 'lib/front.js', 
       ext: 'js jsx css html', 
+      tasks: ['browserify', 'cssbundle'],
       watch: [
         "lib/", 
         "lib/middleware/",
         "scheme/default/",
         "scheme/default/layouts/",
+        "scheme/default/bundles/",
         "scheme/default/partials/",
         "scheme/default/sections/",
         "scheme/default/static/"
       ] })
-    .on('change', ['browserify'])
     .on('restart', function () {
       console.log('restarted!')
     })
