@@ -10,6 +10,7 @@ addons:
     packages:
       - librsvg2-dev
 before_install:
+  - npm i npm@2.14.4 --global
   - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
   - tar -xf phantomjs-1.9.7-linux-x86_64.tar.bz2
   - sudo rm -rf /usr/local/phantomjs
