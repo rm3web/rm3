@@ -31,7 +31,6 @@ if (gearRenderTarget) {
 if (protoRenderTarget) {
   var protoList = [];
 
-  console.log(protos);
   for(var proto in protos) {
     if (protos.hasOwnProperty(proto)) {
       protoList.push({

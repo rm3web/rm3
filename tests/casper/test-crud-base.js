@@ -80,11 +80,11 @@ describe('Base type CRUD', function() {
       this.click('#protomenu .pure-button');
     });
 
-/*
+    /*
     casper.then(function() {
       this.click('#PROTO_BASE');
     });
-*/
+    */
     casper.thenOpen('http://127.0.0.1:4000/$new/create.html?type=base', function() {
       this.echo(this.getHTML());
       'div.footer'.should.be.inDOM.and.be.visible;

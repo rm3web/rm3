@@ -56,6 +56,7 @@
 
 .textblockbox 
 { 
+    background: rgb(198, 198, 237); 
     background: rgba(198, 198, 237, 0.3); 
     padding: 1em;
     border: 1px solid #b7b7b7;
