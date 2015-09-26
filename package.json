@@ -81,7 +81,7 @@
     "gulp-nodemon": "~2.0.3",
     "gulp-rename": "^1.2.2",
     "gulp-rsvg": "^1.0.0",
-    "gulp-run": "^1.6.11",
+    "gulp-shell": "^0.4.3",
     "gulp-util": "^3.0.4",
     "istanbul": "~0.3.19",
     "jscs": "^2.1.1",
