@@ -3,10 +3,9 @@ var gulp = require('gulp')
   , nodemon = require('gulp-nodemon')
   , istanbul = require('gulp-istanbul')
   , mocha = require('gulp-mocha')
-  , run = require('gulp-run')
+  , shell = require('gulp-shell')
   , jscs = require('gulp-jsxcs')
   , jshint = require('gulp-jshint')
-  , gls = require('gulp-live-server')
   , gutil = require('gulp-util')
   , bower = require('gulp-bower')
   , spawn = require('child_process').spawn
@@ -91,14 +90,13 @@ gulp.task('browserify', function(cb) {
   }, cb)
 });
 
-gulp.task('create-db', function (){
-  return run('dropdb --if-exists rm3unit && createdb rm3unit').exec()
-});
+gulp.task('create-db', shell.task([
+  'dropdb --if-exists rm3unit && createdb rm3unit'
+]))
 
-gulp.task('build-schema', ['create-db'], function () {
-  return gulp.src('db-schema.sql')
-    .pipe(run('psql rm3unit'));
-});
+gulp.task('build-schema', ['create-db'], shell.task([
+  'psql rm3unit < db-schema.sql'
+]))
 
 gulp.task('db-tests', ['create-db', 'build-schema'], function () {
   process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
@@ -124,13 +122,13 @@ gulp.task('base-coverage', ['create-db', 'build-schema'], function (cb) {
     });
 });
 
-gulp.task('coverage', ['base-coverage', 'casper-coverage'], function() {
-  return run('./node_modules/.bin/istanbul report lcov text').exec();
-})
+gulp.task('coverage', ['base-coverage', 'casper-coverage'], shell.task([
+  './node_modules/.bin/istanbul report lcov text'
+]))
 
-gulp.task('coveralls', ['coverage'], function () {
-  return run('cat ./coverage/lcov.info |  ./node_modules/codecov.io/bin/codecov.io.js').exec();
-});
+gulp.task('coveralls', ['coverage'], shell.task([
+  'cat ./coverage/lcov.info |  ./node_modules/codecov.io/bin/codecov.io.js'
+]))
 
 gulp.task('jscs', function () {
   return gulp.src(lintable)
@@ -178,37 +176,35 @@ gulp.task('develop', function () {
     })
 });
 
-gulp.task('casper-db', function() {
-  return run('dropdb --if-exists rm3casper && createdb rm3casper').exec();
-});
+gulp.task('casper-db', shell.task([
+  'dropdb --if-exists rm3casper && createdb rm3casper'
+]))
 
-gulp.task('casper-schema', ['casper-db'], function() {
-  return gulp.src('db-schema.sql')
-    .pipe(run('psql rm3casper'));
-})
+gulp.task('casper-schema', ['casper-db'], shell.task([
+  'psql rm3casper < db-schema.sql'
+]))
 
 gulp.task('casper-fixtures', ['casper-db', 'casper-schema'], function() {
-var ctx = { cwd: process.cwd(),
-    env: clone(process.env)
-  }
-  ctx.env.RM3_PG = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
-  return gulp.src('tests/page-fixtures/*.json')
-    .pipe(run('./bin/rm3load', ctx))
+  return gulp.src('tests/page-fixtures/*.json', {read: false})
+    .pipe(shell([
+      './bin/rm3load -f <%= file.path %>'
+    ], {env: {
+      RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
+    }}))
 })
 
 gulp.task('casper-users', ['casper-db', 'casper-schema', 'casper-fixtures'], function() {
-var ctx = { cwd: process.cwd(),
-    env: clone(process.env)
-  }
-  ctx.env.RM3_PG = 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
-  
-  var setup = './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password'
-  + '&& ./bin/rm3admin assign wirehead root'
-  + '&& ./bin/rm3admin permit root edit \\*'
-  + '&& ./bin/rm3admin permit root delete \\*'
-  + '&& ./bin/rm3admin permit root view \\*'
-  + '&& ./bin/rm3admin permit nobody view wh.!users'
-  return run(setup, ctx).exec();
+  return gulp.src('')
+    .pipe(shell([
+      './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password',
+      './bin/rm3admin assign wirehead root',
+      './bin/rm3admin permit root edit \\*',
+      './bin/rm3admin permit root delete \\*',
+      './bin/rm3admin permit root view \\*',
+      './bin/rm3admin permit nobody view wh.!users'
+    ], {env: {
+      RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
+    }}))
 })
 
 function spawnServerForTests(db, executable, params, timeout, setup, next) {
