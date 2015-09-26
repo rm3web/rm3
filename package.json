@@ -66,6 +66,7 @@
     "casperjs": "^1.1.0-beta3",
     "chai": "^2.3.0",
     "codecov.io": "^0.1.6",
+    "faker": "^3.0.1",
     "glob": "^5.0.10",
     "gulp": "~3.9.0",
     "gulp-bower": "0.0.10",
