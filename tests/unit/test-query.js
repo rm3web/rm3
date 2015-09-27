@@ -12,43 +12,43 @@ describe('query gen', function() {
   describe('throws an error', function() {
     it('throws an error on invalid query select', function() {
       (function() {
-        query._queryGen({}, 'wh', 'retr', 'entity', {}, undefined, undefined);
+        query._queryGen({}, 'wh', 'retr', 'entity', {}, undefined, undefined, {});
       }).should.throw('invalid query');
     });
     it('throws an error on invalid query target', function() {
       (function() {
-        query._queryGen(root, 'wh', 'child', 'retr', {}, undefined, undefined);
+        query._queryGen(root, 'wh', 'child', 'retr', {}, undefined, undefined, {});
       }).should.throw('invalid query');
     });
   });
 
   describe('generates the correct queries', function() {
     var tests = [
-      {args: [root, 'wh', 'child', 'entity', {}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {}],
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC'},
-      {args: [root, 'wh', 'child', 'count', {}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'count', {}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)'},
-      {args: [root, 'wh', 'parents', 'count', {}, undefined, undefined],
+      {args: [root, 'wh', 'parents', 'count', {}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path @> $1)'},
-      {args: [root, 'wh', 'dir', 'count', {}, undefined, undefined],
+      {args: [root, 'wh', 'dir', 'count', {}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path ~ lquery($1 || \'.*{1}\'))'},
-      {args: [root, 'wh', 'child', 'count', {}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'count', {}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)'},
-      {args: [root, 'wh', 'child', 'count', {protos: ['blah']}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'count', {protos: ['blah']}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (proto = $2)'},
-      {args: [root, 'wh', 'child', 'count', {notprotos: ['blah']}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'count', {notprotos: ['blah']}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (proto <> $2)'},
-      {args: [root, 'wh', 'child', 'count', {before: 123}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'count', {before: 123}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (created < $2)'},
-      {args: [root, 'wh', 'child', 'count', {after: 123}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'count', {after: 123}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (created >= $2)'},
-      {args: [root, 'wh', 'child', 'count', {navbar: true}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'count', {navbar: true}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\') AND ("objStr" = \'navbar\')'},
-      {args: [root, 'wh', 'child', 'count', {tag: 'bears'}, undefined, undefined],
+      {args: [root, 'wh', 'child', 'count', {tag: 'bears'}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'plain\') AND ("objStr" = $2)'},
-      {args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined],
+      {args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {}],
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY modified ASC'},
-      {args: [root, 'wh', 'child', 'entity', {}, 'created', undefined],
+      {args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {}],
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY created ASC'}
     ];
 
@@ -308,7 +308,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var root = {context: "ROOT"};
 
-    var resp = query.query(db, {}, root, entpath, 'child', 'entity', {}, undefined, undefined);
+    var resp = query.query(db, {}, root, entpath, 'child', 'entity', {}, undefined, undefined, {});
     resp.on('article', function(article) {
       should.deepEqual(article.summary.title, rec.summary.title);
       should.deepEqual(article.summary.abstract, rec.summary.abstract);
@@ -351,7 +351,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var root = {context: "ROOT"};
 
-    var resp = query.query(db, {}, root, entpath, 'child', 'count', {}, undefined, undefined);
+    var resp = query.query(db, {}, root, entpath, 'child', 'count', {}, undefined, undefined, {});
     resp.on('count', function(article) {
       should.deepEqual(article.count, '2');
       plan.ok(true);

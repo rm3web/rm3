@@ -103,6 +103,11 @@ var TextBlockComponent = React.createClass({
             <input type="checkbox" value="true" name={this.props.prefix + '[navbar]'}
               checkedLink={this.linkState('navbar')} />
         </label>
+        <label htmlFor={this.props.prefix + '[pagination]'} className="pure-checkbox">
+            <FormattedMessage message={this.getIntlMessage('PAGINATED')} />
+            <input type="checkbox" value="true" name={this.props.prefix + '[pagination]'}
+              checkedLink={this.linkState('pagination')} />
+        </label>
         </div>
         {buttons}
       </fieldset>);
