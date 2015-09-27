@@ -4,12 +4,16 @@ var Protoset = require('../../lib/protoset');
 var ActivityFeed = require('../../lib/activityfeed');
 var IndexFeed = require('../../lib/indexfeed');
 var TagHelpers = require('../../lib/taghelpers');
+var SiteHelpers = require('../../lib/sitehelpers');
+var SchemeHelpers = require('../../lib/schemehelpers');
 
 exports = module.exports = function(dust, db, query) {
 
     ActivityFeed.installDust(dust, db, query);
     IndexFeed.installDust(dust, db, query);
     TagHelpers.installDust(dust, db, query);
+    SiteHelpers.installDust(dust, db, query);
+    SchemeHelpers.installDust(dust, db, query);
 
     dust.filters.toDottedPath = function(value) {
       if (value instanceof SitePath) {
@@ -150,7 +154,6 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.history = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var site = context.get('site');
             var path = context.get('path');
             var security = context.get('security');
             var revisionId = context.get('meta.revisionId');

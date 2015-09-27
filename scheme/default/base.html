@@ -10,7 +10,7 @@
   <script>
       {expose|s}
   </script>
-  <link rel="stylesheet" href="/resources/bundle.css">
+  <link rel="stylesheet" href="{@schemeStaticResource path="bundle.css" /}">
 
 </head>
 
@@ -38,9 +38,9 @@
 {>"sections/navfoot"/}
 {/pagefooter}
 
-<script src="/resources/bundles/base.js"></script>
+<script src="{@schemeStaticResource path="bundles/base.js" /}"></script>
 {@requireUser}
-<script src="/resources/bundles/loggedin.js"></script>
+<script src="{@schemeStaticResource path="bundles/loggedin.js" /}"></script>
 {/requireUser}
 
 </body>
