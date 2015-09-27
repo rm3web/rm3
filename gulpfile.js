@@ -122,11 +122,11 @@ gulp.task('base-coverage', ['create-db', 'build-schema'], function (cb) {
     });
 });
 
-gulp.task('coverage', ['base-coverage', 'casper-coverage'], shell.task([
+gulp.task('coverage-merge', shell.task([
   './node_modules/.bin/istanbul report lcov text'
 ]))
 
-gulp.task('coveralls', ['coverage'], shell.task([
+gulp.task('coveralls', shell.task([
   'cat ./coverage/lcov.info |  ./node_modules/codecov.io/bin/codecov.io.js'
 ]))
 
@@ -154,7 +154,7 @@ gulp.task('bower', function() {
 
 gulp.task('lint', ['jshint', 'jscs', 'csslint'])
 
-gulp.task('travis', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify', 'lint', 'coveralls'])
+gulp.task('travis', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify', 'lint'])
 
 gulp.task('develop', function () {
   nodemon(
@@ -267,7 +267,7 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
     './node_modules/.bin/istanbul',
     ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'lib/front.js'],
-    25000, function(server) {
+    30000, function(server) {
       server.stderr.on('data', function (data) {
         serverlog.push(data);
       });
