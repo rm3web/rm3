@@ -156,6 +156,7 @@ exports = module.exports = function(dust, db, query) {
         return chunk.map(function(chunk) {
             var path = context.get('path');
             var security = context.get('security');
+            var site = context.get('site');
             var revisionId = context.get('meta.revisionId');
             var ctx = context.get('ctx');
 
