@@ -25,7 +25,7 @@ describe('query gen', function() {
   describe('generates the correct queries', function() {
     var tests = [
       {args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC'},
       {args: [root, 'wh', 'child', 'count', {}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1)'},
       {args: [root, 'wh', 'parents', 'count', {}, undefined, undefined, {}],
@@ -47,9 +47,9 @@ describe('query gen', function() {
       {args: [root, 'wh', 'child', 'count', {tag: 'bears'}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'plain\') AND ("objStr" = $2)'},
       {args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY modified ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY modified ASC, "entityId" ASC'},
       {args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY created ASC'}
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY created ASC, "entityId" ASC'}
     ];
 
     tests.forEach(function(test, index) {
@@ -273,7 +273,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('query', function(done) {
     var plan = new Plan(3, done);
-    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC';
+    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC';
 
     var entpath = new sitepath(['wh']);
 
