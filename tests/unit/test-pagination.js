@@ -44,4 +44,59 @@ describe('pagination', function() {
       k.should.equal('gr/23_ff/');
     });
   });
+
+  describe('#generateLastLink', function() {
+    var ee;
+    beforeEach(function() {
+      ee = new events.EventEmitter();
+    });
+
+    it('passes errors', function(cb) {
+      var pe = Pagination.generateLastLink(ee,{});
+      pe.on('error', function(err) {
+        err.should.equal('123');
+        cb();
+      });
+      ee.emit('error', '123');
+    });
+
+    it('passes unmodified articles and detect if there is more', function(cb) {
+      var pe = Pagination.generateLastLink(ee,{limit:2});
+      var passed = false;
+      pe.on('error', function(err) {
+        should.fail();
+      });
+      pe.on('more', function(lastArt) {
+        if (lastArt) {
+          should.fail();
+        }
+      });
+      pe.on('article', function(data) {
+        data.should.equal('123');
+        passed = true;
+      });
+      pe.on('end', function() {
+        passed.should.equal(true);
+        cb();
+      });
+      ee.emit('article', '123');
+      ee.emit('end');
+    });
+
+    it('passes unmodified articles and a more link', function(cb) {
+      var pe = Pagination.generateLastLink(ee,{limit:2});
+      pe.on('error', function(err) {
+        should.fail();
+      });
+      pe.on('more', function(lastArt) {
+        lastArt.should.equal('123');
+      });
+      pe.on('end', function() {
+        cb();
+      });
+      ee.emit('article', '123');
+      ee.emit('article', '32');
+      ee.emit('end');
+    });
+  });
 });
