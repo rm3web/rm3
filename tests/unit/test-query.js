@@ -51,15 +51,15 @@ describe('query gen', function() {
       {args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {}],
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY created ASC, "entityId" ASC'},
       {args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {token: new sitepath(['wh','errr']), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) AND ((wh_entity."path", wh_entity."entityId") < ($2,$3)) ORDER BY path ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) AND ((wh_entity."path", wh_entity."entityId") > ($2,$3)) ORDER BY path ASC, "entityId" ASC LIMIT 12'},
       {args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {start: 12, limit: 12}],
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
       {args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {entityId: '2355', start: 12, limit: 12}],
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
       {args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) AND ((wh_entity."modified", wh_entity."entityId") < ($2,$3)) ORDER BY modified ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) AND ((wh_entity."modified", wh_entity."entityId") > ($2,$3)) ORDER BY modified ASC, "entityId" ASC LIMIT 12'},
       {args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) AND ((wh_entity."created", wh_entity."entityId") < ($2,$3)) ORDER BY created ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) AND ((wh_entity."created", wh_entity."entityId") > ($2,$3)) ORDER BY created ASC, "entityId" ASC LIMIT 12'},
     ];
 
     tests.forEach(function(test, index) {
