@@ -75,7 +75,7 @@ describe('query', function() {
     });
 
     it('works', function(done) {
-      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {}, undefined, undefined, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -94,7 +94,7 @@ describe('query', function() {
     });
 
     it('works for the navbar', function(done) {
-      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {navbar: true}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {navbar: true}, undefined, undefined, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -111,7 +111,7 @@ describe('query', function() {
     });
 
     it('works for plain tags', function(done) {
-      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {tag: 'navbar'}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {tag: 'navbar'}, undefined, undefined, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -194,7 +194,7 @@ describe('query', function() {
 
       it('filters out forbidden nodes', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
-        var resp = query.query(db, {}, context, otherpath, 'child', 'entity', {}, undefined, undefined);
+        var resp = query.query(db, {}, context, otherpath, 'child', 'entity', {}, undefined, undefined, {});
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -210,7 +210,7 @@ describe('query', function() {
 
       it('lets allowed nodes through', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
-        var resp = query.query(db, {}, context, ents.user.path(), 'child', 'entity', {}, undefined, undefined);
+        var resp = query.query(db, {}, context, ents.user.path(), 'child', 'entity', {}, undefined, undefined, {});
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);

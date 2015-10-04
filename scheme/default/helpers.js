@@ -6,6 +6,7 @@ var IndexFeed = require('../../lib/indexfeed');
 var TagHelpers = require('../../lib/taghelpers');
 var SiteHelpers = require('../../lib/sitehelpers');
 var SchemeHelpers = require('../../lib/schemehelpers');
+var Pagination = require('../../lib/pagination');
 
 exports = module.exports = function(dust, db, query) {
 
@@ -190,8 +191,9 @@ exports = module.exports = function(dust, db, query) {
             var ctx = context.get('ctx');
             var baseurl = ['wh'];
             var path = new SitePath(baseurl);
-            var pagination = {};
             var paginationKey = context.resolve(params.paginationKey);
+            var paginationLimit = context.resolve(params.paginationLimit)
+            var pagination = Pagination.generatePagination(paginationLimit);
 
             if (params.userPath) {
                 var basePath = context.resolve(params.userPath);
@@ -211,66 +213,49 @@ exports = module.exports = function(dust, db, query) {
                 }
             }
 
-            if (params.paginationLimit) {
-                pagination.limit = parseInt(context.resolve(params.paginationLimit), 
-                    10) + 1;
-                pagination.start = 0;
-            }
-            if (pagePath.partial) {
-                var partialKeyStart = pagePath.partial.indexOf(paginationKey)
-                if (partialKeyStart !== -1) {
-                    var memento = pagePath.partial[partialKeyStart + 1].split('_');
+            Pagination.parsePath(pagination,paginationKey,
+                pagePath.partial, function(pagination, memento) {
                     if (memento.length >= 3) {
-                        pagination.start = parseInt(memento[0],10);
                         pagination.startDate = new Date(memento[1]);
                         pagination.startNum = parseInt(memento[2],10);
                         pagination.startId = memento[3];
-                    } else {
-                        pagination.start = parseInt(memento[0],10);
                     }
-                }
-            }
+                });
+
             var qr = query.queryActivity(db, ctx, security, path, 'child', userPath, pagination);
             var body = bodies.block;
 
             if (bodies.begin){
                 chunk.render(bodies.begin, context);
             }
-            resp = ActivityFeed.logToActivityFeed(qr, site);
+            actFeed = ActivityFeed.logToActivityFeed(qr, site);
+            resp = Pagination.generateLastLink(actFeed, pagination)
             var idx = 0;
             var lastArt = {};
-            var more = false;
             resp.on('article', function(article) {
-                if (idx + 1 === pagination.limit) {
-                    more = true;
-                } else {
-                    chunk.render(bodies.block, context.push(
-                        {rec: article,
-                         '$idx': idx }));
-                    idx = idx + 1;
-                    lastArt = article;
-                }
+                chunk.render(bodies.block, context.push(
+                    {rec: article,
+                     '$idx': idx }));
+                idx = idx + 1;
             });
             resp.on('error', function(err) {
                 chunk.end();
             });
-            resp.on('end', function() {
+            resp.on('more', function(more) {
                 if (bodies.end){
                     chunk.render(bodies.end, context);
                 }
-                if (paginationKey) {
-                    if (more) {
-                        var pKey = paginationKey + '/' + 
-                            (pagination.start + pagination.limit - 1) + "_" + 
-                            lastArt.endTime.toISOString() + "_" + 
-                            lastArt["rm3:revisionNum"] + "_" + 
-                            lastArt["rm3:revisionId"];
-                        chunk.write('<a href="'+ site.sitePathToUrl(pagePath) +
-                            '$/' + pKey + '">next</a>');
-                    }
+                if (more) {
+                    var pKey = Pagination.generatePageLink(paginationKey,
+                        pagination, [more.endTime.toISOString(), more["rm3:revisionNum"],
+                            more["rm3:revisionId"]])
+                    chunk.write('<a href="'+ site.sitePathToUrl(pagePath) +
+                        '$/' + pKey + '">next</a>');
                 }
-                chunk.end();
             });
+            resp.on('end', function() {
+                chunk.end();
+            })
         })
     }
 
