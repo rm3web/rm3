@@ -15,6 +15,10 @@ var abstract = formData.abstract;
 var renderTarget = document.getElementById('pageform');
 var PathFactory = React.createFactory(PageFormComponent);
 
+if (!window.hasOwnProperty('errors')) {
+  errors = {}
+}
+
 var renderedComponent = React.render(
   PathFactory({
     locales: intl.locales,
@@ -26,7 +30,7 @@ var renderedComponent = React.render(
     proto: 'user',
     block: block,
     proto: proto,
-    errors: {}
+    errors: errors
   }),
   renderTarget
 );
