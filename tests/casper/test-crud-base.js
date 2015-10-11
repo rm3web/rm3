@@ -73,6 +73,8 @@ describe('Base type CRUD', function() {
          password: 'password'}, true);
     });
 
+    casper.wait(100);
+
     casper.then(function() {
       'a[href*=logout]'.should.be.inDOM.and.be.visible;
       'div.infomessage'.should.be.inDOM.and.contain.text('You have been logged in');
@@ -86,7 +88,6 @@ describe('Base type CRUD', function() {
     });
     */
     casper.thenOpen('http://127.0.0.1:4000/$new/create.html?type=base', function() {
-      this.echo(this.getHTML());
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=create]',
         {title: 'CasperJS Test',

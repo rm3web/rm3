@@ -13,7 +13,7 @@ if (gearRenderTarget) {
   var actions = [];
 
   if (permissions.hasOwnProperty('delete')) {
-    actions.push({url: 'delete.html', label: 'DELETE', confirm: true});
+    actions.push({url: baseurl+'delete.html', label: 'DELETE', confirm: true});
   }
 
   var gearComponent = React.render(
