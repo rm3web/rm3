@@ -4,8 +4,8 @@
          {@tags showNav="false" obj=tags}
 {@objLink linkclass="tagPill"/}
   {/tags}
-  {@requirePermission permission="edit"}<a class="pure-button" href="tag.html">Edit Tags</a>{/requirePermission}
-  <br />Revision: <a href="history.html"><span>{@formatNumber val=meta.revisionNum /}</span>:<span>{meta.revisionId}</span></a>
+  {@requirePermission permission="edit"}<a class="pure-button" href="{@sitePathToUrl path=path /}tag.html">Edit Tags</a>{/requirePermission}
+  <br />Revision: <a href="{@sitePathToUrl path=path /}history.html"><span>{@formatNumber val=meta.revisionNum /}</span>:<span>{meta.revisionId}</span></a>
   <br />{@formatMessage _key="LAST_UPDATED"/}: <time class="updated" datetime="{meta.modified}">{@formatRelative val=meta.modified/}</time>
   <br />{@formatMessage _key="POSTED"/}: <time class="published" datetime="{meta.created}">{@formatRelative val=meta.created/}</time></p>
 
