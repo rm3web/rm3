@@ -55,6 +55,7 @@ var TextBlockComponent = React.createClass({
   deleteBlock: function(i,e) {
     e.preventDefault();
     var blocks = this.state.blocks;
+    blocks.splice(i,1);
     this.setState({blocks: blocks});
   },
 
