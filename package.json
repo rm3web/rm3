@@ -46,7 +46,7 @@
     "passport-local": "~1.0.0",
     "pg": "~4.4.1",
     "pg-native": "~1.9.0",
-    "react": "^0.13.3",
+    "react": "^0.14.0",
     "react-aria-menubutton": "^2.0.3",
     "react-intl": "^1.2.0",
     "serve-favicon": "~2.3.0",
