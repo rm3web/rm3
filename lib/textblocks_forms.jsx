@@ -52,12 +52,10 @@ var TextBlockComponent = React.createClass({
       format: 'section'});
   },
 
-  handleTextareaChange: function(e) {
-    if (this.state.format === 'html') {
-      this.setState({source: e.target.value});
-    } else {
-      this.setState({htmltext: e.target.value});
-    }
+  deleteBlock: function(i,e) {
+    e.preventDefault();
+    var blocks = this.state.blocks;
+    this.setState({blocks: blocks});
   },
 
   render: function() {
@@ -78,9 +76,17 @@ var TextBlockComponent = React.createClass({
     if (this.state.format === 'section') {
       var self = this;
       var blocks = this.state.blocks.map(function(block, i) {
-          return (<TextBlockComponent key={i}
+          var topButton;
+          if (i !== 0) {
+            topButton = (<button key={'x_' + i} 
+              onClick={self.deleteBlock.bind(self,i)}>x</button>);
+          }
+          return (<div className="textblockbox" key={'d_' + i}>
+            {topButton}
+            <TextBlockComponent key={'b_' + i}
             prefix={self.props.prefix + '[blocks][' + i + ']'}
-            block={block} child="true" />);
+            block={block} child="true" />
+            </div>);
         });
       return (<fieldset>
         <input type="hidden" value="section" name={this.props.prefix + '[format]'}
@@ -90,7 +96,6 @@ var TextBlockComponent = React.createClass({
       </fieldset>);
     } else if (this.state.format === 'pragma') {
       return (<fieldset>
-        <div className="textblockbox">
         <input type="hidden" value="pragma" name={this.props.prefix + '[format]'} />
         <select name={this.props.prefix + '[query]'} size="1" 
           valueLink={this.linkState('query')}>
@@ -108,18 +113,17 @@ var TextBlockComponent = React.createClass({
             <input type="checkbox" value="true" name={this.props.prefix + '[pagination]'}
               checkedLink={this.linkState('pagination')} />
         </label>
-        </div>
         {buttons}
       </fieldset>);
     } else {
-      var outstr = this.state.source;
+      var vlink = 'source';
       if (this.state.format === 'html') {
-        outstr = this.state.htmltext;
+        vlink = 'htmltext';
       }
       return (<fieldset>
         <textarea rows="30" name={this.props.prefix + '[source]'}
           className="pure-input-1" placeholder="Posting" 
-          value={outstr} onChange={this.handleTextareaChange}>
+          valueLink={this.linkState(vlink)}>
         </textarea>
         <select size="1" name={this.props.prefix + '[format]'}
           valueLink={this.linkState('format')}>
