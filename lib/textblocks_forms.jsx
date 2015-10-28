@@ -150,7 +150,7 @@ var TextBlockComponent = React.createClass({
       var blocks = this.state.blocks.map(function(block, i) {
           var outBlock;
           outBlock = mapBlock(block, i, self.props.prefix);
-          return (<div className="textblockbox">
+          return (<div key={i} className="textblockbox">
             {outBlock}
             </div>);
         });
