@@ -175,11 +175,11 @@ var TextBlockComponent = React.createClass({
     } else {
       var block;
       if (this.state.format === 'pragma') {
-        return (<IndexBlockEditor
+        block = (<IndexBlockEditor
         prefix={this.props.prefix}
         block={this.state} child="false" />);
       } else {
-        return (<TextBlockEditor
+        block = (<TextBlockEditor
         prefix={this.props.prefix}
         block={this.state} child="false" />);
       }
