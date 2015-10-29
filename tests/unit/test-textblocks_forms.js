@@ -14,10 +14,17 @@ describe('TextBlockComponent', function() {
       prefix: 'plastic_makes_perfect'
     });
 
-    form.type.displayName.should.equal('TextBlockEditor');
+    form.type.should.equal('fieldset');
 
-    form.props.prefix.should.equal('plastic_makes_perfect');
-    form.props.child.should.equal('false');
+    form.props.children[0].type.displayName.should.equal('TextBlockEditor');
+
+    form.props.children[0].props.prefix.should.equal('plastic_makes_perfect');
+    form.props.children[0].props.child.should.equal('false');
+
+    form.props.children[1].type.should.equal('div');
+    form.props.children[1].props.className.should.equal('pure-g-r');
+
+    form.props.children[1].props.children.props.id.should.equal('addText')
   });
 
   it('should render a list of textblocks', function() {
