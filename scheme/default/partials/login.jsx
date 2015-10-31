@@ -8,6 +8,7 @@ var LoginFormComponent = React.createClass({
   render: function() {
     return (
     <form action="/$login/" method="post">
+    <input type="hidden" name="_csrf" value={this.props.csrfToken} />
     <div>
     <label><FormattedMessage message={this.getIntlMessage('USERNAME')} />:</label>
     <input type="text" name="username" /><br/>
