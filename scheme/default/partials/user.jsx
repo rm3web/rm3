@@ -100,8 +100,8 @@ var UserFormComponent = React.createClass({
       </fieldset>
 
       <fieldset>
-        <label htmlFor="profileUrl" className="pure-input-1"><FormattedMessage message={this.getIntlMessage('PROFILE_URL')} />:
-        <input className="pure-input-1" type="text" id="profileUrl" name="profileUrl" placeholder={this.getIntlMessage("URL")} defaultValue={this.props.profileUrl} /></label>
+        <label htmlFor="profileUrl" className="pure-input-1"><FormattedMessage message={this.getIntlMessage('PROFILE_URL')} />:</label>
+        <input className="pure-input-1" type="text" id="profileUrl" name="profileUrl" placeholder={this.getIntlMessage("URL")} defaultValue={this.props.profileUrl} />
         <ErrorsList errors={this.state.errors.profileUrl} />
       </fieldset>
 
