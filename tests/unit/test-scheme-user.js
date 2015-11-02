@@ -52,7 +52,6 @@ describe('Post component', function() {
     passwordFieldSet.props.children[3].props.name.should.equal('password2');
     passwordFieldSet.props.children[4].type.displayName.should.equal('ErrorsList');
 
-    
     var disabledLoginFieldSet = form.props.children[3];
     disabledLoginFieldSet.type.should.equal('fieldset');
     disabledLoginFieldSet.props.children[0].type.should.equal('label');
