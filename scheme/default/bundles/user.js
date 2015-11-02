@@ -9,6 +9,7 @@ var fullname = document.getElementById('fullname').value;
 var profileUrl = document.getElementById('profileUrl').value;
 var email = document.getElementById('email').value;
 var profileText = document.getElementById('profileText').innerHTML;
+var disableLogin = document.getElementById('disableLogin').checked;
 
 if (!window.hasOwnProperty('errors')) {
   errors = {}
@@ -25,6 +26,7 @@ var renderedComponent = React.render(
     profileUrl: profileUrl,
     email: email,
     profileText: profileText,
+    disableLogin: disableLogin,
     body: {},
     errors: errors
   }),
