@@ -15,7 +15,7 @@
 <ul>{#data}<li>Can do "{permission}" over path {path}</li>{/data}</ul>
 {/userRoles}
 {@requirePermission permission="grant"}
-{>"partials-grant_box"/}
+{>"partials/grant_box"/}
 {/requirePermission}
 {:else}
 {@requirePermission permission="grant"}
@@ -24,7 +24,7 @@
 <h3>{role}</h3>
 <ul>{#data}<li>Can do "{permission}" over path {path}</li>{/data}</ul>
 {/userRoles}
-{>"partials-grant_box"/}
+{>"partials/grant_box"/}
 {/requirePermission}
 {/isThisUser}
 

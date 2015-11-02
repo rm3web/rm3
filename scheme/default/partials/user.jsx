@@ -35,7 +35,7 @@ var UserFormComponent = React.createClass({
     event.preventDefault();
     var userForm = new UserForm(this.props.section === 'edit');
     var body = {};
-    ['username', 'fullname', 'email', 'password1', 'password2', 'profileUrl', 
+    ['username', 'fullname', 'email', 'password1', 'password2', 'disableLogin', 'profileUrl', 
     'profileText'].forEach(function(field) {
       var val = document.getElementById(field)
       if (val) {
@@ -63,7 +63,7 @@ var UserFormComponent = React.createClass({
     var body = {};
     if (this.props.body) {
       body = this.props.body;
-      ['username', 'fullname', 'email', 'profileUrl', 'profileText'].forEach(function(field) {
+      ['username', 'fullname', 'email', 'profileUrl', 'profileText', 'disableLogin'].forEach(function(field) {
         if (!self.props[field] && body.hasOwnProperty(field)) {
           self.props[field] = body[field];
         }
@@ -89,6 +89,14 @@ var UserFormComponent = React.createClass({
         <ErrorsList errors={this.state.errors.password1} />
         <input className="pure-input-1" type="password" defaultValue="" id="password2" name="password2" placeholder={this.getIntlMessage('CONFIRM_PASSWORD')} />
         <ErrorsList errors={this.state.errors.password2} />
+      </fieldset>
+
+      <fieldset>
+        <label htmlFor="disableLogin" className="pure-input-1">
+        <input type="checkbox" id="disableLogin" name="disableLogin" value="true" defaultChecked={this.props.disableLogin} />
+        <FormattedMessage message={this.getIntlMessage('DISABLE_LOGIN')} />
+        </label> 
+        <ErrorsList errors={this.state.errors.disableLogin} />
       </fieldset>
 
       <fieldset>

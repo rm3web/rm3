@@ -23,7 +23,7 @@ describe('query', function() {
   describe('#entityFromPath', function() {
     var ents = {};
 
-    var path = new sitepath(['wh', 'entityFromPath']);
+    var path = new sitepath(['wh', 'entityfrompath']);
     var now = new Date();
 
     resources.entityResource(path, ents, 'one', false, now);
@@ -131,7 +131,7 @@ describe('query', function() {
   describe("#queryHistory", function() {
     var ents = {};
 
-    var path = new sitepath(['wh', 'queryHistory']);
+    var path = new sitepath(['wh', 'queryhistory']);
     var now = new Date();
 
     resources.entityResource(path, ents, 'one', false, now);
