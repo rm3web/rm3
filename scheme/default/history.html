@@ -3,48 +3,9 @@
 
 <h1>{@formatMessage _key="HISTORY"/}</h1>
 
-<table class="pure-table">
-  <thead>
-<tr><th></th><th>{@formatMessage _key="USER"/}</th><th>{@formatMessage _key="EVENT_TYPE"/}</th><th>{@formatMessage _key="REVISION_NUM"/}</th><th>{@formatMessage _key="REVISION_ID"/}</th><th>{@formatMessage _key="TIME"/}</th><th></th></tr>
-</thead>
-<tbody>
+<ul>
 {@history}
-{@math key="{$idx}" method="mod" operand="2"}
- {@eq value=0}
-        <tr class="pure-table-odd">
-    {:else}
-        <tr class="pure-table-even">
-    {/eq}
-{/math}
-<td rowspan="2">
-{@eq key="{current}" value="true"}
-*
-{:else}
- {/eq}
-</td>
-    <td>{rec.actorPath}</td>
-    <td>{rec.evtClass}</td>
-    <td>{rec.revisionNum}</td>
-    <td>{rec.revisionId}</td>
-    <td>{@formatRelative val=rec.evtEnd/}</td>
-    <td rowspan="2">
-{@eq key="{current}" value="true"}
-<b><a href="{path}">view</a></b>
-{:else}
-<a href="{path}?revisionId={rec.revisionId}">view</a>
- {/eq}
-</td></tr>
-
-{@math key="{$idx}" method="mod" operand="2"}
- {@eq value=0}
-        <tr class="pure-table-odd">
-    {:else}
-        <tr class="pure-table-even">
-    {/eq}
-{/math}
-<td colspan="5">{rec.note}</td></tr>
+<li>{@activityActor key=actor /} did "{@activityVerb key=verb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
 {/history}
-</tbody>
-</table>
-
+</ul>
 {/view-content}

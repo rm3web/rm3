@@ -153,35 +153,6 @@ exports = module.exports = function(dust, db, query) {
         }
     }
 
-    dust.helpers.history = function (chunk, context, bodies, params) {
-        return chunk.map(function(chunk) {
-            var path = context.get('path');
-            var security = context.get('security');
-            var site = context.get('site');
-            var revisionId = context.get('meta.revisionId');
-            var ctx = context.get('ctx');
-
-            var resp = query.queryHistory(db, ctx, security, path);
-            var body = bodies.block;
-
-            var idx = 0;
-            resp.on('article', function(article) {
-                chunk.render(bodies.block, context.push(
-                    {path: site.sitePathToUrl(article.path),
-                     current: revisionId === article.revisionId,
-                     rec: article,
-                     '$idx': idx }));
-                idx = idx + 1;
-            });
-            resp.on('error', function(err) {
-                chunk.end();
-            });
-            resp.on('end', function() {
-                chunk.end();
-            });
-        })
-    }
-
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var tags = context.resolve(params.obj);
