@@ -1,15 +1,19 @@
 language: node_js
+env:
+  - CXX=g++-4.8
 node_js:
   - "0.12"
   - "iojs-v2.0"
-  - "4.0"
+  - "4"
 addons:
   postgresql: "9.3"
   apt:
     packages:
       - librsvg2-dev
+      - gcc-4.8
+      - g++-4.8
 before_install:
-  - npm i npm@2.14.4 --global
+  - npm i npm@3.3.10 --global
   - wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-1.9.7-linux-x86_64.tar.bz2
   - tar -xf phantomjs-1.9.7-linux-x86_64.tar.bz2
   - sudo rm -rf /usr/local/phantomjs
