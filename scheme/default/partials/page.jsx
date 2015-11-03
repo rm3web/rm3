@@ -60,8 +60,8 @@ var PageFormComponent = React.createClass({
           <button type="submit" className="pure-button pure-button-primary"><FormattedMessage message={buttonMessage} /></button>
         </div>
         <div className="pure-u-2-3">
-          <label htmlFor="save-as-draft" className="pure-checkbox">
-            <input id="save-as-draft" name="save-as-draft" type="checkbox" value="true" />
+          <label htmlFor="saveAsDraft" className="pure-checkbox">
+            <input id="saveAsDraft" name="saveAsDraft" type="checkbox" value="true" />
             <FormattedMessage message={this.getIntlMessage('SAVE_AS_DRAFT')} />
           </label>
         </div>

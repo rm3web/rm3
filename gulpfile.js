@@ -201,6 +201,8 @@ gulp.task('casper-users', ['casper-db', 'casper-schema', 'casper-fixtures'], fun
       './bin/rm3admin permit root edit \\*',
       './bin/rm3admin permit root delete \\*',
       './bin/rm3admin permit root view \\*',
+      './bin/rm3admin permit root grant \\*',
+      './bin/rm3admin permit root viewdraft \\*',
       './bin/rm3admin permit nobody view wh.!users'
     ], {env: {
       RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'

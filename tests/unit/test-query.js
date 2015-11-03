@@ -413,7 +413,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
       });
     };
 
-    var resp = query.queryHistory(db, {}, {}, entpath);
+    var resp = query.queryHistory(db, {}, {}, entpath, null, {});
     resp.on('article', function(article) {
       should.deepEqual(article.note, rec.note);
       should.deepEqual(article.data, rec.data);

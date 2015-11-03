@@ -154,7 +154,7 @@ describe('query', function() {
     });
 
     it('works', function(done) {
-      var resp = query.queryHistory(db, {}, {}, path);
+      var resp = query.queryHistory(db, {}, {}, path, null, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
