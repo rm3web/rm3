@@ -34,7 +34,7 @@
 
 <h2>Activity:</h2>
 {@activityFeed userPath=path paginationKey="activity" paginationLimit="10"}
-<li>{@activityActor key=actor /} did "{@activityVerb key=verb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
+<li>{@activityActor key=actor /} {@activityDid /} "{@activityVerb key=verb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
 {:begin}
 <ul>
 {:end}
