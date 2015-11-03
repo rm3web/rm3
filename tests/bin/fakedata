@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+var sitepath = require ('../../lib/sitepath');
+var program = require('commander');
+var pjson = require('../../package.json');
+var makeFakeEntity = require('../lib/fakedata').makeFakeEntity;
+var db = require('../../lib/db');
+var async = require('async');
+
+function parse_sitepath(val) {
+  var pth = new sitepath(null,null);
+  pth.fromDottedPath(val);
+  return pth;
+}
+
+program
+  .version(pjson.version)
+  .option('-n, --num [size]', 'Number of pages to create', 1)
+  .option('-p, --path [path]','Change the path to the new destination path',parse_sitepath)
+  .parse(process.argv);
+
+async.times(program.num, function(n, next) {
+  makeFakeEntity(program.path, next);
+}, function() {
+  db.gunDatabase();
+  process.exit(0);
+});
+

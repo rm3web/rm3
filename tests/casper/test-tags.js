@@ -36,6 +36,23 @@ describe('Tags', function() {
 
     casper.then(function() {
       'div.footer'.should.be.inDOM.and.be.visible;
+      this.fill('form#addTag',
+        {objKey: 'ponies'}, true);
+    });
+
+    casper.then(function() {
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'div.pure-u-2-3'.should.contain.text('ponies');
+    });
+
+    casper.thenOpen('http://127.0.0.1:4000/', function() {
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'div.pure-u-2-3'.should.contain.text('Welcome to rm3');
+    });
+
+    casper.thenOpen('http://127.0.0.1:4000/tags.html/$/ponies', function() {
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'div.pure-u-2-3'.should.contain.text('Welcome to rm3');
       this.click('a[href*=logout]');
     });
 

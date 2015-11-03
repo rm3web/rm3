@@ -10,16 +10,15 @@
   <script>
       {expose|s}
   </script>
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
-  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
-  <link type="text/css" rel="stylesheet" href="/resources/jquery-dropdown/jquery.dropdown.css" />
-
-  <link rel="stylesheet" href="/resources/style.css">
+  <link rel="stylesheet" href="{@schemeStaticResource path="bundle.css" /}">
 
 </head>
 
 <body>
   <div class="pure-g">
+    {+userbar}
+    {>"sections/userbar"/}
+    {/userbar}
     {+masthead}
     {>"sections/masthead"/}
     {/masthead}
@@ -39,8 +38,11 @@
 {>"sections/navfoot"/}
 {/pagefooter}
 
-<script src="/resources/bundles/base.js"></script>
-<script type="text/javascript" src="/resources/jquery-dropdown/jquery.dropdown.js"></script>
+<script src="{@schemeStaticResource path="bundles/base.js" /}"></script>
+{@requireUser}
+<script src="{@schemeStaticResource path="bundles/loggedin.js" /}"></script>
+{/requireUser}
+
 </body>
 
 </html>

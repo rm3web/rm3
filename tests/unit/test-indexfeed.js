@@ -8,12 +8,12 @@ describe('indexfeed', function() {
     var ee, now, output;
     beforeEach(function() {
       var protoset = {};
-      protoset.decorateListing = function(article) {
+      protoset.decorateListing = function(article, scheme) {
         return article;
       };
       now = new Date();
       ee = new events.EventEmitter();
-      output = IndexFeed.resultsToIndexFeed(protoset, ee);
+      output = IndexFeed.resultsToIndexFeed(protoset, {}, ee);
       output.on('error', function(err) {
         should.fail();
       });
@@ -56,11 +56,11 @@ describe('indexfeed', function() {
 
     it('should pass errors', function(cb) {
       var protoset = {};
-      protoset.decorateListing = function(article) {
+      protoset.decorateListing = function(article, scheme) {
         return article;
       };
       var ee = new events.EventEmitter();
-      var output = IndexFeed.resultsToIndexFeed(protoset, ee);
+      var output = IndexFeed.resultsToIndexFeed(protoset, {}, ee);
       var err = new Error('mockingboard');
       output.on('error', function(e) {
         e.should.equal(err);

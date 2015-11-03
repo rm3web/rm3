@@ -23,7 +23,7 @@ describe('query', function() {
   describe('#entityFromPath', function() {
     var ents = {};
 
-    var path = new sitepath(['wh', 'entityFromPath']);
+    var path = new sitepath(['wh', 'entityfrompath']);
     var now = new Date();
 
     resources.entityResource(path, ents, 'one', false, now);
@@ -75,7 +75,7 @@ describe('query', function() {
     });
 
     it('works', function(done) {
-      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {}, undefined, undefined, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -94,7 +94,7 @@ describe('query', function() {
     });
 
     it('works for the navbar', function(done) {
-      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {navbar: true}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {navbar: true}, undefined, undefined, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -111,7 +111,7 @@ describe('query', function() {
     });
 
     it('works for plain tags', function(done) {
-      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {tag: 'navbar'}, undefined, undefined);
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {tag: 'navbar'}, undefined, undefined, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -131,7 +131,7 @@ describe('query', function() {
   describe("#queryHistory", function() {
     var ents = {};
 
-    var path = new sitepath(['wh', 'queryHistory']);
+    var path = new sitepath(['wh', 'queryhistory']);
     var now = new Date();
 
     resources.entityResource(path, ents, 'one', false, now);
@@ -194,7 +194,7 @@ describe('query', function() {
 
       it('filters out forbidden nodes', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
-        var resp = query.query(db, {}, context, otherpath, 'child', 'entity', {}, undefined, undefined);
+        var resp = query.query(db, {}, context, otherpath, 'child', 'entity', {}, undefined, undefined, {});
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);
@@ -210,7 +210,7 @@ describe('query', function() {
 
       it('lets allowed nodes through', function(done) {
         var context = {context: 'STANDARD', user: ents.user.path()};
-        var resp = query.query(db, {}, context, ents.user.path(), 'child', 'entity', {}, undefined, undefined);
+        var resp = query.query(db, {}, context, ents.user.path(), 'child', 'entity', {}, undefined, undefined, {});
         var arts = [];
         resp.on('article', function(article) {
           arts.push(article);

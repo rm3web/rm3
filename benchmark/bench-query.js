@@ -5,12 +5,13 @@ var update = require('../lib/update');
 var query = require('../lib/query');
 var db = require('../lib/db');
 var user = require('../lib/user');
+var async = require('async');
 var resources = require('../tests/lib/resources.js');
+var makeFakeEntity = require('../tests/lib/fakedata').makeFakeEntity;
 
 var winston = require('winston');
 
 winston.remove(winston.transports.Console);
-
 
 suite('query#entity_from_path', function() {
   var ents = {};
@@ -19,10 +20,27 @@ suite('query#entity_from_path', function() {
   var now = new Date();
 
   resources.entityResource(path, ents, 'one', false, now);
+  before(function(done) {    
+    async.times(10, function(n, next) {
+      makeFakeEntity(path, next);
+    }, done);
+  });
 
-  bench('simple query', function(done) {
+  bench('root access', function(done) {
     query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2){
+      done();
+    });
+  });
 
+  bench('root access by revisionId', function(done) {
+    query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path,
+      ents.one._entityId, function(err, ent2){
+      done();
+    });
+  });
+
+  bench('nobody access', function(done) {
+    query.entityFromPath(db, entity.Entity, {}, {context: "STANDARD"}, path, null, function(err, ent2){
       done();
     });
   });
@@ -85,7 +103,7 @@ suite("query#query_history", function() {
     ents.updated = ents.one.clone();
     ents.updated.data.posting = "<div>blah blah blah</div>";
     ents.updated.summary.title = 'updated';
-    update.updateEntity(db, {}, ents.one, ents.updated, true, 'update',
+    update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, 'update',
       function(err, entityId, revisionId, revisionNum) {
         ents.updated._entityId = entityId;
         ents.updated._revisionId = revisionId;

@@ -1,7 +1,6 @@
 {>"layouts/two_col_with_nav"/}
 {<view-content}
 
-<div class="l-box">
     {?summary.profileUrl}<h2><a href="{summary.profileUrl|u}">{summary.title}</a></h2>{:else}<h2>{summary.title}</h2>{/summary.profileUrl}
 {@isThisUser}
 <div>(this is your account's page)</div>
@@ -16,7 +15,7 @@
 <ul>{#data}<li>Can do "{permission}" over path {path}</li>{/data}</ul>
 {/userRoles}
 {@requirePermission permission="grant"}
-{>"partials-grant_box"/}
+{>"partials/grant_box"/}
 {/requirePermission}
 {:else}
 {@requirePermission permission="grant"}
@@ -25,25 +24,21 @@
 <h3>{role}</h3>
 <ul>{#data}<li>Can do "{permission}" over path {path}</li>{/data}</ul>
 {/userRoles}
-{>"partials-grant_box"/}
+{>"partials/grant_box"/}
 {/requirePermission}
 {/isThisUser}
-
-</div>
 
 {/view-content}
 
 {<sidebar-content}
 
-<div class="l-box">
 <h2>Activity:</h2>
 {@activityFeed userPath=path paginationKey="activity" paginationLimit="10"}
-<li>{@activityActor key=rec.actor /} did "{@activityVerb key=rec.verb /}" to {@activityObject key=rec.object /} {@formatRelative val=rec.updated /}</li>
+<li>{@activityActor key=actor /} did "{@activityVerb key=verb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
 {:begin}
 <ul>
 {:end}
 </ul>
 {/activityFeed}
-</div>
 
 {/sidebar-content}

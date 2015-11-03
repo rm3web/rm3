@@ -1,7 +1,13 @@
 <div class="pure-g">
  <div class="pure-u-1 footer">
-  <p>{@formatMessage _key="LAST_UPDATED"/}: <span>{@formatRelative val=meta.modified/}</span>
-  <br />{@formatMessage _key="POSTED"/}: <span>{@formatRelative val=meta.created/}</span></p>
+  <p>Tags: 
+         {@tags showNav="false" obj=tags}
+{@objLink linkclass="tagPill"/}
+  {/tags}
+  {@requirePermission permission="edit"}<a class="pure-button" href="{@sitePathToUrl path=path /}tag.html">Edit Tags</a>{/requirePermission}
+  <br />Revision: <a href="{@sitePathToUrl path=path /}history.html"><span>{@formatNumber val=meta.revisionNum /}</span>:<span>{meta.revisionId}</span></a>
+  <br />{@formatMessage _key="LAST_UPDATED"/}: <time class="updated" datetime="{meta.modified}">{@formatRelative val=meta.modified/}</time>
+  <br />{@formatMessage _key="POSTED"/}: <time class="published" datetime="{meta.created}">{@formatRelative val=meta.created/}</time></p>
 
   </div>
 </div>
