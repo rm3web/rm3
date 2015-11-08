@@ -376,9 +376,13 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('queryHistory', function(done) {
     var plan = new Plan(3, done);
-    var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", \
-"replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", \
-"evtTouched", "evtClass", "evtFinal", "actorPath", data FROM wh_log WHERE (path = $1) ORDER BY "revisionNum" ASC';
+    var selectQuery = 'SELECT wh_log.path, wh_log."entityId", wh_log.note, \
+wh_log."baseRevisionId", wh_log."replaceRevisionId", wh_log."revisionId", \
+wh_log."revisionNum", wh_log."evtStart", wh_log."evtEnd", wh_log."evtTouched", \
+wh_log."evtClass", wh_log."evtFinal", wh_log."actorPath", wh_log.data, actor.proto \
+AS "actorProto", actor.summary AS "actorSummary" FROM wh_log LEFT JOIN wh_entity actor \
+ON (actor.path = wh_log."actorPath") WHERE (wh_log.path = $1) ORDER BY wh_log."revisionNum" \
+ASC';
 
     var entpath = new sitepath(['wh']);
 
