@@ -165,8 +165,8 @@ describe('query', function() {
       resp.on('end', function() {
         should.deepEqual(arts.length, 2);
         should.deepEqual(new Date(arts[1].data.toData.created), now);
-        should.deepEqual(arts[0].evtClass, 'post');
-        should.deepEqual(arts[1].evtClass, 'update');
+        should.deepEqual(arts[0].evtClass, 'Create');
+        should.deepEqual(arts[1].evtClass, 'Update');
         should.deepEqual(arts[0].revisionNum, 1);
         should.deepEqual(arts[1].revisionNum, 2);
         should.deepEqual(arts[0].path.toDottedPath(), path.toDottedPath());

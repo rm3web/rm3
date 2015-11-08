@@ -230,14 +230,14 @@ function checkLogPcreate(row, ent) {
 }
 
 function checkLogDelete(row, ent, delMark) {
-  should.deepEqual(row.evtClass, 'delete');
+  should.deepEqual(row.evtClass, 'Delete');
   should.deepEqual(row.entityId, ent._entityId);
   should.deepEqual(row.revisionId, delMark.revisionId);
   should.deepEqual(row.revisionNum, delMark.revisionNum);
 }
 
 function checkLogUpdate(row, ent, ent2) {
-  should.deepEqual(row.evtClass, 'update');
+  should.deepEqual(row.evtClass, 'Update');
   should.deepEqual(row.entityId, ent2._entityId);
   should.deepEqual(row.revisionId, ent2._revisionId);
   should.deepEqual(row.revisionNum, ent2._revisionNum);
@@ -387,7 +387,7 @@ describe('update', function() {
       should.deepEqual(result.rowCount, 2);
       checkLogCreate(result.rows[0], ent);
 
-      should.deepEqual(result.rows[1].evtClass, 'move');
+      should.deepEqual(result.rows[1].evtClass, 'Move');
       should.deepEqual(result.rows[1].entityId, ent._entityId);
       should.deepEqual(result.rows[1].revisionId, moveMark.revisionId);
       should.deepEqual(result.rows[1].revisionNum, moveMark.revisionNum);
