@@ -26,7 +26,14 @@
   {:else}
   <div class="pure-u-2-3"><div class="button-pad">
   {@sectionDisable section="edit"}
-  <a class="pure-button pure-u-1" href="{@sitePathToUrl path=path /}edit.html">{@formatMessage _key="EDIT"/}</a>
+  {@isNotHead}
+  <a class="pure-button pure-u-1" href="{@sitePathToUrl path=path /}edit.html?revisionId={meta.revisionId}">
+  {@formatMessage _key="EDIT_REV"/}</a>
+  {:else}
+  <a class="pure-button pure-u-1" href="{@sitePathToUrl path=path /}edit.html">
+  {@formatMessage _key="EDIT"/}</a>
+  {/isNotHead}
+
   {:else}
   <a class="pure-button pure-u-1 pure-button-disabled" href="#">{@formatMessage _key="EDIT"/}</a>
   {/sectionDisable}
