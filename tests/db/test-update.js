@@ -564,7 +564,7 @@ describe('update', function() {
       var ent = ents.one;
       should.deepEqual(result.rowCount, 2);
       checkLogCreate(result.rows[0], ent);
-      should.deepEqual(result.rows[1].evtClass, 'assign');
+      should.deepEqual(result.rows[1].evtClass, 'rm3:assign');
     });
 
     step('assign again', function createAssignmentResourceAgain(done) {
