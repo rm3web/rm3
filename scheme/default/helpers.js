@@ -155,8 +155,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.isNotHead = function(chunk, context, bodies, params) {
         var curLogRev = context.get('curLogRev.revisionId');
-        var curRev = context.get('meta.revisionId')
-        if (curLogRev !== curRev) {
+        if (curLogRev) {
             return chunk.render(bodies.block, context);
         } else {
             return chunk.render(bodies["else"], context);
