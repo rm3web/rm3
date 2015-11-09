@@ -66,10 +66,10 @@ CREATE INDEX wh_subject_to_roles_gist_idx ON wh_subject_to_roles USING GIST (sub
 CREATE INDEX wh_subject_role_idx ON wh_subject_to_roles USING BTREE (role);
 
 CREATE TABLE wh_identity (
-	PRIMARY KEY(provider, userid),
+	PRIMARY KEY(provider, "userId"),
 	provider text,
 	"userId" text,
-	"userPath" ltree,
+	"userPath" ltree REFERENCES wh_entity (path) ON DELETE CASCADE,
 	"providerDetails" json,
 	"identityId" uuid
 )
