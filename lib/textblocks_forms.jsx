@@ -77,6 +77,12 @@ var IndexBlockEditor = React.createClass({
             <input type="checkbox" value="true" name={this.props.prefix + '[pagination]'}
               checkedLink={this.linkState('pagination')} />
         </label>
+        <select name={this.props.prefix + '[partial]'} size="1" 
+          valueLink={this.linkState('partial')}>
+         <option value="card">Card</option>
+         <option value="list">List</option>
+         <option value="grid">Grid</option>
+        </select>
       </fieldset>);
     }
   }
