@@ -7,6 +7,7 @@ var db = require('../../lib/db');
 var user = require('../../lib/user');
 var should = require('should');
 var resources = require('../lib/resources.js');
+require('mocha-steps');
 
 function entitiesShouldMostlyEqual(ent, ent2) {
   should.deepEqual(ent2.summary, ent.summary);
@@ -365,6 +366,27 @@ describe('query', function() {
           should.deepEqual(arts.length, 2);
           done();
         });
+      });
+    });
+  });
+
+  describe('credential', function() {
+    var ents = {};
+    var delMark = {};
+    var userpath = new sitepath(['wh', 'credential']);
+
+    step('create', function createCredential(done) {
+      update.createCredential(db, {}, 'test', 'blfr', null, {}, done);
+    });
+
+    step('check created credential', function checkCredential(done) {
+      query.findCredential(db, {}, 'test', 'blfr', function(err, rec) {
+        if (err) {
+          return done(err);
+        }
+        rec.provider.should.equal('test');
+        rec.userId.should.equal('blfr');
+        done();
       });
     });
   });

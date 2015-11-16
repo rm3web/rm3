@@ -1,6 +1,12 @@
 {>"layouts/two_col_with_nav"/}
 {<view-content}
 
+{@isThisUser}
+{@hasAuthProviderEnabled provider="twitter"}
+<a href="/$connect/twitter">Add Twitter</a>
+{/hasAuthProviderEnabled}
+{/isThisUser}
+
     {?summary.profileUrl}<h2><a href="{summary.profileUrl|u}">{summary.title}</a></h2>{:else}<h2>{summary.title}</h2>{/summary.profileUrl}
 {@isThisUser}
 <div>(this is your account's page)</div>

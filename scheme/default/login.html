@@ -1,11 +1,16 @@
 {>"layouts/full_tiny_sidebar"/}
 {<view-content}
+<div style="margin: .1em;padding: .2em;">
+{@hasAuthProviderEnabled provider="twitter"}
+<a href="/$login/twitter" class="pure-button button-pad">Login with Twitter</a>
+{/hasAuthProviderEnabled}
+</div>
 <div id="loginform">{@react component="login.jsx" csrfToken=csrfToken locales=intl.locales messages=intl.messages /}</div>
 
 {/view-content}
 
 {<pagefooter}
-<div class="pure-g">
+<div class="pure-g" style="padding-top: 1em;">
  <div class="pure-u-1 footer">
    &nbsp;
   </div>
