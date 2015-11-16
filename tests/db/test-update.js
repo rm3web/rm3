@@ -621,6 +621,30 @@ describe('update', function() {
     stepGenericDelete('delete', ents.one, delMark);
   });
 
+  describe('credential', function() {
+    var ents = {};
+    var delMark = {};
+    var userpath = new sitepath(['wh', 'credential']);
+
+    step('create', function createCredential(done) {
+      update.createCredential(db, {}, 'test', 'gor', null, {}, done);
+    });
+
+    step('check create credential', function checkCredential(done) {
+      var query = "SELECT provider, \"userId\", \"userPath\" FROM wh_credential WHERE provider = 'test' AND \"userId\" = 'gor';";
+      quickQuery(db, query, function(err, result) {
+        if (err) {
+          should.fail(err);
+        }
+        should.deepEqual(result.rowCount, 1);
+        should.deepEqual(result.rows[0].provider, 'test');
+        should.deepEqual(result.rows[0].userId, 'gor');
+        should.deepEqual(result.rows[0].userPath, null);
+        done(err);
+      });
+    });
+  });
+
   after(function() {
     db.gunDatabase();
   });

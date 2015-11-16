@@ -65,7 +65,7 @@ CREATE TABLE wh_subject_to_roles (
 CREATE INDEX wh_subject_to_roles_gist_idx ON wh_subject_to_roles USING GIST (subject);
 CREATE INDEX wh_subject_role_idx ON wh_subject_to_roles USING BTREE (role);
 
-CREATE TABLE wh_identity (
+CREATE TABLE wh_credential (
 	PRIMARY KEY(provider, "userId"),
 	provider text,
 	"userId" text,
