@@ -158,7 +158,7 @@ gulp.task('travis', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify', 'li
 
 gulp.task('develop', function () {
   nodemon(
-    { script: 'lib/front.js', 
+    { script: 'bin/rm3front.js', 
       ext: 'js jsx css html', 
       tasks: ['browserify', 'cssbundle'],
       watch: [
@@ -242,7 +242,7 @@ gulp.task('casper-tests', ['casper-users'], function(cb) {
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    'node', ['lib/front.js'], 4000, function(server) {
+    './bin/rm3front', [], 4000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
@@ -268,7 +268,7 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
     './node_modules/.bin/istanbul',
-    ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'lib/front.js'],
+    ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'bin/rm3front'],
     30000, function(server) {
       server.stderr.on('data', function (data) {
         serverlog.push(data);

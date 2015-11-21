@@ -2,9 +2,12 @@
   "name": "rm3",
   "version": "0.0.0",
   "description": "A node.js CMS toolkit",
-  "main": "lib/front.js",
+  "main": "index.js",
   "directories": {
-    "test": "tests"
+    "lib": "lib",
+    "bin": "bin",
+    "test": "tests",
+    "doc": "docs"
   },
   "repository": {
     "type": "git",
@@ -39,7 +42,6 @@
     "intl": "^0.1.4",
     "intl-format-cache": "^2.0.4",
     "intl-messageformat": "^1.1.0",
-    "method-override": "~2.3.2",
     "morgan": "~1.6.1",
     "node-jsx": "^0.13.3",
     "node-uuid": "^1.4.3",
@@ -113,5 +115,5 @@
     "cms"
   ],
   "author": "Wirehead",
-  "license": "GPLv2"
+  "license": "GPL-2.0"
 }
