@@ -7,12 +7,13 @@ describe('phase', function() {
 
     var plan = new Plan(2, cb);
 
-    phase.addDefaultPhase('test', function(next) {
+    phase.addDefaultPhase('test1', function(app, next) {
+      app.should.equal('foo');
       plan.ok(true);
       next();
     });
 
-    phase.runPhase('test', function(err) {
+    phase.runPhase('test1', 'foo', function(err) {
       if (err) {
         should.fail();
       }
@@ -24,17 +25,19 @@ describe('phase', function() {
 
     var plan = new Plan(3, cb);
 
-    phase.addDefaultPhase('test', function(next) {
+    phase.addDefaultPhase('test2', function(app, next) {
+      app.should.equal('goo');
       plan.ok(true);
       next();
     });
 
-    phase.addToPhase('test', function(next) {
+    phase.addToPhase('test2', function(app, next) {
+      app.should.equal('goo');
       plan.ok(true);
       next();
     });
 
-    phase.runPhase('test', function(err) {
+    phase.runPhase('test2', 'goo', function(err) {
       if (err) {
         should.fail();
       }
@@ -46,20 +49,21 @@ describe('phase', function() {
 
     var plan = new Plan(2, cb);
 
-    phase.addDefaultPhase('test', function(next) {
+    phase.addDefaultPhase('test3', function(app, next) {
       should.fail();
     });
 
-    phase.addToPhase('test', function(next) {
+    phase.addToPhase('test3', function(app, next) {
       should.fail();
     });
 
-    phase.replaceAllInPhase('test', function(next) {
+    phase.replaceAllInPhase('test3', function(app, next) {
+      app.should.equal('moo');
       plan.ok(true);
       next();
     });
 
-    phase.runPhase('test', function(err) {
+    phase.runPhase('test3', 'moo', function(err) {
       if (err) {
         should.fail();
       }
