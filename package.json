@@ -2,9 +2,12 @@
   "name": "rm3",
   "version": "0.0.0",
   "description": "A node.js CMS toolkit",
-  "main": "lib/front.js",
+  "main": "index.js",
   "directories": {
-    "test": "tests"
+    "lib": "lib",
+    "bin": "bin",
+    "test": "tests",
+    "doc": "docs"
   },
   "repository": {
     "type": "git",

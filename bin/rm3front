@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+var rm3 = require('../index.js');
+
+rm3(function(err) {
+  if (err) {
+    winston.error('front', 'Startup failed', {err:err});
+  }
+});
