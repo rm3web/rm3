@@ -158,7 +158,7 @@ gulp.task('travis', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify', 'li
 
 gulp.task('develop', function () {
   nodemon(
-    { script: 'bin/rm3front.js', 
+    { script: 'bin/rm3front', 
       ext: 'js jsx css html', 
       tasks: ['browserify', 'cssbundle'],
       watch: [
