@@ -60,7 +60,7 @@ var CommentFormComponent = React.createClass({
     return (
     <form onSubmit={this.onSubmit} method="post" className="pure-form pure-form-stacked">
 
-    <legend>Add comment</legend>
+    <legend>Add comment (plain text, no HTML, put a blank line between paragraphs)</legend>
     <textarea rows="5" className="pure-input-1" id="comment" name="comment"
       value={this.state.comment} onChange={this.handleChange}></textarea>
     <ErrorsList errors={this.state.errors.__all__} />

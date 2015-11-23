@@ -30,6 +30,7 @@
     "credential": "^0.2.6",
     "csurf": "^1.8.3",
     "dotenv": "~1.2.0",
+    "downsize": "0.0.8",
     "dust-intl": "~1.1.0",
     "dust-react-helper": "wirehead/dust-react-helper#react-intl_support",
     "dustjs-helpers": "~1.7.3",
@@ -63,7 +64,8 @@
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "validator": "~4.1.0",
     "winston": "~1.1.0",
-    "winston-context": "0.0.7"
+    "winston-context": "0.0.7",
+    "xss-filters": "^1.2.6"
   },
   "devDependencies": {
     "browserify": "^11.1.0",
