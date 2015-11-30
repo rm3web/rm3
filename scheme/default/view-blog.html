@@ -6,8 +6,9 @@
 <div class="comment-legend">Comments</div>
 {@basicQuery comment="true"}
 <div class="comment-block">
-Posted by {author} <time class="updated" datetime="{date}">{@formatRelative val=date/}</time>:
+Posted by {@authorLink/} <time class="updated" datetime="{date}">{@formatRelative val=date/}</time>:
    {description|s}
+   <small><a href="{@sitePathToUrl path=path /}">permalink</a></small>
   {/basicQuery}
 </div>
 <div class="commentform" id="commentbutton"></div>
