@@ -7,12 +7,17 @@
 {@basicQuery comment="true"}
 <div class="comment-block">
 Posted by {@authorLink/} <time class="updated" datetime="{date}">{@formatRelative val=date/}</time>:
+<div class="comment-body">
    {description|s}
+</div>
    <small><a href="{@sitePathToUrl path=path /}">permalink</a></small>
    </div>
   {/basicQuery}
+
+{@requirePermission permission="comment"}
 <div class="commentform" id="commentbutton"></div>
 <script src="./comment.js"></script>
 <script src="{@schemeStaticResource path="bundles/comment.js" /}"></script>
+{/requirePermission}
 
 {/view-content}
