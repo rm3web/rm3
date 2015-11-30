@@ -44,6 +44,8 @@ describe('query gen', function() {
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (created >= $2)'},
       {args: [root, 'wh', 'child', 'count', {navbar: true}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\') AND ("objStr" = \'navbar\')'},
+      {args: [root, 'wh', 'child', 'count', {comment: true}, undefined, undefined, {}],
+       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) LEFT JOIN wh_entity actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\') AND ("objStr" = \'comment\')'},
       {args: [root, 'wh', 'child', 'count', {tag: 'bears'}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'plain\') AND ("objStr" = $2)'},
       {args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {}],

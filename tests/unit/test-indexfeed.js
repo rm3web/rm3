@@ -4,6 +4,50 @@ var SitePath = require ('../../lib/sitepath');
 var events = require("events");
 
 describe('indexfeed', function() {
+  describe('#authorLink', function() {
+
+    var dust, db, query, chunk, str, contextData, context;
+
+    beforeEach(function() {
+      dust = {helpers: {}};
+      db = {};
+      query = {};
+      context = {};
+      contextData = {};
+      str = '';
+
+      context.get = function(key) {
+        return contextData[key];
+      };
+
+      chunk = {};
+      chunk.write = function(instr) {
+        str = str + instr;
+      };
+      IndexFeed.installDust(dust, db, query);
+    });
+
+    it('should handle a default author', function() {
+      contextData.author = 'pink bunny';
+      dust.helpers.authorLink(chunk, context, {}, {});
+      str.should.equal('pink bunny');
+    });
+
+    it('should handle a better author', function() {
+      contextData.author = 'pink bunny';
+      contextData['meta.atom:author.name'] = 'purple pony';
+      dust.helpers.authorLink(chunk, context, {}, {});
+      str.should.equal('purple pony');
+    });
+
+    it('should handle a better link', function() {
+      contextData.author = 'pink bunny';
+      contextData['meta.atom:author.uri'] = 'http://www.example.com/';
+      dust.helpers.authorLink(chunk, context, {}, {});
+      str.should.equal('<a href="http://www.example.com/">pink bunny</a>');
+    });
+  });
+
   describe('#resultsToIndexFeed', function() {
     var ee, now, output;
     beforeEach(function() {
