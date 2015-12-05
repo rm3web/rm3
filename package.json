@@ -2,9 +2,12 @@
   "name": "rm3",
   "version": "0.0.0",
   "description": "A node.js CMS toolkit",
-  "main": "lib/front.js",
+  "main": "index.js",
   "directories": {
-    "test": "tests"
+    "lib": "lib",
+    "bin": "bin",
+    "test": "tests",
+    "doc": "docs"
   },
   "repository": {
     "type": "git",
@@ -24,7 +27,10 @@
     "commander": "~2.8.1",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.4.0",
+    "credential": "^0.2.6",
+    "csurf": "^1.8.3",
     "dotenv": "~1.2.0",
+    "downsize": "0.0.8",
     "dust-intl": "~1.1.0",
     "dust-react-helper": "wirehead/dust-react-helper#react-intl_support",
     "dustjs-helpers": "~1.7.3",
@@ -37,13 +43,13 @@
     "intl": "^0.1.4",
     "intl-format-cache": "^2.0.4",
     "intl-messageformat": "^1.1.0",
-    "method-override": "~2.3.2",
     "morgan": "~1.6.1",
     "node-jsx": "^0.13.3",
     "node-uuid": "^1.4.3",
     "page-router": "git://github.com/wirehead/page-router.git#master",
     "passport": "~0.3.0",
     "passport-local": "~1.0.0",
+    "passport-twitter": "^1.0.3",
     "pg": "~4.4.1",
     "pg-native": "~1.9.0",
     "react": "^0.14.0",
@@ -54,10 +60,12 @@
     "serve-static": "~1.10.0",
     "speakingurl": "~6.0.0",
     "squel": "~4.2.0",
+    "superagent": "^1.4.0",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
     "validator": "~4.1.0",
     "winston": "~1.1.0",
-    "winston-context": "0.0.7"
+    "winston-context": "0.0.7",
+    "xss-filters": "^1.2.6"
   },
   "devDependencies": {
     "browserify": "^11.1.0",
@@ -110,5 +118,5 @@
     "cms"
   ],
   "author": "Wirehead",
-  "license": "GPLv2"
+  "license": "GPL-2.0"
 }

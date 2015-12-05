@@ -153,110 +153,24 @@ exports = module.exports = function(dust, db, query) {
         }
     }
 
-    dust.helpers.history = function (chunk, context, bodies, params) {
-        return chunk.map(function(chunk) {
-            var path = context.get('path');
-            var security = context.get('security');
-            var site = context.get('site');
-            var revisionId = context.get('meta.revisionId');
-            var ctx = context.get('ctx');
-
-            var resp = query.queryHistory(db, ctx, security, path);
-            var body = bodies.block;
-
-            var idx = 0;
-            resp.on('article', function(article) {
-                chunk.render(bodies.block, context.push(
-                    {path: site.sitePathToUrl(article.path),
-                     current: revisionId === article.revisionId,
-                     rec: article,
-                     '$idx': idx }));
-                idx = idx + 1;
-            });
-            resp.on('error', function(err) {
-                chunk.end();
-            });
-            resp.on('end', function() {
-                chunk.end();
-            });
-        })
+    dust.helpers.isNotHead = function(chunk, context, bodies, params) {
+        var curLogRev = context.get('curLogRev.revisionId');
+        if (curLogRev) {
+            return chunk.render(bodies.block, context);
+        } else {
+            return chunk.render(bodies["else"], context);
+        }
     }
 
-    dust.helpers.activityFeed = function (chunk, context, bodies, params) {
-        return chunk.map(function(chunk) {
-            var pagePath = context.get('path');
-            var security = context.get('security');
-            var site = context.get('site');
-            var userPath = undefined;
-            var ctx = context.get('ctx');
-            var baseurl = ['wh'];
-            var path = new SitePath(baseurl);
-            var paginationKey = context.resolve(params.paginationKey);
-            var paginationLimit = context.resolve(params.paginationLimit)
-            var pagination = Pagination.generatePagination(paginationLimit);
-
-            if (params.userPath) {
-                var basePath = context.resolve(params.userPath);
-                if (typeof basePath === 'string') {
-                    userPath.fromDottedPath(basePath);
-                } else {
-                    userPath = basePath;
-                }
+    dust.helpers.isDraft = function(chunk, context, bodies, params) {
+        var curLogRev = context.get('curLogRev');
+        if (curLogRev) {
+            if (curLogRev.evtFinal) {
+                return chunk.render(bodies["else"], context);
+            } else {
+                return chunk.render(bodies.block, context);
             }
-
-            if (params.basePath) {
-                var basePath = context.resolve(params.basePath);
-                if (typeof basePath === 'string') {
-                    path.fromDottedPath(basePath);
-                } else {
-                    path = basePath;
-                }
-            }
-
-            Pagination.parsePath(pagination,paginationKey,
-                pagePath.partial, function(pagination, memento) {
-                    if (memento.length >= 3) {
-                        pagination.startDate = new Date(memento[1]);
-                        pagination.startNum = parseInt(memento[2],10);
-                        pagination.startId = memento[3];
-                    }
-                });
-
-            var qr = query.queryActivity(db, ctx, security, path, 'child', userPath, pagination);
-            var body = bodies.block;
-
-            if (bodies.begin){
-                chunk.render(bodies.begin, context);
-            }
-            actFeed = ActivityFeed.logToActivityFeed(qr, site);
-            resp = Pagination.generateLastLink(actFeed, pagination)
-            var idx = 0;
-            var lastArt = {};
-            resp.on('article', function(article) {
-                chunk.render(bodies.block, context.push(
-                    {rec: article,
-                     '$idx': idx }));
-                idx = idx + 1;
-            });
-            resp.on('error', function(err) {
-                chunk.end();
-            });
-            resp.on('more', function(more) {
-                if (bodies.end){
-                    chunk.render(bodies.end, context);
-                }
-                if (more) {
-                    var pKey = Pagination.generatePageLink(paginationKey,
-                        pagination, [more.endTime.toISOString(), more["rm3:revisionNum"],
-                            more["rm3:revisionId"]])
-                    chunk.write('<a href="'+ site.sitePathToUrl(pagePath) +
-                        '$/' + pKey + '">next</a>');
-                }
-            });
-            resp.on('end', function() {
-                chunk.end();
-            })
-        })
+        }
     }
 
     dust.helpers.tags = function (chunk, context, bodies, params) {
