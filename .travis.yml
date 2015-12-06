@@ -3,10 +3,15 @@ node_js:
   - "0.12"
   - "iojs-v2.0"
   - "4"
+env:
+  - CXX=g++-4.8
 addons:
   postgresql: "9.3"
   apt:
+    sources:
+      - ubuntu-toolchain-r-test
     packages:
+      - g++-4.8
       - librsvg2-dev
 before_install:
   - npm i npm@2.14.8 --global
