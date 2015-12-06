@@ -6,9 +6,10 @@ var JsxForms = require('../../../lib/jsx_forms.jsx');
 var TextBlockComponent = require('../../../lib/textblocks_forms.jsx').TextBlockComponent;
 var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
+var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 var PageFormComponent = React.createClass({
-  mixins: [IntlMixin, React.addons.LinkedStateMixin],
+  mixins: [IntlMixin, LinkedStateMixin],
 
   getInitialState: function() {
     var state = {};
