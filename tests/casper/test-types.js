@@ -19,7 +19,7 @@ describe('Types', function() {
       this.click('a[href*=login]');
     });
 
-  casper.waitUntilVisible('form[action*=login]', function() {
+    casper.waitUntilVisible('form[action*=login]', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
