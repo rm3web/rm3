@@ -4,6 +4,7 @@ if (!global.Intl) {
 }
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var PageFormComponent = require('../partials/page.jsx');
 
 var block = formData.block;
@@ -19,7 +20,7 @@ if (!window.hasOwnProperty('errors')) {
   errors = {}
 }
 
-var renderedComponent = React.render(
+var renderedComponent = ReactDOM.render(
   PathFactory({
     locales: intl.locales,
     messages: intl.messages,

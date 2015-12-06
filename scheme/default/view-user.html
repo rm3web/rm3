@@ -1,6 +1,12 @@
 {>"layouts/two_col_with_nav"/}
 {<view-content}
 
+{@isThisUser}
+{@hasAuthProviderEnabled provider="twitter"}
+<a href="/$connect/twitter">Add Twitter</a>
+{/hasAuthProviderEnabled}
+{/isThisUser}
+
     {?summary.profileUrl}<h2><a href="{summary.profileUrl|u}">{summary.title}</a></h2>{:else}<h2>{summary.title}</h2>{/summary.profileUrl}
 {@isThisUser}
 <div>(this is your account's page)</div>
@@ -33,8 +39,8 @@
 {<sidebar-content}
 
 <h2>Activity:</h2>
-{@activityFeed userPath=path paginationKey="activity" paginationLimit="10"}
-<li>{@activityActor key=actor /} did "{@activityVerb key=verb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
+{@activityFeed userPath=path paginationKey="activity" drafts="false" paginationLimit="10"}
+<li>{@activityActor key=actor /} {@activityDid /} "{@activityVerb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
 {:begin}
 <ul>
 {:end}

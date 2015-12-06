@@ -153,6 +153,26 @@ exports = module.exports = function(dust, db, query) {
         }
     }
 
+    dust.helpers.isNotHead = function(chunk, context, bodies, params) {
+        var curLogRev = context.get('curLogRev.revisionId');
+        if (curLogRev) {
+            return chunk.render(bodies.block, context);
+        } else {
+            return chunk.render(bodies["else"], context);
+        }
+    }
+
+    dust.helpers.isDraft = function(chunk, context, bodies, params) {
+        var curLogRev = context.get('curLogRev');
+        if (curLogRev) {
+            if (curLogRev.evtFinal) {
+                return chunk.render(bodies["else"], context);
+            } else {
+                return chunk.render(bodies.block, context);
+            }
+        }
+    }
+
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
             var tags = context.resolve(params.obj);

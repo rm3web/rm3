@@ -158,7 +158,7 @@ gulp.task('travis', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify', 'li
 
 gulp.task('develop', function () {
   nodemon(
-    { script: 'lib/front.js', 
+    { script: 'bin/rm3front', 
       ext: 'js jsx css html', 
       tasks: ['browserify', 'cssbundle'],
       watch: [
@@ -201,6 +201,8 @@ gulp.task('casper-users', ['casper-db', 'casper-schema', 'casper-fixtures'], fun
       './bin/rm3admin permit root edit \\*',
       './bin/rm3admin permit root delete \\*',
       './bin/rm3admin permit root view \\*',
+      './bin/rm3admin permit root grant \\*',
+      './bin/rm3admin permit root viewdraft \\*',
       './bin/rm3admin permit nobody view wh.!users'
     ], {env: {
       RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
@@ -240,7 +242,7 @@ gulp.task('casper-tests', ['casper-users'], function(cb) {
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    'node', ['lib/front.js'], 4000, function(server) {
+    './bin/rm3front', [], 4000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
@@ -266,7 +268,7 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
     './node_modules/.bin/istanbul',
-    ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'lib/front.js'],
+    ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'bin/rm3front'],
     30000, function(server) {
       server.stderr.on('data', function (data) {
         serverlog.push(data);

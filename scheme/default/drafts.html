@@ -4,8 +4,8 @@
 <h1>{@formatMessage _key="HISTORY"/}</h1>
 
 <ul>
-{@history}
+{@activityFeed userPath=path paginationKey="activity" drafts="true"}
 <li>{@activityActor key=actor /} {@activityDid /} "{@activityVerb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
-{/history}
+{/activityFeed}
 </ul>
 {/view-content}

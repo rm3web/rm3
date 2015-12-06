@@ -7,6 +7,7 @@ var db = require('../../lib/db');
 var user = require('../../lib/user');
 var should = require('should');
 var resources = require('../lib/resources.js');
+require('mocha-steps');
 
 function entitiesShouldMostlyEqual(ent, ent2) {
   should.deepEqual(ent2.summary, ent.summary);
@@ -154,7 +155,7 @@ describe('query', function() {
     });
 
     it('works', function(done) {
-      var resp = query.queryHistory(db, {}, {}, path);
+      var resp = query.queryHistory(db, {}, {}, path, null, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
@@ -165,8 +166,8 @@ describe('query', function() {
       resp.on('end', function() {
         should.deepEqual(arts.length, 2);
         should.deepEqual(new Date(arts[1].data.toData.created), now);
-        should.deepEqual(arts[0].evtClass, 'post');
-        should.deepEqual(arts[1].evtClass, 'update');
+        should.deepEqual(arts[0].evtClass, 'Create');
+        should.deepEqual(arts[1].evtClass, 'Update');
         should.deepEqual(arts[0].revisionNum, 1);
         should.deepEqual(arts[1].revisionNum, 2);
         should.deepEqual(arts[0].path.toDottedPath(), path.toDottedPath());
@@ -365,6 +366,27 @@ describe('query', function() {
           should.deepEqual(arts.length, 2);
           done();
         });
+      });
+    });
+  });
+
+  describe('credential', function() {
+    var ents = {};
+    var delMark = {};
+    var userpath = new sitepath(['wh', 'credential']);
+
+    step('create', function createCredential(done) {
+      update.createCredential(db, {}, 'test', 'blfr', null, {}, done);
+    });
+
+    step('check created credential', function checkCredential(done) {
+      query.findCredential(db, {}, 'test', 'blfr', function(err, rec) {
+        if (err) {
+          return done(err);
+        }
+        rec.provider.should.equal('test');
+        rec.userId.should.equal('blfr');
+        done();
       });
     });
   });

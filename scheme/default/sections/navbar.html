@@ -6,13 +6,39 @@
   {@requireUser}
   <div class="pure-g">
   {@requirePermission permission="edit"}
-  <div class="pure-u-2-3"><div class="button-pad">
+  {@isDraft}
+  <div class="pure-u-1-3"><div class="button-pad">
   {@sectionDisable section="edit"}
-  <a class="pure-button pure-u-1" href="{@sitePathToUrl path=path /}edit.html">{@formatMessage _key="EDIT"/}</a>
+  <form id="publish" method="post" action="publish.html" class="pure-form">
+    <input type="hidden" name="revisionId" value="{meta.revisionId}" />
+    <button type="submit" class="pure-button pure-u-1">{@formatMessage _key="PUBLISH"/}</button>
+  {:else}
+  <a class="pure-button pure-u-1 pure-button-disabled" href="#">{@formatMessage _key="PUBLISH"/}</a>
+  {/sectionDisable}
+  </div></div>
+  <div class="pure-u-1-3"><div class="button-pad">
+  {@sectionDisable section="edit"}
+  <a class="pure-button pure-u-1" href="{@sitePathToUrl path=path /}edit.html?revisionId={meta.revisionId}">{@formatMessage _key="EDIT"/}</a>
   {:else}
   <a class="pure-button pure-u-1 pure-button-disabled" href="#">{@formatMessage _key="EDIT"/}</a>
   {/sectionDisable}
   </div></div>
+  {:else}
+  <div class="pure-u-2-3"><div class="button-pad">
+  {@sectionDisable section="edit"}
+  {@isNotHead}
+  <a class="pure-button pure-u-1" href="{@sitePathToUrl path=path /}edit.html?revisionId={meta.revisionId}">
+  {@formatMessage _key="EDIT_REV"/}</a>
+  {:else}
+  <a class="pure-button pure-u-1" href="{@sitePathToUrl path=path /}edit.html">
+  {@formatMessage _key="EDIT"/}</a>
+  {/isNotHead}
+
+  {:else}
+  <a class="pure-button pure-u-1 pure-button-disabled" href="#">{@formatMessage _key="EDIT"/}</a>
+  {/sectionDisable}
+  </div></div>
+  {/isDraft}
   {/requirePermission}
   <div class="pure-u-1-3"><div class="button-pad">
   <span id="gearmenu">

@@ -1,5 +1,5 @@
 var React = require('react/addons');
-require('node-jsx').install({extension: '.jsx'});
+require("babel-register");
 var TestUtils = React.addons.TestUtils;
 var createComponent = require('../lib/create-component');
 var TextBlockComponent = require('../../lib/textblocks_forms.jsx').TextBlockComponent;
