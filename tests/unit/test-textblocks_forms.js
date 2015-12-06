@@ -1,5 +1,5 @@
 var React = require('react/addons');
-require('node-jsx').install({extension: '.jsx'});
+require("babel-register");
 var TestUtils = React.addons.TestUtils;
 var createComponent = require('../lib/create-component');
 var TextBlockComponent = require('../../lib/textblocks_forms.jsx').TextBlockComponent;
@@ -24,7 +24,7 @@ describe('TextBlockComponent', function() {
     form.props.children[1].type.should.equal('div');
     form.props.children[1].props.className.should.equal('pure-g-r');
 
-    form.props.children[1].props.children.props.id.should.equal('addText')
+    form.props.children[1].props.children.props.id.should.equal('addText');
   });
 
   it('should render a list of textblocks', function() {

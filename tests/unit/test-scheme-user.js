@@ -1,5 +1,5 @@
 var React = require('react/addons');
-require('node-jsx').install({extension: '.jsx'});
+require("babel-register");
 var TestUtils = React.addons.TestUtils;
 var createComponent = require('../lib/create-component');
 var UserFormComponent = require('../../scheme/default/partials/user.jsx');
@@ -18,6 +18,7 @@ describe('Post component', function() {
       profileUrl: 'profileUrl',
       email: 'email',
       profileText: 'profileText',
+      disableLogin: false,
       body: {},
       errors: {}
     });
@@ -51,7 +52,15 @@ describe('Post component', function() {
     passwordFieldSet.props.children[3].props.name.should.equal('password2');
     passwordFieldSet.props.children[4].type.displayName.should.equal('ErrorsList');
 
-    var profileUrlFieldSet = form.props.children[3];
+    var disabledLoginFieldSet = form.props.children[3];
+    disabledLoginFieldSet.type.should.equal('fieldset');
+    disabledLoginFieldSet.props.children[0].type.should.equal('label');
+    disabledLoginFieldSet.props.children[0].props.children[0].type.should.equal('input');
+    disabledLoginFieldSet.props.children[0].props.children[0].props.id.should.equal('disableLogin');
+    disabledLoginFieldSet.props.children[0].props.children[0].props.name.should.equal('disableLogin');
+    disabledLoginFieldSet.props.children[1].type.displayName.should.equal('ErrorsList');
+
+    var profileUrlFieldSet = form.props.children[4];
     profileUrlFieldSet.type.should.equal('fieldset');
     profileUrlFieldSet.props.children[0].type.should.equal('label');
     profileUrlFieldSet.props.children[1].type.should.equal('input');
@@ -60,7 +69,7 @@ describe('Post component', function() {
     profileUrlFieldSet.props.children[1].props.name.should.equal('profileUrl');
     profileUrlFieldSet.props.children[2].type.displayName.should.equal('ErrorsList');
 
-    var emailFieldSet = form.props.children[4];
+    var emailFieldSet = form.props.children[5];
     emailFieldSet.type.should.equal('fieldset');
     emailFieldSet.props.children[0].type.should.equal('label');
     emailFieldSet.props.children[1].type.should.equal('input');
@@ -69,7 +78,7 @@ describe('Post component', function() {
     emailFieldSet.props.children[1].props.name.should.equal('email');
     emailFieldSet.props.children[2].type.displayName.should.equal('ErrorsList');
 
-    var profileTextFieldSet = form.props.children[5];
+    var profileTextFieldSet = form.props.children[6];
     profileTextFieldSet.type.should.equal('fieldset');
     profileTextFieldSet.props.children[0].type.should.equal('label');
     profileTextFieldSet.props.children[1].type.should.equal('textarea');
@@ -78,10 +87,10 @@ describe('Post component', function() {
     profileTextFieldSet.props.children[1].props.name.should.equal('profileText');
     profileTextFieldSet.props.children[2].type.displayName.should.equal('ErrorsList');
 
-    var allErrors = form.props.children[6];
+    var allErrors = form.props.children[7];
     allErrors.type.displayName.should.equal('ErrorsList');
 
-    var submitButton = form.props.children[7];
+    var submitButton = form.props.children[8];
     submitButton.type.should.equal('button');
     submitButton.props.type.should.equal('submit');
     submitButton.props.children.props.message.should.equal('submit');

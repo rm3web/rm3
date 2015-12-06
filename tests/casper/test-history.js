@@ -23,8 +23,7 @@ describe('History', function() {
       'Welcome to rm3'.should.matchTitle;
       'div.footer'.should.be.inDOM.and.be.visible;
       'div.pure-u-2-3 > h1'.should.contain.text('History');
-      'div.pure-u-2-3 > table > tbody > tr > td'.should.contain.text('post');
-      'div.pure-u-2-3 > table > tbody > tr > td'.should.contain.text('loaded via rm3load');
+      'div.pure-u-2-3 > ul > li'.should.contain.text('Create');
     });
   });
 });

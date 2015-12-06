@@ -1,12 +1,31 @@
-.hentry {
-    clear: left;
+.hentry-card {
+  clear: left;
+}
+
+.hentry-grid {
+  float: left;
+  width: 150px;
+  margin: .1em;
+}
+
+.hentry-grid-inner {
+  border: 1px solid #b7b7b7;
+  margin: .1em;
+}
+
+.hentry-list .entry-title {
+  font-size: 110%;
+}
+
+.hentry-grid .entry-title {
+  clear: left;
 }
 
 .hentry .updated {
-    margin-left: .5em;
+  margin-left: .5em;
 }
 
 .hentry .icon {
-    border-radius: 0;
-    float: left;
+  border-radius: 0;
+  float: left;
 }

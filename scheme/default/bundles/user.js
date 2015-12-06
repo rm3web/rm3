@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var UserFormComponent = require('../partials/user.jsx');
 
 var renderTarget = document.getElementById('userform');
@@ -9,12 +10,13 @@ var fullname = document.getElementById('fullname').value;
 var profileUrl = document.getElementById('profileUrl').value;
 var email = document.getElementById('email').value;
 var profileText = document.getElementById('profileText').innerHTML;
+var disableLogin = document.getElementById('disableLogin').checked;
 
 if (!window.hasOwnProperty('errors')) {
   errors = {}
 }
 
-var renderedComponent = React.render(
+var renderedComponent = ReactDOM.render(
   UserFactory({
     locales: intl.locales,
     messages: intl.messages,
@@ -25,6 +27,7 @@ var renderedComponent = React.render(
     profileUrl: profileUrl,
     email: email,
     profileText: profileText,
+    disableLogin: disableLogin,
     body: {},
     errors: errors
   }),

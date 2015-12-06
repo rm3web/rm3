@@ -4,6 +4,7 @@ if (!global.Intl) {
 }
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var MenuButtonComponent = require('../partials/menubutton.jsx');
 var gearRenderTarget = document.getElementById('gearmenu');
 var protoRenderTarget = document.getElementById('protomenu');
@@ -16,7 +17,7 @@ if (gearRenderTarget) {
     actions.push({url: baseurl+'delete.html', label: 'DELETE', confirm: true});
   }
 
-  var gearComponent = React.render(
+  var gearComponent = ReactDOM.render(
     MenuButtonFactory({
       locales: intl.locales,
       messages: intl.messages,
@@ -40,7 +41,7 @@ if (protoRenderTarget) {
     }
   }
 
-  var renderedComponent = React.render(
+  var renderedComponent = ReactDOM.render(
     MenuButtonFactory({
       locales: intl.locales,
       messages: intl.messages,

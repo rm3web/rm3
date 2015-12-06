@@ -2,6 +2,7 @@ var React = require('react');
 var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
+var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 /**
  * @class TextBlockComponent
@@ -15,7 +16,7 @@ var FormattedMessage  = ReactIntl.FormattedMessage;
  */
 
  var TextBlockEditor = React.createClass({
-  mixins: [IntlMixin, React.addons.LinkedStateMixin],
+  mixins: [IntlMixin, LinkedStateMixin],
 
   getInitialState: function() {
     if (this.props.block) {
@@ -47,7 +48,7 @@ var FormattedMessage  = ReactIntl.FormattedMessage;
 });
 
 var IndexBlockEditor = React.createClass({
-  mixins: [IntlMixin, React.addons.LinkedStateMixin],
+  mixins: [IntlMixin, LinkedStateMixin],
 
   getInitialState: function() {
     if (this.props.block) {
@@ -77,6 +78,12 @@ var IndexBlockEditor = React.createClass({
             <input type="checkbox" value="true" name={this.props.prefix + '[pagination]'}
               checkedLink={this.linkState('pagination')} />
         </label>
+        <select name={this.props.prefix + '[partial]'} size="1" 
+          valueLink={this.linkState('partial')}>
+         <option value="card">Card</option>
+         <option value="list">List</option>
+         <option value="grid">Grid</option>
+        </select>
       </fieldset>);
     }
   }
@@ -95,7 +102,7 @@ function mapBlock(block, i, prefix) {
 }
 
 var TextBlockComponent = React.createClass({
-  mixins: [IntlMixin, React.addons.LinkedStateMixin],
+  mixins: [IntlMixin, LinkedStateMixin],
 
   getInitialState: function() {
     if (this.props.block) {
