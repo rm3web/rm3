@@ -41,7 +41,7 @@ if (protoRenderTarget) {
     }
   }
 
-  var renderedComponent = React.render(
+  var renderedComponent = ReactDOM.render(
     MenuButtonFactory({
       locales: intl.locales,
       messages: intl.messages,
