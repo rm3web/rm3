@@ -19,8 +19,7 @@ describe('Tags', function() {
       this.click('a[href*=login]');
     });
 
-    casper.then(function() {
-      'form[action*=login]'.should.be.inDOM.and.be.visible;
+    casper.waitUntilVisible('form[action*=login]', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
