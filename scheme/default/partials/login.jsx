@@ -10,11 +10,11 @@ var LoginFormComponent = React.createClass({
     <form action="/$login/" method="post" className="pure-form pure-form-aligned">
     <input type="hidden" name="_csrf" value={this.props.csrfToken} />
     <div className="pure-control-group">
-    <label for="username"><FormattedMessage message={this.getIntlMessage('USERNAME')} />:</label>
+    <label htmlFor="username"><FormattedMessage message={this.getIntlMessage('USERNAME')} />:</label>
     <input type="text" name="username" /><br/>
     </div>
     <div className="pure-control-group">
-    <label for="password"><FormattedMessage message={this.getIntlMessage('PASSWORD')} />:</label>
+    <label htmlFor="password"><FormattedMessage message={this.getIntlMessage('PASSWORD')} />:</label>
     <input type="password" name="password" />
     </div>
     <div className="pure-controls">

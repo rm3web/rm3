@@ -7,9 +7,10 @@ var JsxForms = require('../../../lib/jsx_forms.jsx');
 var FormLib = require('../../../lib/formlib');
 var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
+var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 var CommentFormComponent = React.createClass({
-  mixins: [IntlMixin, React.addons.LinkedStateMixin],
+  mixins: [IntlMixin, LinkedStateMixin],
 
   getInitialState: function() {
     var state = {comment: '', errors: {}, message: ''};

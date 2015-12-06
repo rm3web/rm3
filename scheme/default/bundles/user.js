@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var UserFormComponent = require('../partials/user.jsx');
 
 var renderTarget = document.getElementById('userform');
@@ -15,7 +16,7 @@ if (!window.hasOwnProperty('errors')) {
   errors = {}
 }
 
-var renderedComponent = React.render(
+var renderedComponent = ReactDOM.render(
   UserFactory({
     locales: intl.locales,
     messages: intl.messages,

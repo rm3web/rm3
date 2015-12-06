@@ -3,15 +3,14 @@ var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 var AriaMenuButton = require('react-aria-menubutton');
+var AmbWrapper = AriaMenuButton.Wrapper;
+var AmbButton = AriaMenuButton.Button;
+var AmbMenu = AriaMenuButton.Menu;
+var AmbMenuItem = AriaMenuButton.MenuItem;
 
 var MenuButton = React.createClass({
   mixins: [IntlMixin],
-  componentWillMount: function() {
-    this.amb = AriaMenuButton({
-      onSelection: this.handleSelection,
-      closeOnSelection: false
-    });
-  },
+
   handleSelection: function(value, event) {
     if (value.confirm) {
       answer = confirm(this.getIntlMessage("DO_YOU_REALLY_WANT_TO_GO_HERE"));
@@ -23,37 +22,42 @@ var MenuButton = React.createClass({
     }
   },
   render: function() {
-    var MyButton = this.amb.Button;
-    var MyMenu = this.amb.Menu;
-    var MyMenuItem = this.amb.MenuItem;
-
-    var actions = this.props.actions;
     var self = this;
+    var actions = this.props.actions;
 
     var menuItems = actions.map(function(item, i) {
       return (
-        <li key={i}>
-          <MyMenuItem className='pure-menu-item AriaMenuButton-menuItem'
-            value={item} id={item.label} text={item.label}>
-             <FormattedMessage
-                    message={self.getIntlMessage(item.label)}  />
-            
-          </MyMenuItem>
-        </li>
+        <AmbMenuItem
+          key={i}
+          tag='li'
+          value={item}
+          id={item.label}
+          text={self.getIntlMessage(item.label)}
+          className='pure-menu-item AriaMenuButton-menuItem'
+        > 
+          <FormattedMessage
+            message={self.getIntlMessage(item.label)}  />
+        </AmbMenuItem>
       );
     });
+
     return (
-      <span className='AriaMenuButton pure-u-1'>
-        <MyButton className='AriaMenuButton-trigger pure-button pure-u-1'>
-        <FormattedMessage
-                    message={this.getIntlMessage(this.props.label)}  />
-        </MyButton>
-        <MyMenu className='pure-menu AriaMenuButton-menu'>
-          <ul className='pure-menu-list'>
+      <AmbWrapper
+        className='AriaMenuButton pure-u-1'
+        onSelection={self.handleSelection}
+      >
+        <AmbButton className='AriaMenuButton-trigger pure-button pure-u-1'>
+          <span className='AriaMenuButton-triggerText'>
+            <FormattedMessage
+            message={this.getIntlMessage(this.props.label)}  />
+          </span>
+        </AmbButton>
+        <AmbMenu className='pure-menu AriaMenuButton-menu'>
+        <ul className='pure-menu-list'>
           {menuItems}
         </ul>
-        </MyMenu>
-      </span>
+        </AmbMenu>
+      </AmbWrapper>
     );
   }
 })
