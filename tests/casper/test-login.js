@@ -18,14 +18,16 @@ describe('User', function() {
       this.click('a[href*=login]');
     });
 
-    casper.waitUntilVisible('form[action*=login]', function() {
+    casper.then(function() {
+      'form[action*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
          password: 'pass'}, true);
     });
 
-    casper.waitUntilVisible('form[action*=login]', function() {
+    casper.then(function() {
+      'form[action*=login]'.should.be.inDOM.and.be.visible;
       'div.errormessage'.should.be.inDOM.and.contain.text('Error: Password validation failed');
       'div.footer'.should.be.inDOM.and.be.visible;
     });
@@ -39,14 +41,16 @@ describe('User', function() {
       this.click('a[href*=login]');
     });
 
-    casper.waitUntilVisible('form[action*=login]', function() {
+    casper.then(function() {
+      'form[action*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'sparkleprincess',
          password: 'pass'}, true);
     });
 
-    casper.waitUntilVisible('form[action*=login]', function() {
+    casper.then(function() {
+      'form[action*=login]'.should.be.inDOM.and.be.visible;
       'div.errormessage'.should.be.inDOM.and.contain.text('Error: Password validation failed');
       'div.footer'.should.be.inDOM.and.be.visible;
     });
@@ -60,7 +64,8 @@ describe('User', function() {
       this.click('a[href*=login]');
     });
 
-    casper.waitUntilVisible('form[action*=login]', function() {
+    casper.then(function() {
+      'form[action*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
