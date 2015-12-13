@@ -13,3 +13,13 @@
 {/data}
 </div>
 {moreLink|s}
+{?facet}
+<br clear="all" />
+<div class="pure-g">
+  <div class="pure-u-1-3">
+{#facet}
+ <br /><a href="{link}">{@formatDate val=facet month="long" year="numeric" /} ({count} )</a>
+{/facet}
+</div>
+</div>
+{/facet}

@@ -64,9 +64,15 @@ var IndexBlockEditor = React.createClass({
         <input type="hidden" value="pragma" name={this.props.prefix + '[format]'} />
         <select name={this.props.prefix + '[query]'} size="1" 
           valueLink={this.linkState('query')}>
-         <option value="child">Query Children</option>
-         <option value="parents">Query Parents</option>
-         <option value="dir">Directory</option>
+         <option value="child">Query Children (Including this page and all descendents)</option>
+         <option value="parents">Query Parent Pages</option>
+         <option value="dir">Directory (Only first level children)</option>
+        </select>
+        <select name={this.props.prefix + '[sort]'} size="1" 
+          valueLink={this.linkState('sort')}>
+         <option value="path">In path order</option>
+         <option value="changed">By most recently changed</option>
+         <option value="created">By most recently created</option>
         </select>
         <label htmlFor={this.props.prefix + '[navbar]'} className="pure-checkbox">
             <FormattedMessage message={this.getIntlMessage('NAVBAR')} />
@@ -77,6 +83,11 @@ var IndexBlockEditor = React.createClass({
             <FormattedMessage message={this.getIntlMessage('PAGINATED')} />
             <input type="checkbox" value="true" name={this.props.prefix + '[pagination]'}
               checkedLink={this.linkState('pagination')} />
+        </label>
+        <label htmlFor={this.props.prefix + '[navbar]'} className="pure-checkbox">
+            <FormattedMessage message={this.getIntlMessage('FACETED_BY_MONTH')} />
+            <input type="checkbox" value="true" name={this.props.prefix + '[monthFacet]'}
+              checkedLink={this.linkState('monthFacet')} />
         </label>
         <select name={this.props.prefix + '[partial]'} size="1" 
           valueLink={this.linkState('partial')}>
