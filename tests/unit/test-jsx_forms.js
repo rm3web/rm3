@@ -4,7 +4,7 @@ var TestUtils = React.addons.TestUtils;
 var createComponent = require('../lib/create-component');
 var JsxForms = require('../../lib/jsx_forms.jsx');
 var i10n = require('../../lib/i10n');
-var SitePath = require ('../../lib/sitepath');
+var SitePath = require ('sitepath');
 
 describe('PathNameComponent', function() {
   it('should render with no leaf set', function() {

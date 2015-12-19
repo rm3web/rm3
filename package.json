@@ -62,6 +62,7 @@
     "serve-favicon": "~2.3.0",
     "serve-index": "~1.7.2",
     "serve-static": "~1.10.0",
+    "sitepath": "0.1.1",
     "speakingurl": "~6.0.0",
     "squel": "~4.2.0",
     "superagent": "~1.4.0",

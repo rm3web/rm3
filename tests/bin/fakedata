@@ -7,8 +7,7 @@ var db = require('../../lib/db');
 var async = require('async');
 
 function parse_sitepath(val) {
-  var pth = new sitepath(null,null);
-  pth.fromDottedPath(val);
+  var pth = new sitepath(val);
   return pth;
 }
 

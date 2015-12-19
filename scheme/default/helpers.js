@@ -1,4 +1,4 @@
-var SitePath = require ('../../lib/sitepath');
+var SitePath = require ('sitepath');
 var textblocks = require('textblocks')
 var Protoset = require('../../lib/protoset');
 var ActivityFeed = require('../../lib/activityfeed');

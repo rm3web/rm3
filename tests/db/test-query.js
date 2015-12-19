@@ -1,6 +1,6 @@
 var Conf = require ('../../lib/conf');
 var entity = require('../../lib/entity');
-var sitepath = require ('../../lib/sitepath');
+var sitepath = require ('sitepath');
 var update = require('../../lib/update');
 var query = require('../../lib/query');
 var db = require('../../lib/db');

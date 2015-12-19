@@ -1,6 +1,6 @@
 var entity = require ('../../lib/entity');
 var user = require ('../../lib/user');
-var SitePath = require ('../../lib/sitepath');
+var SitePath = require ('sitepath');
 var should = require('should');
 
 describe('user', function() {
