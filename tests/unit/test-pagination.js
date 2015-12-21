@@ -1,4 +1,4 @@
-var SitePath = require ('../../lib/sitepath');
+var SitePath = require ('sitepath');
 var Pagination = require ('../../lib/pagination');
 var should = require('should');
 var events = require("events");

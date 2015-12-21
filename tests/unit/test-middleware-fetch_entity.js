@@ -1,6 +1,6 @@
 var fetchEntity = require('../../lib/middleware/fetch_entity');
 var should = require('should');
-var sitepath = require ('../../lib/sitepath');
+var sitepath = require ('sitepath');
 var util = require('util'),
     errs = require('errs');
 

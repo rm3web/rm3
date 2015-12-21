@@ -2,7 +2,7 @@ var React = require('react');
 var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
-var SitePath = require ('./sitepath');
+var SitePath = require ('sitepath');
 
 /**
  * @class PathNameComponent

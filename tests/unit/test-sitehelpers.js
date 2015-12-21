@@ -1,5 +1,5 @@
 var SiteHelpers = require ('../../lib/sitehelpers');
-var SitePath = require ('../../lib/sitepath');
+var SitePath = require ('sitepath');
 var should = require('should');
 
 describe('sitehelpers', function() {
