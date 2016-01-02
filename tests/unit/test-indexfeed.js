@@ -1,6 +1,6 @@
 var IndexFeed = require ('../../lib/indexfeed');
 var should = require('should');
-var SitePath = require ('../../lib/sitepath');
+var SitePath = require ('sitepath');
 var events = require("events");
 
 describe('indexfeed', function() {

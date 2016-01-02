@@ -1,5 +1,5 @@
 var pathMap = require('../../lib/middleware/path_map');
-var sitepath = require ('../../lib/sitepath');
+var sitepath = require ('sitepath');
 var should = require('should');
 
 describe('middleware:pathMap', function() {

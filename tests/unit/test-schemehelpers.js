@@ -1,5 +1,5 @@
 var SchemeHelpers = require ('../../lib/schemehelpers');
-var SitePath = require ('../../lib/sitepath');
+var SitePath = require ('sitepath');
 var should = require('should');
 
 describe('schemehelpers', function() {
