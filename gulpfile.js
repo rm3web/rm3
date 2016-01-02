@@ -209,6 +209,40 @@ gulp.task('casper-users', ['casper-db', 'casper-schema', 'casper-fixtures'], fun
     }}))
 })
 
+gulp.task('api-db', shell.task([
+  'dropdb --if-exists rm3api && createdb rm3api'
+]))
+
+gulp.task('api-schema', ['api-db'], shell.task([
+  'psql rm3api < db-schema.sql'
+]))
+
+gulp.task('api-fixtures', ['api-db', 'api-schema'], function() {
+  return gulp.src('tests/page-fixtures/*.json', {read: false})
+    .pipe(shell([
+      './bin/rm3load -f <%= file.path %>'
+    ], {env: {
+      RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3api'
+    }}))
+})
+
+
+gulp.task('api-users', ['api-db', 'api-schema', 'api-fixtures'], function() {
+  return gulp.src('')
+    .pipe(shell([
+      './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password',
+      './bin/rm3admin assign wirehead root',
+      './bin/rm3admin permit root edit \\*',
+      './bin/rm3admin permit root delete \\*',
+      './bin/rm3admin permit root view \\*',
+      './bin/rm3admin permit root grant \\*',
+      './bin/rm3admin permit root viewdraft \\*',
+      './bin/rm3admin permit nobody view wh.!users'
+    ], {env: {
+      RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3api'
+    }}))
+})
+
 function spawnServerForTests(db, executable, params, timeout, setup, next) {
   var ctx = { cwd: process.cwd(),
     env: clone(process.env)
@@ -237,6 +271,30 @@ function runCasperTests(tests, next) {
     next(success);
   });
 }
+
+
+gulp.task('api-tests', ['api-users'], function(cb) {
+  var tests = ['./tests/api/*'];
+
+  spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3api',
+    './bin/rm3front', [], 6000, function(server) {
+      server.stderr.on('data', function (data) {
+        gutil.log('ServerErr:', data.toString().slice(0, -1));;
+      });
+      server.stdout.on('data', function (data) {
+        gutil.log('Server:', data.toString().slice(0, -1));
+      });
+    }, function(server) {
+      process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3api';
+      return gulp.src('tests/api/*.js', {read: false})
+            .pipe(mocha({})
+              .on('end', function() {
+                gutil.log('killing server');
+                server.kill('SIGINT');
+                cb();
+              }))
+    });
+});
 
 gulp.task('casper-tests', ['casper-users'], function(cb) {
   var tests = ['./tests/casper/*'];
