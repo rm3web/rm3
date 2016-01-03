@@ -1,0 +1,8 @@
+rm3.sublime-project
+rm3.sublime-workspace
+scheme/default/static/bundle.css
+scheme/default/static/bundles/
+scheme/default/static/images/
+coverage/
+node_modules/
+.env
