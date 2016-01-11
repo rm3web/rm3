@@ -16,7 +16,7 @@
   "browserify": {
     "transform": [
       [
-        "browserify-jsx"
+        "babelify"
       ]
     ]
   },
@@ -59,7 +59,7 @@
     "react-dom": "~0.14.3",
     "react-intl": "1.2.0",
     "rm3-page-router": "0.0.1",
-    "rm3-react-controls": "0.0.3",
+    "rm3-react-controls": "0.0.4",
     "serve-favicon": "~2.3.0",
     "serve-index": "~1.7.2",
     "serve-static": "~1.10.0",
@@ -67,16 +67,16 @@
     "speakingurl": "~8.0.0",
     "squel": "~4.2.0",
     "superagent": "~1.6.1",
-    "textblocks": "git://github.com/wirehead/textblocks.git#master",
-    "textblocks-react-editor": "0.0.3",
+    "textblocks": "0.0.9",
+    "textblocks-react-editor": "0.0.4",
     "validator": "~4.1.0",
     "winston": "~1.1.0",
     "winston-context": "0.0.7",
     "xss-filters": "~1.2.6"
   },
   "devDependencies": {
-    "browserify": "~11.1.0",
-    "browserify-jsx": "~1.0.0",
+    "babelify": "^7.2.0",
+    "browserify": "~13.0.0",
     "casper-chai": "^0.2.1",
     "casperjs": "^1.1.0-beta3",
     "chai": "^2.3.0",
