@@ -67,7 +67,7 @@
     "speakingurl": "~8.0.0",
     "squel": "~4.2.0",
     "superagent": "~1.6.1",
-    "textblocks": "git://github.com/wirehead/textblocks.git#master",
+    "textblocks": "0.0.9",
     "textblocks-react-editor": "0.0.4",
     "validator": "~4.1.0",
     "winston": "~1.1.0",
