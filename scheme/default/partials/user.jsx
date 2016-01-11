@@ -3,7 +3,7 @@ var ReactIntl = require('react-intl');
 var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 var UserForm = require('../../../lib/forms/user');
-var JsxForms = require('../../../lib/jsx_forms.jsx');
+var JsxForms = require('rm3-react-controls');
 var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
 
