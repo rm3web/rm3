@@ -150,6 +150,13 @@ var TextBlockComponent = React.createClass({
       format: 'section'});
   },
 
+  deleteBlock: function(i,e) {
+    e.preventDefault();
+    var blocks = this.state.blocks;
+    blocks.splice(i,1);
+    this.setState({blocks: blocks});
+  },
+
   render: function() {
     var buttons;
     if (this.props.proto === 'index') {
@@ -166,9 +173,14 @@ var TextBlockComponent = React.createClass({
     if (this.state.format === 'section') {
       var self = this;
       var blocks = this.state.blocks.map(function(block, i) {
-          var outBlock;
+          var topButton, outBlock;
+          if (i !== 0) {
+            topButton = (<button key={'x_' + i} 
+              onClick={self.deleteBlock.bind(self,i)}>x</button>);
+          }
           outBlock = mapBlock(block, i, self.props.prefix);
-          return (<div key={i} className="textblockbox">
+          return (<div className="textblockbox">
+            {topButton}
             {outBlock}
             </div>);
         });
