@@ -3,7 +3,7 @@
 var update = require('../lib/update');
 var entity = require('../lib/entity');
 var query = require('../lib/query');
-var sitepath = require ('../lib/sitepath');
+var sitepath = require ('sitepath');
 var db = require('../lib/db');
 var program = require('commander');
 var pjson = require('../package.json');

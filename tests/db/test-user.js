@@ -1,6 +1,6 @@
 var Conf = require ('../../lib/conf');
 var entity = require('../../lib/entity');
-var sitepath = require ('../../lib/sitepath');
+var sitepath = require ('sitepath');
 var async = require('async');
 var uuid = require('node-uuid');
 var user = require('../../lib/user');

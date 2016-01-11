@@ -1,6 +1,6 @@
 var Conf = require ('../../lib/conf');
 var entity = require('../../lib/entity');
-var sitepath = require ('../../lib/sitepath');
+var sitepath = require ('sitepath');
 var query = require ('../../lib/query');
 var events = require("events");
 var should = require('should');
@@ -43,11 +43,11 @@ describe('query gen', function() {
       {args: [root, 'wh', 'child', 'count', {after: 123}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.path <@ $1) AND (created >= $2)'},
       {args: [root, 'wh', 'child', 'count', {navbar: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\') AND ("objStr" = \'navbar\')'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'navbar\')'},
       {args: [root, 'wh', 'child', 'count', {comment: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) LEFT JOIN wh_entity actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\') AND ("objStr" = \'comment\')'},
+       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) LEFT JOIN wh_entity actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
       {args: [root, 'wh', 'child', 'count', {tag: 'bears'}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'plain\') AND ("objStr" = $2)'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'plain\' AND "objStr" = $2)'},
       {args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {}],
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.path <@ $1) ORDER BY modified ASC, "entityId" ASC'},
       {args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {}],
