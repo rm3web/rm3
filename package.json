@@ -67,6 +67,7 @@
     "squel": "~4.2.0",
     "superagent": "~1.6.1",
     "textblocks": "git://github.com/wirehead/textblocks.git#master",
+    "textblocks-react-editor": "0.0.3",
     "validator": "~4.1.0",
     "winston": "~1.1.0",
     "winston-context": "0.0.7",
