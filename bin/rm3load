@@ -6,6 +6,9 @@ var sitepath = require ('sitepath');
 var db = require('../lib/db');
 var program = require('commander');
 var pjson = require('../package.json');
+var winston = require('winston');
+
+winston.cli();
 
 function parse_sitepath(val) {
   var pth = new sitepath(null,null);
@@ -20,19 +23,24 @@ program
   .parse(process.argv);
 
 function loadData(parsedData) {
-  console.log(parsedData);
   ent = new entity.Entity();
   ent.fromDb({rows: [parsedData]});
   if (program.path) {
     ent._path = program.path
   }
-  update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'loaded via rm3load', function(){
-    console.log('done')
-    db.gunDatabase();
-  });
+  update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
+    'loaded via rm3load', function(err, entityId, revisionId, revisionNum) {
+      if (err) {
+        winston.error('Error:', err);
+      } else {
+        winston.info('Created ', {entityId: entityId, revisionId: revisionId, revisionNum: revisionNum});
+      }
+      db.gunDatabase();
+    });
 }
 
 if (program.file === '-') {
+  winston.info('Loading from stdin');
   var stdin = process.stdin
   var inputChunks = [];
 
@@ -51,6 +59,7 @@ if (program.file === '-') {
     loadData(parsedData);
   });
 } else {
+  winston.info('Loading from %s', program.file);
   var fs = require('fs');
   var inputData = fs.readFileSync(program.file);
   var parsedData = JSON.parse(inputData);
