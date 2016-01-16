@@ -3,16 +3,18 @@
 var update = require('../lib/update');
 var entity = require('../lib/entity');
 var query = require('../lib/query');
-var sitepath = require ('sitepath');
+var SitePath = require ('sitepath');
 var db = require('../lib/db');
 var program = require('commander');
 var pjson = require('../package.json');
 var user = require('../lib/user');
 var validator = require('validator');
 var crypto = require('crypto');
+var loadTemplate = require('../lib/loadtemplate');
+var jsonfile = require('jsonfile');
 
 function parse_sitepath(val) {
-  var pth = new sitepath(null,null);
+  var pth = new SitePath(null,null);
   pth.fromDottedPath(val);
   return pth;
 }
@@ -27,7 +29,7 @@ program
   .option("--password [password]", "Password")
   .option("-u, --url [url]", "Profile URL")
   .option("-e, --email [email]", "Email")
-  .option("--userroot [root]", "User Root path", parse_sitepath, new sitepath(['wh','users']))
+  .option("--userroot [root]", "User Root path", parse_sitepath, new SitePath(['wh','users']))
   .action(function(name, fullname, options){
     var now = new Date();
     if (!(name && fullname)) {
@@ -87,9 +89,23 @@ program
   });
 
 program
+  .command('loadtemplate [file] [path]')
+  .description('loads a content template file to rm3 instance with root of path')
+  .action(function(file, path, options) {
+    if (!(file && path)) {
+      console.log('File and path are required')
+    }
+    loadTemplate(db, entity.Entity, update, 
+      jsonfile.readFileSync(file), new SitePath(path), function(err) {
+      console.log(err);
+      db.gunDatabase();
+    })
+  })
+
+program
   .command('assign [name] [role]')
   .description('assign a user to a role')
-  .option("--userroot [root]", "User Root path", parse_sitepath, new sitepath(['wh','users']))
+  .option("--userroot [root]", "User Root path", parse_sitepath, new SitePath(['wh','users']))
   .action(function(name, role, options){
     if (!(name && role)) {
       console.log('Name and role are required')
@@ -110,7 +126,7 @@ program
 program
   .command('userinfo [name]')
   .description('information about the user')
-  .option("--userroot [root]", "User Root path", parse_sitepath, new sitepath(['wh','users']))
+  .option("--userroot [root]", "User Root path", parse_sitepath, new SitePath(['wh','users']))
   .action(function(name, options){
     if (!(name)) {
       console.log('Name is required')
@@ -183,7 +199,7 @@ program
 program
   .command('deassign [name] [role]')
   .description('removes a user from a role')
-  .option("--userroot [root]", "User Root path", parse_sitepath, new sitepath(['wh','users']))
+  .option("--userroot [root]", "User Root path", parse_sitepath, new SitePath(['wh','users']))
   .action(function(name, role, options){
     if (!(name && role)) {
       console.log('Name and role are required')
