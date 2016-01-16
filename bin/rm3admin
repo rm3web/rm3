@@ -12,6 +12,9 @@ var validator = require('validator');
 var crypto = require('crypto');
 var loadTemplate = require('../lib/loadtemplate');
 var jsonfile = require('jsonfile');
+var winston = require('winston');
+
+winston.cli();
 
 function parse_sitepath(val) {
   var pth = new SitePath(null,null);
@@ -33,7 +36,7 @@ program
   .action(function(name, fullname, options){
     var now = new Date();
     if (!(name && fullname)) {
-      console.log('Name and fullname are required')
+      winston.warn('Name and fullname are required')
       return;
     }
     var ent = new entity.Entity();
@@ -45,7 +48,7 @@ program
       if (validator.isURL(options.url)) {
         ent.summary.profileUrl = options.url;
       } else {
-        console.log('invalid URL')
+        winston.warn('invalid URL')
         return;
       }
     }
@@ -54,7 +57,7 @@ program
       if (validator.isEmail(options.email)) {
         ent.data.email = options.email;
       } else {
-        console.log('invalid Email')
+        winston.warn('invalid Email')
         return;
       }
     }
@@ -65,22 +68,20 @@ program
     } else {
       var buf = crypto.randomBytes(6);
       pw = buf.toString('base64');
-      console.log('Randomly generated password is:', pw)
+      winston.info('Randomly generated password is:', pw)
     }
     user.encodePassword(pw, ent, function(err) {
       if (err) {
-        console.log('error:')
-        console.log(err);
+        winston.error('error:', err);
         return;
       }
       
       update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
                            'cli', function(err, entity_id, revision_id, revision_num) {
         if (err) {
-          console.log('error:');
-          console.log(err);
+          winston.error('error:', err);
         } else {
-          console.log('Created');
+          winston.info('Created');
           db.gunDatabase();
         }
       });
@@ -93,12 +94,16 @@ program
   .description('loads a content template file to rm3 instance with root of path')
   .action(function(file, path, options) {
     if (!(file && path)) {
-      console.log('File and path are required')
+      winston.warn('File and path are required')
     }
     loadTemplate(db, entity.Entity, update, 
       jsonfile.readFileSync(file), new SitePath(path), function(err) {
-      console.log(err);
-      db.gunDatabase();
+      if (err) {
+        winston.error('error:', err);
+      } else {
+        winston.info('Template complete');
+        db.gunDatabase();
+      }
     })
   })
 
@@ -108,16 +113,15 @@ program
   .option("--userroot [root]", "User Root path", parse_sitepath, new SitePath(['wh','users']))
   .action(function(name, role, options){
     if (!(name && role)) {
-      console.log('Name and role are required')
+      winston.warn('Name and role are required')
       return;
     }
     update.assignUserToRole(db, {}, {context: 'ROOT'}, options.userroot.down(name), role,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
-        console.log('error:');
-        console.log(err);
+        winston.error('error:', err);
       } else {
-        console.log('Created');
+        winston.info('Template complete');
         db.gunDatabase();
       }
     });
@@ -129,21 +133,20 @@ program
   .option("--userroot [root]", "User Root path", parse_sitepath, new SitePath(['wh','users']))
   .action(function(name, options){
     if (!(name)) {
-      console.log('Name is required')
+      winston.warn('Name is required')
       return;
     }
-    console.log('--')
-    var resp = query.permissions_for_user(db, options.userroot.down(name));
+    winston.data('Permissions for user %s:', name)
+    var resp = query.permissionsForUser(db, {}, options.userroot.down(name));
     resp.on('article', function(article) {
-      console.log('Role: %s\tPermission: %s\tPath %s',
-        article.role, article.permission, article.path.toDottedPath());
+      winston.data('Role: %s\tPermission: %s\tPath %s',
+        article.role, article.permission, article.path);
     });
     resp.on('error', function(err) {
-      console.log('error:')
-      console.log(err);
+      winston.error('error:', err);
     });
     resp.on('end', function() {
-      console.log('--');
+      winston.data('---');
       db.gunDatabase();
     });
   });
@@ -153,20 +156,19 @@ program
   .description('information about the role')
   .action(function(role, options){
     if (!(role)) {
-      console.log('Role is required')
+      winston.warn('Role is required')
       return;
     }
-    console.log('--')
-    var resp = query.list_users_in_role(db, role);
+    winston.data('Users in role %s:', role);
+    var resp = query.listUsersInRole(db, {}, role);
     resp.on('article', function(article) {
-      console.log(article.user.toDottedPath());
+      winston.data(article.user.toDottedPath());
     });
     resp.on('error', function(err) {
-      console.log('error:')
-      console.log(err);
+      winston.error('error:', err);
     });
     resp.on('end', function() {
-      console.log('--');
+      winston.data('---');
       db.gunDatabase();
     });
   });
@@ -178,20 +180,19 @@ program
   .description('information about the role')
   .action(function(role, options){
     if (!(role)) {
-      console.log('Role is required')
+      winston.warn('Role is required')
       return;
     }
-    console.log('--')
-    var resp = query.list_permissions_in_role(db, role);
+    winston.data('Permissions for role %s:', role);
+    var resp = query.listPermissionsInRole(db, {}, role);
     resp.on('article', function(article) {
-      console.log('Permission: %s\tPath %s', article.permission, article.path.toDottedPath());
+      winston.data('Permission: %s\tPath %s', article.permission, article.path);
     });
     resp.on('error', function(err) {
-      console.log('error:')
-      console.log(err);
+      winston.error('error:', err);
     });
     resp.on('end', function() {
-      console.log('--');
+      winston.data('---');
       db.gunDatabase();
     });
   });
@@ -202,16 +203,15 @@ program
   .option("--userroot [root]", "User Root path", parse_sitepath, new SitePath(['wh','users']))
   .action(function(name, role, options){
     if (!(name && role)) {
-      console.log('Name and role are required')
+      winston.warn('Name and role are required')
       return;
     }
     update.removeUserFromRole(db, {}, {context: 'ROOT'}, options.userroot.down(name), role,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
-        console.log('error:');
-        console.log(err);
+        winston.error('error:', err);
       } else {
-        console.log('Deleted');
+        winston.info('Deleted');
         db.gunDatabase();
       }
     });
@@ -223,16 +223,15 @@ program
   .description('add a permission to a role')
   .action(function(role, permission, path, options){
     if (!(permission && role && path)) {
-      console.log('role, permission, and path are required')
+      winston.warn('role, permission, and path are required')
       return;
     }
     update.addPermissionToRole(db, {}, {context: 'ROOT'}, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
-        console.log('error:');
-        console.log(err);
+        winston.error('error:', err);
       } else {
-        console.log('Created');
+        winston.info('Created');
         db.gunDatabase();
       }
     });
@@ -243,16 +242,15 @@ program
   .description('remove a permission from a role')
   .action(function(role, permission, path, options){
     if (!(permission && role && path)) {
-      console.log('role, permission, and path are required')
+      winston.warn('role, permission, and path are required')
       return;
     }
     update.removePermissionFromRole(db, {}, {context: 'ROOT'}, role, permission, path,
                            'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
-        console.log('error:');
-        console.log(err);
+        winston.error('error:', err);
       } else {
-        console.log('Deleted');
+        winston.info('Deleted');
         db.gunDatabase();
       }
     });
