@@ -10,7 +10,7 @@ describe('tags', function() {
         console.log(err);
         should.fail();
       }
-      console.log(res.body);
+      res.body.should.eql({"predicates":[{"path":"wh.meta.dc.coverage","title":"Coverage","metadataClass":"plain"},{"path":"wh.meta.dc.creator","title":"Creator","metadataClass":"plain"},{"path":"wh.meta.dc.subject","title":"Subject","metadataClass":"plain"}]});
       cb();
     });
   });
