@@ -7,7 +7,6 @@ var TagHelpers = require('../../lib/taghelpers');
 var SiteHelpers = require('../../lib/sitehelpers');
 var SchemeHelpers = require('../../lib/schemehelpers');
 var Pagination = require('../../lib/pagination');
-var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 
 exports = module.exports = function(dust, db, query) {
 
@@ -176,7 +175,7 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var tags = new LinkedDataBox(context.resolve(params.obj));
+            var tags = context.resolve(params.obj);
             var showNav = context.resolve(params.showNav);
             tags.iterateTags(function(pred, obj, idx) {
                 var render = true;

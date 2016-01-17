@@ -91,10 +91,9 @@ describe('entity', function() {
          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
       summary: {title: 'blrg', abstract: 'some text goes here'},
       data: {posting: '<div>Test test</div>'},
-      tags: {},
       permissions: {}};
 
-      v.should.be.eql(e.view());
+      e.view().should.have.properties(v);
     });
   });
 
@@ -142,10 +141,9 @@ describe('entity', function() {
          created: now},
       summary: {title: 'blrg', abstract: 'some text goes here'},
       data: {posting: '<div>Test test</div>'},
-      tags: {},
       permissions: {}};
 
-      v.should.be.eql(e.view());
+      e.view().should.have.properties(v);
     });
     it('should only run once', function() {
       (function() {
@@ -187,13 +185,12 @@ describe('entity', function() {
         e.addTag(new sitepath(['wh', 'ponies']), new sitepath(['wh', 'princess']));
         e.addTag('navigation', 'navbar');
 
+        e._tags.hasTag('plain', {"@id": "sparklefish", "objClass": "tag"}).should.equal(true);
+        e._tags.hasTag('plain', {"@id": "meowcat", "objClass": "tag"}).should.equal(true);
+        e._tags.hasTag('navigation', {"@id": "navbar", "objClass": "tag"}).should.equal(true);
 
-        e._tags.hasTag('plain', { "@id": "sparklefish", "objClass": "tag" }).should.equal(true);
-        e._tags.hasTag('plain', { "@id": "meowcat", "objClass": "tag" }).should.equal(true);
-        e._tags.hasTag('navigation', { "@id": "navbar", "objClass": "tag" }).should.equal(true);
-
-        e._tags.hasTag('wh.ponies', { '@id': 'twilight', 'objClass': 'tag'}).should.equal(true);
-        e._tags.hasTag('wh.ponies', { '@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(true);
+        e._tags.hasTag('wh.ponies', {'@id': 'twilight', 'objClass': 'tag'}).should.equal(true);
+        e._tags.hasTag('wh.ponies', {'@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(true);
       });
 
       it('should reject invalid values', function() {
@@ -213,25 +210,25 @@ describe('entity', function() {
 
         e.removeTag(null, 'meowfish');
 
-        e._tags.hasTag('plain', { "@id": "sparklecat", "objClass": "tag" }).should.equal(true);
-        e._tags.hasTag('navigation', { "@id": "navbar", "objClass": "tag" }).should.equal(true);
+        e._tags.hasTag('plain', {"@id": "sparklecat", "objClass": "tag"}).should.equal(true);
+        e._tags.hasTag('navigation', {"@id": "navbar", "objClass": "tag"}).should.equal(true);
 
-        e._tags.hasTag('wh.ponies', { '@id': 'sparkle', 'objClass': 'tag'}).should.equal(true);
-        e._tags.hasTag('wh.ponies', { '@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(true);
+        e._tags.hasTag('wh.ponies', {'@id': 'sparkle', 'objClass': 'tag'}).should.equal(true);
+        e._tags.hasTag('wh.ponies', {'@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(true);
 
-        e._tags.hasTag('plain', { "@id": "meowcat", "objClass": "tag" }).should.equal(false);
+        e._tags.hasTag('plain', {"@id": "meowcat", "objClass": "tag"}).should.equal(false);
 
         e.removeTag(null, 'sparklecat');
-        e._tags.hasTag('plain', { "@id": "sparklecat", "objClass": "tag" }).should.equal(false);
+        e._tags.hasTag('plain', {"@id": "sparklecat", "objClass": "tag"}).should.equal(false);
 
         e.removeTag(new sitepath(['wh', 'ponies']), 'sparkle');
-        e._tags.hasTag('wh.ponies', { '@id': 'sparkle', 'objClass': 'tag'}).should.equal(false);
+        e._tags.hasTag('wh.ponies', {'@id': 'sparkle', 'objClass': 'tag'}).should.equal(false);
 
         e.removeTag(new sitepath(['wh', 'ponies']), new sitepath(['wh', 'princess']));
-        e._tags.hasTag('wh.ponies', { '@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(false);
+        e._tags.hasTag('wh.ponies', {'@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(false);
 
         e.removeTag('navigation', 'navbar');
-        e._tags.hasTag('navigation', { "@id": "navbar", "objClass": "tag" }).should.equal(false);
+        e._tags.hasTag('navigation', {"@id": "navbar", "objClass": "tag"}).should.equal(false);
       });
 
       it('should reject invalid values', function() {
