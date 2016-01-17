@@ -47,6 +47,7 @@
     "intl-format-cache": "~2.0.4",
     "intl-messageformat": "~1.1.0",
     "jsonfile": "^2.2.3",
+    "linked-data-box": "0.0.3",
     "morgan": "~1.6.1",
     "node-uuid": "^1.4.3",
     "passport": "~0.3.0",

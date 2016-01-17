@@ -9,7 +9,7 @@ describe('update', function() {
     var insertQuery = 'INSERT INTO wh_entity (path, stub, "entityId", "revisionId", \
 "revisionNum", proto, modified, created, summary, data, tags) VALUES ($1, $2, \
 $3, $4, $5, $6, $7, $8, $9, $10, $11)';
-    var insertTagQuery = 'INSERT INTO wh_tag ("subjPath", "predClass", \
+    var insertTagQuery = 'INSERT INTO wh_tag ("subjPath", "objClass", \
 "predPath", "objStr") VALUES ($1, $2, $3, $4)';
 
     var now = new Date();

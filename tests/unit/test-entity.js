@@ -1,6 +1,7 @@
 var entity = require ('../../lib/entity');
 var sitepath = require ('sitepath');
 var should = require('should');
+var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 
 describe('entity', function() {
   describe('#fromDb', function() {
@@ -54,7 +55,7 @@ describe('entity', function() {
       e2.summary =
       {"title": "blrg",
        "abstract": "some text goes here"};
-      e2._tags = {};
+      e2._tags = new LinkedDataBox();
 
       e.should.be.eql(e2);
     });
@@ -186,18 +187,13 @@ describe('entity', function() {
         e.addTag(new sitepath(['wh', 'ponies']), new sitepath(['wh', 'princess']));
         e.addTag('navigation', 'navbar');
 
-        e._tags.should.have.property('plain');
-        e._tags.should.have.property('navigation');
-        e._tags.plain.should.have.property('sparklefish');
-        e._tags.plain.should.have.property('meowcat');
-        e._tags.navigation.should.have.property('navbar');
-        e._tags.plain.meowcat.should.have.property('predClass');
-        e._tags.plain.meowcat.predClass.should.equal('tag');
-        e._tags.should.have.property('wh.ponies');
-        e._tags['wh.ponies'].should.have.property('twilight');
-        e._tags['wh.ponies'].twilight.predClass.should.equal('tag');
-        e._tags['wh.ponies'].should.have.property('wh.princess');
-        e._tags['wh.ponies']['wh.princess'].predClass.should.equal('ontag');
+
+        e._tags.hasTag('plain', { "@id": "sparklefish", "objClass": "tag" }).should.equal(true);
+        e._tags.hasTag('plain', { "@id": "meowcat", "objClass": "tag" }).should.equal(true);
+        e._tags.hasTag('navigation', { "@id": "navbar", "objClass": "tag" }).should.equal(true);
+
+        e._tags.hasTag('wh.ponies', { '@id': 'twilight', 'objClass': 'tag'}).should.equal(true);
+        e._tags.hasTag('wh.ponies', { '@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(true);
       });
 
       it('should reject invalid values', function() {
@@ -216,21 +212,26 @@ describe('entity', function() {
         e.addTag('navigation', 'navbar');
 
         e.removeTag(null, 'meowfish');
-        e._tags.should.have.property('plain');
-        e._tags.should.have.property('wh.ponies');
-        e._tags.plain.should.have.property('sparklecat');
-        e._tags.plain.should.not.have.property('meowcat');
+
+        e._tags.hasTag('plain', { "@id": "sparklecat", "objClass": "tag" }).should.equal(true);
+        e._tags.hasTag('navigation', { "@id": "navbar", "objClass": "tag" }).should.equal(true);
+
+        e._tags.hasTag('wh.ponies', { '@id': 'sparkle', 'objClass': 'tag'}).should.equal(true);
+        e._tags.hasTag('wh.ponies', { '@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(true);
+
+        e._tags.hasTag('plain', { "@id": "meowcat", "objClass": "tag" }).should.equal(false);
 
         e.removeTag(null, 'sparklecat');
-        e._tags.should.not.have.property('plain');
+        e._tags.hasTag('plain', { "@id": "sparklecat", "objClass": "tag" }).should.equal(false);
 
         e.removeTag(new sitepath(['wh', 'ponies']), 'sparkle');
-        e._tags.should.have.property('wh.ponies');
+        e._tags.hasTag('wh.ponies', { '@id': 'sparkle', 'objClass': 'tag'}).should.equal(false);
+
         e.removeTag(new sitepath(['wh', 'ponies']), new sitepath(['wh', 'princess']));
-        e._tags.should.not.have.property('wh.ponies');
+        e._tags.hasTag('wh.ponies', { '@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(false);
 
         e.removeTag('navigation', 'navbar');
-        e._tags.should.not.have.property('navigation');
+        e._tags.hasTag('navigation', { "@id": "navbar", "objClass": "tag" }).should.equal(false);
       });
 
       it('should reject invalid values', function() {

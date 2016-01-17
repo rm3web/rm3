@@ -7,6 +7,7 @@ var TagHelpers = require('../../lib/taghelpers');
 var SiteHelpers = require('../../lib/sitehelpers');
 var SchemeHelpers = require('../../lib/schemehelpers');
 var Pagination = require('../../lib/pagination');
+var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 
 exports = module.exports = function(dust, db, query) {
 
@@ -175,30 +176,22 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.tags = function (chunk, context, bodies, params) {
         return chunk.map(function(chunk) {
-            var tags = context.resolve(params.obj);
+            var tags = new LinkedDataBox(context.resolve(params.obj));
             var showNav = context.resolve(params.showNav);
-            for (var predKey in tags) {
-                if (tags.hasOwnProperty(predKey)) {
-                    var pred = tags[predKey];
-                    for (var objKey in pred) {
-                        var obj = pred[objKey];
-                        var predClass = obj.predClass;
-                        var render = true;
-                        if(showNav) {
-                            if (predClass === 'tag' && predKey === 'navigation') {
-                                render = false;
-                            }
-                        }
-                        if(render) {
-                            chunk.render(bodies.block, context.push(
-                                {predKey: predKey,
-                                 objKey: objKey,
-                                 predClass: predClass, 
-                                 obj:obj}));
-                        }
+            tags.iterateTags(function(pred, obj, idx) {
+                var render = true;
+                if (showNav) {
+                    if (pred === 'navigation') {
+                        render = false;
                     }
                 }
-            }
+                if (render) {
+                    chunk.render(bodies.block, context.push( 
+                        {objKey: obj['@id'],
+                         predKey: pred,
+                         obj: obj}));
+                }
+            })
             chunk.end();
         })
     }

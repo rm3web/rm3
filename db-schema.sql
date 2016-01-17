@@ -42,7 +42,7 @@ CREATE TABLE wh_tag (
 	"predPath" ltree,
 	"objStr" text,
 	"subjPath" ltree,
-	"predClass" text
+	"objClass" text
 );
 
 CREATE TABLE wh_permission_to_role (

@@ -139,13 +139,13 @@ function stepValidateEntityExistence(desc, ent) {
 
 function stepValidateTagExistence(desc, ent) {
   step(desc, function(done) {
-    var query = "SELECT \"predPath\", \"objStr\", \"predClass\" FROM wh_tag WHERE \"subjPath\" = '" +
+    var query = "SELECT \"predPath\", \"objStr\", \"objClass\" FROM wh_tag WHERE \"subjPath\" = '" +
       ent.path().toDottedPath() + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
       result.rows[0].predPath.should.equal('navigation');
       result.rows[0].objStr.should.equal('navbar');
-      result.rows[0].predClass.should.equal('tag');
+      result.rows[0].objClass.should.equal('tag');
       done(err);
     });
   });
@@ -153,7 +153,7 @@ function stepValidateTagExistence(desc, ent) {
 
 function stepValidateTagNonExistence(desc, ent) {
   step(desc, function(done) {
-    var query = "SELECT \"predPath\", \"objStr\", \"predClass\" FROM wh_tag WHERE \"subjPath\" = '" +
+    var query = "SELECT \"predPath\", \"objStr\", \"objClass\" FROM wh_tag WHERE \"subjPath\" = '" +
       ent.path().toDottedPath() + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
@@ -165,13 +165,13 @@ function stepValidateTagNonExistence(desc, ent) {
 
 function stepValidateTagExistencePath(desc, path) {
   step(desc, function(done) {
-    var query = "SELECT \"predPath\", \"objStr\", \"predClass\" FROM wh_tag WHERE \"subjPath\" = '" +
+    var query = "SELECT \"predPath\", \"objStr\", \"objClass\" FROM wh_tag WHERE \"subjPath\" = '" +
       path.toDottedPath() + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
       result.rows[0].predPath.should.equal('navigation');
       result.rows[0].objStr.should.equal('navbar');
-      result.rows[0].predClass.should.equal('tag');
+      result.rows[0].objClass.should.equal('tag');
       done(err);
     });
   });
