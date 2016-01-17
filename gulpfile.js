@@ -237,7 +237,8 @@ gulp.task('api-users', ['api-db', 'api-schema', 'api-fixtures'], function() {
       './bin/rm3admin permit root view \\*',
       './bin/rm3admin permit root grant \\*',
       './bin/rm3admin permit root viewdraft \\*',
-      './bin/rm3admin permit nobody view wh.!users'
+      './bin/rm3admin permit nobody view wh.!users',
+      './bin/rm3admin loadtemplate meta.json wh'
     ], {env: {
       RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3api'
     }}))
