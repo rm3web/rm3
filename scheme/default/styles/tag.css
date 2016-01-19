@@ -3,10 +3,33 @@
   display: inline-block;
 }
 
-.tagPill { border: 1px solid #B8B9BA; border-radius: 0px 5px 5px 0px; background-color: transparent; padding: 5px 5px 5px 10px; margin: 2px 3px 2px 1px; display: inline-block; }
+.tagPill { 
+  border: 1px solid #B8B9BA; 
+  border-radius: 0 5px 5px 0; 
+  background-color: transparent; 
+  padding: 5px 5px 5px 10px; 
+  margin: 2px 3px 2px 1px; 
+  display: inline-block; 
+}
 
-.predicatePill { border: 1px solid #B8B9BA; border-radius: 5px 0px 0px 5px; background-color: transparent; padding: 5px 5px 5px 10px; margin: 2px 1px 3px 2px; display: inline-block; }
+.predicatePill { 
+  border: 1px solid #B8B9BA; 
+  border-radius: 5px 0 0 5px; 
+  background-color: transparent; 
+  padding: 5px 5px 5px 10px; 
+  margin: 2px 1px 3px 2px; 
+  display: inline-block; 
+}
 
-.deleteTag { border: 0; color: #ff604c; padding: 0px 0px 0px 4px; text-decoration: none; outline: none; cursor: pointer; background-color: transparent; font-weight: bold; }
+.deleteTag { 
+  border: 0; 
+  color: #ff604c; 
+  padding: 0 0 0 4px; 
+  text-decoration: none; 
+  cursor: pointer; 
+  background-color: 
+  transparent; font-weight: bold; 
+}
+
 .deleteTag:hover { color: red; }
 .deleteTag:before { content: '✖'; }
