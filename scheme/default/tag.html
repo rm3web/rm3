@@ -1,45 +1,9 @@
 {>"layouts/full_with_nav"/}
 {<view-content}
 
-  <table class="pure-table">
-  <thead>
-<th></th><th>{@formatMessage _key="PREDICATE"/}</th><th>{@formatMessage _key="OBJECT"/}</th><td></th>
-</thead>
-
-  {@tags obj=tags}
-
-{@math key="{$idx}" method="mod" operand="2"}
- {@eq value=0}
-        <tr class="pure-table-odd">
-    {:else}
-        <tr class="pure-table-even">
-    {/eq}
-{/math}
-<td></td><td>{predClass}: {predKey}</td><td>{objKey}</td>
-<td>
-    <form method="post" action="tag.html" class="pure-form pure-form-stacked">
-    <input type="hidden" name="action" value="rmtag" />
-    <input type="hidden" name="predClass" value="{predClass}" />
-    <input type="hidden" name="predKey" value="{predKey}" />
-    <input type="hidden" name="objKey" value="{objKey}" />
-    <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="DELETE"/}</button>
-    </form>
-</td>
-</tr>
-  {/tags}
-</table>
-
-  <form id="addTag" method="post" action="tag.html" class="pure-form pure-form-stacked">
-    {@formatMessage _key="ADD"/}:
-    <input type="hidden" name="action" value="addtag" />
-    <input class="pure-input-1" type="text" name="objKey" placeholder="{@formatMessage _key="TAG"/}"/>
-    <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="ADD_TAG"/}</button>
-  </form>
-
-  <form id="draft" method="post" action="tag.html" class="pure-form pure-form-stacked">
-    <input type="hidden" name="action" value="navbar" />
-    <button type="submit" class="pure-button pure-button-primary">{@formatMessage _key="ADD_TO_NAVBAR"/}</button>
-</form>
+<div id="tags">
+</div>
+<script src="{@schemeStaticResource path="bundles/tag.js" /}"></script>
 
 {/view-content}
 

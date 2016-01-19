@@ -61,7 +61,9 @@ gulp.task('icon-24', function() {
 });
 
 gulp.task('cssbundle', function() {
-  return gulp.src(['./bower_components/pure/pure.css','./scheme/default/styles/*.css'])
+  return gulp.src(['./bower_components/pure/pure.css',
+    './node_modules/react-super-select/lib/react-super-select.css',
+    './scheme/default/styles/*.css'])
     .pipe(concat('bundle.css'))
     .pipe(minifyCss())
     .pipe(gulp.dest('./scheme/default/static/'));
