@@ -300,6 +300,11 @@ gulp.task('api-tests', ['api-users'], function(cb) {
                 server.kill('SIGINT');
                 cb();
               }))
+              .on('error', function(err) {
+                console.log(err);
+                gutil.log('killing server');
+                server.kill('SIGINT');
+              })
     });
 });
 
