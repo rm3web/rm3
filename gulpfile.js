@@ -249,6 +249,8 @@ function spawnServerForTests(db, executable, params, timeout, setup, next) {
     env: clone(process.env)
   }
   ctx.env.RM3_PG = db;
+  ctx.env['RM3_JWT_SECRET'] = 'poniesandstuff';
+  ctx.env['RM3_JWT_ISSUER'] = 'wirewd.com';
   var server = spawn(executable, params,
     ctx);
   setup(server);
@@ -287,6 +289,8 @@ gulp.task('api-tests', ['api-users'], function(cb) {
       });
     }, function(server) {
       process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3api';
+      process.env['RM3_JWT_SECRET'] = 'poniesandstuff';
+      process.env['RM3_JWT_ISSUER'] = 'wirewd.com';
       return gulp.src('tests/api/*.js', {read: false})
             .pipe(mocha({})
               .on('end', function() {
