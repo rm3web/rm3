@@ -9,7 +9,7 @@ var ErrorsList = JsxForms.ErrorsList;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 var ReactSuperSelect = require('react-super-select');
-var ApiClient = require('../../../lib/apiclient')
+var ApiClient = require('../../../lib/apiclient');
 
 var TagPageComponent = React.createClass({
   mixins: [IntlMixin, LinkedStateMixin],

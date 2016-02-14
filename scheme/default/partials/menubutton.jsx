@@ -12,7 +12,9 @@ var MenuButton = React.createClass({
   mixins: [IntlMixin],
 
   handleSelection: function(value, event) {
-    if (value.confirm) {
+    if (value.func) {
+      value.func();
+    } else if (value.confirm) {
       answer = confirm(this.getIntlMessage("DO_YOU_REALLY_WANT_TO_GO_HERE"));
       if (answer !=0) {
         window.location.href = value.url + "?sure=yes"

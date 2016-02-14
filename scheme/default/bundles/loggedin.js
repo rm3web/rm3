@@ -9,12 +9,21 @@ var MenuButtonComponent = require('../partials/menubutton.jsx');
 var gearRenderTarget = document.getElementById('gearmenu');
 var protoRenderTarget = document.getElementById('protomenu');
 var MenuButtonFactory = React.createFactory(MenuButtonComponent);
+var ApiClient = require('../../../lib/apiclient');
 
 if (gearRenderTarget) {
   var actions = [];
 
   if (permissions.hasOwnProperty('delete')) {
     actions.push({url: baseurl+'delete.html', label: 'DELETE', confirm: true});
+  }
+
+  if (permissions.hasOwnProperty('edit')) {
+    actions.push({func: function() {
+      var apiClient = new ApiClient('http://127.0.0.1:4000');
+      apiClient.page(baseurl).toggleNavbar().end(function(err, res) {
+      });
+    }, label: 'NAVBAR'});
   }
 
   var gearComponent = ReactDOM.render(
