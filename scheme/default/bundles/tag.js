@@ -9,6 +9,7 @@ var renderedComponent = ReactDOM.render(
   PathFactory({
     locales: intl.locales,
     messages: intl.messages,
+    baseurl: baseurl
   }),
   renderTarget
 );
