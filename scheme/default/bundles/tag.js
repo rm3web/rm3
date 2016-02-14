@@ -1,3 +1,10 @@
+// Load and use polyfill for ECMA-402.
+if (!global.Intl) {
+  global.Intl = require('intl');
+}
+
+require("babel-polyfill");
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TagPageComponent = require('../partials/tag.jsx');

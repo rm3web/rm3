@@ -11,75 +11,6 @@ var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 var ReactSuperSelect = require('react-super-select');
 var ApiClient = require('../../../lib/apiclient')
 
-// Hack: Moved this here because something about react-super-select and 
-// rm3-tag-control mean that if I pull the version from there, I get 
-// invariant errors and the control doesn't work.
-var TagInput = React.createClass({
-
-  getInitialState: function() {
-    return {
-      tagText: '',
-      predicate: 'plain'
-    };
-  },
-
-  doAdd: function() {
-    if (this.state.predicate.id === 'plain') {
-      this.props.addTag(
-      {tag: this.state.tagText}
-      );
-    } else {
-      this.props.addTag(
-        {predicate: this.state.predicate,
-         tag: this.state.tagText}
-        );
-    }
-  },
-
-  onKeyInput: function(e) {
-    // Enter KEY
-    if (e.keyCode === 13) {
-      this.doAdd();
-      return false;
-    }
-  },
-
-  handleAdd: function(e) {
-    e.preventDefault();
-    this.doAdd();
-  },
-
-  onChangePredicate: function (predicate) {
-    this.setState({ predicate: predicate});
-  },
-
-  onChangeTag: function(e) {
-    this.setState({ tagText: e.target.value});
-  },
-
-  render: function() {
-    const t = (
-      <div>
-      <ReactSuperSelect placeholder={this.props.selectPlaceholder}
-                  dataSource={this.props.predicates}
-                  value={this.state.predText} groupBy="metadataClass"
-                  onChange={this.onChangePredicate}
-                  clearable= {false} />
-       <input type={'text'} value={this.state.tagText}
-          onChange={this.onChangeTag} disabled = {!this.props.ready}
-          style= {{width: '40%', lineHeight: '30px'}}
-          onKeyUp = {this.onKeyInput} />
-       <button className="pure-button pure-button-primary" disabled={!this.props.ready}
-          style= {{width: '9%', lineHeight: '30px'}} onClick={this.handleAdd} type="button">
-          {this.props.addMessage}</button>
-
-      </div>
-    );
-    return t;
-  }
-});
-
-
 var TagPageComponent = React.createClass({
   mixins: [IntlMixin, LinkedStateMixin],
 
@@ -153,12 +84,14 @@ var TagPageComponent = React.createClass({
 
   render: function() {
     return (
-      <div>
-        <TagControl.Tags predicates={this.state.predicates} tags={this.state.tags} />
-        <TagInput ref="input" ready={this.state.ready} 
+      <form id="tagaddform">
+        <TagControl.Tags predicates={this.state.predicates} tags={this.state.tags} 
+         readOnlyPredicates={{'navigation': true}} />
+        <TagControl.TagInput ref="input" ready={this.state.ready} 
           predicates={this.state.predicateList} addTag={this.addTag} 
           selectPlaceholder={this.getIntlMessage('SELECT_A_PREDICATE')} 
-          addMessage={this.getIntlMessage('ADD')}/>
+          addMessage={this.getIntlMessage('ADD')}
+          defaultPredicate={{"id": "plain"}} />
         <hr />
         <button className="pure-button pure-button-primary" disabled={this.state.isSubmitting}
           onClick={this.handleSave} type="button"> <FormattedMessage
@@ -166,7 +99,7 @@ var TagPageComponent = React.createClass({
         <button className="pure-button"
           onClick={this.handleRevert} type="button"> <FormattedMessage
                     message={this.getIntlMessage('REVERT_CHANGES')}  /></button>
-      </div>);
+      </form>);
 
   }
 });
