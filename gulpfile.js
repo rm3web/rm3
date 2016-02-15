@@ -61,7 +61,9 @@ gulp.task('icon-24', function() {
 });
 
 gulp.task('cssbundle', function() {
-  return gulp.src(['./bower_components/pure/pure.css','./scheme/default/styles/*.css'])
+  return gulp.src(['./bower_components/pure/pure.css',
+    './node_modules/react-super-select/lib/react-super-select.css',
+    './scheme/default/styles/*.css'])
     .pipe(concat('bundle.css'))
     .pipe(minifyCss())
     .pipe(gulp.dest('./scheme/default/static/'));
@@ -298,6 +300,11 @@ gulp.task('api-tests', ['api-users'], function(cb) {
                 server.kill('SIGINT');
                 cb();
               }))
+              .on('error', function(err) {
+                console.log(err);
+                gutil.log('killing server');
+                server.kill('SIGINT');
+              })
     });
 });
 
@@ -305,7 +312,7 @@ gulp.task('casper-tests', ['casper-users'], function(cb) {
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    './bin/rm3front', [], 6000, function(server) {
+    './bin/rm3front', [], 8000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });

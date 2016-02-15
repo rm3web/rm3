@@ -4,6 +4,53 @@
 describe('Tags', function() {
   before(function() {
     casper.start('http://127.0.0.1:4000/');
+
+    // http://stackoverflow.com/questions/25359247/casperjs-bind-issue
+    // This polyfill hacks around the lack of ES5 in PhantomJS 1.x
+    // and CasperJS 1.1beata4.
+    // At some point in the future, it can go, but it breaks function.bind
+    // right now.
+    casper.on('page.initialized', function() {
+      this.evaluate(function() {
+        var isFunction = function(o) {
+          return typeof o == 'function';
+        };
+
+        var bind,
+          slice = [].slice,
+          proto = Function.prototype,
+          featureMap;
+
+        featureMap = {
+          'function-bind': 'bind'
+        };
+
+        function has(feature) {
+          var prop = featureMap[feature];
+          return isFunction(proto[prop]);
+        }
+
+        // check for missing features
+        if (!has('function-bind')) {
+          // adapted from Mozilla Developer Network example at
+          // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Function/bind
+          bind = function bind(obj) {
+            var args = slice.call(arguments, 1),
+              self = this,
+              nop = function() {
+              },
+              bound = function() {
+                return self.apply(this instanceof nop ? this : (obj || {}), args.concat(slice.call(arguments)));
+              };
+            nop.prototype = this.prototype || {}; // Firefox cries sometimes if prototype is undefined
+            bound.prototype = new nop();
+            return bound;
+          };
+          proto.bind = bind;
+        }
+      });
+    });
+
   });
 
   after(function() {
@@ -33,25 +80,26 @@ describe('Tags', function() {
       this.click('a[href*=tag]');
     });
 
-    casper.then(function() {
+    casper.waitUntilVisible('form#tagaddform', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
-      this.fill('form#addTag',
-        {objKey: 'ponies'}, true);
+      'div.r-ss-wrap'.should.be.inDOM.and.be.visible;
+      '#tagaddform > div > input'.should.be.inDOM.and.be.visible;
+      this.fillSelectors('form#tagaddform', {'input[type="text"]':'ponies'},false);
+      this.click('#tagaddform > div > button');
+      this.click('#tagaddform > button.pure-button-primary');
     });
 
-    casper.then(function() {
-      'div.footer'.should.be.inDOM.and.be.visible;
-      'div.pure-u-2-3'.should.contain.text('ponies');
-    });
+    casper.wait(300);
 
     casper.thenOpen('http://127.0.0.1:4000/', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
+      'div.footer'.should.contain.text('ponies');
       'div.pure-u-2-3'.should.contain.text('Welcome to rm3');
     });
 
     casper.thenOpen('http://127.0.0.1:4000/tags.html/$/ponies', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
-      'div.pure-u-2-3'.should.contain.text('Welcome to rm3');
+      'body > div.pure-g > div.pure-u-2-3'.should.contain.text('Welcome to rm3');
       this.click('a[href*=logout]');
     });
 
