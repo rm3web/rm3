@@ -68,8 +68,6 @@ var CommentFormComponent = React.createClass({
     <input className="pure-input-1" type="text" name="url" /><br/>
     </div>
         );
-    } else {
-      userInfo = ();
     }
     return (
     <form onSubmit={this.onSubmit} method="post" className="pure-form pure-form-stacked">
