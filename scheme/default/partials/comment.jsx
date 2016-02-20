@@ -38,7 +38,6 @@ var CommentFormComponent = React.createClass({
           isSubmitting: false
         });
         if (err) {
-          console.log(err);
           if (err.response.statusType === 5) {
             FormLib.markError(self.state.errors,'__all__',err.response.statusText);
             self.setState({errors: self.state.errors});
@@ -54,13 +53,27 @@ var CommentFormComponent = React.createClass({
         }
         FormLib.markError(self.state.errors,'__all__','unidentified response');
         self.setState({errors: self.state.errors});
-        console.log(res);
       });
   },
   render: function() {
+    var userInfo;
+    if (!userPath) {
+      userInfo = (
+        <div className="pure-control-group">
+    <label htmlFor="Name">Name:</label>
+    <input className="pure-input-1" type="text" name="name" /><br/>
+    <label htmlFor="Email">Email:</label>
+    <input className="pure-input-1" type="text" name="email" /><br/>
+    <label htmlFor="Name">Url:</label>
+    <input className="pure-input-1" type="text" name="url" /><br/>
+    </div>
+        );
+    } else {
+      userInfo = ();
+    }
     return (
     <form onSubmit={this.onSubmit} method="post" className="pure-form pure-form-stacked">
-
+    {userInfo}
     <legend>Add comment (plain text, no HTML, put a blank line between paragraphs)</legend>
     <textarea rows="5" className="pure-input-1" id="comment" name="comment"
       value={this.state.comment} onChange={this.handleChange}></textarea>

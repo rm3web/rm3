@@ -65,11 +65,26 @@ CREATE TABLE wh_subject_to_roles (
 CREATE INDEX wh_subject_to_roles_gist_idx ON wh_subject_to_roles USING GIST (subject);
 CREATE INDEX wh_subject_role_idx ON wh_subject_to_roles USING BTREE (role);
 
+CREATE TABLE wh_identity (
+	PRIMARY KEY("identityId"),
+	"created" timestamp,	
+	"createdIp" inet,
+	"identityId" uuid,
+	"identityDetails" json
+);
+
 CREATE TABLE wh_credential (
 	PRIMARY KEY(provider, "userId"),
 	provider text,
 	"userId" text,
 	"userPath" ltree REFERENCES wh_entity (path) ON DELETE CASCADE,
 	"providerDetails" json,
-	"identityId" uuid
-)
+	"identityId" uuid REFERENCES wh_identity ("identityId") ON DELETE CASCADE
+);
+
+CREATE TABLE wh_last_seen (
+	"userPath" ltree REFERENCES wh_entity (path) ON DELETE CASCADE,
+	"identityId" uuid REFERENCES wh_identity ("identityId") ON DELETE CASCADE,
+	"lastSeen" timestamp,
+	"lastSeenIp" inet
+);

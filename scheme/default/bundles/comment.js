@@ -10,7 +10,8 @@ var renderedComponent = ReactDOM.render(
     locales: intl.locales,
     messages: intl.messages,
     csrfToken: csrfToken,
-    commentPath: commentPath
+    commentPath: commentPath,
+    userPath: userPath
   }),
   renderTarget
 );
