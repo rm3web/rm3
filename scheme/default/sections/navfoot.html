@@ -2,7 +2,7 @@
  <div class="pure-u-1 footer">
   <p>Tags: 
          {@tags showNav="false" obj=tags}
-{@objLink linkclass="tagPill"/}
+<div class="predicatePill">{@predTag /}</div> <div class="tagPill">{@objLink /}</div>
   {/tags}
   {@requirePermission permission="edit"}<a class="pure-button" href="{@sitePathToUrl path=path /}tag.html">Edit Tags</a>{/requirePermission}
   <br />Revision: <a href="{@sitePathToUrl path=path /}history.cgi"><span>{@formatNumber val=meta.revisionNum /}</span>:<span>{meta.revisionId}</span></a>

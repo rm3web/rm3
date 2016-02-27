@@ -11,6 +11,7 @@ var query = require('../../lib/query');
 require('mocha-steps');
 
 describe('user', function() {
+  this.timeout(4000); // This might take a bit of time
   var now = new Date();
   var ents = {};
   var userpath = new sitepath(['wh', 'users']);

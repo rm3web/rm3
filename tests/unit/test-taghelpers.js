@@ -14,9 +14,9 @@ describe('taghelpers', function() {
 
   describe('#predTag', function() {
     it('works for plain tags', function(cb) {
-      var chunk = {}, context = {}, params = {obj: {objClass: 'tag'}, predKey: 'plain'};
+      var chunk = {}, context = {}, params = {obj: {objClass: 'tag'}, pred: 'plain'};
       chunk.write = function(str) {
-        str.should.equal('');
+        str.should.equal('plain');
         cb();
       };
       context.get = function(param) {
@@ -27,9 +27,9 @@ describe('taghelpers', function() {
     });
 
     it('works for predicates', function(cb) {
-      var chunk = {}, context = {}, params = {obj: {objClass: 'boof'}, predKey: 'foof'};
+      var chunk = {}, context = {}, params = {obj: {objClass: 'boof'}, pred: 'foof'};
       chunk.write = function(str) {
-        str.should.equal('foof:boof');
+        str.should.equal('foof');
         cb();
       };
       context.get = function(param) {
@@ -43,7 +43,7 @@ describe('taghelpers', function() {
   describe('#objLink', function() {
     it('works for plain tags', function(cb) {
       var chunk = {}, context = {};
-      var params = {obj: {objClass: 'tag'}, predKey: 'plain', objKey: 'woof'};
+      var params = {obj: {objClass: 'tag'}, pred: 'plain', objKey: 'woof'};
       context.resolve = function(param) {
         return param;
       };
@@ -60,7 +60,7 @@ describe('taghelpers', function() {
 
     it('works for predicates', function(cb) {
       var chunk = {}, context = {};
-      var params = {obj: {objClass: 'boof'}, predKey: 'foof', objKey: 'woof'};
+      var params = {obj: {objClass: 'boof'}, pred: 'foof', objKey: 'woof'};
       context.resolve = function(param) {
         return param;
       };
