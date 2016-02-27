@@ -18,7 +18,9 @@ var CommentFormComponent = React.createClass({
   },
 
   handleChange: function(event) {
-    this.setState({comment: event.target.value, message: ''});
+    var change = {message: ''};
+    change[event.target.name] = event.target.value
+    this.setState(change);
   },
 
   onSubmit: function (event) {
@@ -28,9 +30,19 @@ var CommentFormComponent = React.createClass({
       isSubmitting: true,
       message: 'Submitting comment...'
     });
+    var payload = {comment: self.state.comment};
+    if (self.state.name) {
+      payload.name = self.state.name;
+    }
+    if (self.state.email) {
+      payload.email = self.state.email;
+    }
+    if (self.state.url) {
+      payload.url = self.state.url;
+    }
     request
       .post(this.props.commentPath)
-      .send({ comment: self.state.comment})
+      .send(payload)
       .set('xsrf-token', this.props.csrfToken)
       .set('Accept', 'application/json')
       .end(function(err, res){
@@ -56,19 +68,24 @@ var CommentFormComponent = React.createClass({
       });
   },
   render: function() {
-    var userInfo;
-    if (!userPath) {
+    var userInfo, ready;
+
+    if (userPath) {
+      ready = !this.state.comment;
+    } else {
       userInfo = (
         <div className="pure-control-group">
-    <label htmlFor="Name">Name:</label>
-    <input className="pure-input-1" type="text" name="name" /><br/>
-    <label htmlFor="Email">Email:</label>
-    <input className="pure-input-1" type="text" name="email" /><br/>
-    <label htmlFor="Name">Url:</label>
-    <input className="pure-input-1" type="text" name="url" /><br/>
+    <label htmlFor="name">Name (required):</label>
+    <input className="pure-input-1" type="text" name="name" required onChange={this.handleChange} /><br/>
+    <label htmlFor="email">Email:</label>
+    <input className="pure-input-1" type="text" name="email" onChange={this.handleChange} /><br/>
+    <label htmlFor="url">Url:</label>
+    <input className="pure-input-1" type="text" name="url" onChange={this.handleChange} /><br/>
     </div>
         );
+      ready = !(this.state.comment && this.state.name);
     }
+
     return (
     <form onSubmit={this.onSubmit} method="post" className="pure-form pure-form-stacked">
     {userInfo}
@@ -76,7 +93,7 @@ var CommentFormComponent = React.createClass({
     <textarea rows="5" className="pure-input-1" id="comment" name="comment"
       value={this.state.comment} onChange={this.handleChange}></textarea>
     <ErrorsList errors={this.state.errors.__all__} />
-    <button className="pure-button pure-button-primary" disabled={!this.state.comment || this.state.isSubmitting}> <FormattedMessage
+    <button className="pure-button pure-button-primary" disabled={ready || this.state.isSubmitting}> <FormattedMessage
                     message={this.getIntlMessage('SUBMIT')}  /></button>
     <div>{this.state.message}</div>
     </form>
