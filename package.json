@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:wirehead/rm3.git"
+    "url": "git@github.com:rm3web/rm3.git"
   },
   "browserify": {
     "transform": [
