@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git@github.com:rm3web/rm3.git"
   },
+  "bugs": {
+    "url": "https://github.com/rm3web/rm3/issues"
+  },
   "browserify": {
     "transform": [
       [
@@ -137,6 +140,7 @@
   "keywords": [
     "cms"
   ],
-  "author": "Wirehead",
+  "homepage": "https://github.com/rm3web/rm3",
+  "author": "Wirehead <wh-npm@wirewd.com>",
   "license": "GPL-2.0"
 }
