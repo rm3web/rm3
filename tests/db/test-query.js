@@ -112,7 +112,7 @@ describe('query', function() {
     });
 
     it('works for plain tags', function(done) {
-      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {tag: 'navbar'}, undefined, undefined, {});
+      var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child', 'entity', {predicate: 'plain', tag: 'navbar'}, undefined, undefined, {});
       var arts = [];
       resp.on('article', function(article) {
         arts.push(article);
