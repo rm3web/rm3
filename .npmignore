@@ -5,3 +5,4 @@ gulpfile.js
 /tests
 /coverage
 .env
+scheme-default.tar.gz

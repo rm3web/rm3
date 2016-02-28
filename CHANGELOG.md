@@ -4,6 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
+## rm3 0.1.1 - 2016-2-28
+
+### Fixed
+- Fails to operate correctly when there's no JWT token
+- Removed login form in JSX and just went for straight Dust.
+- Added generated Travis tarball to npmignore.
+
 ## rm3 0.1.0 - 2016-2-28: Special Pirates of Penzance Sing-Along edition
 
 ### Added
