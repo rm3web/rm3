@@ -6,7 +6,7 @@ rm3
 What is it?
 -----------
 
-rm3 is a system for managing stuff on the web. It's a little more than just a blog engine, but a little less than an enterprise CMS. It is to Drupal as Ghost is to WordPress. When farther along, it will be able to be used as a blog, or a wiki, or a photo archive, or a combination of things. Like a blog, it lets you create a series of blog articles in a collection. Like a wiki, it maintains a history of all changes.
+rm3 is a system for managing stuff on the web. It's a little more than just a blog engine, but a little less than an enterprise CMS. It is to Drupal as Ghost is to WordPress. When farther along, it will be able to be used as a blog, or a wiki, or a photo archive, or a combination of things. Like a blog, it lets you create a series of blog articles in a collection. Like a wiki, it maintains a history of all changes.  Like a CMS, it lets you create a site with more structure than a mere list of posts.
 
 Release Status
 --------------
@@ -16,7 +16,7 @@ This is currently in PRE-ALPHA state, defined as:
 * Any data you put in here you should be prepared to reconstruct without the benefit of a migration tool.
 * Security and stability bugs are to be expected.
 * Key features are missing.
-* The basic structure of code is assumed to be unstable.
+* The basic structure of code is assumed to be unstable and any APIs are subject to change
 
 The next milestone is ALPHA, defined as:
 * Key features are not missing
@@ -26,6 +26,14 @@ The next milestone is ALPHA, defined as:
 
 How to get started?
 -------------------
+
+Automated Setup
+===============
+
+[https://github.com/rm3web/rm3-docker-compose](Docker Compose)
+
+Manual Setup
+============
 
 * Install PostgreSQL 9.3 or later.
 * Install node.js 0.12 or later.
@@ -58,7 +66,7 @@ How to get started?
   * `./node_modules/.bin/gulp develop`
 
 [Docs](docs)
-----
+------------
 
 To generate API docs:
 
@@ -96,11 +104,13 @@ Benchmarks
 Contributing
 ------------
 
-Feel free to submit PR's or bugs.
+There are a wide variety of ways to contribute.  Documentation, bug triage, detailed issues (including UI/UX, bug reports, etc), test cases, refactoring, artwork, schemes, and so on are all just as important as features.
 
 Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
+
+[CONTRIBUTING.md](CONTRIBUTING.md) contains more details.
 
 License
 -------
 
-GPL, see LICENSE.txt
+GPL, see [LICENSE](LICENSE)
