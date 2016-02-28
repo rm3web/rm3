@@ -5,8 +5,22 @@
 <a href="/$login/twitter" class="pure-button button-pad">Login with Twitter</a>
 {/hasAuthProviderEnabled}
 </div>
-<div id="loginform">{@react component="login.jsx" csrfToken=csrfToken locales=intl.locales messages=intl.messages /}</div>
-
+<div id="loginform">
+  <form action="/$login/" method="post" className="pure-form pure-form-aligned">
+  <input type="hidden" name="_csrf" value="{csrfToken}" />
+  <div className="pure-control-group">
+  <label htmlFor="username">{@formatMessage _key="USERNAME"/}:</label>
+  <input type="text" name="username" />
+  </div>
+  <div className="pure-control-group">
+  <label htmlFor="password">{@formatMessage _key="PASSWORD"/}:</label>
+  <input type="password" name="password" />
+  </div>
+  <div className="pure-controls">
+  <button className="pure-button pure-button-primary">{@formatMessage _key="SUBMIT"/}</button>
+  </div>
+  </form>
+</div>
 {/view-content}
 
 {<pagefooter}
