@@ -15,6 +15,9 @@ describe('taghelpers', function() {
   describe('#predTag', function() {
     it('works for plain tags', function(cb) {
       var chunk = {}, context = {}, params = {obj: {objClass: 'tag'}, pred: 'plain'};
+      context.resolve = function(param) {
+        return param;
+      };
       chunk.write = function(str) {
         str.should.equal('plain');
         cb();
@@ -28,8 +31,11 @@ describe('taghelpers', function() {
 
     it('works for predicates', function(cb) {
       var chunk = {}, context = {}, params = {obj: {objClass: 'boof'}, pred: 'foof'};
+      context.resolve = function(param) {
+        return param;
+      };
       chunk.write = function(str) {
-        str.should.equal('foof');
+        str.should.equal('<a href="/search.cgi/$/tag/foof">foof</a>');
         cb();
       };
       context.get = function(param) {
@@ -48,7 +54,7 @@ describe('taghelpers', function() {
         return param;
       };
       chunk.write = function(str) {
-        str.should.equal('<a href="/tags.html/$/woof">woof</a>');
+        str.should.equal('<a href="/search.cgi/$/tag/plain/woof">woof</a>');
         cb();
       };
       context.get = function(param) {
