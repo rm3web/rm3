@@ -156,7 +156,9 @@ gulp.task('bower', function() {
 
 gulp.task('lint', ['jshint', 'jscs', 'csslint'])
 
-gulp.task('travis', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify', 'lint'])
+gulp.task('travis', ['prepublish', 'lint'])
+
+gulp.task('prepublish', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify'])
 
 gulp.task('develop', function () {
   nodemon(

@@ -1,25 +1,34 @@
 language: node_js
 node_js:
-  - "0.12"
-  - "4"
-  - "5"
+- '0.12'
+- '4'
+- '5'
 env:
-  - CXX=g++-4.8
+- CXX=g++-4.8
 addons:
-  postgresql: "9.3"
+  postgresql: '9.3'
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
-      - librsvg2-dev
+    - g++-4.8
+    - librsvg2-dev
 before_install:
-  - which phantomjs
-  - phantomjs --version
+- which phantomjs
+- phantomjs --version
 before_script:
-  - psql -c 'create database rm3unit;' -U postgres
-  - psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres
-  - psql -c "GRANT ALL PRIVILEGES ON database rm3unit TO wirehead;" -U postgres
-  - psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres
-  - psql rm3unit < ./db-schema.sql -U postgres
-script: "npm run travis"
+- psql -c 'create database rm3unit;' -U postgres
+- psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres
+- psql -c "GRANT ALL PRIVILEGES ON database rm3unit TO wirehead;" -U postgres
+- psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres
+- psql rm3unit < ./db-schema.sql -U postgres
+script: npm run travis
+deploy:
+  provider: npm
+  email: wh-npm@wirewd.com
+  api_key:
+    secure: PIEJzzgJHDw9zv2sykPcVHrLylurSGVF/ggg2Dy41xyyXF/Gy5RzqKK14jSGXJO1L5386VInhGCjZVpgU4qrxhcaibRNbHTfI0FLOcSiQoQnvxvonlUMfRSZf/DFW6jfeO6SHL3C4MK2/e+BdFdbkVUAUAi5R04r13Op8dbfjVzkzh2qOwx934/0mFcTix3dJ0jo6HaYnN2m4Fc9B68zw3zeTQ8fOFvtlpflkAtPbb8yVK/j+xoWO1J0WJenjrJkz0A3nBKEGhnkp7HoaFg7KwB4/Xi7V7oic7pEmVkWD6TOx8dug9rr8PLSAW1TaFaUUzXlNDpHZrK2WPpk/pnWveIPm4lvkg3yiZukdaj2KC+EfRxLQ+1A5VRsinKJji0hL+Y2nvpHqhlrvHP20MmgGsm1kWGFccM11+uBBrkBA6+BJuPGceuK2Fk1p28U8fyla3dncVTXkZvRhaYixz4SFJ9KKGv43fDb3+pG16rqy5xZJ8k7z7ywMif1VtEsKBr7XLjkFfUuEYpQkJDyBaihwPD0m85J96cD/fogQwcsEZEOzBOGJypKvxNp/pzPEnyFd5QU6JPyM0FkQCDcFaeMBqxhUhwfpv+2rXzd6dHu+eHYC3xHxUTVQztjkB/mydgFxafp70CKo79Fpx+HPxb3wtrnX03QB2tgonoBrfWQqgY=
+  on:
+    tags: true
+    repo: rm3web/rm3
+    node: '0.12'
