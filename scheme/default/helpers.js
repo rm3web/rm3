@@ -172,26 +172,4 @@ exports = module.exports = function(dust, db, query) {
             }
         }
     }
-
-    dust.helpers.tags = function (chunk, context, bodies, params) {
-        return chunk.map(function(chunk) {
-            var tags = context.resolve(params.obj);
-            var showNav = context.resolve(params.showNav);
-            tags.iterateTags(function(pred, obj, idx) {
-                var render = true;
-                if (showNav) {
-                    if (pred === 'navigation') {
-                        render = false;
-                    }
-                }
-                if (render) {
-                    chunk.render(bodies.block, context.push( 
-                        {objKey: obj['@id'],
-                         predKey: pred,
-                         obj: obj}));
-                }
-            })
-            chunk.end();
-        })
-    }
 }
