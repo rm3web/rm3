@@ -284,7 +284,7 @@ gulp.task('api-tests', ['api-users'], function(cb) {
   var tests = ['./tests/api/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3api',
-    './bin/rm3front', [], 6000, function(server) {
+    './bin/rm3front', [], 10000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
@@ -295,17 +295,19 @@ gulp.task('api-tests', ['api-users'], function(cb) {
       process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3api';
       process.env['RM3_JWT_SECRET'] = 'poniesandstuff';
       process.env['RM3_JWT_ISSUER'] = 'wirewd.com';
+      var error;
       return gulp.src('tests/api/*.js', {read: false})
             .pipe(mocha({})
               .on('end', function() {
                 gutil.log('killing server');
                 server.kill('SIGINT');
-                cb();
+                cb(error);
               }))
               .on('error', function(err) {
                 console.log(err);
                 gutil.log('killing server');
                 server.kill('SIGINT');
+                error = err;
               })
     });
 });
