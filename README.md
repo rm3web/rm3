@@ -27,13 +27,11 @@ The next milestone is ALPHA, defined as:
 How to get started?
 -------------------
 
-Automated Setup
-===============
+### Automated Setup
 
-[https://github.com/rm3web/rm3-docker-compose](Docker Compose)
+[Docker Compose](https://github.com/rm3web/rm3-docker-compose)
 
-Manual Setup
-============
+### Manual Setup
 
 * Install PostgreSQL 9.3 or later.
 * Install node.js 0.12 or later.
