@@ -97,7 +97,7 @@ describe('Tags', function() {
       'div.pure-u-2-3'.should.contain.text('Welcome to rm3');
     });
 
-    casper.thenOpen('http://127.0.0.1:4000/tags.html/$/ponies', function() {
+    casper.thenOpen('http://127.0.0.1:4000/search.cgi/$/tags/plain/ponies', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       'body > div.pure-g > div.pure-u-2-3'.should.contain.text('Welcome to rm3');
       this.click('a[href*=logout]');

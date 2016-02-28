@@ -312,7 +312,7 @@ gulp.task('casper-tests', ['casper-users'], function(cb) {
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    './bin/rm3front', [], 8000, function(server) {
+    './bin/rm3front', [], 10000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
