@@ -37,7 +37,7 @@
     "commander": "~2.9.0",
     "connect-flash": "~0.1.1",
     "cookie-parser": "~1.4.0",
-    "credential": "~0.2.6",
+    "credential": "~1.0.0",
     "csurf": "~1.8.3",
     "dotenv": "~1.2.0",
     "downsize": "0.0.8",
