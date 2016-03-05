@@ -90,9 +90,9 @@ You should be able to back up the postgresql cluster.
 
 A CLI command like `pg_dump -Fc <database name>` should generate a dump file to standard out that you can redirect into a file and then load later on with `pg_restore`
 
-In practice, I've used (https://github.com/backup/backup)[the ruby backup gem] because it turns what is otherwise an obnoxious problem into a pleasant DSL.
+In practice, I've used [the ruby backup gem](https://github.com/backup/backup) because it turns what is otherwise an obnoxious problem into a pleasant DSL.
 
-You can also use (https://github.com/wal-e/wal-e)[wal-e] to get a continuous streaming backup, if you expect to see plenty of updates.
+You can also use [wal-e](https://github.com/wal-e/wal-e) to get a continuous streaming backup, if you expect to see plenty of updates.
 
 Either way, you should have this automated, tested, and monitored.  I have a crontab to run a backup job.  I also created a check in my monitoring system to enforce a minimum dump size and freshness time that doesn't go off unless it's a few hours late.  You might consider also loading your dump into a secondary database, just in case.
 
