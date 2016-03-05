@@ -2,12 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## Unreleased
+## [Unreleased]
 
 ### Added
 - rm3backup command
 
-## rm3 0.1.1 - 2016-2-28
+### Changed
+- Updated dependencies
+
+## [0.1.1] - 2016-2-28
 
 ### Fixed
 - Fails to operate correctly when there's no JWT token
@@ -26,3 +29,6 @@ I started on Rm2 in early 2011, once I had a few too many aborted efforts into r
 ## rm
 
 I started on Rm around October 2004.  It became functional at the start of 2005, but I went through various rewrites and distractions and didn't actually launch it until Oct 2007.  It's been running in production ever since.
+
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/rm3web/rm3/compare/v0.1.0...v0.1.1

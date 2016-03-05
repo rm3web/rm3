@@ -45,7 +45,7 @@ describe('query gen', function() {
       {args: [root, 'wh', 'child', 'count', {navbar: true}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'navbar\')'},
       {args: [root, 'wh', 'child', 'count', {comment: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) LEFT JOIN wh_entity actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
+       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) LEFT JOIN wh_entity AS actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
       {args: [root, 'wh', 'child', 'count', {predicate: 'plain', tag: 'bears'}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("objStr" = $2) AND ("predPath" = $3)'},
       {args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {}],
@@ -382,7 +382,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 wh_log."baseRevisionId", wh_log."replaceRevisionId", wh_log."revisionId", \
 wh_log."revisionNum", wh_log."evtStart", wh_log."evtEnd", wh_log."evtTouched", \
 wh_log."evtClass", wh_log."evtFinal", wh_log."actorPath", wh_log.data, actor.proto \
-AS "actorProto", actor.summary AS "actorSummary" FROM wh_log LEFT JOIN wh_entity actor \
+AS "actorProto", actor.summary AS "actorSummary" FROM wh_log LEFT JOIN wh_entity AS actor \
 ON (actor.path = wh_log."actorPath") WHERE (wh_log.path = $1) ORDER BY wh_log."revisionNum" \
 ASC';
 

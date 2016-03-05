@@ -343,7 +343,7 @@ gulp.task('casper-coverage', ['casper-users'], function (cb) {
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
     './node_modules/.bin/istanbul',
     ['cover', '--dir', './coverage/casper', '--handle-sigint', '--', 'bin/rm3front'],
-    35000, function(server) {
+    45000, function(server) {
       server.stderr.on('data', function (data) {
         serverlog.push(data);
       });
