@@ -82,6 +82,12 @@ Backups
 
 There are two ways to back up rm3.  Both of them are equally important because each one will get you out of a different sort of problem.
 
+Either way, you should have this automated, tested, and monitored.  I have a crontab to run a backup job.  I also created a check in my monitoring system to enforce a minimum dump size and freshness time that doesn't go off unless it's a few hours late.  You might consider also loading your dump into a secondary database, just in case.
+
+A backup to the same machine that's hosting the site is not much of a backup at all.  You want it off somewhere else... your home system, another cloud server, or uploaded to a cloud file hosting provider.
+
+Furthermore, you really want to rotate your backups.  Depending on performance, take a backup every few hours, but keep daily, weekly, and monthly backups.
+
 ### Database table backup
 
 A database backup should be able to get you out of most simple failures quickly.  You can use a file rotation tool to store it back in history so you can go back in time before a database corruption.  
@@ -94,13 +100,17 @@ In practice, I've used [the ruby backup gem](https://github.com/backup/backup) b
 
 You can also use [wal-e](https://github.com/wal-e/wal-e) to get a continuous streaming backup, if you expect to see plenty of updates.
 
-Either way, you should have this automated, tested, and monitored.  I have a crontab to run a backup job.  I also created a check in my monitoring system to enforce a minimum dump size and freshness time that doesn't go off unless it's a few hours late.  You might consider also loading your dump into a secondary database, just in case.
-
 **This may not save you from all possible problems**.  As a general rule, if there's a weird semantic corruption of the database in ways the developers haven't seen ever before, loading a table dump might put you back where you started.  Thus, a semantic backup is also important.
 
 ### Semantic backup
 
-**Not ready yet**
+`rm3backup <directory>` will create a directory named `<directory>` with a semantic backup.  It will create at least one file per entity, where the primary entity dump is located in a file suffixed by `-data.json`
+
+There are a lot of ways to go from here.  Again, in practice, [the ruby backup gem](https://github.com/backup/backup) will make this process go a bit more smoothly.
+
+Because it breaks things out into a series of files, rsync should provide a speed-up, although you also want to use `--delete` to make sure that it doesn't leave any extraneous deleted nodes around.
+
+**Note: Loading from backups is presently laborious and will be fixed soon**
 
 Failure Recovery
 ----------------

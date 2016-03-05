@@ -22,10 +22,10 @@ function parse_sitepath(val) {
 
 var dirVal;
 
-function writeNodeToFile(outPath, ent, next)
+function writeNodeToFile(outPath, ent, log, next)
 {
   var rec = ent.toRec();
-  //rec.history = log;
+  rec.history = log;
   rec.dump_date = new Date();
   rec.dump_version = pjson.version;
   fs.open(outPath, 'wx', 0666, function(err, fd) {
@@ -41,7 +41,6 @@ function writeNodeToFile(outPath, ent, next)
 program
   .arguments('<dir>')
   .version(pjson.version)  
-  .option('-l, --log','Get history', false)
   .option('-c, --concurrency <concurrency>','Number of processes of concurrency', 1)
   .option('-p, --path [path]','Get path',parse_sitepath,new sitepath(['wh']))
   .action(function (dirParam) {
@@ -63,12 +62,12 @@ program
     query.sequentialEntityScan(db, {}, program.path, program.concurrency, function(entry, next) {
       winston.info('Backing up :', entry.path);
       var pth = new sitepath(entry.path);
-      dumpEntity(db, entity.Entity, pth, false, function(err, ent, log) {
+      dumpEntity(db, entity.Entity, pth, true, function(err, ent, log) {
         if (err) {
           return next(err);
         }
         var filepath = path.join(dir, entry.path + '-data.json');
-        writeNodeToFile(filepath, ent, next)
+        writeNodeToFile(filepath, ent, log, next)
       })
     }, function(err) {
       if (err) {
