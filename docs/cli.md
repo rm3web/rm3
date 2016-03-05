@@ -29,6 +29,15 @@ Dumps a node to the console.
 * Dump wh.users page to stdout `rm3dump -p wh.users`
 * Dum wh page to stdout, with history, in a more readable format `./bin/rm3dump -lfp wh`
 
+rm3backup
+---------
+
+Fills a directory with a semantic backup.
+
+`rm3backup backupdir` will copy the contents of the site into the directory `backupdir`.
+
+In order to make sure that there aren't accidentally any excess files included in the backup, it requires an empty directory.
+
 rm3admin
 --------
 

@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+
+var query = require('../lib/query');
+var entity = require('../lib/entity');
+var sitepath = require ('sitepath');
+var db = require('../lib/db');
+var program = require('commander');
+var pjson = require('../package.json');
+var async = require('async');
+var util = require('util');
+var fs = require('fs');
+var winston = require('winston');
+var path = require('path');
+var dumpEntity = require('../lib/dumpentity.js');
+
+winston.cli();
+
+function parse_sitepath(val) {
+  var pth = new sitepath(val);
+  return pth;
+}
+
+var dirVal;
+
+function writeNodeToFile(outPath, ent, log, next)
+{
+  var rec = ent.toRec();
+  rec.history = log;
+  rec.dump_date = new Date();
+  rec.dump_version = pjson.version;
+  fs.open(outPath, 'wx', 0666, function(err, fd) {
+    if (err) {
+      return next(err);
+    }
+    fs.writeSync(fd, JSON.stringify(rec));
+    fs.closeSync(fd);
+  })
+  next();
+}
+
+program
+  .arguments('<dir>')
+  .version(pjson.version)  
+  .option('-c, --concurrency <concurrency>','Number of processes of concurrency', 1)
+  .option('-p, --path [path]','Get path',parse_sitepath,new sitepath(['wh']))
+  .action(function (dirParam) {
+    dirVal = dirParam;
+    var dir = path.join(process.cwd(), dirParam)
+    try {
+      winston.info('Creating directory :', dir)
+      fs.mkdirSync(dir);
+    } catch(e) {
+      if (e.code === 'EEXIST') {
+        winston.error('Can\'t create dir, already exists.');
+        winston.info('rm3backup needs to be able to create an empty dir to give you a consistent backup.');
+        process.exit(1);
+      }
+      winston.error('Can\'t create dir, error :', e);
+      process.exit(1);
+    }
+    winston.info('Starting backup, concurrency :', program.concurrency);
+    query.sequentialEntityScan(db, {}, program.path, program.concurrency, function(entry, next) {
+      winston.info('Backing up :', entry.path);
+      var pth = new sitepath(entry.path);
+      dumpEntity(db, entity.Entity, pth, true, function(err, ent, log) {
+        if (err) {
+          return next(err);
+        }
+        var filepath = path.join(dir, entry.path + '-data.json');
+        writeNodeToFile(filepath, ent, log, next)
+      })
+    }, function(err) {
+      if (err) {
+        winston.error('Error while backing up:', err);
+      }
+      winston.info('Backup complete')
+      db.gunDatabase();
+    })
+  });
+  ;
+
+program.parse(process.argv);
+
+if (typeof dirVal === 'undefined') {
+ winston.error('No directory given');
+ process.exit(1);
+}
