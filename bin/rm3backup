@@ -11,6 +11,7 @@ var util = require('util');
 var fs = require('fs');
 var winston = require('winston');
 var path = require('path');
+var dumpEntity = require('../lib/dumpentity.js');
 
 winston.cli();
 
@@ -62,7 +63,7 @@ program
     query.sequentialEntityScan(db, {}, program.path, program.concurrency, function(entry, next) {
       winston.info('Backing up :', entry.path);
       var pth = new sitepath(entry.path);
-      query.entityFromPath(db, entity.Entity, {}, {context: 'ROOT'}, pth, null, function(err, ent) {
+      dumpEntity(db, entity.Entity, pth, false, function(err, ent, log) {
         if (err) {
           return next(err);
         }

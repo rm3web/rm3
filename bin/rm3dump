@@ -8,6 +8,7 @@ var program = require('commander');
 var pjson = require('../package.json');
 var async = require('async');
 var util = require('util');
+var dumpEntity = require('../lib/dumpentity.js');
 
 function parse_sitepath(val) {
   var pth = new sitepath(val);
@@ -22,28 +23,7 @@ program
   .parse(process.argv)
   ;
 
-async.waterfall([
-  function query_ent(callback) {
-    query.entityFromPath(db, entity.Entity, {}, {context: 'ROOT'}, program.path, null, callback)
-  },
-  function query_hist(ent, callback) {
-    if (program.log) {
-      var resp = query.queryHistory(db, {}, {context: 'ROOT'}, ent._path, null, {});
-      var arts = [];
-      resp.on('article', function(article) {
-        arts.push(article);
-      });
-      resp.on('error', function(err) {
-        callback(err);
-      });
-      resp.on('end', function() {
-        callback(null, ent, arts);
-      });
-    } else {
-      callback(null, ent, undefined);
-    }
-  }
-], function(err, ent, log) {
+dumpEntity(db, entity.Entity, program.path, program.log, function(err, ent, log) {
   if (!err) {
     if (program.friendly) {
       console.log('Path: %s', ent._path.toDottedPath());
@@ -85,4 +65,4 @@ async.waterfall([
     }
   }
   db.gunDatabase();
-})
+});
