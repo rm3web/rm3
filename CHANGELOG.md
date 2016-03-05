@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- rm3backup command
+
 ### Changed
 - Updated dependencies
 
