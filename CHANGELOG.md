@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Updated dependencies
 
+### Fixed
+- Login form had some React-isms that were breaking the Dust version.
+
 ## [0.1.1] - 2016-2-28
 
 ### Fixed
@@ -24,11 +27,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## rm2
 
-I started on Rm2 in early 2011, once I had a few too many aborted efforts into refactoring the questionable design decisions from 2004 and wanted some stuff to speed up my learning of how node.js worked.  There are several classes that exist solely as direct ports of the Ruby version of the object, but using JavaScript idioms instead.
+I started on Rm2 in early 2011, once I had a few too many aborted efforts into refactoring the questionable design decisions from 2004 and wanted some stuff to speed up my learning of how node.js worked.  There are several classes that exist solely as direct ports of the Ruby version of the object, but using JavaScript idioms instead.  Some of them got coppied over to rm3.
 
 ## rm
 
 I started on Rm around October 2004.  It became functional at the start of 2005, but I went through various rewrites and distractions and didn't actually launch it until Oct 2007.  It's been running in production ever since.
+
+Most of the basic concepts behind rm3 were born here.  Entities (I called them Nodes, but then decided it would be really confusing), Logs, a Query engine, Paths that map to PostgreSQL ltree types, RDF/JSON-LD styled triple-tags, and more.
+
+Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
 [Unreleased]: https://github.com/rm3web/rm3/compare/v0.1.1...HEAD
 [0.1.1]: https://github.com/rm3web/rm3/compare/v0.1.0...v0.1.1
