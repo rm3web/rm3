@@ -573,10 +573,6 @@ describe('update', function() {
       update.assignUserToRole(db, {}, {context: 'ROOT'}, userpath, 'role2', 'note', done);
     });
 
-    step('pause', function(done) {
-      setTimeout(done, 100);
-    });
-
     step('check assign again', function checkAssignAgain(done) {
       var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quickQuery(db, query, function(err, result) {
@@ -596,10 +592,6 @@ describe('update', function() {
       update.removeUserFromRole(db, {}, {context: 'ROOT'}, userpath, 'role', 'note', done);
     });
 
-    step('pause', function(done) {
-      setTimeout(done, 100);
-    });
-
     step('check assign after 1 de-assign', function checkAssignAfter1(done) {
       var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quickQuery(db, query, function(err, result) {
@@ -613,16 +605,8 @@ describe('update', function() {
       });
     });
 
-    step('pause', function(done) {
-      setTimeout(done, 100);
-    });
-
     step('de-assign', function deleteAssignmentResource2(done) {
       update.removeUserFromRole(db, {}, {context: 'ROOT'}, userpath, 'role2', 'note', done);
-    });
-
-    step('pause', function(done) {
-      setTimeout(done, 100);
     });
 
     step('check assign after 2 de-assigns', function checkAssignAfter2(done) {
