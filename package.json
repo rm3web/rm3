@@ -83,7 +83,7 @@
     "squel": "~4.3",
     "superagent": "~1.7.2",
     "textblocks": "0.0.9",
-    "textblocks-react-editor": "0.0.4",
+    "textblocks-react-editor": "0.0.5",
     "validator": "~4.6.1",
     "winston": "~2.2",
     "winston-context": "0.0.7",
