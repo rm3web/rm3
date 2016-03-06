@@ -609,6 +609,10 @@ describe('update', function() {
       update.removeUserFromRole(db, {}, {context: 'ROOT'}, userpath, 'role2', 'note', done);
     });
 
+    step('pause', function(done) {
+      setTimeout(done, 150);
+    });
+
     step('check assign after 2 de-assigns', function checkAssignAfter2(done) {
       var query = "SELECT subject, role FROM wh_subject_to_roles WHERE subject = 'wh.update_assign' ORDER BY role ASC";
       quickQuery(db, query, function(err, result) {
