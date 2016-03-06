@@ -248,5 +248,5 @@ gulp.task('coverage:extra', ['test:db:db', 'test:casper:db', 'coverage:base', 'c
 gulp.task('base-coverage', ['coverage:clear', 'coverage:base'],
   shell.task(['./node_modules/.bin/nyc report -r html -r lcov -r html',]));
 
-gulp.task('coverage', ['coverage:clear', 'coverage:base', 'coverage:extra', 'coverage:casper', 'coverage:api'],
+gulp.task('coverage', ['coverage:clear', 'coverage:base', 'coverage:extra', 'coverage:casper'],
   shell.task(['./node_modules/.bin/nyc report -r text -r lcov -r html']));
