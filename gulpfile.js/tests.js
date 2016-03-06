@@ -242,11 +242,14 @@ gulp.task('coverage:casper', ['test:casper:db', 'test:casper:users'], function (
 gulp.task('test', ['test:unit', 'test:db']);
 
 //Bit of a hack to reduce concurrency
-gulp.task('coverage:base', ['test:db:db', 'coverage:clear', 'coverage:unit', 'coverage:db'])
-gulp.task('coverage:extra', ['test:db:db', 'test:casper:db', 'coverage:base', 'coverage:casper'])
+gulp.task('coverage:base', ['coverage:unit', 'coverage:db'])
 
 gulp.task('base-coverage', ['coverage:clear', 'coverage:base'],
   shell.task(['./node_modules/.bin/nyc report -r html -r lcov -r html',]));
 
-gulp.task('coverage', ['coverage:clear', 'coverage:base', 'coverage:extra', 'coverage:casper'],
+gulp.task('coverage:step-1', ['coverage:clear']);
+gulp.task('coverage:step-2', ['coverage:step-1', 'coverage:base']);
+gulp.task('coverage:step-3', ['coverage:step-1', 'coverage:step-2', 'coverage:casper'])
+
+gulp.task('coverage', ['coverage:step-1', 'coverage:step-2', 'coverage:step-3'],
   shell.task(['./node_modules/.bin/nyc report -r text -r lcov -r html']));
