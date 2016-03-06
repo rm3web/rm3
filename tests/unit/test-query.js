@@ -6,6 +6,46 @@ var events = require("events");
 var should = require('should');
 var Plan = require('test-plan');
 
+describe('activity query gen', function() {
+  var root = {context: "ROOT"};
+
+  describe('throws an error', function() {
+    it('throws an error on when insecure', function() {
+      (function() {
+        query._activityQueryGen({context: 'USERLOOKUP'}, 'wh', 'child', 'count', {}, undefined, undefined, {});
+      }).should.throw('invalid query');
+    });
+  });
+
+  describe('generates the correct queries', function() {
+    var tests = [
+      {desc: 'for the children of a node with no user or filters',
+       args: [root, 'wh', 'child', null, {}, {}],
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+      {desc: 'for the parents of a node with no user or filters',
+       args: [root, 'wh', 'parents', null, {}, {}],
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path @> $1) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+      {desc: 'for the first-level children of a node with no user or filters',
+       args: [root, 'wh', 'dir', null, {}, {}],
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path ~ lquery($1 || \'.*{1}\')) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+      {desc: 'for the children of a node with a user',
+       args: [root, 'wh', 'child', new sitepath(['wh','errr']), {}, {}],
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log."actorPath" = $1) AND (wh_log.path <@ $2) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+      {desc: 'for drafts',
+       args: [root, 'wh', 'child', null, {drafts: true}, {}],
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) AND ("evtFinal" = $2) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+    ];
+
+    tests.forEach(function(test, index) {
+      // Need to name this better
+      it(test.desc, function() {
+        var tmp = query._activityQueryGen.apply(this, test.args);
+        tmp.text.should.equal(test.expected);
+      });
+    });
+  });
+});
+
 describe('query gen', function() {
   var root = {context: "ROOT"};
 
@@ -18,6 +58,11 @@ describe('query gen', function() {
     it('throws an error on invalid query target', function() {
       (function() {
         query._queryGen(root, 'wh', 'child', 'retr', {}, undefined, undefined, {});
+      }).should.throw('invalid query');
+    });
+    it('throws an error on when insecure', function() {
+      (function() {
+        query._queryGen({context: 'USERLOOKUP'}, 'wh', 'child', 'count', {}, undefined, undefined, {});
       }).should.throw('invalid query');
     });
   });
