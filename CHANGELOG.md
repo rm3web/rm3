@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- Updated environment variable manual.
+- Changed security warnings in the logs.
+
+### Security
+- RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
 
 ## [0.1.2] - 2016-3-5: Special documentation on a Rainy Day edition
 ### Added
