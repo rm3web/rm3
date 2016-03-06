@@ -166,7 +166,7 @@ gulp.task('coverage:api', ['test:api:db', 'test:api:schema', 'test:api:fixtures'
   var tests = ['--require', './tests/lib/mocha.js', '-c', './tests/api/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3api',
-    './node_modules/.bin/nyc', ['bin/rm3front'], 125000, function(server) {
+    './node_modules/.bin/nyc', ['bin/rm3front'], 165000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
@@ -215,7 +215,7 @@ gulp.task('coverage:casper', ['test:casper:db', 'test:casper:users'], function (
   var serverlog = [];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    './node_modules/.bin/nyc', ['bin/rm3front'], 125000, function(server) {
+    './node_modules/.bin/nyc', ['bin/rm3front'], 165000, function(server) {
       server.stderr.on('data', function (data) {
         serverlog.push(data);
       });
