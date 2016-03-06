@@ -24,12 +24,12 @@ gulp.task('test:db:schema', ['test:db:db'], shell.task([
   'psql rm3unit < db-schema.sql'
 ]))
 
-gulp.task('test:db', ['test:db:schema'], 
+gulp.task('test:db', ['test:db:db', 'test:db:schema'], 
   shell.task(['./node_modules/.bin/mocha --require ./tests/lib/mocha.js -c tests/db/*.js'], {env: {
     RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit'
   }}));
 
-gulp.task('coverage:db', ['test:db:schema'], 
+gulp.task('coverage:db', ['test:db:db', 'test:db:schema'], 
   shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/mocha --require ./tests/lib/mocha.js -c tests/db/*.js'], {env: {
     RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit'
   }}));
@@ -42,7 +42,7 @@ gulp.task('test:casper:schema', ['test:casper:db'], shell.task([
   'psql rm3casper < db-schema.sql'
 ]))
 
-gulp.task('test:casper:fixtures', ['test:casper:schema'], function() {
+gulp.task('test:casper:fixtures', ['test:casper:db', 'test:casper:schema'], function() {
   return gulp.src('tests/page-fixtures/*.json', {read: false})
     .pipe(shell([
       './bin/rm3load -f <%= file.path %>'
@@ -51,7 +51,7 @@ gulp.task('test:casper:fixtures', ['test:casper:schema'], function() {
     }}))
 })
 
-gulp.task('test:casper:users', ['test:casper:schema', 'test:casper:fixtures'], function() {
+gulp.task('test:casper:users', ['test:casper:db', 'test:casper:schema', 'test:casper:fixtures'], function() {
   return gulp.src('')
     .pipe(shell([
       './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password',
@@ -138,7 +138,7 @@ function runTestChild(child, tests, next) {
 }
 
 
-gulp.task('test:api', ['test:api:users'], function(cb) {
+gulp.task('test:api', ['test:api:db', 'test:api:schema', 'test:api:fixtures', 'test:api:users'], function(cb) {
   var tests = ['--require', './tests/lib/mocha.js', '-c', './tests/api/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3api',
@@ -162,7 +162,31 @@ gulp.task('test:api', ['test:api:users'], function(cb) {
     });
 });
 
-gulp.task('test:casper', ['test:casper:users'], function(cb) {
+gulp.task('coverage:api', ['test:api:db', 'test:api:schema', 'test:api:fixtures', 'test:api:users', 'test:api:users'], function(cb) {
+  var tests = ['--require', './tests/lib/mocha.js', '-c', './tests/api/*'];
+
+  spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3api',
+    './node_modules/.bin/nyc', ['bin/rm3front'], 125000, function(server) {
+      server.stderr.on('data', function (data) {
+        gutil.log('ServerErr:', data.toString().slice(0, -1));;
+      });
+      server.stdout.on('data', function (data) {
+        gutil.log('Server:', data.toString().slice(0, -1));
+      });
+    }, function(server) {
+      runTestChild('./node_modules/.bin/mocha', tests, function(success) {
+        gutil.log('killing server');
+        server.kill('SIGINT');
+        if (success) {
+          cb();
+        } else {
+          cb(new Error('fail'));
+        }
+      });
+    });
+});
+
+gulp.task('test:casper', ['test:casper:db', 'test:casper:users'], function(cb) {
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
@@ -187,7 +211,7 @@ gulp.task('test:casper', ['test:casper:users'], function(cb) {
 });
 
 
-gulp.task('coverage:casper', ['test:casper:users'], function (cb) {
+gulp.task('coverage:casper', ['test:casper:db', 'test:casper:users'], function (cb) {
   var serverlog = [];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
@@ -218,10 +242,11 @@ gulp.task('coverage:casper', ['test:casper:users'], function (cb) {
 gulp.task('test', ['test:unit', 'test:db']);
 
 //Bit of a hack to reduce concurrency
-gulp.task('coverage:base', ['coverage:clear', 'coverage:unit', 'coverage:db'])
+gulp.task('coverage:base', ['test:db:db', 'coverage:clear', 'coverage:unit', 'coverage:db'])
+gulp.task('coverage:extra', ['test:db:db', 'test:casper:db', 'coverage:base',' coverage:casper'])
 
 gulp.task('base-coverage', ['coverage:clear', 'coverage:base'],
   shell.task(['./node_modules/.bin/nyc report -r html -r lcov -r html',]));
 
-gulp.task('coverage', ['coverage:clear', 'coverage:base', 'coverage:casper'],
+gulp.task('coverage', ['coverage:clear', 'coverage:base', 'coverage:extra', 'coverage:casper', 'coverage:api'],
   shell.task(['./node_modules/.bin/nyc report -r text -r lcov -r html']));

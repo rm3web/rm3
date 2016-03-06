@@ -610,7 +610,7 @@ describe('update', function() {
     });
 
     step('pause', function(done) {
-      setTimeout(done, 500);
+      setTimeout(done, 100);
     });
 
     step('check assign after 2 de-assigns', function checkAssignAfter2(done) {
