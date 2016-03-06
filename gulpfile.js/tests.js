@@ -243,7 +243,7 @@ gulp.task('test', ['test:unit', 'test:db']);
 
 //Bit of a hack to reduce concurrency
 gulp.task('coverage:base', ['test:db:db', 'coverage:clear', 'coverage:unit', 'coverage:db'])
-gulp.task('coverage:extra', ['test:db:db', 'test:casper:db', 'coverage:base',' coverage:casper'])
+gulp.task('coverage:extra', ['test:db:db', 'test:casper:db', 'coverage:base', 'coverage:casper'])
 
 gulp.task('base-coverage', ['coverage:clear', 'coverage:base'],
   shell.task(['./node_modules/.bin/nyc report -r html -r lcov -r html',]));
