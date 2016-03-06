@@ -4,5 +4,6 @@ gulpfile.js
 /src
 /tests
 /coverage
+/.nyc_output
 .env
 scheme-default.tar.gz

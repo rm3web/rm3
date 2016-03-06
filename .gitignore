@@ -4,5 +4,6 @@ scheme/default/static/bundle.css
 scheme/default/static/bundles/
 scheme/default/static/images/
 coverage/
+/.nyc_output
 node_modules/
 .env
