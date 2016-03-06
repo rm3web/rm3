@@ -22,7 +22,7 @@ function entitiesShouldMostlyEqual(ent, ent2) {
 
 describe('query', function() {
   this.timeout(8000); // This might take a bit of time
-  
+
   describe('#entityFromPath', function() {
     var ents = {};
 
