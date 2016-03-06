@@ -76,3 +76,22 @@ Now, after I wrote a draft pure-capability system and a draft RBAC system in Pos
 Thus, rm3 uses RBAC, albeit with some features cheerfully designated as never to be implemented and some features left out for the time being.  I'm targeting NIST's Core RBAC.  I do not think it would ever be a good idea to add the un-specified DENY rules, but hierarchial rules would be great for higher-end instalations and constrained RBAC would be great for Seperation of Duties.  It's just that hierarchial RBAC rules probably need to be done in de-normalized form and the constraints are going to end up being a bit complicated.
 
 After I got knee deep in the implementation of users and RBAC, I realized that I needed to handle a few exceptional cases.  Most of the requests that require authentication are simple -- you are a user and may or may not have permission.  However, I noticed that there's a corner case: Users are stored as pages, just like everything else.  Thus, there is a brief period of time where you need above-average permissions.  Now, I did add the notion of ROOT access, where you've explictly disabled security checking.  But instead of running that as ROOT, I created a context field that lets you instead specify that you are using the USERLOOKUP context to look up a user... and this also means that it will only bypass security checking in that exact query that it expects you to be looking up a user.
+
+Site trees and Metadata
+=======================
+
+A hierarchy is the simplest way to provide a rough sorting order for things. This is why rm3 is built around providing simple, clean, and helpful URLs along a hierarchy instead of mounting each page type under a different path hierarchy.
+
+Hierarchies have exceptions, however. Say you have a photo collection containing pictures of bugs and pictures of flowers. What do you do with the picture that contains both bugs and flowers?
+
+A considerable amount of time was spent over the years on the RDF suite of technologies that, so far, have not caught on.
+
+Tagging, on the other hand, has caught on quite well.
+
+RDF can be viewed as tags on steroids. It lets you make tags like 'urn:hymenoptera:formicidae:ponerinae:pachycondyla:verenae' to unambiguosly describe one particular ant specifes usually found in Costa Rica. Layers of protocols and specifications let you establish equivalencies and relationships between tags so that you could, in theory, do reasoning upon a collection of records where some tags are in one format and some are in a different format.
+
+This is all, of course, way too complex for most people. So I tried to take the good bits and offer them in a usable fashion.
+
+rm3 will allow you to create tags, just like everything else. But rm3 will also let you create tags that are unambiguous (I'll call them ontags, short for 'ontological tags') and point to a definition.  So I can create an ontag where you know I'm talking about my Olympus PEN, and not a pen.
+
+Furthermore rm3 will allow you to use predicates.  Optionally, of course.  This way, I can create a predicate for "Camera used to take this picture" and do a query on that predicate to get a list of cameras I've used.  And if I search for the predicate of "Camera used to take this picture" and the tag of "Olympus PEN E-P3" that I'll get only photos taken with my E-P3, not a blog article where I talk about it or a picture of my E-P3 that I took with my cell phone.

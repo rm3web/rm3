@@ -3,10 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
 ### Added
 - rm3backup command
 - Faceting based on tags
+- More documentation
 
 ### Changed
 - Updated dependencies
@@ -15,14 +15,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Login form had some React-isms that were breaking the Dust version.
 
 ## [0.1.1] - 2016-2-28
-
 ### Fixed
 - Fails to operate correctly when there's no JWT token
 - Removed login form in JSX and just went for straight Dust.
 - Added generated Travis tarball to npmignore.
 
 ## rm3 0.1.0 - 2016-2-28: Special Pirates of Penzance Sing-Along edition
-
 ### Added
 - First release.
 
