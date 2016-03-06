@@ -13,6 +13,23 @@
 {?facets}
 <br clear="all" />
 <div class="pure-g">
+
+{?facets.predicates}
+  <div class="pure-u-1-3">
+{#facets.predicates}
+ <br /><a href="{link}">{facet} ({count})</a>
+{/facets.predicates}
+</div>
+{/facets.predicates}
+
+{?facets.tags}
+  <div class="pure-u-1-3">
+{#facets.tags}
+ <br /><a href="{link}">{facet} ({count})</a>
+{/facets.tags}
+</div>
+{/facets.tags}
+
 {?facets.months}
   <div class="pure-u-1-3">
 {#facets.months}
@@ -20,5 +37,6 @@
 {/facets.months}
 </div>
 {/facets.months}
+
 </div>
 {/facets}

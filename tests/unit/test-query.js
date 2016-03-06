@@ -53,7 +53,7 @@ describe('query gen', function() {
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'navbar\')'},
       {desc: 'for comment entries',
        args: [root, 'wh', 'child', 'count', {comment: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) LEFT JOIN wh_entity AS actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
+       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity LEFT JOIN wh_entity AS actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
       {desc: 'for plain tags',
        args: [root, 'wh', 'child', 'count', {predicate: 'plain', tag: 'bears'}, undefined, undefined, {}],
        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.path <@ $1) AND ("objStr" = $2) AND ("predPath" = $3)'},
