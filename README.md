@@ -66,16 +66,17 @@ How to get started?
 [Docs](docs)
 ------------
 
+ * [How to administer your rm3 install](docs/admin.md)
+ * [CLI Commands](docs/cli.md)
+ * [Environment Variables useful for configuring rm3](docs/cli.md)
+ * [And more..](docs)
+
 To generate API docs:
 
 * `npm run docs`
 
 Tests
 -----
-
-To set up testing environment:
-* `npm install --dev`
-* `createdb rm3unit`
 
 To test:
 
