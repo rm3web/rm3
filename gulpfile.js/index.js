@@ -23,6 +23,8 @@ var gulp = require('gulp')
   , minifyCss = require('gulp-minify-css')
   ;
 
+require('./tests.js');
+
   // Load and use polyfill for ECMA-402.
 if (!global.Intl) {
   global.Intl = require('intl');
@@ -35,12 +37,6 @@ winston.remove(winston.transports.Console);
 
 var lintable = ['lib/**/*.js', 'tests/**/*.js', 'lib/**/*.jsx',];
 var casperTests = ['./tests/casper/*'];
-
-gulp.task('unit-tests', function () {
-  process.env['RM3_PG'] = 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit';
-  return gulp.src('tests/unit/*.js', {read: false})
-        .pipe(mocha({}));
-});
 
 gulp.task('icon-75', function() {
     return gulp.src('./scheme/default/images/icon-*.svg')
