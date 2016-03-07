@@ -43,7 +43,7 @@ gulp.task('test:casper:schema', ['test:casper:db'], shell.task([
   'psql rm3casper < db-schema.sql'
 ]))
 
-gulp.task('test:casper:fixtures', ['test:casper:db', 'test:casper:schema'], function() {
+gulp.task('test:casper:fixtures', ['test:casper:schema'], function() {
   return gulp.src('tests/page-fixtures/*.json', {read: false})
     .pipe(shell([
       './bin/rm3load -f <%= file.path %>'
@@ -52,7 +52,7 @@ gulp.task('test:casper:fixtures', ['test:casper:db', 'test:casper:schema'], func
     }}))
 })
 
-gulp.task('test:casper:users', ['test:casper:db', 'test:casper:schema', 'test:casper:fixtures'], function() {
+gulp.task('test:casper:users', ['test:casper:schema'], function() {
   return gulp.src('')
     .pipe(shell([
       './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password',
@@ -76,7 +76,7 @@ gulp.task('test:api:schema', ['test:api:db'], shell.task([
   'psql rm3api < db-schema.sql'
 ]))
 
-gulp.task('test:api:fixtures', ['test:api:db', 'test:api:schema'], function() {
+gulp.task('test:api:fixtures', ['test:api:schema'], function() {
   return gulp.src('tests/page-fixtures/*.json', {read: false})
     .pipe(shell([
       './bin/rm3load -f <%= file.path %>'
@@ -86,7 +86,7 @@ gulp.task('test:api:fixtures', ['test:api:db', 'test:api:schema'], function() {
 })
 
 
-gulp.task('test:api:users', ['test:api:schema', 'test:api:fixtures'], function() {
+gulp.task('test:api:users', ['test:api:schema'], function() {
   return gulp.src('')
     .pipe(shell([
       './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password',
@@ -257,6 +257,7 @@ gulp.task('coverage', function(callback) {
               'coverage:unit',
               'coverage:db',
               'coverage:casper',
+              'coverage:api',
               'coverage:report',
               callback);
 });
