@@ -59,7 +59,6 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
           spec.name.should.equal('insert_entity_query_delete');
           spec.text.should.equal(deleteBeforeQuery);
           spec.values[0].should.equal('wh');
-          console.log(spec);
           func(null, {});
         } else {
           //t.deepEqual(spec.text, insertQuery);
