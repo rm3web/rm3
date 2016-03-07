@@ -11,7 +11,7 @@ describe('update', function() {
 $3, $4, $5, $6, $7, $8, $9, $10, $11)';
     var insertTagQuery = 'INSERT INTO wh_tag ("subjPath", "objClass", \
 "predPath", "objStr") VALUES ($1, $2, $3, $4)';
-    var deleteBeforeQuery = 'DELETE FROM wh_entity WHERE (path = $1) AND (stub = true)'
+    var deleteBeforeQuery = 'DELETE FROM wh_entity WHERE (path = $1) AND (stub = true)';
 
     var now = new Date();
 
