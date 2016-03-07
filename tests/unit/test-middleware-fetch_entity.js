@@ -5,7 +5,6 @@ var util = require('util'),
     errs = require('errs');
 
 function StubEntity() {
-  
 }
 
 function mockReq(path) {
