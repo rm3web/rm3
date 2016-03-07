@@ -186,7 +186,7 @@ gulp.task('coverage:api', ['test:api:db', 'test:api:schema', 'test:api:fixtures'
     });
 });
 
-gulp.task('test:casper', ['test:casper:db', 'test:casper:users'], function(cb) {
+gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fixtures'], function(cb) {
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
@@ -211,7 +211,7 @@ gulp.task('test:casper', ['test:casper:db', 'test:casper:users'], function(cb) {
 });
 
 
-gulp.task('coverage:casper', ['test:casper:db', 'test:casper:users'], function (cb) {
+gulp.task('coverage:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fixtures'], function (cb) {
   var serverlog = [];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
@@ -249,7 +249,8 @@ gulp.task('base-coverage', ['coverage:clear', 'coverage:base'],
 
 gulp.task('coverage:step-1', ['coverage:clear']);
 gulp.task('coverage:step-2', ['coverage:step-1', 'coverage:base']);
-gulp.task('coverage:step-3', ['coverage:step-1', 'coverage:step-2', 'coverage:casper'])
+gulp.task('coverage:step-3', ['coverage:step-1', 'coverage:step-2', 'test:casper:db', 'test:casper:users', 'test:casper:fixtures'])
+gulp.task('coverage:step-4', ['coverage:step-1', 'coverage:step-2', 'coverage:step-3', 'coverage:casper'])
 
-gulp.task('coverage', ['coverage:step-1', 'coverage:step-2', 'coverage:step-3'],
+gulp.task('coverage', ['coverage:step-1', 'coverage:step-2', 'coverage:step-3', 'coverage:step-4'],
   shell.task(['./node_modules/.bin/nyc report -r text -r lcov -r html']));
