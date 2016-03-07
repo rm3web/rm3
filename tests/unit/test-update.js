@@ -11,6 +11,7 @@ describe('update', function() {
 $3, $4, $5, $6, $7, $8, $9, $10, $11)';
     var insertTagQuery = 'INSERT INTO wh_tag ("subjPath", "objClass", \
 "predPath", "objStr") VALUES ($1, $2, $3, $4)';
+    var deleteBeforeQuery = 'DELETE FROM wh_entity WHERE (path = $1) AND (stub = true)'
 
     var now = new Date();
 
@@ -53,6 +54,12 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
           spec.values[1].should.equal('tag');
           spec.values[2].should.equal('navigation');
           spec.values[3].should.equal('navbar');
+          func(null, {});
+        } else if (spec.name === 'insert_entity_query_delete') {
+          spec.name.should.equal('insert_entity_query_delete');
+          spec.text.should.equal(deleteBeforeQuery);
+          spec.values[0].should.equal('wh');
+          console.log(spec);
           func(null, {});
         } else {
           //t.deepEqual(spec.text, insertQuery);
