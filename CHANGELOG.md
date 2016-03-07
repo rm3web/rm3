@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Gulpfile refactored into smaller chunks.
+- gulp-clean-css replaces gulp-minify-css.
 
 ### Fixed
 - Coverage collection fixed.
