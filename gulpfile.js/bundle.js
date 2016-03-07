@@ -10,7 +10,7 @@ var gulp = require('gulp')
   , rename = require("gulp-rename")
   , csslint = require('gulp-csslint')
   , concat = require('gulp-concat')
-  , minifyCss = require('gulp-minify-css')
+  , cleanCSS = require('gulp-clean-css')
   ;
 
 gulp.task('icon-75', function() {
@@ -36,7 +36,7 @@ gulp.task('cssbundle', function() {
     './node_modules/react-super-select/lib/react-super-select.css',
     './scheme/default/styles/*.css'])
     .pipe(concat('bundle.css'))
-    .pipe(minifyCss())
+    .pipe(cleanCSS())
     .pipe(gulp.dest('./scheme/default/static/'));
 })
 
