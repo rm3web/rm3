@@ -8,6 +8,11 @@ RM3_PG
 
 The Postgresql instance to connect to, in Postgres URL form (`postgresql://[user[:password]@][netloc][:port][/dbname][?param1=value1&...]`)
 
+RM3_SESSION_REDIS
+-----------------
+
+The Redis instance to store session data in, in Redis URL form (`redis://netloc:port/dbnumber`).
+
 RM3_TWITTER_CONSUMER_KEY & RM3_TWITTER_CONSUMER_SECRET
 ------------------------------------------------------
 
