@@ -244,6 +244,8 @@ function checkLogUpdate(row, ent, ent2) {
 }
 
 describe('update', function() {
+  this.timeout(8000); // This might take a bit of time
+
   describe('create-create-delete', function() {
     var now = new Date();
     var ents = {};
