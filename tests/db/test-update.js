@@ -179,11 +179,13 @@ function stepValidateTagExistencePath(desc, path) {
 
 function stepValidateNonEntityExistence(desc, ent) {
   step(desc, function(done) {
-    var query = "SELECT \"entityId\", \"revisionId\", \"revisionNum\" FROM wh_entity WHERE path = '" +
+    var query = "SELECT stub, \"entityId\", \"revisionId\", \"revisionNum\" FROM wh_entity WHERE path = '" +
       ent.path().toDottedPath() + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
-      result.rowCount.should.equal(0);
+      if (result.rowCount === 1) {
+        result.rows[0].stub.should.equal(true);
+      }
       done(err);
     });
   });
@@ -246,7 +248,7 @@ function checkLogUpdate(row, ent, ent2) {
 describe('update', function() {
   this.timeout(8000); // This might take a bit of time
 
-  describe('create-create-delete', function() {
+  describe('create-create-delete-create-delete', function() {
     var now = new Date();
     var ents = {};
     var delMark = {};
@@ -300,6 +302,13 @@ describe('update', function() {
       should.notDeepEqual(result.rows[0].revisionId, result.rows[1].revisionId);
       should.notDeepEqual(result.rows[0].revisionNum, result.rows[1].revisionNum);
     });
+
+    stepGenericCreate('create', new sitepath(['wh', 'create_create_delete']), ents,
+      'two', true, now);
+
+    stepValidateEntityExistence('check create', ents.two);
+
+    stepGenericDelete('delete', ents.two, delMark);
   });
 
   describe('create-update-delete', function() {

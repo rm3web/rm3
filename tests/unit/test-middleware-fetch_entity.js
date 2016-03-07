@@ -4,6 +4,9 @@ var sitepath = require ('sitepath');
 var util = require('util'),
     errs = require('errs');
 
+function StubEntity() {
+}
+
 function mockReq(path) {
   var req = {};
   req.sitepath = new sitepath(path);
@@ -40,7 +43,7 @@ describe('middleware:fetchEntity', function() {
         next(null, {e: 'st'});
       };
 
-      var middleware = fetchEntity(db, query, entity);
+      var middleware = fetchEntity(db, query, entity, StubEntity);
       should.deepEqual(typeof middleware, "function");
 
       middleware(req, res, function() {
@@ -61,7 +64,7 @@ describe('middleware:fetchEntity', function() {
         next(null, {e: 'sr'});
       };
 
-      var middleware = fetchEntity(db, query, entity);
+      var middleware = fetchEntity(db, query, entity, StubEntity);
       should.deepEqual(typeof middleware, "function");
 
       middleware(req, res, function() {
@@ -81,7 +84,7 @@ describe('middleware:fetchEntity', function() {
         next(null, {e: 'sq'});
       };
 
-      var middleware = fetchEntity(db, query, entity);
+      var middleware = fetchEntity(db, query, entity, StubEntity);
       should.deepEqual(typeof middleware, "function");
 
       middleware(req, res, function() {
@@ -104,7 +107,7 @@ describe('middleware:fetchEntity', function() {
           }));
       };
 
-      var middleware = fetchEntity(db, query, entity);
+      var middleware = fetchEntity(db, query, entity, StubEntity);
       should.deepEqual(typeof middleware, "function");
 
       middleware(req, res, function(err) {
@@ -120,7 +123,7 @@ describe('middleware:fetchEntity', function() {
         next(new Error("Connection was ended during query"));
       };
 
-      var middleware = fetchEntity(db, query, entity);
+      var middleware = fetchEntity(db, query, entity, StubEntity);
       should.deepEqual(typeof middleware, "function");
 
       middleware(req, res, function(err) {
@@ -144,7 +147,7 @@ describe('middleware:fetchEntity', function() {
           }));
       };
 
-      var middleware = fetchEntity(db, query, entity);
+      var middleware = fetchEntity(db, query, entity, StubEntity);
       should.deepEqual(typeof middleware, "function");
 
       middleware(req, res, function(err) {
@@ -171,7 +174,7 @@ describe('middleware:fetchEntity', function() {
         should.fail('this shouldn\'t be called');
       };
 
-      var middleware = fetchEntity(db, query, entity);
+      var middleware = fetchEntity(db, query, entity, StubEntity);
       should.deepEqual(typeof middleware, "function");
 
       middleware(req, res, function() {
