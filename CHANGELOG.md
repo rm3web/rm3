@@ -10,6 +10,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
 
+### Changed
+- Gulpfile refactored into smaller chunks.
+
+### Fixed
+- Coverage collection fixed.
+
 ## [0.1.2] - 2016-3-5: Special documentation on a Rainy Day edition
 ### Added
 - rm3backup command
