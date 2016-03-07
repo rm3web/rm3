@@ -179,11 +179,13 @@ function stepValidateTagExistencePath(desc, path) {
 
 function stepValidateNonEntityExistence(desc, ent) {
   step(desc, function(done) {
-    var query = "SELECT \"entityId\", \"revisionId\", \"revisionNum\" FROM wh_entity WHERE path = '" +
+    var query = "SELECT stub, \"entityId\", \"revisionId\", \"revisionNum\" FROM wh_entity WHERE path = '" +
       ent.path().toDottedPath() + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
-      result.rowCount.should.equal(0);
+      if (result.rowCount === 1) {
+        result.rows[0].stub.should.equal(true);
+      }
       done(err);
     });
   });
