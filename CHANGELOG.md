@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Updated environment variable manual.
 - Changed security warnings in the logs.
 - Tombstones for deleted entities.
+- Persistant storage of sessions in Redis
 
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
