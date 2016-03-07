@@ -120,6 +120,7 @@
     "mocha-casperjs": "^0.5.4",
     "mocha-steps": "0.0.1",
     "nyc": "^6.0.0",
+    "run-sequence": "^1.1.5",
     "should": "~7.1.0",
     "test-plan": "~0.1.1",
     "vinyl-source-stream": "^1.1.0"

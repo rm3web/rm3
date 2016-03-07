@@ -3,6 +3,7 @@ var gulp = require('gulp')
   , spawn = require('child_process').spawn
   , clone = require('clone')
   , gutil = require('gulp-util')
+  , runSequence = require('run-sequence');
 
 var casperTests = ['./tests/casper/*'];
 
@@ -239,18 +240,23 @@ gulp.task('coverage:casper', ['test:casper:db', 'test:casper:users', 'test:caspe
 });
 
 
+gulp.task('coverage:report', shell.task(['./node_modules/.bin/nyc report -r html -r lcov -r html']));
+
 gulp.task('test', ['test:unit', 'test:db']);
 
-//Bit of a hack to reduce concurrency
-gulp.task('coverage:base', ['coverage:unit', 'coverage:db'])
+gulp.task('base-coverage', function(callback) {
+  runSequence('coverage:clear',
+              'coverage:unit',
+              'coverage:db',
+              'coverage:report',
+              callback);
+});
 
-gulp.task('base-coverage', ['coverage:clear', 'coverage:base'],
-  shell.task(['./node_modules/.bin/nyc report -r html -r lcov -r html',]));
-
-gulp.task('coverage:step-1', ['coverage:clear']);
-gulp.task('coverage:step-2', ['coverage:step-1', 'coverage:base']);
-gulp.task('coverage:step-3', ['coverage:step-1', 'coverage:step-2', 'test:casper:db', 'test:casper:users', 'test:casper:fixtures'])
-gulp.task('coverage:step-4', ['coverage:step-1', 'coverage:step-2', 'coverage:step-3', 'coverage:casper'])
-
-gulp.task('coverage', ['coverage:step-1', 'coverage:step-2', 'coverage:step-3', 'coverage:step-4'],
-  shell.task(['./node_modules/.bin/nyc report -r text -r lcov -r html']));
+gulp.task('coverage', function(callback) {
+  runSequence('coverage:clear',
+              'coverage:unit',
+              'coverage:db',
+              'coverage:casper',
+              'coverage:report',
+              callback);
+});
