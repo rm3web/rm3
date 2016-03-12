@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Changed security warnings in the logs.
 - Tombstones for deleted entities.
 - Persistant storage of sessions in Redis
+- Unit tests for the CLI tooling
+- Templates can now create all of the RBAC entities and users.
 
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
