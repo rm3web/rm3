@@ -11,8 +11,7 @@ var winston = require('winston');
 winston.cli();
 
 function parse_sitepath(val) {
-  var pth = new sitepath(null,null);
-  pth.fromDottedPath(val);
+  var pth = new sitepath(val);
   return pth;
 }
 
