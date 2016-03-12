@@ -1,0 +1,13 @@
+[
+  {"type": "user", "name": "wirehead", "fullName": "Test User", 
+    "profile": "Some profile text", "profileUrl" : "http://www.wirewd.com/", 
+    "email" : "nobody@wirewd.com", "password": "password"},
+  {"type": "assign", "user": "wirehead", "role": "root"},
+  {"type": "permit", "role": "root", "permission": "edit", "path": "*"},
+  {"type": "permit", "role": "root", "permission": "delete", "path": "*"},
+  {"type": "permit", "role": "root", "permission": "view", "path": "*"},
+  {"type": "permit", "role": "root", "permission": "grant", "path": "*"},
+  {"type": "permit", "role": "root", "permission": "viewdraft", "path": "*"},
+  {"type": "permit", "role": "root", "permission": "comment", "path": "*"},
+  {"type": "permit", "role": "nobody", "permission": "view", "path": "wh.!users.*"}
+]

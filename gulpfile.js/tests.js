@@ -35,6 +35,19 @@ gulp.task('coverage:db', ['test:db:db', 'test:db:schema'],
     RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit'
   }}));
 
+gulp.task('test:cli:db', shell.task([
+  'dropdb --if-exists rm3cli && createdb rm3cli'
+]))
+
+gulp.task('test:cli:schema', ['test:cli:db'], shell.task([
+  'psql rm3cli < db-schema.sql'
+]))
+
+gulp.task('test:cli', ['test:cli:db', 'test:cli:schema'], 
+  shell.task(['./node_modules/.bin/mocha --require ./tests/lib/mocha.js -c tests/cli/*.js'], {env: {
+    RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3cli'
+  }}));
+
 gulp.task('test:casper:db', shell.task([
   'dropdb --if-exists rm3casper && createdb rm3casper'
 ]))
@@ -55,14 +68,7 @@ gulp.task('test:casper:fixtures', ['test:casper:schema'], function() {
 gulp.task('test:casper:users', ['test:casper:schema'], function() {
   return gulp.src('')
     .pipe(shell([
-      './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password',
-      './bin/rm3admin assign wirehead root',
-      './bin/rm3admin permit root edit \\*',
-      './bin/rm3admin permit root delete \\*',
-      './bin/rm3admin permit root view \\*',
-      './bin/rm3admin permit root grant \\*',
-      './bin/rm3admin permit root viewdraft \\*',
-      './bin/rm3admin permit nobody view wh.!users.\\*',
+      './bin/rm3admin loadtemplate base_access.json wh',
     ], {env: {
       RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
     }}))
@@ -89,14 +95,7 @@ gulp.task('test:api:fixtures', ['test:api:schema'], function() {
 gulp.task('test:api:users', ['test:api:schema'], function() {
   return gulp.src('')
     .pipe(shell([
-      './bin/rm3admin adduser wirehead "Test User" -p "Some profile text" -u http://www.wirewd.com/ -e nobody@wirewd.com --password password',
-      './bin/rm3admin assign wirehead root',
-      './bin/rm3admin permit root edit \\*',
-      './bin/rm3admin permit root delete \\*',
-      './bin/rm3admin permit root view \\*',
-      './bin/rm3admin permit root grant \\*',
-      './bin/rm3admin permit root viewdraft \\*',
-      './bin/rm3admin permit nobody view wh.!users.\\*',
+      './bin/rm3admin loadtemplate base_access.json wh',
       './bin/rm3admin loadtemplate meta.json wh'
     ], {env: {
       RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3api'
@@ -191,7 +190,7 @@ gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fi
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    './bin/rm3front', [], 10000, function(server) {
+    './bin/rm3front', [], 12000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
