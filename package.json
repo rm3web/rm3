@@ -132,7 +132,7 @@
     "benchmark": "dropdb --if-exists rm3unit && createdb rm3unit && psql rm3unit < db-schema.sql && RM3_PG=postgresql://wirehead:rm3test@127.0.0.1/rm3unit ./node_modules/.bin/matcha benchmark/*.js",
     "test": "./node_modules/.bin/gulp test",
     "coverage": "./node_modules/.bin/gulp coverage",
-    "travis": "./node_modules/.bin/gulp travis && ./node_modules/.bin/gulp coverage && ./node_modules/.bin/gulp coveralls",
+    "travis": "./node_modules/.bin/gulp travis && ./node_modules/.bin/gulp coverage && ./node_modules/.bin/gulp test:cli && ./node_modules/.bin/gulp coveralls",
     "lint": "./node_modules/.bin/gulp lint",
     "docs": "./node_modules/.bin/jsdox -A --output ./docs/api lib && ./node_modules/.bin/jsdox -A --output ./docs/api/middlware lib/middleware",
     "prepublish": "./node_modules/.bin/gulp prepublish"
