@@ -7,6 +7,7 @@ var db = require('../../lib/db');
 var user = require('../../lib/user');
 var should = require('should');
 var resources = require('../lib/resources.js');
+var uuid = require('node-uuid');
 require('mocha-steps');
 
 function entitiesShouldMostlyEqual(ent, ent2) {
@@ -388,6 +389,27 @@ describe('query', function() {
         }
         rec.provider.should.equal('test');
         rec.userId.should.equal('blfr');
+        done();
+      });
+    });
+  });
+
+  describe('blob', function() {
+    var ents = {};
+    var delMark = {};
+    var entityPath = new sitepath(['wh', 'blob', 'query']);
+    var revisionId = uuid.v1();
+
+    step('create', function createCredential(done) {
+      update.addBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, true, true, {'angels': true}, done);
+    });
+
+    step('check created blob', function checkCredential(done) {
+      query.findBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, function(err, rec) {
+        if (err) {
+          return done(err);
+        }
+        rec.angels.should.equal(true);
         done();
       });
     });
