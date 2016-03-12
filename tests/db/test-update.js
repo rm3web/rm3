@@ -656,6 +656,30 @@ describe('update', function() {
     });
   });
 
+  describe('blob', function() {
+    var ents = {};
+    var delMark = {};
+    var entityPath = new sitepath(['wh', 'blob']);
+    var revisionId = uuid.v1();
+
+    step('create', function createCredential(done) {
+      update.addBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath', revisionId, true, true, {'angels': true}, done);
+    });
+    step('check create credential', function checkCredential(done) {
+      var query = "SELECT provider, \"entityPath\", \"details\" FROM wh_blob WHERE provider = 'test' AND \"entityPath\" = 'wh.blob';";
+      quickQuery(db, query, function(err, result) {
+        if (err) {
+          should.fail(err);
+        }
+        should.deepEqual(result.rowCount, 1);
+        should.deepEqual(result.rows[0].provider, 'test');
+        should.deepEqual(result.rows[0].entityPath, 'wh.blob');
+        should.deepEqual(result.rows[0].details, {'angels': true});
+        done(err);
+      });
+    });
+  });
+
   after(function() {
     db.gunDatabase();
   });

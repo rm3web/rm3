@@ -46,13 +46,14 @@ CREATE TABLE wh_tag (
 );
 
 CREATE TABLE wh_blob (
-	PRIMARY KEY(engine, "entityPath", "blobPath", "revisionId"),
-	"engine" text,
+	PRIMARY KEY(provider, "entityPath", "blobPath", "revisionId"),
+	"provider" text,
 	"entityPath" ltree,
 	"blobPath" text,
 	"revisionId" uuid,
-	"category" text,
-	"info" json
+	"source" boolean,
+	"temporary" boolean,	
+	"details" json
 );
 
 CREATE TABLE wh_permission_to_role (
