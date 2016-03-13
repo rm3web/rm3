@@ -87,6 +87,8 @@
     "textblocks": "0.0.9",
     "textblocks-react-editor": "0.0.5",
     "validator": "~4.6.1",
+    "wf": "^1.0.1",
+    "wf-pg-backend": "^0.10.0",
     "winston": "~2.2",
     "winston-context": "0.0.7",
     "xss-filters": "~1.2.6"
