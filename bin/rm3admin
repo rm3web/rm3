@@ -95,7 +95,7 @@ program
   .description('sets up the workflow')
   .action(function() {
     workflow.loadConf(function(err) {
-      workflow.setupWorkflow("dummy", function(err) {
+      workflow.setupWorkflows(function(err) {
         if (err) {
           winston.error('error:', err);
           db.gunDatabase();
