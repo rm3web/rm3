@@ -13,6 +13,7 @@ var crypto = require('crypto');
 var loadTemplate = require('../lib/loadtemplate');
 var jsonfile = require('jsonfile');
 var winston = require('winston');
+var workflow = require('../lib/workflow');
 
 winston.cli();
 
@@ -87,6 +88,25 @@ program
       });
     });
 
+  });
+
+program
+  .command('createworkflow')
+  .description('sets up the workflow')
+  .action(function() {
+    workflow.loadConf(function(err) {
+      workflow.setupWorkflow("dummy", function(err) {
+        if (err) {
+          winston.error('error:', err);
+          db.gunDatabase();
+          workflow.gunBackend();
+        } else {
+          winston.info('Created workflows');
+          db.gunDatabase();
+          workflow.gunBackend();
+        }
+      });
+    });
   });
 
 program
