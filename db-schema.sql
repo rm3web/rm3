@@ -45,6 +45,17 @@ CREATE TABLE wh_tag (
 	"objClass" text
 );
 
+CREATE TABLE wh_blob (
+	PRIMARY KEY(provider, "entityPath", "blobPath", "revisionId"),
+	"provider" text,
+	"entityPath" ltree,
+	"blobPath" text,
+	"revisionId" uuid,
+	"source" boolean,
+	"temporary" boolean,	
+	"details" json
+);
+
 CREATE TABLE wh_permission_to_role (
 	PRIMARY KEY(role, permission, path),
   role text,

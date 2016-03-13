@@ -656,6 +656,46 @@ describe('update', function() {
     });
   });
 
+  describe('blob', function() {
+    var ents = {};
+    var delMark = {};
+    var entityPath = new sitepath(['wh', 'blob', 'update']);
+    var revisionId = uuid.v1();
+
+    step('create', function createCredential(done) {
+      update.addBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath', revisionId, true, true, {'angels': true}, done);
+    });
+
+    step('check create blob', function checkCredential(done) {
+      var query = "SELECT provider, \"entityPath\", \"details\" FROM wh_blob WHERE provider = 'test' AND \"entityPath\" = 'wh.blob.update';";
+      quickQuery(db, query, function(err, result) {
+        if (err) {
+          should.fail(err);
+        }
+        should.deepEqual(result.rowCount, 1);
+        should.deepEqual(result.rows[0].provider, 'test');
+        should.deepEqual(result.rows[0].entityPath, 'wh.blob.update');
+        should.deepEqual(result.rows[0].details, {'angels': true});
+        done(err);
+      });
+    });
+
+    step('delete', function createCredential(done) {
+      update.deleteBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath', revisionId, done);
+    });
+
+    step('check delete blob', function checkCredential(done) {
+      var query = "SELECT provider, \"entityPath\", \"details\" FROM wh_blob WHERE provider = 'test' AND \"entityPath\" = 'wh.blob.update';";
+      quickQuery(db, query, function(err, result) {
+        if (err) {
+          should.fail(err);
+        }
+        should.deepEqual(result.rowCount, 0);
+        done(err);
+      });
+    });
+  });
+
   after(function() {
     db.gunDatabase();
   });

@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Persistant storage of sessions in Redis
 - Unit tests for the CLI tooling
 - Templates can now create all of the RBAC entities and users.
+- Add blob store for binary objects (photos, audio, videos, etc).
 
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
