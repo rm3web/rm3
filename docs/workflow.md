@@ -15,6 +15,16 @@ It also needs to handle cases like this:
  * Worker jobs that get stuck and never progress
  * Infrastructure failure
 
-Given that rm3 has a heavy dependency upon PostgreSQL, it seemed like a mostly logical choice to use a PostgreSQL work queue instead of a Redis work queue.
+Work queues inside of rm3 are used for a variety of tasks, including:
+ * Processing posted images
 
-Unfortunately, most of the libraries available on npm for PostgreSQL work queues don't have explicit test cases for handling these errors.
+Choosing a workflow engine
+--------------------------
+
+Given that rm3 has a heavy dependency upon PostgreSQL and PostgreSQL has fairly robust ACID transactions, it seemed like a mostly logical choice to use a PostgreSQL work queue instead of a Redis work queue or requiring the user to add a separate system.
+
+Unfortunately, most of the libraries available on npm for PostgreSQL work queues don't seem to have robust support for all of the failure cases.  For the most part, I looked through the test suite and rejected everything that didn't specifically test a bunch of failure cases.
+
+In the end, node-wf was picked because it's been out the longest and contains a fairly robust set of features.
+
+Workflow logic has been wrapped behind a facade; it should be possible down the road to replace the existing workflow engine with another similar engine.  An externally-hosted workflow engine such as Amazon's SWF would be a natural second option, for users on that cloud.
