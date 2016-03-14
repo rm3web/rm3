@@ -38,7 +38,32 @@ describe('workflows', function() {
       });
     });
 
-    step('#waitForWorkflow', function(done) {
+    step('#waitForWorkflow #launchWorkflow', function(done) {
+      workflow.waitForWorkflow(500, jobUuid, function(err, info) {
+        if (err) {
+          should.fail(err);
+        }
+        info.execution.should.equal('succeeded');
+        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
+        info.chain_results[0].result.should.equal('dummy task ran');
+        // jscs:enable
+        done(err);
+      });
+    });
+
+    step('#scheduleWorkflow', function(done) {
+      var now = new Date();
+      var date = new Date(now.getTime() + 1000);
+      workflow.scheduleWorkflow("dummy", date, {}, function(err, jobid) {
+        if (err) {
+          should.fail(err);
+        }
+        jobUuid = jobid;
+        done(err);
+      });
+    });
+
+    step('#waitForWorkflow #scheduleWorkflow', function(done) {
       workflow.waitForWorkflow(500, jobUuid, function(err, info) {
         if (err) {
           should.fail(err);
