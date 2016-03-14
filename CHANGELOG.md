@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Templates can now create all of the RBAC entities and users.
 - Blob store for binary objects (photos, audio, videos, etc).
 - SVG support via Vector Graphics proto.
+- Workflow engine
 
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
