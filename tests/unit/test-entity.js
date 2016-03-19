@@ -3,6 +3,103 @@ var sitepath = require ('sitepath');
 var should = require('should');
 var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 
+describe('stubEntity', function() {
+  describe('#fromDb', function() {
+    var e;
+    var queryresp = {
+      command: 'SELECT',
+      rowCount: 1,
+      oid: NaN,
+      rows:
+      [{path: 'wh',
+          stub: true,
+          entityId: '96010990-36ad-11e4-863b-614e8d833a23',
+          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
+          revisionNum: 1,
+          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          summary: {title: 'blrg', abstract: 'some text goes here'},
+          tags: {}
+      }],
+      fields:
+      [{name: 'path', dataTypeID: 17555},
+        {name: 'stub', dataTypeID: 16},
+        {name: 'entityId', dataTypeID: 2950},
+        {name: 'revisionId', dataTypeID: 2950},
+        {name: 'revisionNum', dataTypeID: 23},
+        {name: 'modified', dataTypeID: 1114},
+        {name: 'created', dataTypeID: 1114},
+        {name: 'summary', dataTypeID: 114},
+        {name: 'data', dataTypeID: 114}],
+    rowAsArray: false};
+
+    beforeEach(function() {
+      e = new entity.StubEntity();
+      e.fromDb(queryresp, {});
+    });
+
+    it('should output correctly', function() {
+      var e2 = new entity.StubEntity();
+      e2._path = new sitepath(['wh']);
+      e2._entityId = '96010990-36ad-11e4-863b-614e8d833a23';
+      e2._revisionId = '96010991-36ad-11e4-863b-614e8d833a23';
+      e2._revisionNum = 1;
+      e2._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e2._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e2.summary =
+      {"title": "blrg",
+       "abstract": "some text goes here"};
+
+      e.should.be.eql(e2);
+    });
+  });
+
+  describe('#view', function() {
+    it('should work', function() {
+      var e = new entity.StubEntity();
+      e._path = new sitepath(['wh']);
+      e._entityId = '96010990-36ad-11e4-863b-614e8d833a23';
+      e._revisionId = '96010991-36ad-11e4-863b-614e8d833a23';
+      e._revisionNum = 1;
+      e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e.summary =
+      {"title": "blrg",
+       "abstract": "some text goes here"};
+
+      var v = {
+      meta:
+       {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
+         revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
+         revisionNum: 1,
+         sitePath: ['wh'],
+         modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
+      summary: {title: 'blrg', abstract: 'some text goes here'},
+      permissions: {}};
+
+      e.view().should.have.properties(v);
+    });
+  });
+
+  describe('#path', function() {
+    it('should work', function() {
+      var e = new entity.StubEntity();
+      e._path = new sitepath(['wh']);
+      e._entityId = '96010990-36ad-11e4-863b-614e8d833a23';
+      e._revisionId = '96010991-36ad-11e4-863b-614e8d833a23';
+      e._revisionNum = 1;
+      e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e.summary =
+      {"title": "blrg",
+       "abstract": "some text goes here"};
+
+      e.path().should.be.eql(new sitepath(['wh']));
+    });
+  });
+});
+
 describe('entity', function() {
   describe('#fromDb', function() {
     var e;
