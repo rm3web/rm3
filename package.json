@@ -27,7 +27,9 @@
   },
   "nyc": {
     "exclude": [
-      "lib/workflowdefs"
+      "lib/workflowdefs",
+      "gulpfile.js",
+      "tests"
     ]
   },
   "dependencies": {
@@ -133,6 +135,7 @@
     "nyc": "^6.0.0",
     "run-sequence": "^1.1.5",
     "should": "~7.1.0",
+    "tcp-port-used": "^0.1.2",
     "test-plan": "~0.1.1",
     "vinyl-source-stream": "^1.1.0"
   },
