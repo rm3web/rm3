@@ -46,6 +46,20 @@ describe('file blob store', function() {
       });
     });
 
+    step('#doesBlobExist', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId, function(exist) {
+        exist.should.equal(true);
+        done();
+      });
+    });
+
+    step('#doesBlobExist', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(exist) {
+        exist.should.equal(false);
+        done();
+      });
+    });
+
     step('#deleteBlob', function(done) {
       st.deleteBlob({}, path.toDottedPath(), 'filename', revisionId, done);
     });
