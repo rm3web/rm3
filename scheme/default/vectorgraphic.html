@@ -2,18 +2,18 @@
 {<view-content}
 
 {?svg}
-<img src="{svg}" />
+<img src="{svg}" width="{summary.size.width}" height="{summary.size.height}"/>
 {:else}
-<svg xmlns="http://www.w3.org/2000/svg" width="200" height="150" viewBox="0 0 200 150">
+<svg xmlns="http://www.w3.org/2000/svg" width="{summary.size.width}" height="{summary.size.height}" viewBox="0 0 {summary.size.width} {summary.size.height}">
 <line x1="0" y1="0" 
-          x2="200" y2="150" 
+          x2="{summary.size.width}" y2="{summary.size.height}" 
           stroke="black" 
           stroke-width=".5"/>
-<line x1="0" y1="150" 
-          x2="200" y2="0" 
+<line x1="0" y1="{summary.size.height}" 
+          x2="{summary.size.width}" y2="0" 
           stroke="black" 
           stroke-width=".5"/>
-<rect width="200" height="150" style="fill:rgba(0,0,0,0);stroke-width:1;stroke:rgb(0,0,0)" />
+<rect width="{summary.size.width}" height="{summary.size.height}" style="fill:rgba(0,0,0,0);stroke-width:1;stroke:rgb(0,0,0)" />
 </svg>
 {/svg}
 {/view-content}
