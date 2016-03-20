@@ -2,7 +2,9 @@
 {<view-content}
 
 {?svg}
-<img src="{svg}" width="{summary.size.width}" height="{summary.size.height}"/>
+<object type="image/svg+xml" data="{svg}" width="{summary.size.width}" height="{summary.size.height}">
+  <img src="{png}" width="{summary.size.width}" height="{summary.size.height}">
+</object>
 {:else}
 <svg xmlns="http://www.w3.org/2000/svg" width="{summary.size.width}" height="{summary.size.height}" viewBox="0 0 {summary.size.width} {summary.size.height}">
 <line x1="0" y1="0" 
