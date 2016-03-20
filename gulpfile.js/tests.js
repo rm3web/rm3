@@ -3,17 +3,12 @@ var gulp = require('gulp')
   , spawn = require('child_process').spawn
   , clone = require('clone')
   , gutil = require('gulp-util')
-  , runSequence = require('run-sequence');
+  , runSequence = require('run-sequence')
+  , tcpPortUsed = require('tcp-port-used');
 
 var casperTests = ['./tests/casper/*'];
 
-gulp.task('coverage:clear', shell.task(['rm -rf .nyc_output']));
-
 gulp.task('test:unit', shell.task(['./node_modules/.bin/mocha --require ./tests/lib/mocha.js -c tests/unit/*.js'], {env: {
-    RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit'
-  }}));
-
-gulp.task('coverage:unit', shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/mocha --require ./tests/lib/mocha.js -c tests/unit/*.js'], {env: {
     RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit'
   }}));
 
@@ -27,11 +22,6 @@ gulp.task('test:db:schema', ['test:db:db'], shell.task([
 
 gulp.task('test:db', ['test:db:db', 'test:db:schema'], 
   shell.task(['./node_modules/.bin/mocha --require ./tests/lib/mocha.js -c tests/db/*.js'], {env: {
-    RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit'
-  }}));
-
-gulp.task('coverage:db', ['test:db:db', 'test:db:schema'], 
-  shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/mocha --require ./tests/lib/mocha.js -c tests/db/*.js'], {env: {
     RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3unit'
   }}));
 
@@ -49,6 +39,7 @@ gulp.task('test:cli', ['test:cli:db', 'test:cli:schema'],
   }}));
 
 gulp.task('test:casper:db', shell.task([
+  'redis-cli FLUSHALL',
   'dropdb --if-exists rm3casper && createdb rm3casper'
 ]))
 
@@ -111,7 +102,13 @@ function spawnServerForTests(db, executable, params, timeout, setup, next) {
   ctx.env['RM3_JWT_ISSUER'] = 'wirewd.com';
   var server = spawn(executable, params, ctx);
   setup(server);
-  setTimeout(next.bind(this, server), timeout)  
+  tcpPortUsed.waitUntilUsed(4000, 500, timeout)
+  .then(function() {
+    next(server);
+  }, function(err) {
+    gutil.log('Startup failed');
+    next();
+  });
 }
 
 function runTestChild(child, tests, next) {
@@ -142,31 +139,7 @@ gulp.task('test:api', ['test:api:db', 'test:api:schema', 'test:api:fixtures', 't
   var tests = ['--require', './tests/lib/mocha.js', '-c', './tests/api/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3api',
-    './bin/rm3front', [], 10000, function(server) {
-      server.stderr.on('data', function (data) {
-        gutil.log('ServerErr:', data.toString().slice(0, -1));;
-      });
-      server.stdout.on('data', function (data) {
-        gutil.log('Server:', data.toString().slice(0, -1));
-      });
-    }, function(server) {
-      runTestChild('./node_modules/.bin/mocha', tests, function(success) {
-        gutil.log('killing server');
-        server.kill('SIGINT');
-        if (success) {
-          cb();
-        } else {
-          cb(new Error('fail'));
-        }
-      });
-    });
-});
-
-gulp.task('coverage:api', ['test:api:db', 'test:api:schema', 'test:api:fixtures', 'test:api:users', 'test:api:users'], function(cb) {
-  var tests = ['--require', './tests/lib/mocha.js', '-c', './tests/api/*'];
-
-  spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3api',
-    './node_modules/.bin/nyc', ['bin/rm3front'], 165000, function(server) {
+    './bin/rm3front', [], 165000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
@@ -190,7 +163,7 @@ gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fi
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    './bin/rm3front', [], 12000, function(server) {
+    './bin/rm3front', [], 165000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
@@ -210,53 +183,27 @@ gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fi
     });
 });
 
-
-gulp.task('coverage:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fixtures'], function (cb) {
-  var serverlog = [];
-
-  spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    './node_modules/.bin/nyc', ['bin/rm3front'], 165000, function(server) {
-      server.stderr.on('data', function (data) {
-        serverlog.push(data);
-      });
-      server.stdout.on('data', function (data) {
-        serverlog.push(data);
-      });
-    }, function(server) {
-      runTestChild('./node_modules/.bin/mocha-casperjs', casperTests, function(success) {
-        serverlog.forEach(function(element, index, array) {
-          gutil.log('Server:', element.toString());
-        });
-        gutil.log('killing server');
-        server.kill('SIGINT');
-        if (success) {
-          cb();
-        } else {
-          cb(new Error('fail'));
-        }
-      });
-  });
-});
-
-
 gulp.task('coverage:report', shell.task(['./node_modules/.bin/nyc report -r html -r lcov -r html']));
 
 gulp.task('test', ['test:unit', 'test:db']);
 
-gulp.task('base-coverage', function(callback) {
-  runSequence('coverage:clear',
-              'coverage:unit',
-              'coverage:db',
-              'coverage:report',
+gulp.task('base-coverage:core', function(callback) {
+  runSequence('test:unit',
+              'test:db',
               callback);
 });
 
-gulp.task('coverage', function(callback) {
-  runSequence('coverage:clear',
-              'coverage:unit',
-              'coverage:db',
-              'coverage:casper',
-              'coverage:api',
-              'coverage:report',
+gulp.task('coverage:core', function(callback) {
+  runSequence('test:unit',
+              'test:db',
+              'test:casper',
+              'test:api',
               callback);
 });
+
+gulp.task('base-coverage', shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/gulp base-coverage:core',
+  './node_modules/.bin/nyc report -r html -r lcov -r html']));
+
+gulp.task('coverage', shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/gulp coverage:core',
+  './node_modules/.bin/nyc report -r html -r lcov -r html']));
+
