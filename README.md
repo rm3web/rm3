@@ -36,7 +36,7 @@ How to get started?
 * Install PostgreSQL 9.3 or later.
 * Install node.js 0.12 or later.
 * Install Redis 2.0 or later.
-* Install LibRSVG library and header files (see https://www.npmjs.com/package/rsvg)
+* Install LibRSVG library and header files (see https://www.npmjs.com/package/librsvg)
 * Git clone this repo
 * `npm install`
 * Create the database in postgresql
