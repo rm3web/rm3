@@ -34,7 +34,7 @@ describe("#scaleBestFit", function() {
       var scaledAspect = fit.width / fit.height;
       var aspect = width / height;
       var percentOff = Math.abs(1 - (aspect / scaledAspect));
-      return (percentOff <= 0.05);
+      return (percentOff <= 0.08);
     });
     jsc.assert(property, {size: 1000, tests: 4000});
   });
