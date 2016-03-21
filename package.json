@@ -90,6 +90,7 @@
     "serve-favicon": "~2.3.0",
     "serve-index": "~1.7.2",
     "serve-static": "~1.10.0",
+    "sharp": "^0.13.1",
     "sitepath": "0.2.0",
     "speakingurl": "~9.0.0",
     "squel": "~4.3",
