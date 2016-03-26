@@ -66,31 +66,49 @@ function writePermissionBackup(dir, catalog, next) {
     roles.push(role);
   });
   rolesQuery.on('end', function() {
-    async.eachSeries(roles, function(role, cb) {
-      var permissions = query.listPermissionsInRole(db, {}, role.role);
-      permissions.on('article', function(permission) {
-        records.push({
-          type: "permit", 
-          role: role.role,
-          permission: permission.permission,
-          path: permission.path})
+    async.series([
+      function fetchPermissions(next) {
+        async.eachSeries(roles, function(role, cb) {
+          var permissions = query.listPermissionsInRole(db, {}, role.role);
+          permissions.on('article', function(permission) {
+            records.push({
+              type: "permit", 
+              role: role.role,
+              permission: permission.permission,
+              path: permission.path});
+          });
+          permissions.on('end', function() {
+            next();
+          });
+        }, next);
+      },
+      function fetchAssignments(next) {
+        async.eachSeries(roles, function(role, cb) {
+          var assingments = query.listUsersInRole(db, {}, role.role);
+          assingments.on('article', function(assignment) {
+            records.push({
+              type: "assign", 
+              role: role.role,
+              user: assignment.user.leaf()});
+          });
+          assingments.on('end', function() {
+            next();
+          });
+        }, next);
+      }],
+      function(err) {
+        catalog._permissions = 'permissions.json';
+        var outPath = path.join(dir, 'permissions.json');
+        fs.open(outPath, 'wx', 0666, function(err, fd) {
+          if (err) {
+            return next(err);
+          }
+          fs.writeSync(fd, JSON.stringify(records));
+          fs.closeSync(fd);
+          winston.info('RBAC permissions and roles written');
+          next(err, catalog);
+        });
       });
-      permissions.on('end', function() {
-        cb();
-      });
-    }, function(err) {
-      catalog._permissions = 'permissions.json';
-      var outPath = path.join(dir, 'permissions.json');
-      fs.open(outPath, 'wx', 0666, function(err, fd) {
-        if (err) {
-          return next(err);
-        }
-        fs.writeSync(fd, JSON.stringify(records));
-        fs.closeSync(fd);
-        winston.info('RBAC permissions and roles written');
-        next(err, catalog);
-      });
-    });
   });
 }
 
