@@ -38,6 +38,25 @@ function writeNodeToFile(outPath, ent, log, next)
   next();
 }
 
+function writeEntityBackup(backupPath, concurrency, dir, next) {
+  var catalog = {};
+  winston.info('Starting backup, concurrency :', program.concurrency);
+  query.sequentialEntityScan(db, {}, backupPath, program.concurrency, function(entry, next) {
+    winston.info('Backing up :', entry.path);
+    var pth = new sitepath(entry.path);
+    dumpEntity(db, entity.Entity, pth, true, function(err, ent, log) {
+      if (err) {
+        return next(err);
+      }
+      var filepath = path.join(dir, entry.path + '-data.json');
+      writeNodeToFile(filepath, ent, log, next);
+      catalog[entry.path] = {main: entry.path + '-data.json'};
+    })
+  }, function(err) {
+    next(err, catalog);
+  });
+}
+
 program
   .arguments('<dir>')
   .version(pjson.version)  
@@ -58,24 +77,30 @@ program
       winston.error('Can\'t create dir, error :', e);
       process.exit(1);
     }
-    winston.info('Starting backup, concurrency :', program.concurrency);
-    query.sequentialEntityScan(db, {}, program.path, program.concurrency, function(entry, next) {
-      winston.info('Backing up :', entry.path);
-      var pth = new sitepath(entry.path);
-      dumpEntity(db, entity.Entity, pth, true, function(err, ent, log) {
-        if (err) {
-          return next(err);
-        }
-        var filepath = path.join(dir, entry.path + '-data.json');
-        writeNodeToFile(filepath, ent, log, next)
-      })
-    }, function(err) {
-      if (err) {
-        winston.error('Error while backing up:', err);
+    async.waterfall(
+      [writeEntityBackup.bind(this, program.path, program.concurrency, dir),
+      function(catalog, next) {
+        catalog._dump_date = new Date();
+        catalog._dump_version = pjson.version;
+        var outPath = path.join(dir, 'catalog.json');
+        fs.open(outPath, 'wx', 0666, function(err, fd) {
+          if (err) {
+            return next(err);
+          }
+          fs.writeSync(fd, JSON.stringify(catalog));
+          fs.closeSync(fd);
+          next();
+        });
       }
-      winston.info('Backup complete')
-      db.gunDatabase();
-    })
+      ], 
+      function(err) {
+        if (err) {
+          winston.error('Error while backing up:', err);
+        }
+        winston.info('Backup complete')
+        db.gunDatabase();
+      }
+    );
   });
   ;
 
