@@ -86,7 +86,7 @@
     "react-intl": "1.2.0",
     "react-super-select": "^0.2.3",
     "rm3-page-router": "0.0.1",
-    "rm3-react-controls": "0.0.4",
+    "rm3-react-controls": "0.0.5",
     "rm3-tag-control": "0.0.4",
     "serve-favicon": "~2.3.0",
     "serve-index": "~1.7.2",
