@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - SVG support via Vector Graphics proto.
 - JPEG support via Photograph proto.
 - Workflow engine
+- rm3backup generates a catalog file.
 
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
