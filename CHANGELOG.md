@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
 - A bunch of views weren't checking for read access.
+- Password changing has been protected differently from editing a user profile.
 
 ### Changed
 - Gulpfile refactored into smaller chunks.
