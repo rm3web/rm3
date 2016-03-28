@@ -1,11 +1,19 @@
 {>"layouts/two_col_with_nav"/}
-{<view-content}
-
+{<top-sidebar}
 {@isThisUser}
+<div class="pure-menu">
+  <ul class="pure-menu-list">
 {@hasAuthProviderEnabled provider="twitter"}
-<a href="/$connect/twitter">Add Twitter</a>
+  <li class="pure-menu-item"><a class="pure-menu-link" href="/$connect/twitter">Add Twitter</a>
 {/hasAuthProviderEnabled}
+  <li class="pure-menu-item"><a class="pure-menu-link" href="./password.html">Change Password</a>
+  </ul>
+</div>
+
 {/isThisUser}
+
+{/top-sidebar}
+{<view-content}
 
     {?summary.profileUrl}<h2><a href="{summary.profileUrl|u}">{summary.title}</a></h2>{:else}<h2>{summary.title}</h2>{/summary.profileUrl}
 {@isThisUser}
