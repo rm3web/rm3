@@ -36,5 +36,14 @@ describe('user', function() {
         done(err);
       });
     });
+    step('#authenticatePassword with bad password', function(done) {
+      user.authenticatePassword(db, {}, query, 'usertest', 'screach_kitty', function(err) {
+        if (err) {
+          done();
+        } else {
+          should.fail();
+        }
+      });
+    });
   });
 });
