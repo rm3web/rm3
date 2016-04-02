@@ -193,8 +193,6 @@ program
     });
   });
 
-
-
 program
   .command('roleinfo [role]')
   .description('information about the role')
@@ -273,6 +271,26 @@ program
         winston.info('Deleted');
         db.gunDatabase();
       }
+    });
+  });
+
+program
+  .command('listcredentials')
+  .description('List credentials')
+  .action(function(options){
+    winston.data('Credentials');
+    var resp = query.listCredentials(db, {});
+    resp.on('article', function(article) {
+      winston.data('Provider: %s\tUser ID: %s\tUser Path:%s\t', 
+        article.provider, article.userId, article.userPath);
+      winston.data('Provider Details: %s', article.providerDetails);
+    });
+    resp.on('error', function(err) {
+      winston.error('error:', err);
+    });
+    resp.on('end', function() {
+      winston.data('---');
+      db.gunDatabase();
     });
   });
 
