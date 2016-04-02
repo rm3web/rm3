@@ -1,13 +1,32 @@
 {>"layouts/full_tiny_sidebar"/}
 {<view-content}
-<div style="margin: .1em;padding: .2em;">
-{@hasAuthProviderEnabled provider="twitter"}
-<a href="/$login/twitter" class="pure-button button-pad">Login with Twitter</a>
-{/hasAuthProviderEnabled}
-</div>
-<img src="{qrUrl}" />
-{/view-content}
+<div style="margin: 1em;padding: .2em;">
 
+<h1>QR code:</h1>
+<img src="{qrUrl}" height="332" width="332" />
+<h1>Account / Password:</h1>
+<p>(for manual entry)</p>
+<p>Account: {account}
+<p>Secret: {secret}
+<form action="/$login/totp/validate" method="post" class="pure-form pure-form-aligned">
+<input type="hidden" name="_csrf" value="{csrfToken}" />
+<input type="hidden" name="secret" value="{secret}" />
+<div class="pure-control-group">
+<label htmlFor="password">{@formatMessage _key="PASSWORD"/}:</label>
+<input type="password" name="password" />
+</div>
+<div class="pure-control-group">
+<label htmlFor="token">{@formatMessage _key="VERIFICATION_TOKEN"/}:</label>
+<input type="text" name="token" />
+</div>
+<div class="pure-controls">
+<button class="pure-button pure-button-primary">{@formatMessage _key="SUBMIT"/}</button>
+</div>
+</form>
+
+
+{/view-content}
+</div>
 {<pagefooter}
 <div class="pure-g" style="padding-top: 1em;">
  <div class="pure-u-1 footer">
