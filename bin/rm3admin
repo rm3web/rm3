@@ -71,23 +71,22 @@ program
       pw = buf.toString('base64');
       winston.info('Randomly generated password is:', pw)
     }
-    user.encodePassword(pw, ent, function(err) {
+
+    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
+                         'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         winston.error('error:', err);
-        return;
-      }
-      
-      update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
-                           'cli', function(err, entity_id, revision_id, revision_num) {
-        if (err) {
-          winston.error('error:', err);
-        } else {
-          winston.info('Created');
+      } else {
+        user.createCredential(db, {}, options.email, options.userroot, name, pw, function(err) {
+          if (err) {
+            winston.error('error:', err);
+          } else {
+            winston.info('Created');
+          }
           db.gunDatabase();
-        }
-      });
+        });
+      }
     });
-
   });
 
 program
