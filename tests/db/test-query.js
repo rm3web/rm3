@@ -186,11 +186,11 @@ describe('query', function() {
     var ents = {};
     var now = new Date();
 
-    resources.userResource(userpath, 'test', ents, 'user', now);
+    resources.userResource(userpath, 'querytest', ents, 'user', now);
     resources.permissionResource('query-role', 'view', path);
     resources.permissionResource('query-role', 'stuff', path);
     resources.permissionResource('nobody', 'view', path);
-    resources.assignmentResource(userpath, 'test', 'query-role');
+    resources.assignmentResource(userpath, 'querytest', 'query-role');
 
     describe('#query', function() {
       var otherpath = new sitepath(['wh', 'query2', 'node']);
@@ -269,7 +269,7 @@ describe('query', function() {
     });
 
     describe('#fetch_entityFromPath', function() {
-      var entpath = new sitepath(['wh', 'query', 'user', 'test']);
+      var entpath = new sitepath(['wh', 'query', 'user', 'querytest']);
       it('fetches the permissions with a user', function(done) {
         query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: entpath},
                                entpath, undefined, function(err, ent2) {
