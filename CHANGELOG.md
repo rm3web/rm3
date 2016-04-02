@@ -22,11 +22,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - A bunch of views weren't checking for read access.
 - Password changing has been protected differently from editing a user profile.
 - Passwords are stored as credentials, instead of in the user object.
+- TOTP Two-Factor authentication.
 
 ### Changed
 - Gulpfile refactored into smaller chunks.
 - gulp-clean-css replaces gulp-minify-css.
 - User proto refactored
+- Password paths shuffled
 
 ### Fixed
 - Coverage collection fixed.

@@ -100,12 +100,14 @@
     "svgo": "^0.6.2",
     "textblocks": "0.0.9",
     "textblocks-react-editor": "0.0.5",
+    "thirty-two": "^1.0.1",
     "validator": "~4.6.1",
     "wf": "^1.0.1",
     "wf-pg-backend": "^0.10.0",
     "winston": "~2.2",
     "winston-context": "0.0.7",
-    "xss-filters": "~1.2.6"
+    "xss-filters": "~1.2.6",
+    "yaqrcode": "^0.2.1"
   },
   "devDependencies": {
     "babelify": "^7.2.0",
