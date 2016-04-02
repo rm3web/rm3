@@ -74,6 +74,7 @@
     "passport-anonymous": "^1.0.1",
     "passport-jwt": "^1.2.1",
     "passport-local": "~1.0.0",
+    "passport-totp": "0.0.2",
     "passport-twitter": "^1.0.3",
     "pg": "~4.5",
     "pg-connection-string": "^0.1.3",
