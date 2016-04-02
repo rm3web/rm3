@@ -7,7 +7,7 @@
 <h1>Account / Password:</h1>
 <p>(for manual entry)</p>
 <p>Account: {account}
-<p>Secret: {secret}
+<p>Secret: {secretDecode}
 <form action="/$login/totp/enroll" method="post" class="pure-form pure-form-aligned">
 <input type="hidden" name="_csrf" value="{csrfToken}" />
 <input type="hidden" name="secret" value="{secret}" />
