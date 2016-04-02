@@ -40,18 +40,20 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
 
   ents[entidx] = ent;
 
-  before(function encodePassword(done) {
-    user.encodePassword('meow_kitty', ent, done);
-  });
-
   before(function createUserResource(done) {
     update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'create',
-      function(err, entityId, revisionId, revisionNum) {
-        ents[entidx]._entityId = entityId;
-        ents[entidx]._revisionId = revisionId;
-        ents[entidx]._revisionNum = revisionNum;
+                        function(err, entityId, revisionId, revisionNum) {
+      if (err) {
+        return done(err);
+      }
+      ents[entidx]._entityId = entityId;
+      ents[entidx]._revisionId = revisionId;
+      ents[entidx]._revisionNum = revisionNum;
+      user.createCredential(db, {}, ent.data.email, userpath, username, 'meow_kitty',
+                            function(err) {
         done(err);
       });
+    });
   });
 
   after(function deleteUserResource(done) {

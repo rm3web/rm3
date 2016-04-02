@@ -15,11 +15,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - JPEG support via Photograph proto.
 - Workflow engine
 - rm3backup generates a catalog file and dumps permissions
+- rm3admin can peek into identities
 
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
 - A bunch of views weren't checking for read access.
 - Password changing has been protected differently from editing a user profile.
+- Passwords are stored as credentials, instead of in the user object.
 
 ### Changed
 - Gulpfile refactored into smaller chunks.
