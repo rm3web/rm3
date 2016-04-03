@@ -70,10 +70,12 @@
     "morgan": "~1.7",
     "multer": "^1.1.0",
     "node-uuid": "^1.4.3",
+    "notp": "^2.0.3",
     "passport": "~0.3.0",
     "passport-anonymous": "^1.0.1",
     "passport-jwt": "^1.2.1",
     "passport-local": "~1.0.0",
+    "passport-totp": "0.0.2",
     "passport-twitter": "^1.0.3",
     "pg": "~4.5",
     "pg-connection-string": "^0.1.3",
@@ -99,12 +101,14 @@
     "svgo": "^0.6.2",
     "textblocks": "0.0.9",
     "textblocks-react-editor": "0.0.5",
+    "thirty-two": "^1.0.1",
     "validator": "~4.6.1",
     "wf": "^1.0.1",
     "wf-pg-backend": "^0.10.0",
     "winston": "~2.2",
     "winston-context": "0.0.7",
-    "xss-filters": "~1.2.6"
+    "xss-filters": "~1.2.6",
+    "yaqrcode": "^0.2.1"
   },
   "devDependencies": {
     "babelify": "^7.2.0",

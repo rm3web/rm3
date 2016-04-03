@@ -35,6 +35,13 @@ RM3_JWT_ISSUER is the issuer that JWT tokens generated and verified are checked 
 
 If these keys aren't present, JWT won't be active.
 
+RM3_TOTP_ISSUER
+---------------
+
+The 'issuer' for [Google Authenticatior](https://github.com/google/google-authenticator/wiki/Key-Uri-Format) and other TOTP authentication systems.
+
+If this key isn't active, the Issuer will be `AnonymousRm3`.  This is only there to disambiguate multiple logins for different users (e.g. if they are 'wirehead' on multiple services, this lets them know which token to use)
+
 RM3_SESSION_SECRET
 ------------------
 
