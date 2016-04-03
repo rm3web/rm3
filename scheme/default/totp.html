@@ -1,10 +1,5 @@
 {>"layouts/full_tiny_sidebar"/}
 {<view-content}
-<div style="margin: .1em;padding: .2em;">
-{@hasAuthProviderEnabled provider="twitter"}
-<a href="/$login/twitter" class="pure-button button-pad">Login with Twitter</a>
-{/hasAuthProviderEnabled}
-</div>
 <div id="loginform">
   <form action="/$login/totp/" method="post" class="pure-form pure-form-aligned">
   <input type="hidden" name="_csrf" value="{csrfToken}" />
