@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Password changing has been protected differently from editing a user profile.
 - Passwords are stored as credentials, instead of in the user object.
 - TOTP Two-Factor authentication.
+- CVE-2015-8851: node-uuid prior to 1.4.4 uses insecure random number generator.
 
 ### Changed
 - Gulpfile refactored into smaller chunks.
