@@ -14,7 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - SVG support via Vector Graphics proto.
 - JPEG support via Photograph proto.
 - Workflow engine
-- rm3backup generates a catalog file and dumps permissions
+- rm3backup generates a catalog file and dumps permissions and credentials
 - rm3admin can peek into identities
 
 ### Security
