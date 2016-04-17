@@ -57,6 +57,28 @@ function writeEntityBackup(backupPath, concurrency, dir, next) {
   });
 };
 
+function writeCredentialBackup(dir, catalog, next) {
+  winston.info('Writing Credentials');
+  var credentialsQuery = query.listCredentials(db, {});
+  var credential = [];
+  credentialsQuery.on('article', function(role) {
+    credential.push(role);
+  });
+  credentialsQuery.on('end', function() {
+    catalog._credentials = 'credentials.json';
+    var outPath = path.join(dir, 'credentials.json');
+    fs.open(outPath, 'wx', 0666, function(err, fd) {
+      if (err) {
+        return next(err);
+      }
+      fs.writeSync(fd, JSON.stringify(credential));
+      fs.closeSync(fd);
+      winston.info('Credentials written');
+      next(err, catalog);
+    });
+  });
+};
+
 function writePermissionBackup(dir, catalog, next) {
   winston.info('Writing RBAC permissions and roles');
   var rolesQuery = query.listRoles(db, {});
@@ -135,6 +157,7 @@ program
     async.waterfall(
       [writeEntityBackup.bind(this, program.path, program.concurrency, dir),
       writePermissionBackup.bind(this, dir),
+      writeCredentialBackup.bind(this, dir),
       function(catalog, next) {
         catalog._dump_date = new Date();
         catalog._dump_version = pjson.version;
@@ -143,7 +166,7 @@ program
           if (err) {
             return next(err);
           }
-          fs.writeSync(fd, JSON.stringify(catalog));
+          fs.writeSync(fd, JSON.stringify(catalog, null, 2));
           fs.closeSync(fd);
           next();
         });
