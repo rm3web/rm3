@@ -33,6 +33,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Coverage collection fixed.
+- Icon generation uses picture polyfill instead of accidentally invalid html.
 
 ## [0.1.2] - 2016-3-5: Special documentation on a Rainy Day edition
 ### Added
