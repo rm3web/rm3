@@ -33,8 +33,9 @@ exports = module.exports = function(dust, db, query) {
         var height = context.get('meta.rm3\:icon.' + size + '.height');
         var width = context.get('meta.rm3\:icon.' + size + '.width');
         if (svgicon) {
-            return chunk.write('<img src="' + svgicon + '" alt="' + imgicon +
-                '"  height="' + height + '" width="' + width + '" border="0" />')
+            return chunk.write('<picture><source srcset="' + svgicon +
+                '" type="image/svg+xml"><img srcset="' + imgicon + '" alt="' + imgicon +
+                '"  height="' + height + '" width="' + width + '" border="0" /></picture>');
         } else {
             return chunk.write('<img src="' + imgicon + '"  height="' + height + 
                 '" width="' + width + '" border="0" />')

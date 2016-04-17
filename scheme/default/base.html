@@ -8,7 +8,9 @@
   <title>{summary.title}</title>
   {/titletag}
   <script>
-      {expose|s}
+    // Picture element HTML5 shiv
+    document.createElement( "picture" );
+    {expose|s}
   </script>
   <link rel="stylesheet" href="{@schemeStaticResource path="bundle.css" /}">
 
