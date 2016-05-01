@@ -141,7 +141,7 @@
     "jshint": "^2.8.0",
     "jshint-jsx": "^0.4.1",
     "jsverify": "^0.7.1",
-    "matcha": "^0.6.0",
+    "matcha": "^0.7.0",
     "mocha": "^2.4.5",
     "mocha-casperjs": "^0.5.4",
     "mocha-steps": "^1.0.0",
