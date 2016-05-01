@@ -54,7 +54,7 @@ describe('db', function() {
     });
 
     it('should handle open_transaction errors', function(next) {
-      db.openTransaction(client, undefined, function(err) {
+      db.openTransaction({}, client, undefined, function(err) {
         if (err) {
           err.name.should.equal('DbError');
         } else {

@@ -26,7 +26,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
     ent.addTag('navigation', 'navbar');
 
     var db = {};
-    db.openTransaction = function(client, done, callback) {
+    db.openTransaction = function(ctx, client, done, callback) {
       callback(null, client, done);
     };
 
