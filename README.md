@@ -34,7 +34,7 @@ How to get started?
 ### Manual Setup
 
 * Install PostgreSQL 9.3 or later.
-* Install node.js 4.4 or later.
+* Install node.js 4.4 or later (node.js 6.0 is not yet supported)
 * Install Redis 2.0 or later.
 * Install LibRSVG library and header files (see https://www.npmjs.com/package/librsvg)
 * Git clone this repo
