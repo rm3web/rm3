@@ -30,7 +30,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
       callback(null, client, done);
     };
 
-    db.commitTransaction = function(client, callback) {
+    db.commitTransaction = function(ctx, client, callback) {
       callback(null);
     };
 
