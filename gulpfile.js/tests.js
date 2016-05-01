@@ -201,9 +201,9 @@ gulp.task('coverage:core', function(callback) {
               callback);
 });
 
-gulp.task('base-coverage', shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/gulp base-coverage:core',
+gulp.task('base-coverage', shell.task(['./node_modules/.bin/nyc --cache ./node_modules/.bin/gulp base-coverage:core',
   './node_modules/.bin/nyc report -r html -r lcov -r html']));
 
-gulp.task('coverage', shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/gulp coverage:core',
+gulp.task('coverage', shell.task(['./node_modules/.bin/nyc --cache ./node_modules/.bin/gulp coverage:core',
   './node_modules/.bin/nyc report -r html -r lcov -r html']));
 
