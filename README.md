@@ -6,7 +6,7 @@ rm3
 What is it?
 -----------
 
-rm3 is a system for managing stuff on the web. It's a little more than just a blog engine, but a little less than an enterprise CMS. It is to Drupal as Ghost is to WordPress. When farther along, it will be able to be used as a blog, or a wiki, or a photo archive, or a combination of things. Like a blog, it lets you create a series of blog articles in a collection. Like a wiki, it maintains a history of all changes.  Like a CMS, it lets you create a site with more structure than a mere list of posts.
+rm3 is a system for managing stuff on the web. It's a little more than just a blog engine, but a little less than an enterprise CMS. It is to Drupal as Ghost is to WordPress. It can be a blog, a wiki, a photo archive, or a combination of all of that and more.  Like a blog, it lets you create a series of blog articles in a collection. Like a wiki, it maintains a history of all changes.  Like a CMS, it lets you create a site with more structure than a mere list of posts.  It has good support for both SVG vector graphics and photos.
 
 Release Status
 --------------
@@ -34,7 +34,7 @@ How to get started?
 ### Manual Setup
 
 * Install PostgreSQL 9.3 or later.
-* Install node.js 0.12 or later.
+* Install node.js 4.4 or later (node.js 6.0 is not yet supported)
 * Install Redis 2.0 or later.
 * Install LibRSVG library and header files (see https://www.npmjs.com/package/librsvg)
 * Git clone this repo
