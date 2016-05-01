@@ -1,6 +1,6 @@
 var Conf = require ('../lib/conf');
 var entity = require('../lib/entity');
-var sitepath = require ('../lib/sitepath');
+var sitepath = require ('sitepath');
 var update = require('../lib/update');
 var query = require('../lib/query');
 var db = require('../lib/db');
@@ -63,7 +63,7 @@ suite('query#query', function () {
   });
 
   bench('simple query', function(done) {
-    var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child','entity',{},undefined,undefined);
+    var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child','entity',{},undefined,undefined,{});
     var arts = [];
     resp.on('article', function(article) {
       arts.push(article);
@@ -77,7 +77,7 @@ suite('query#query', function () {
   });
 
   bench('navbar', function(done) {
-    var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child','entity',{navbar: true},undefined,undefined);
+    var resp = query.query(db, {}, {context: "ROOT"}, path1, 'child','entity',{navbar: true},undefined,undefined,{});
     var arts = [];
     resp.on('article', function(article) {
       arts.push(article);
@@ -114,7 +114,7 @@ suite("query#query_history", function() {
   });
 
   bench('query', function(done){
-    var resp = query.queryHistory(db, {}, {}, path);
+    var resp = query.queryHistory(db, {}, {}, path, null, {});
     var arts = [];
     resp.on('article', function(article) {
       arts.push(article);

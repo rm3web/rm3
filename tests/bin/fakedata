@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var sitepath = require ('../../lib/sitepath');
+var sitepath = require ('sitepath');
 var program = require('commander');
 var pjson = require('../../package.json');
 var makeFakeEntity = require('../lib/fakedata').makeFakeEntity;
