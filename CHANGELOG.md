@@ -25,6 +25,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - node 0.12 support removed.
+- postgres 9.3 support removed.  postgres 9.5 now recommended.
 
 ### Fixed
 - Coverage collection fixed.
