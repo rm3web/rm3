@@ -8,6 +8,7 @@ var gulp = require('gulp')
 require('./tests.js');
 require('./lint.js');
 require('./bundle.js');
+require('./benchmark.js');
 
   // Load and use polyfill for ECMA-402.
 if (!global.Intl) {
