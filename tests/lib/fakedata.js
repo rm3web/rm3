@@ -16,7 +16,7 @@ function toSlug(url) {
 
 function makeFakeEntity(pth, next) {
   var ent = new entity.Entity();
-  var title = faker.lorem.words(3).join(' ');
+  var title = faker.lorem.words(3);
   var path = pth.down(toSlug(title));
   var now = faker.date.recent(100);
 
