@@ -47,16 +47,16 @@ describe('file blob store', function() {
     });
 
     step('#doesBlobExist', function(done) {
-      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId, function(exist) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId, function(err, exist) {
         exist.should.equal(true);
-        done();
+        done(err);
       });
     });
 
     step('#doesBlobExist where there should be no filename', function(done) {
-      st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(exist) {
+      st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(err, exist) {
         exist.should.equal(false);
-        done();
+        done(err);
       });
     });
 
@@ -65,9 +65,9 @@ describe('file blob store', function() {
     });
 
     step('#doesBlobExist after #deleteBlob', function(done) {
-      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId, function(exist) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId, function(err, exist) {
         exist.should.equal(false);
-        done();
+        done(err);
       });
     });
 
