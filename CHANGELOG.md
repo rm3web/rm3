@@ -17,6 +17,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - rm3backup generates a catalog file and dumps permissions and credentials
 - rm3admin can peek into identities
 
+### Changed
+- Gulpfile refactored into smaller chunks.
+- gulp-clean-css replaces gulp-minify-css.
+- User proto refactored
+- Password paths shuffled
+
+### Removed
+- node 0.12 support removed.
+
+### Fixed
+- Coverage collection fixed.
+- Icon generation uses picture polyfill instead of accidentally invalid html.
+
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
 - A bunch of views weren't checking for read access.
@@ -24,16 +37,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Passwords are stored as credentials, instead of in the user object.
 - TOTP Two-Factor authentication.
 - CVE-2015-8851: node-uuid prior to 1.4.4 uses insecure random number generator.
-
-### Changed
-- Gulpfile refactored into smaller chunks.
-- gulp-clean-css replaces gulp-minify-css.
-- User proto refactored
-- Password paths shuffled
-
-### Fixed
-- Coverage collection fixed.
-- Icon generation uses picture polyfill instead of accidentally invalid html.
 
 ## [0.1.2] - 2016-3-5: Special documentation on a Rainy Day edition
 ### Added
