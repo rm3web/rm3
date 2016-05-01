@@ -12,7 +12,7 @@ CREATE TABLE wh_entity (
 	modified timestamp,
 	created timestamp,
 	touched timestamp,
-	summary json,
+	summary jsonb,
 	data json,
 	tags json
 );
