@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Workflow engine
 - rm3backup generates a catalog file and dumps permissions and credentials
 - rm3admin can peek into identities
+- Improved logging.
 
 ### Changed
 - Gulpfile refactored into smaller chunks.
@@ -25,6 +26,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 - node 0.12 support removed.
+- postgres 9.3 support removed.  postgres 9.4 now recommended.
 
 ### Fixed
 - Coverage collection fixed.

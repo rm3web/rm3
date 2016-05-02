@@ -26,11 +26,11 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
     ent.addTag('navigation', 'navbar');
 
     var db = {};
-    db.openTransaction = function(client, done, callback) {
+    db.openTransaction = function(ctx, client, done, callback) {
       callback(null, client, done);
     };
 
-    db.commitTransaction = function(client, callback) {
+    db.commitTransaction = function(ctx, client, callback) {
       callback(null);
     };
 
@@ -90,7 +90,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
     var logentry = {
       evtClass: 'this_is_not_valid'
     };
-    update._private.execLogentry(true, undefined, undefined, logentry, function(err) {
+    update._private.execLogentry({}, true, undefined, undefined, logentry, function(err) {
       if (err) {
         should.deepEqual(err.name, 'InvalidLogClass');
         done();
