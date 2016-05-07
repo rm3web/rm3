@@ -31,7 +31,7 @@ describe('stubEntity', function() {
         {name: 'created', dataTypeID: 1114},
         {name: 'summary', dataTypeID: 114},
         {name: 'data', dataTypeID: 114}],
-    rowAsArray: false};
+      rowAsArray: false};
 
     beforeEach(function() {
       e = new entity.StubEntity();
@@ -68,15 +68,15 @@ describe('stubEntity', function() {
        "abstract": "some text goes here"};
 
       var v = {
-      meta:
+        meta:
        {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
          revisionNum: 1,
          sitePath: ['wh'],
          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
-      summary: {title: 'blrg', abstract: 'some text goes here'},
-      permissions: {}};
+        summary: {title: 'blrg', abstract: 'some text goes here'},
+        permissions: {}};
 
       e.view().should.have.properties(v);
     });
@@ -132,7 +132,7 @@ describe('entity', function() {
         {name: 'summary', dataTypeID: 114},
         {name: 'data', dataTypeID: 114},
         {name: 'tags', dataTypeId: 114}],
-    rowAsArray: false};
+      rowAsArray: false};
 
     beforeEach(function() {
       e = new entity.Entity();
@@ -178,7 +178,7 @@ describe('entity', function() {
        "abstract": "some text goes here"};
 
       var v = {
-      meta:
+        meta:
        {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
          revisionNum: 1,
@@ -186,9 +186,9 @@ describe('entity', function() {
          sitePath: ['wh'],
          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
-      summary: {title: 'blrg', abstract: 'some text goes here'},
-      data: {posting: '<div>Test test</div>'},
-      permissions: {}};
+        summary: {title: 'blrg', abstract: 'some text goes here'},
+        data: {posting: '<div>Test test</div>'},
+        permissions: {}};
 
       e.view().should.have.properties(v);
     });
@@ -228,7 +228,7 @@ describe('entity', function() {
        "abstract": "some text goes here"};
 
       var v = {
-      meta:
+        meta:
        {entityId: null,
          revisionId: null,
          revisionNum: null,
@@ -236,9 +236,9 @@ describe('entity', function() {
          sitePath: ['wh'],
          modified: now,
          created: now},
-      summary: {title: 'blrg', abstract: 'some text goes here'},
-      data: {posting: '<div>Test test</div>'},
-      permissions: {}};
+        summary: {title: 'blrg', abstract: 'some text goes here'},
+        data: {posting: '<div>Test test</div>'},
+        permissions: {}};
 
       e.view().should.have.properties(v);
     });

@@ -152,7 +152,7 @@ describe('query gen', function() {
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."modified", wh_entity."entityId") > ($2,$3)) ORDER BY modified ASC, "entityId" ASC LIMIT 12'},
       {desc: 'with pagination using a date sorting by created',
        args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."created", wh_entity."entityId") > ($2,$3)) ORDER BY created ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."created", wh_entity."entityId") > ($2,$3)) ORDER BY created ASC, "entityId" ASC LIMIT 12'}
     ];
 
     tests.forEach(function(test, index) {

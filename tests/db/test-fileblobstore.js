@@ -34,7 +34,7 @@ describe('file blob store', function() {
 
     step('#getBlobUrl', function(done) {
       st.getBlobUrl({}, path.toDottedPath(), 'filename', revisionId, function(err, blobUrl) {
-        blobUrl.should.equal('localhost:' + path.toDottedPath() + '-' + revisionId + '-' + 'filename');
+        blobUrl.should.equal('localhost:' + path.toDottedPath() + '-' + revisionId + '-filename');
         done(err);
       });
     });

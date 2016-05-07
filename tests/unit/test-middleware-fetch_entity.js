@@ -102,9 +102,9 @@ describe('middleware:fetchEntity', function() {
 
       query.entityFromPath = function(db, ent, ctx, acc, sp, rev, next) {
         next(errs.create('query.not_found', {
-            path: 'sparklepony',
-            revisionId: null
-          }));
+          path: 'sparklepony',
+          revisionId: null
+        }));
       };
 
       var middleware = fetchEntity(db, query, entity, StubEntity);
@@ -142,9 +142,9 @@ describe('middleware:fetchEntity', function() {
 
       query.entityFromPath = function(db, ent, ctx, acc, sp, rev, next) {
         next(errs.create('otherkind', {
-            path: 'sparklepony',
-            revisionId: null
-          }));
+          path: 'sparklepony',
+          revisionId: null
+        }));
       };
 
       var middleware = fetchEntity(db, query, entity, StubEntity);
