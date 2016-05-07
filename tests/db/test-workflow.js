@@ -44,9 +44,7 @@ describe('workflows', function() {
           should.fail(err);
         }
         info.execution.should.equal('succeeded');
-        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
         info.chain_results[0].result.should.equal('dummy task ran');
-        // jscs:enable
         done(err);
       });
     });
@@ -69,9 +67,7 @@ describe('workflows', function() {
           should.fail(err);
         }
         info.execution.should.equal('succeeded');
-        // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
         info.chain_results[0].result.should.equal('dummy task ran');
-        // jscs:enable
         done(err);
       });
     });
