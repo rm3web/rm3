@@ -21,6 +21,7 @@ describe('file blob store', function() {
 
   var revisionId = uuid.v1();
   var revisionId2 = uuid.v1();
+  var revisionId3 = uuid.v1();
 
   var buf = new Buffer('test');
 
@@ -75,6 +76,17 @@ describe('file blob store', function() {
     step('#doesBlobExist for alias where there should be no filename', function(done) {
       st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(err, exist) {
         exist.should.equal(false);
+        done(err);
+      });
+    });
+
+    step('#aliasUnchangedBlob again', function(done) {
+      st.aliasUnchangedBlob({}, path.toDottedPath(), 'filename', revisionId3, true, true, revisionId2, done);
+    });
+
+    step('#doesBlobExist for next alias', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId3, function(err, exist) {
+        exist.should.equal(true);
         done(err);
       });
     });
