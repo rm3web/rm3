@@ -20,6 +20,7 @@ describe('file blob store', function() {
   var st = new FileBlobStore(filepath, db);
 
   var revisionId = uuid.v1();
+  var revisionId2 = uuid.v1();
 
   var buf = new Buffer('test');
 
@@ -34,7 +35,7 @@ describe('file blob store', function() {
 
     step('#getBlobUrl', function(done) {
       st.getBlobUrl({}, path.toDottedPath(), 'filename', revisionId, function(err, blobUrl) {
-        blobUrl.should.equal('localhost:' + path.toDottedPath() + '-' + revisionId + '-' + 'filename');
+        blobUrl.should.equal('localhost:' + path.toDottedPath() + '-' + revisionId + '-filename');
         done(err);
       });
     });
@@ -54,6 +55,24 @@ describe('file blob store', function() {
     });
 
     step('#doesBlobExist where there should be no filename', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(err, exist) {
+        exist.should.equal(false);
+        done(err);
+      });
+    });
+
+    step('#aliasUnchangedBlob', function(done) {
+      st.aliasUnchangedBlob({}, path.toDottedPath(), 'filename', revisionId2, true, true, revisionId, done);
+    });
+
+    step('#doesBlobExist for alias', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId2, function(err, exist) {
+        exist.should.equal(true);
+        done(err);
+      });
+    });
+
+    step('#doesBlobExist for alias where there should be no filename', function(done) {
       st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(err, exist) {
         exist.should.equal(false);
         done(err);

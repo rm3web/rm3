@@ -271,8 +271,7 @@ describe('query', function() {
     describe('#fetch_entityFromPath', function() {
       var entpath = new sitepath(['wh', 'query', 'user', 'querytest']);
       it('fetches the permissions with a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: entpath},
-                               entpath, undefined, function(err, ent2) {
+        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: entpath}, entpath, undefined, function(err, ent2) {
           if (err) {
             should.fail(err);
           } else {
@@ -283,8 +282,7 @@ describe('query', function() {
       });
 
       it('fetches the permissions without a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: undefined},
-                               entpath, undefined, function(err, ent2) {
+        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: undefined}, entpath, undefined, function(err, ent2) {
           if (err) {
             should.fail(err);
           } else {
