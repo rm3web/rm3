@@ -411,6 +411,23 @@ describe('query', function() {
         done();
       });
     });
+
+    step('list blob', function checkCredential(done) {
+      var resp = query.listBlobs(db, {}, entityPath.toDottedPath());
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        should.fail(err);
+      });
+      resp.on('end', function() {
+        console.log(arts);
+        arts.length.should.equal(1);
+        arts[0].details.angels.should.equal(true);
+        done();
+      });
+    });
   });
 
   after(function() {
