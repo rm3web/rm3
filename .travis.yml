@@ -43,4 +43,4 @@ deploy:
     on:
       tags: true
       repo: rm3web/rm3
-      node: '0.12'
+      node: '4'
