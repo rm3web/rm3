@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+This version is incompatable with 0.1.x databases.
+
 ### Added
 - Updated environment variable manual.
 - Changed security warnings in the logs.
@@ -19,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Improved logging.
 
 ### Changed
+- BREAKING: updated to textblocks 0.0.10, which is incompatible with previous versions.
 - Gulpfile refactored into smaller chunks.
 - gulp-clean-css replaces gulp-minify-css.
 - User proto refactored

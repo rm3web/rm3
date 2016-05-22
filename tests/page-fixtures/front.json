@@ -1,1 +1,39 @@
-{"path":"wh","entityId":"0dd07f20-5d67-11e4-a20d-a53ed486a4a8","revisionId":"ff4a66e0-610e-11e4-a459-d7b4c6ce9fe8","revisionNum":1,"proto":"index","modified":"2014-10-31T15:02:56.845Z","created":"2014-10-31T15:02:56.845Z","summary":{"title":"Welcome to rm3","abstract":"Welcome to rm3"},"data":{"posting":{"blocks":[{"source":"# Welcome to rm3\r\n\r\nThis is a auto-generated pre-loaded default homepage.\r\n\r\nYou probably want to replace it with content of your choice.","htmltext":"<h1>Welcome to rm3</h1>\n\n<p>This is a auto-generated pre-loaded default homepage.</p>\n\n<p>You probably want to replace it with content of your choice.</p>","format":"markdown"},{"format":"pragma","query":"dir"}],"format":"section"}},"tags":{"navigation":[{"@id":"navbar","objClass":"tag"}]},"dump_date":"2014-11-16T23:54:04.577Z","dump_version":"0.0.0"}
+{
+    "path": "wh",
+    "entityId": "0dd07f20-5d67-11e4-a20d-a53ed486a4a8",
+    "revisionId": "ff4a66e0-610e-11e4-a459-d7b4c6ce9fe8",
+    "revisionNum": 1,
+    "proto": "index",
+    "modified": "2014-10-31T15:02:56.845Z",
+    "created": "2014-10-31T15:02:56.845Z",
+    "summary": {
+        "title": "Welcome to rm3",
+        "abstract": "Welcome to rm3"
+    },
+    "data": {
+        "posting": {
+            "blocks": [
+                {
+                    "source": "# Welcome to rm3\r\n\r\nThis is a auto-generated pre-loaded default homepage.\r\n\r\nYou probably want to replace it with content of your choice.",
+                    "htmlslabs": ["<h1>Welcome to rm3</h1>\n\n<p>This is a auto-generated pre-loaded default homepage.</p>\n\n<p>You probably want to replace it with content of your choice.</p>"],
+                    "format": "markdown"
+                },
+                {
+                    "format": "pragma",
+                    "query": "dir"
+                }
+            ],
+            "format": "section"
+        }
+    },
+    "tags": {
+        "navigation": [
+            {
+                "@id": "navbar",
+                "objClass": "tag"
+            }
+        ]
+    },
+    "dump_date": "2014-11-16T23:54:04.577Z",
+    "dump_version": "0.0.0"
+}
