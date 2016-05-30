@@ -20,6 +20,7 @@ Example:
 
 * Load default_frontpage.json `./bin/rm3load -f default_frontpage.json`
 * Load page.json and change the path to `wh.blah` `./bin/rm3load -f page.json -p wh.blah`
+* Load a backup stored in folder `backup`: `./bin/rm3load -d backup`
 
 rm3dump
 -------
