@@ -36,6 +36,7 @@ This version is incompatable with 0.1.x databases.
 ### Fixed
 - Coverage collection fixed.
 - Icon generation uses picture polyfill instead of accidentally invalid html.
+- If a user provides an invalid cookie for user deserialization (e.g. trying to log in after clearing the databse but not the Redis session cache) the error is logged and the request continues as if the user is unauthenticated.
 
 ### Security
 - RM3_SESSION_SECRET to store the session secret, instead of known hardcoded secret.
