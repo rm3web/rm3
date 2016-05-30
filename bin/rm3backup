@@ -100,7 +100,7 @@ function writePermissionBackup(dir, catalog, next) {
               path: permission.path});
           });
           permissions.on('end', function() {
-            next();
+            cb();
           });
         }, next);
       },
