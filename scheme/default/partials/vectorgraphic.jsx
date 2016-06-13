@@ -32,7 +32,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
       buttonMessage = 'edit';
       action = 'edit.html'
     } else {
-      pathBit = (<JsxForms.PathNameComponent path={this.props.path} leaf={this.props.leaf} />);
+      pathBit = (<JsxForms.PathNameComponent {...this.props} />);
     }
 
     return (

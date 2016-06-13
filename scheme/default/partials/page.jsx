@@ -33,7 +33,7 @@ var PageFormComponent = ReactIntl.injectIntl(React.createClass({
       buttonMessage = 'edit';
       action = 'edit.html'
     } else {
-      pathBit = (<JsxForms.PathNameComponent path={this.props.path} leaf={this.props.leaf} />);
+      pathBit = (<JsxForms.PathNameComponent {...this.props} />);
     }
 
     return (
@@ -52,7 +52,7 @@ var PageFormComponent = ReactIntl.injectIntl(React.createClass({
       <ErrorsList errors={this.state.errors.abstract} />
       </fieldset>
       {pathBit}
-      <TextBlockComponent prefix="posting" proto={this.props.proto} block={this.props.block} />
+      <TextBlockComponent prefix="posting" {...this.props} />
 
       <ErrorsList errors={this.state.errors.__all__} />
       <fieldset>

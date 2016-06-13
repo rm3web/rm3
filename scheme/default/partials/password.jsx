@@ -25,7 +25,7 @@ var PasswordFormComponent = ReactIntl.injectIntl(React.createClass({
         <ErrorsList errors={this.state.errors.fullname} />
       </fieldset>
 
-      <JsxForms.PasswordFieldSet display={this.props.section !== 'edit'} errors={this.state.errors} />
+      <JsxForms.PasswordFieldSet display={this.props.section !== 'edit'} errors={this.state.errors} {...this.props} />
 
       <ErrorsList errors={this.state.errors.__all__} />
       <button type="submit">Change Password</button>

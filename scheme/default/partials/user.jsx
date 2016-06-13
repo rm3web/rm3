@@ -79,7 +79,7 @@ var UserFormComponent = ReactIntl.injectIntl(React.createClass({
         <ErrorsList errors={this.state.errors.fullname} />
       </fieldset>
 
-      <JsxForms.PasswordFieldSet display={this.props.section !== 'edit'} errors={this.state.errors} />
+      <JsxForms.PasswordFieldSet display={this.props.section !== 'edit'} errors={this.state.errors} {...this.props} />
 
       <fieldset>
         <label htmlFor="disableLogin" className="pure-input-1">
@@ -109,7 +109,7 @@ var UserFormComponent = ReactIntl.injectIntl(React.createClass({
       </fieldset>
 
       <ErrorsList errors={this.state.errors.__all__} />
-      <button type="submit"><FormattedMessage message={buttonMessage} /></button>
+      <button type="submit">{buttonMessage}</button>
     </form>);
   }
 }));
