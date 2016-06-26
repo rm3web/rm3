@@ -45,6 +45,7 @@ This version is incompatable with 0.1.x databases.
 - Passwords are stored as credentials, instead of in the user object.
 - TOTP Two-Factor authentication.
 - CVE-2015-8851: node-uuid prior to 1.4.4 uses insecure random number generator.
+- CVE-2016-5118: sharp prior to 0.15.0 uses insecure Magick.
 
 ## [0.1.2] - 2016-3-5: Special documentation on a Rainy Day edition
 ### Added
