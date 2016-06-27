@@ -97,7 +97,7 @@
     "rm3-react-controls": "0.0.7",
     "rm3-tag-control": "0.0.5",
     "serve-favicon": "~2.3.0",
-    "serve-static": "~1.10.0",
+    "serve-static": "^1.11.1",
     "sharp": "^0.15.0",
     "sitepath": "0.2.0",
     "speakingurl": "~9.0.0",
