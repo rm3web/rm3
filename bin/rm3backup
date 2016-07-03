@@ -44,10 +44,13 @@ function writeEntityBackup(backupPath, concurrency, dir, next) {
   query.sequentialEntityScan(db, {}, backupPath, program.concurrency, function(entry, next) {
     winston.info('Backing up :', entry.path);
     var pth = new sitepath(entry.path);
-    dumpEntity(db, entity.Entity, pth, true, function(err, ent, log) {
+    dumpEntity(db, entity.Entity, pth, true, function(err, ent, log, blobs) {
       if (err) {
         return next(err);
       }
+      //if (blobs.length) {
+        //console.log(blobs)
+      //}
       var filepath = path.join(dir, entry.path + '-data.json');
       writeNodeToFile(filepath, ent, log, next);
       catalog[entry.path] = {main: entry.path + '-data.json'};
