@@ -52,17 +52,22 @@ function scramblePath(entityPath, revisionId, blobPath) {
 }
 
 function writeBlobs(entityPath, dir, blobs, catalog, next) {
-  winston.info('Writing blobs for :', entityPath);
-  var store = BlobStores.getBlobStore('public');
-  async.each(blobs,function(item, callback) {
-    winston.info('Writing blob', item)
-    store.getBlob({}, item.entityPath, item.blobPath, item.revisionId, function(err, data) {
-      var fn = scramblePath(item.entityPath, item.revisionId, item.blobPath);
-      var filepath = path.join(dir, fn);
-      catalog[entityPath][fn] = item;
-      fs.writeFile(filepath, data, callback);
-    })
-  }, next)
+  if (blobs.length) {
+    winston.info('Writing blobs for :', entityPath);
+    var store = BlobStores.getBlobStore('public');
+    catalog[entityPath].blobs = {};
+    async.each(blobs,function(item, callback) {
+      winston.info('Writing blob', item)
+      store.getBlob({}, item.entityPath, item.blobPath, item.revisionId, function(err, data) {
+        var fn = scramblePath(item.entityPath, item.revisionId, item.blobPath);
+        var filepath = path.join(dir, fn);
+        catalog[entityPath].blobs[fn] = item;
+        fs.writeFile(filepath, data, callback);
+      })
+    }, next);
+  } else {
+    next();
+  }
 }
 
 function writeEntityBackup(backupPath, concurrency, dir, next) {
