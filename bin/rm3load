@@ -66,7 +66,7 @@ if (program.directory) {
   stdin.on('end', function () {
     var inputData = inputChunks.join();
     var parsedData = JSON.parse(inputData);
-    loaddump.loadEntity(db, parsedData, program.path, function(err) {
+    loaddump.loadEntity(db, parsedData, program.path, {}, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();
@@ -82,7 +82,7 @@ if (program.directory) {
       winston.error('Error:', err);
       process.exit(1);
     }
-    loaddump.loadEntity(db, parsedData, program.path, function(err) {
+    loaddump.loadEntity(db, parsedData, program.path, {}, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();
