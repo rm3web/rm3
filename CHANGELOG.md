@@ -28,7 +28,6 @@ This version is incompatable with 0.1.x databases.
 - gulp-clean-css replaces gulp-minify-css.
 - User proto refactored
 - Password paths shuffled
-- rm3load will preserve entityId and revisionId values.
 
 ### Removed
 - node 0.12 support removed.
