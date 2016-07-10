@@ -45,7 +45,7 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.textblock = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
         return chunk.map(function(chunk) {
-            textblocks.outputTextBlock(textblock, function(err, output) {
+            textblocks.outputTextBlock(textblock, {}, function(err, output) {
                 chunk.write(output);
                 return chunk.end();
             })
