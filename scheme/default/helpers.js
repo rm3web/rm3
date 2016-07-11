@@ -44,8 +44,24 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.textblock = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
+        var resolve = context.resolve(params.resolve);
+        var ctx = context.get('ctx');
+        var sitepath = context.get('path');
+        var scheme = context.get('scheme');
+        var site = context.get('site');
+        var protoset = context.get('protoset');
+        var security = context.get('security');
+        var state_ctx = {
+            ctx: ctx,
+            db: db,
+            sitepath: sitepath,
+            scheme: scheme,
+            site: site,
+            protoset: protoset,
+            access: security
+        }
         return chunk.map(function(chunk) {
-            textblocks.outputTextBlock(textblock, function(err, output) {
+            textblocks.outputTextBlock(textblock, resolve, state_ctx ,function(err, output) {
                 chunk.write(output);
                 return chunk.end();
             })
