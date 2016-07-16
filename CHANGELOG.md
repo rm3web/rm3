@@ -29,6 +29,7 @@ This version is incompatable with 0.1.x databases.
 - User proto refactored
 - Password paths shuffled
 - Improved default page text to be a bit more beginner-friendly.
+- Default behaviour after editing a page is to redirect back to the page, instead of showing edit again.
 
 ### Removed
 - node 0.12 support removed.
