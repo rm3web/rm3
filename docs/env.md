@@ -13,6 +13,16 @@ RM3_SESSION_REDIS
 
 The Redis instance to store session data in, in Redis URL form (`redis://netloc:port/dbnumber`).
 
+RM3_LOCAL_BLOBS
+---------------
+
+The directory (can be relative or absolute) where rm3 is to store it's blobs (e.g. binary files like photos)
+
+RM3_RESOURCES
+-------------
+
+The directory (can be relative or absolute) where rm3 is to find it's static resources (e.g. the scheme).  The default should work.
+
 RM3_TWITTER_CONSUMER_KEY & RM3_TWITTER_CONSUMER_SECRET
 ------------------------------------------------------
 
