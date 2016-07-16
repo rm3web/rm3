@@ -1,12 +1,12 @@
 [
-  {"type": "page", "proto": "metaindex", "path": "meta", "title": "Metadata", 
+  {"type": "index", "proto": "metaindex", "path": "meta", "title": "Metadata", 
     "posting": "# Metadata", "abstract": "Metadata"},
-  {"type": "page", "proto": "index", "path": ["meta", "dc"], "title": "Dublin Core", 
+  {"type": "index", "proto": "index", "path": ["meta", "dc"], "title": "Dublin Core", 
     "posting": "# Dublin Core", "abstract": "Dublin Core"},
   {"type": "predicate", "path": ["meta", "dc" ,"subject"], "title": "Subject", 
-    "abstract": "Dublin Core: Subject"},
+    "abstract": "Dublin Core: Subject", "uri": "http://purl.org/dc/elements/1.1/subject"},
   {"type": "predicate", "path": ["meta", "dc" ,"creator"], "title": "Creator", 
-    "abstract": "Dublin Core: Creator"},
+    "abstract": "Dublin Core: Creator", "uri": "http://purl.org/dc/elements/1.1/creator"},
   {"type": "predicate", "path": ["meta", "dc" ,"coverage"], "title": "Coverage", 
-    "abstract": "Dublin Core: Coverage"}
+    "abstract": "Dublin Core: Coverage", "uri": "http://purl.org/dc/elements/1.1/coverage"}
 ]

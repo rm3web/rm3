@@ -11,6 +11,7 @@ var root = formData.path;
 
 var title = formData.title;
 var abstract = formData.abstract;
+var uri = formData.uri;
 
 var renderTarget = document.getElementById('pageform');
 var PathFactory = React.createFactory(PredicateFormComponent);
@@ -27,7 +28,8 @@ var renderedComponent = ReactDOM.render(
     path: root,
     title: title,
     abstract: abstract,
-    proto: 'user',
+    uri: uri,
+    proto: 'predicate',
     proto: proto,
     errors: errors
   }),
