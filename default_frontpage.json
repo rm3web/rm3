@@ -14,9 +14,9 @@
         "posting": {
             "blocks": [
                 {
-                    "source": "# Welcome to rm3\r\n\r\nThis is a auto-generated pre-loaded default homepage.\r\n\r\nYou probably want to replace it with content of your choice.",
-                    "htmlslabs": ["<h1>Welcome to rm3</h1>\n\n<p>This is a auto-generated pre-loaded default homepage.</p>\n\n<p>You probably want to replace it with content of your choice.</p>"],
-                    "format": "markdown"
+                    "source":"# Welcome to rm3\r\n\r\nIf you can see this page, this means that [rm3](https://github.com/rm3web/rm3) is probably working correctly.  Welcome!\r\n\r\n## Where to go from here?\r\n\r\nWell, you probably want to be able to log in, don't you?  Click on the `Login` button in the right hand of the page to log in with whatever login credentials you created at startup (the instructions generally tell you to create an account called `wirehead` with a password of `password`.\r\n\r\nYou can create a new page by clicking on the `Create` drop down, or edit this page with the `Edit` button.",
+                    "htmlslabs":["<h1>Welcome to rm3</h1>\n<p>If you can see this page, this means that <a href=\"https://github.com/rm3web/rm3\">rm3</a> is probably working correctly.  Welcome!</p>\n<h2>Where to go from here?</h2>\n<p>Well, you probably want to be able to log in, don't you?  Click on the <code>Login</code> button in the right hand of the page to log in with whatever login credentials you created at startup (the instructions generally tell you to create an account called <code>wirehead</code> with a password of <code>password</code>.</p>\n<p>You can create a new page by clicking on the <code>Create</code> drop down, or edit this page with the <code>Edit</code> button.</p>\n"],
+                    "format":"markdown"
                 },
                 {
                     "format": "indexfeed",
