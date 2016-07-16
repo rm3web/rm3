@@ -115,7 +115,6 @@ describe('Base type CRUD', function() {
 
     casper.then(function() {
       'div.footer'.should.be.inDOM.and.be.visible;
-      'textarea[name=posting\\[blocks\\]\\[1\\]\\[source\\]]'.should.be.inDOM.and.be.visible;
     });
 
     casper.thenOpen('http://127.0.0.1:4000/casperjs_test/', function() {
