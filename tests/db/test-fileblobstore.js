@@ -14,7 +14,8 @@ describe('file blob store', function() {
 
   var filepath = {
     path: os.tmpdir(),
-    urlroot: 'localhost:'
+    urlroot: 'localhost:',
+    category: 'public'
   };
 
   var st = new FileBlobStore(filepath, db);

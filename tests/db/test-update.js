@@ -663,7 +663,7 @@ describe('update', function() {
     var revisionId = uuid.v1();
 
     step('create', function createCredential(done) {
-      update.addBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath', revisionId, true, true, {'angels': true}, done);
+      update.addBlob(db, {}, 'test', 'test', entityPath.toDottedPath(), 'blobpath', revisionId, true, true, {'angels': true}, done);
     });
 
     step('check create blob', function checkCredential(done) {
@@ -681,7 +681,7 @@ describe('update', function() {
     });
 
     step('delete', function createCredential(done) {
-      update.deleteBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath', revisionId, done);
+      update.deleteBlob(db, {}, 'test', 'test', entityPath.toDottedPath(), 'blobpath', revisionId, done);
     });
 
     step('check delete blob', function checkCredential(done) {
