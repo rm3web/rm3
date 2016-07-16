@@ -60,12 +60,16 @@ exports = module.exports = function(dust, db, query) {
             protoset: protoset,
             access: security
         }
-        return chunk.map(function(chunk) {
-            textblocks.outputTextBlock(textblock, resolve, state_ctx ,function(err, output) {
-                chunk.write(output);
-                return chunk.end();
-            })
-        });
+        if (textblock) {
+            return chunk.map(function(chunk) {
+                textblocks.outputTextBlock(textblock, resolve, state_ctx ,function(err, output) {
+                    chunk.write(output);
+                    return chunk.end();
+                })
+            });
+        } else {
+            return chunk.end();
+        }
     }
 
     dust.helpers.sectionDisable = function(chunk, context, bodies, params) {
