@@ -131,6 +131,19 @@ Failure Recovery
 
 **This section will improve as rm3 approaches 1.0**
 
+### Zapping the workflow
+
+Sometimes the workflow system can get into a bad state.  To kill everything in the workflow system and set it all up all over again, you can first execute these SQL statements against your database:
+```sql
+drop table wf_jobs;
+drop table wf_jobs_info;
+drop table wf_runners;
+drop table wf_locked_targets;
+drop table wf_workflows;
+```
+
+And then you can create the workflows again: `./bin/rm3admin createworkflow`
+
 Tuning
 ------
 
