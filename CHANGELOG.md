@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.0] - 2016-7-17: Special Sunny July with Poison Ivy edition
+
 This version is incompatable with 0.1.x databases.
 
 ### Added
@@ -86,6 +88,7 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/rm3web/rm3/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/rm3web/rm3/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/rm3web/rm3/compare/v0.1.0...v0.1.1
