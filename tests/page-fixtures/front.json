@@ -19,7 +19,7 @@
                     "format": "markdown"
                 },
                 {
-                    "format": "pragma",
+                    "format": "indexfeed",
                     "query": "dir"
                 }
             ],

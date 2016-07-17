@@ -7,6 +7,8 @@ var fs = require('fs');
 var jsonfile = require('jsonfile');
 var loaddump = require('../lib/loaddump');
 var winston = require('winston');
+var workflow = require('../lib/workflow'),
+    runWorkflows = require('../lib/runworkflows');
 
 winston.cli();
 
@@ -28,14 +30,25 @@ if (program.directory) {
     db.gunDatabase();
     process.exit(1);
   }
-  loaddump.loadFromCatalog(db, program.directory, program.path, new SitePath(['wh','users']), function(err) {
-    if (err) {
-      winston.error('Error:', err);
-      db.gunDatabase();
-      process.exit(1);
-    }
-    db.gunDatabase();
+
+  workflow.loadConf(function() {
+    runWorkflows(function() {
+      loaddump.loadFromCatalog(db, program.directory, program.path, new SitePath(['wh','users']), function(err) {
+        if (err) {
+          winston.error('Error:', err);
+          db.gunDatabase();
+          process.exit(1);
+        }
+        runWorkflows.endWorkflows(function() {
+          db.gunDatabase();
+          process.exit(0);
+        });
+      });
+    });
   });
+
+
+
 } else if (program.file === '-') {
   winston.info('Loading from stdin');
   var stdin = process.stdin
@@ -53,7 +66,7 @@ if (program.directory) {
   stdin.on('end', function () {
     var inputData = inputChunks.join();
     var parsedData = JSON.parse(inputData);
-    loaddump.loadEntity(db, parsedData, program.path, function(err) {
+    loaddump.loadEntity(db, parsedData, program.path, false, {}, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();
@@ -69,7 +82,7 @@ if (program.directory) {
       winston.error('Error:', err);
       process.exit(1);
     }
-    loaddump.loadEntity(db, parsedData, program.path, function(err) {
+    loaddump.loadEntity(db, parsedData, program.path, false, {}, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();

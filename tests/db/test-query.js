@@ -399,11 +399,11 @@ describe('query', function() {
     var revisionId = uuid.v1();
 
     step('create', function createCredential(done) {
-      update.addBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, true, true, {'angels': true}, done);
+      update.addBlob(db, {}, 'test', 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, true, true, {'angels': true}, done);
     });
 
     step('check created blob', function checkCredential(done) {
-      query.findBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, function(err, rec) {
+      query.findBlob(db, {}, 'test', 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, function(err, rec) {
         if (err) {
           return done(err);
         }
@@ -422,7 +422,6 @@ describe('query', function() {
         should.fail(err);
       });
       resp.on('end', function() {
-        console.log(arts);
         arts.length.should.equal(1);
         arts[0].details.angels.should.equal(true);
         done();

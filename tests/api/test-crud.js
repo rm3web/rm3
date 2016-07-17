@@ -12,7 +12,7 @@ describe('crud', function() {
       }
       res.body.summary.should.eql({title: 'Welcome to rm3', abstract: 'Welcome to rm3'});
       res.body.data.posting.blocks.length.should.eql(2);
-      res.body.data.posting.blocks[1].format.should.equal('html');
+      res.body.data.posting.blocks[1].format.should.equal('indexfeed');
       cb();
     });
   });

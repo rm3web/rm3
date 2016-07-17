@@ -88,11 +88,15 @@ A backup to the same machine that's hosting the site is not much of a backup at 
 
 Furthermore, you really want to rotate your backups.  Depending on performance, take a backup every few hours, but keep daily, weekly, and monthly backups.
 
-### Database table backup
+A backup necessarily needs to contain sensitive stuff like passwords, so you probably should encrypt them.
 
-A database backup should be able to get you out of most simple failures quickly.  You can use a file rotation tool to store it back in history so you can go back in time before a database corruption.  
+If you are hosting a site with a lot of images, be warned that your backups could get very large because the backup must necessarily contain all of the images.
 
-You should be able to back up the postgresql cluster.
+### Database table backup + File Blob store backup
+
+The contents of rm3 is stored both in the database and the blob store.  You cannot just backup the database, you also need to backup the blob store.
+
+A database backup should be able to get you out of most simple failures quickly.  You can use a file rotation tool to store it back in history so you can go back in time before a database corruption.
 
 A CLI command like `pg_dump -Fc <database name>` should generate a dump file to standard out that you can redirect into a file and then load later on with `pg_restore`
 
@@ -102,20 +106,43 @@ You can also use [wal-e](https://github.com/wal-e/wal-e) to get a continuous str
 
 **This may not save you from all possible problems**.  As a general rule, if there's a weird semantic corruption of the database in ways the developers haven't seen ever before, loading a table dump might put you back where you started.  Thus, a semantic backup is also important.
 
+You also need to backup the blobs; those are currently configured to the directory set in `RM3_LOCAL_BLOBS`.
+
+To restore, you should be able to load the database backup, place the blobs where rm3 expects them, and everything will be fine.
+
 ### Semantic backup
 
-`rm3backup <directory>` will create a directory named `<directory>` with a semantic backup.  It will create at least one file per entity, where the primary entity dump is located in a file suffixed by `-data.json`
+`rm3backup <directory>` will create a directory named `<directory>` with a semantic backup.
+
+There's a file called `catalog.json` in that directory that describes what the backup contains.  It will create at least one file per entity, where the primary entity dump is located in a file suffixed by `-data.json`, where the blobs have a different suffix.
+
+The credentials (passwords, OAuth tokens, etc) are stored in `credentials.json` and the permissions (e.g. which users have root) are stored in `permissions.json`.
 
 There are a lot of ways to go from here.  Again, in practice, [the ruby backup gem](https://github.com/backup/backup) will make this process go a bit more smoothly.
 
-Because it breaks things out into a series of files, rsync should provide a speed-up, although you also want to use `--delete` to make sure that it doesn't leave any extraneous deleted nodes around.
+You can use rsync or similar mechanisms to speed up remote backups.  You want to delete or move the existing backup (rm3backup requires the directory to not exist, so it doesn't accidentally write an incoherent backup), run rm3backup, then trigger the rsync with the `--delete` flag to make sure that backup doesn't leave any extraneous deleted nodes around.
 
-**Note: Loading from backups is presently laborious and will be fixed soon**
+It is significantly easier to edit a backup from rm3backup than it is to edit a backup from the database, although you should consider even the act of editing the database as a highly dangerous operation that might cause issues.
+
+**Currently, rm3load does not try to load revision history, although rm3backup is set up to store it; therefore history serialized by rm3backup with v0.2 might have issues.**
 
 Failure Recovery
 ----------------
 
 **This section will improve as rm3 approaches 1.0**
+
+### Zapping the workflow
+
+Sometimes the workflow system can get into a bad state.  To kill everything in the workflow system and set it all up all over again, you can first execute these SQL statements against your database:
+```sql
+drop table wf_jobs;
+drop table wf_jobs_info;
+drop table wf_runners;
+drop table wf_locked_targets;
+drop table wf_workflows;
+```
+
+And then you can create the workflows again: `./bin/rm3admin createworkflow`
 
 Tuning
 ------

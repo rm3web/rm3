@@ -1,0 +1,75 @@
+{
+  "wh": {
+    "main": "wh-data.json"
+  },
+  "wh.users": {
+    "main": "wh.users-data.json"
+  },
+  "wh.meta": {
+    "main": "wh.meta-data.json"
+  },
+  "wh.meta.dc": {
+    "main": "wh.meta.dc-data.json"
+  },
+  "wh.meta.dc.subject": {
+    "main": "wh.meta.dc.subject-data.json"
+  },
+  "wh.meta.dc.creator": {
+    "main": "wh.meta.dc.creator-data.json"
+  },
+  "wh.meta.dc.coverage": {
+    "main": "wh.meta.dc.coverage-data.json"
+  },
+  "wh.users.wirehead": {
+    "main": "wh.users.wirehead-data.json"
+  },
+  "wh.svg_hex": {
+    "main": "wh.svg_hex-data.json",
+    "blobs": {
+      "wh.svg_hex-8c7e2331-4c45-11e6-a743-9f561081e514-infile.svg": {
+        "category": "public",
+        "provider": "fileblobstore",
+        "entityPath": "wh.svg_hex",
+        "blobPath": "infile.svg",
+        "revisionId": "8c7e2331-4c45-11e6-a743-9f561081e514",
+        "source": true,
+        "temporary": false,
+        "details": {
+          "filePath": "/home/wirehead/src/rm3/blobs/wh.svg_hex-8c7e2331-4c45-11e6-a743-9f561081e514-infile.svg",
+          "urlPath": "wh.svg_hex-8c7e2331-4c45-11e6-a743-9f561081e514-infile.svg"
+        }
+      }
+    }
+  },
+  "wh.gradient_photo": {
+    "main": "wh.gradient_photo-data.json",
+    "blobs": {
+      "wh.gradient_photo-46fe3541-4c48-11e6-84d2-33f32d208a05-infile.jpg": {
+        "category": "public",
+        "provider": "fileblobstore",
+        "entityPath": "wh.gradient_photo",
+        "blobPath": "infile.jpg",
+        "revisionId": "46fe3541-4c48-11e6-84d2-33f32d208a05",
+        "source": true,
+        "temporary": false,
+        "details": {
+          "filePath": "/home/wirehead/src/rm3/blobs/wh.gradient_photo-46fe3541-4c48-11e6-84d2-33f32d208a05-infile.jpg",
+          "urlPath": "wh.gradient_photo-46fe3541-4c48-11e6-84d2-33f32d208a05-infile.jpg"
+        }
+      }
+    }
+  },
+  "wh.blog": {
+    "main": "wh.blog-data.json"
+  },
+  "wh.blog.6605ef00_4c48_11e6_84d2_33f32d208a05": {
+    "main": "wh.blog.6605ef00_4c48_11e6_84d2_33f32d208a05-data.json"
+  },
+  "wh.page": {
+    "main": "wh.page-data.json"
+  },
+  "_permissions": "permissions.json",
+  "_credentials": "credentials.json",
+  "_dump_date": "2016-07-17T18:05:31.392Z",
+  "_dump_version": "0.1.2"
+}

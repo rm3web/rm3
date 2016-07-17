@@ -44,12 +44,32 @@ exports = module.exports = function(dust, db, query) {
 
     dust.helpers.textblock = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
-        return chunk.map(function(chunk) {
-            textblocks.outputTextBlock(textblock, function(err, output) {
-                chunk.write(output);
-                return chunk.end();
-            })
-        });
+        var resolve = context.resolve(params.resolve);
+        var ctx = context.get('ctx');
+        var sitepath = context.get('path');
+        var scheme = context.get('scheme');
+        var site = context.get('site');
+        var protoset = context.get('protoset');
+        var security = context.get('security');
+        var state_ctx = {
+            ctx: ctx,
+            db: db,
+            sitepath: sitepath,
+            scheme: scheme,
+            site: site,
+            protoset: protoset,
+            access: security
+        }
+        if (textblock) {
+            return chunk.map(function(chunk) {
+                textblocks.outputTextBlock(textblock, resolve, state_ctx ,function(err, output) {
+                    chunk.write(output);
+                    return chunk.end();
+                })
+            });
+        } else {
+            return chunk.end();
+        }
     }
 
     dust.helpers.sectionDisable = function(chunk, context, bodies, params) {

@@ -12,8 +12,17 @@ var fs = require('fs');
 var winston = require('winston');
 var path = require('path');
 var dumpEntity = require('../lib/dumpentity.js');
+var Conf = require('../lib/conf'),
+    BlobStores = require('../lib/blobstores'),
+    FileBlobStore = require('../lib/fileblobstore');
 
 winston.cli();
+
+var conf = {
+  path: Conf.getPath('localBlobs'),
+  urlroot: '/blobs/'
+};
+BlobStores.register('public', new FileBlobStore(conf, db));
 
 function parse_sitepath(val) {
   var pth = new sitepath(val);
@@ -38,19 +47,42 @@ function writeNodeToFile(outPath, ent, log, next)
   next();
 }
 
+function scramblePath(entityPath, revisionId, blobPath) {
+  return entityPath + '-' + revisionId + '-' + blobPath;
+}
+
+function writeBlobs(entityPath, dir, blobs, catalog, next) {
+  if (blobs.length) {
+    winston.info('Writing blobs for :', entityPath);
+    var store = BlobStores.getBlobStore('public');
+    catalog[entityPath].blobs = {};
+    async.each(blobs,function(item, callback) {
+      winston.info('Writing blob', item)
+      store.getBlob({}, item.entityPath, item.blobPath, item.revisionId, function(err, data) {
+        var fn = scramblePath(item.entityPath, item.revisionId, item.blobPath);
+        var filepath = path.join(dir, fn);
+        catalog[entityPath].blobs[fn] = item;
+        fs.writeFile(filepath, data, callback);
+      })
+    }, next);
+  } else {
+    next();
+  }
+}
+
 function writeEntityBackup(backupPath, concurrency, dir, next) {
   var catalog = {};
   winston.info('Starting backup, concurrency :', program.concurrency);
   query.sequentialEntityScan(db, {}, backupPath, program.concurrency, function(entry, next) {
     winston.info('Backing up :', entry.path);
     var pth = new sitepath(entry.path);
-    dumpEntity(db, entity.Entity, pth, true, function(err, ent, log) {
+    dumpEntity(db, entity.Entity, pth, true, function(err, ent, log, blobs) {
       if (err) {
         return next(err);
       }
       var filepath = path.join(dir, entry.path + '-data.json');
-      writeNodeToFile(filepath, ent, log, next);
       catalog[entry.path] = {main: entry.path + '-data.json'};
+      writeNodeToFile(filepath, ent, log, writeBlobs.bind(this, entry.path, dir, blobs, catalog, next));
     })
   }, function(err) {
     next(err, catalog);

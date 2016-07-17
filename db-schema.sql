@@ -46,7 +46,8 @@ CREATE TABLE wh_tag (
 );
 
 CREATE TABLE wh_blob (
-	PRIMARY KEY(provider, "entityPath", "blobPath", "revisionId"),
+	PRIMARY KEY(category, provider, "entityPath", "blobPath", "revisionId"),
+	"category" text,
 	"provider" text,
 	"entityPath" ltree,
 	"blobPath" text,

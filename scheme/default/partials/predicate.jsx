@@ -19,6 +19,7 @@ var PredicateFormComponent = ReactIntl.injectIntl(React.createClass({
     }
     state.title = this.props.title;
     state.abstract = this.props.abstract;
+    state.uri = this.props.uri;
     return state;
   },
 
@@ -51,6 +52,9 @@ var PredicateFormComponent = ReactIntl.injectIntl(React.createClass({
       <ErrorsList errors={this.state.errors.abstract} />
       </fieldset>
       {pathBit}
+      <textarea rows="1" className="pure-input-1" 
+        placeholder={this.props.intl.formatMessage({id:"URI"})} name="uri" 
+        valueLink={this.linkState('uri')} />
 
       <ErrorsList errors={this.state.errors.__all__} />
       <fieldset>
