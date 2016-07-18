@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Updated dependencies
 
+### Fixed
+- Coverage collection fixed again.
+
 ## [0.2.0] - 2016-7-17: Special Sunny July with Poison Ivy edition
 
 This version is incompatable with 0.1.x databases.
