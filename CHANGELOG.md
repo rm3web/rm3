@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Coverage collection fixed again.
+- In the BaseBehavior mixin, the list of fields that can be inserted can be defined by the underlying proto.
 
 ## [0.2.0] - 2016-7-17: Special Sunny July with Poison Ivy edition
 
