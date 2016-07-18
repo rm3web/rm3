@@ -7,6 +7,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Updated dependencies
 
+### Fixed
+- In the BaseBehavior mixin, the list of fields that can be inserted can be defined by the underlying proto.
+
 ## [0.2.0] - 2016-7-17: Special Sunny July with Poison Ivy edition
 
 This version is incompatable with 0.1.x databases.
