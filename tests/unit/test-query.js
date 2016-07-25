@@ -122,10 +122,10 @@ describe('query gen', function() {
        expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (date_trunc(\'month\', created) = date_trunc(\'month\', $2::date))'},
       {desc: 'for sorting by changed',
        args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) ORDER BY modified ASC, "entityId" ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) ORDER BY modified DESC, "entityId" DESC'},
       {desc: 'for sorting by created',
        args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) ORDER BY created ASC, "entityId" ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) ORDER BY created DESC, "entityId" DESC'},
       {desc: 'for faceting by month created',
        args: [root, 'wh', 'child', 'count', {}, 'created', {on: 'month'}, {}],
        expected: 'SELECT count(*), date_trunc(\'month\', created) AS facet FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) GROUP BY date_trunc(\'month\', created) ORDER BY date_trunc(\'month\', created) ASC'},
@@ -149,10 +149,10 @@ describe('query gen', function() {
        expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
       {desc: 'with pagination using a date sorting by changed',
        args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."modified", wh_entity."entityId") > ($2,$3)) ORDER BY modified ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."modified", wh_entity."entityId") < ($2,$3)) ORDER BY modified DESC, "entityId" DESC LIMIT 12'},
       {desc: 'with pagination using a date sorting by created',
        args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."created", wh_entity."entityId") > ($2,$3)) ORDER BY created ASC, "entityId" ASC LIMIT 12'}
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."created", wh_entity."entityId") < ($2,$3)) ORDER BY created DESC, "entityId" DESC LIMIT 12'}
     ];
 
     tests.forEach(function(test, index) {
