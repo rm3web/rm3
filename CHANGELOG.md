@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Fixed
+- If you load a dump and it doesn't have credentials or permissions, it won't try to load.
 - Query generation was generating oldest-first queries when it needed newest-first queries.
 
 ## [0.2.1] - 2016-7-23: With the skin still itchy edition
