@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- If you load a dump and it doesn't have credentials or permissions, it won't try to load.
+
 ## [0.2.1] - 2016-7-23: With the skin still itchy edition
 
 ### Changed
