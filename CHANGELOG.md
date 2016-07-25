@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [0.2.2] - 2016-7-23: Special perfectly swell bugfix edition
+
+### Changed
+- Updated dependencies
 
 ### Fixed
 - If you load a dump and it doesn't have credentials or permissions, it won't try to load.
@@ -102,8 +105,9 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.2.1...HEAD
-[0.2.0]: https://github.com/rm3web/rm3/compare/v0.2.0...v0.2.1
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.2.2...HEAD
+[0.2.2]: https://github.com/rm3web/rm3/compare/v0.2.1...v0.2.2
+[0.2.1]: https://github.com/rm3web/rm3/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/rm3web/rm3/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/rm3web/rm3/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/rm3web/rm3/compare/v0.1.0...v0.1.1
