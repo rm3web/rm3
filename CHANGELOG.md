@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Query generation was generating oldest-first queries when it needed newest-first queries.
+
 ## [0.2.1] - 2016-7-23: With the skin still itchy edition
 
 ### Changed
