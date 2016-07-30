@@ -8,11 +8,18 @@ Setting up for real
 
 rm3 is designed to be neutral to any particular devops working framework.  It should be able to work within a container-styled infrastructure just as easily as on Chef or Puppet managed nodes.
 
-rm3 is designed to work using npm.  Thus, the desired state for a new install of rm3 is that you will create a package that depends on the `rm3` package, as well as any accessory plugin modules, and then run from that package.  Schemes and plugins and so on are all also delivered as accessory modules.
+I felt it was important that rm3 core run in a 'semi-batteries included' sort of way, such that you could play with it easily.  However, if you are going to run a site 'for real', you want to create a custon npm package for installation purposes with all of the dependencies bundled and versioned.  This way, your plugins are isolated, so you can update them separately and not worry as much about maintaining patches against rm3 as it develops.  And this also means I don't need to implement a bad ersatz version of everything npm already does for you.
 
-npm is pretty good about pulling from wherever.  If you have site-specific modules, you can npm install from any random git repo or tarball URL.
+Thus, the desired state for a new install of rm3 is that you will create a package that depends on the `rm3` package, as well as any accessory plugin modules, and then run from that package.  Schemes and plugins and so on are all also delivered as accessory modules.
 
-Your install package can be checked into github, so you can keep track of versions.
+Once you've created the package, you probably want to store it in some sort of revision control system like git (maybe a github or gitlab repo).  npm can be set to install a package from a git repo or a tarball, so this doesn't mean that you have to publish your potentially sensitive config with packages you don't really want to have out in the public to npm.
+
+1. Make a subdirectory to hold your new package: `mkdir rm3-demo`
+2. Initialize a package: `npm init` (You can just hit enter a few times)
+3. Install rm3: `npm install rm3`
+4. Customize...
+
+**This section will improve as rm3 approaches 1.0**
 
 ### Service supervision
 
@@ -22,7 +29,9 @@ Production apps tend to work best when they are run with process supervision.  W
 
 **Note: You probably don't want to turn on caching right now.**
 
-You want to put a proxy in front of rm3, nginx or Apache.
+You want to put a proxy in front of rm3, nginx or Apache.  The proxy is there to handle static resources (the files for the scheme, as well as the static blobs if you've implemented those) and also to load-balance between rm3 instances.  Remember, node.js is asynchronous but not parallel, so a single rm3 process can only utilize one CPU.  You can tune the number of proxy processes against the number of rm3 processes as needed.
+
+Furthermore, the front-end proxy can handle tasks like DDoS protection.
 
 ### Avoid giving users access
 

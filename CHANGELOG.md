@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- More operational docs, explained some of the authentication pipeline.
+
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 
 ### Fixed
