@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Fixed
+- "More" links weren't wrapping properly.
+
 ## [0.2.2] - 2016-7-23: Special perfectly swell bugfix edition
 
 ### Changed
