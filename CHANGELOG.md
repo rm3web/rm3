@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - "More" links weren't wrapping properly.
+- Month/Year Facets are in the wrong order.
 
 ## [0.2.2] - 2016-7-23: Special perfectly swell bugfix edition
 
