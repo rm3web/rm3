@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.2.3] - 2016-7-23: Importing it's grandparents edition
+
 ### Fixed
 - "More" links weren't wrapping properly.
 - Month/Year Facets are in the wrong order.
