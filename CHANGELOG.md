@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - More operational docs, explained some of the authentication pipeline.
+- Ability to change the number of items per page.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
