@@ -7,8 +7,8 @@ var should = require('should');
 describe('update', function() {
   it('executes correctly', function(done) {
     var insertQuery = 'INSERT INTO wh_entity (path, stub, "entityId", "revisionId", \
-"revisionNum", proto, modified, created, summary, data, tags) VALUES ($1, $2, \
-$3, $4, $5, $6, $7, $8, $9, $10, $11)';
+"revisionNum", proto, modified, created, hidden, summary, data, tags) VALUES ($1, $2, \
+$3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
     var insertTagQuery = 'INSERT INTO wh_tag ("subjPath", "objClass", \
 "predPath", "objStr") VALUES ($1, $2, $3, $4)';
     var deleteBeforeQuery = 'DELETE FROM wh_entity WHERE (path = $1) AND (stub = true)';
@@ -44,8 +44,8 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
           should.deepEqual(spec.values[1], false); //stub
           should.deepEqual(spec.values[4], 1); //revisionNum
           should.deepEqual(spec.values[5], 'base'); //proto
-          should.deepEqual(spec.values[8], JSON.stringify(ent.summary)); // summary
-          should.deepEqual(spec.values[9], JSON.stringify(ent.data)); // summary
+          should.deepEqual(spec.values[9], JSON.stringify(ent.summary)); // summary
+          should.deepEqual(spec.values[10], JSON.stringify(ent.data)); // summary
           func(null, {});
         } else if (spec.name === 'insert_tag_query') {
           spec.name.should.equal('insert_tag_query');

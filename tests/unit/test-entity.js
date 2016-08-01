@@ -16,6 +16,7 @@ describe('stubEntity', function() {
           entityId: '96010990-36ad-11e4-863b-614e8d833a23',
           revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
           revisionNum: 1,
+          hidden: false,
           modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           summary: {title: 'blrg', abstract: 'some text goes here'},
@@ -24,6 +25,7 @@ describe('stubEntity', function() {
       fields:
       [{name: 'path', dataTypeID: 17555},
         {name: 'stub', dataTypeID: 16},
+        {name: 'hidden', dataTypeID: 16},
         {name: 'entityId', dataTypeID: 2950},
         {name: 'revisionId', dataTypeID: 2950},
         {name: 'revisionNum', dataTypeID: 23},
@@ -114,6 +116,7 @@ describe('entity', function() {
           revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
           revisionNum: 1,
           proto: 'base',
+          hidden: false,
           modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           summary: {title: 'blrg', abstract: 'some text goes here'},
@@ -123,6 +126,7 @@ describe('entity', function() {
       fields:
       [{name: 'path', dataTypeID: 17555},
         {name: 'stub', dataTypeID: 16},
+        {name: 'hidden', dataTypeID: 16},
         {name: 'entityId', dataTypeID: 2950},
         {name: 'revisionId', dataTypeID: 2950},
         {name: 'revisionNum', dataTypeID: 23},
@@ -146,6 +150,7 @@ describe('entity', function() {
       e2._revisionId = '96010991-36ad-11e4-863b-614e8d833a23';
       e2._revisionNum = 1;
       e2._proto = "base";
+      e2._hidden = false;
       e2._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2.data.posting = '<div>Test test</div>';
@@ -170,6 +175,7 @@ describe('entity', function() {
       e._revisionId = '96010991-36ad-11e4-863b-614e8d833a23';
       e._revisionNum = 1;
       e._proto = "base";
+      e._hidden = false;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.data.posting = '<div>Test test</div>';
@@ -184,6 +190,7 @@ describe('entity', function() {
          revisionNum: 1,
          proto: 'base',
          sitePath: ['wh'],
+         hidden: false,
          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
         summary: {title: 'blrg', abstract: 'some text goes here'},
@@ -233,6 +240,7 @@ describe('entity', function() {
          revisionId: null,
          revisionNum: null,
          proto: 'base',
+         hidden: false,
          sitePath: ['wh'],
          modified: now,
          created: now},

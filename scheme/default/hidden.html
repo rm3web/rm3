@@ -1,0 +1,11 @@
+{>"layouts/full_with_nav"/}
+{<view-content}
+
+<h1>{@formatMessage _key="HIDDEN"/}</h1>
+
+<ul style="list-style:none">
+{@basicQuery select="child" hidden="true" rootPath="true"}
+ <li>{@icon size="24" /}{@titleLink/}</li>
+{/basicQuery}
+ </ul>
+ {/view-content}
