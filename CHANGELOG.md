@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - More operational docs, explained some of the authentication pipeline.
 - Ability to change the number of items per page.
 - Ability to have hidden pages.
+- Card view now has tags.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
