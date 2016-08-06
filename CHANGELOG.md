@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ability to change the number of items per page.
 - Ability to have hidden pages.
 - Card view now has tags.
+- State machine to control drafts / approvals / blob workflow.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
