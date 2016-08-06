@@ -88,7 +88,8 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
   });
   it('fails on bad evt_class', function(done) {
     var logentry = {
-      evtClass: 'this_is_not_valid'
+      evtClass: 'this_is_not_valid',
+      workflow: {}
     };
     update._private.execLogentry({}, true, undefined, undefined, logentry, function(err) {
       if (err) {
