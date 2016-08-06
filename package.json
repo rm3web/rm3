@@ -73,6 +73,7 @@
     "librsvg": "^0.7.0",
     "linked-data-box": "0.0.5",
     "lodash": "^4.13.1",
+    "machina": "^2.0.0",
     "morgan": "~1.7",
     "multer": "^1.1.0",
     "node-uuid": "^1.4.7",

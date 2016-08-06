@@ -31,6 +31,7 @@ CREATE TABLE wh_log (
 	"evtClass" text,
 	"evtFinal" boolean,
 	"actorPath" ltree,
+	workflow jsonb,
 	data json
 );
 
