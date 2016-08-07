@@ -32,8 +32,47 @@ var PredicateFormComponent = ReactIntl.injectIntl(React.createClass({
     if (this.props.section === 'edit') {
       buttonMessage = 'edit';
       action = 'edit.html'
+      if (this.props.revisionId) {
+        action = action + '?revisionId=' + this.props.revisionId;
+      }
     } else {
       pathBit = (<JsxForms.PathNameComponent {...this.props} />);
+    }
+
+    if (this.props.isDraft) {
+      submitBit = (<fieldset>
+        <div className="pure-g-r">
+          <div className="pure-u-1-3">
+            <button type="submit" className="pure-button pure-button-primary">{buttonMessage}</button>
+          </div>
+          <div className="pure-u-1-3">
+            <label htmlFor="saveAsDraft" className="pure-checkbox">
+              <input id="saveAsDraft" name="saveAsDraft" type="checkbox" value="true" checked="true" />
+              <FormattedMessage id={'SAVE_AS_DRAFT'} />
+            </label>
+          </div>
+          <div className="pure-u-1-3">
+            <label htmlFor="createNewDraft" className="pure-checkbox">
+              <input id="createNewDraft" name="createNewDraft" type="checkbox" value="true" />
+              <FormattedMessage id={'CREATE_NEW_DRAFT'} />
+            </label>
+          </div>
+        </div>
+        </fieldset>)
+    } else {
+      submitBit = (<fieldset>
+        <div className="pure-g-r">
+          <div className="pure-u-1-3">
+            <button type="submit" className="pure-button pure-button-primary">{buttonMessage}</button>
+          </div>
+          <div className="pure-u-2-3">
+            <label htmlFor="saveAsDraft" className="pure-checkbox">
+              <input id="saveAsDraft" name="saveAsDraft" type="checkbox" value="true" />
+              <FormattedMessage id={'SAVE_AS_DRAFT'} />
+            </label>
+          </div>
+        </div>
+        </fieldset>)
     }
 
     return (
@@ -57,19 +96,8 @@ var PredicateFormComponent = ReactIntl.injectIntl(React.createClass({
         valueLink={this.linkState('uri')} />
 
       <ErrorsList errors={this.state.errors.__all__} />
-      <fieldset>
-      <div className="pure-g-r">
-        <div className="pure-u-1-3">
-          <button type="submit" className="pure-button pure-button-primary">{buttonMessage}</button>
-        </div>
-        <div className="pure-u-2-3">
-          <label htmlFor="saveAsDraft" className="pure-checkbox">
-            <input id="saveAsDraft" name="saveAsDraft" type="checkbox" value="true" />
-            <FormattedMessage id={'SAVE_AS_DRAFT'} />
-          </label>
-        </div>
-      </div>
-      </fieldset>
+
+      {submitBit}
       
     </form>);
   }

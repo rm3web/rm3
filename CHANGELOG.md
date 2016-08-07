@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ability to have hidden pages.
 - Card view now has tags.
 - State machine to control drafts / approvals / blob workflow.
+- Checkbox when you edit a page to control if you want to edit the draft further or create a new draft.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
