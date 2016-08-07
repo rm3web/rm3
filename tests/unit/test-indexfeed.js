@@ -52,8 +52,8 @@ describe('indexfeed', function() {
     var ee, now, output;
     beforeEach(function() {
       var protoset = {};
-      protoset.decorateListing = function(article, scheme) {
-        return article;
+      protoset.decorateListing = function(article, dbRow, scheme, site, next) {
+        next(null, article);
       };
       now = new Date();
       ee = new events.EventEmitter();
@@ -100,8 +100,8 @@ describe('indexfeed', function() {
 
     it('should pass errors', function(cb) {
       var protoset = {};
-      protoset.decorateListing = function(article, scheme) {
-        return article;
+      protoset.decorateListing = function(article, dbRow, scheme, site, next) {
+        next(null, article);
       };
       var ee = new events.EventEmitter();
       var output = IndexFeed.resultsToIndexFeed(protoset, {}, {}, ee);
