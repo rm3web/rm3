@@ -142,7 +142,7 @@ suite("query#query_history", function() {
     ents.updated = ents.one.clone();
     ents.updated.data.posting = "<div>blah blah blah</div>";
     ents.updated.summary.title = 'updated';
-    update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, 'update',
+    update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, false, 'update',
       function(err, entityId, revisionId, revisionNum) {
         ents.updated._entityId = entityId;
         ents.updated._revisionId = revisionId;
