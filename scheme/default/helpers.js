@@ -23,6 +23,35 @@ exports = module.exports = function(dust, db, query) {
       return value;
     }
 
+    dust.filters.toISOString = function(value) {
+      if (value instanceof Date) {
+        return value.toISOString();
+      }
+      return value;
+    }
+
+    dust.helpers.linkIcon = function(chunk, context, bodies, params) {
+        var size = context.resolve(params.size);
+        if (!size) {
+            size = 'sq';
+        }
+        var svgicon = context.get('meta.rm3\:icon.' + size + '.svg');
+        var imgicon = context.get('meta.rm3\:icon.' + size + '.alt');
+        var height = context.get('meta.rm3\:icon.' + size + '.height');
+        var width = context.get('meta.rm3\:icon.' + size + '.width');
+        if (svgicon) {
+            return chunk.write('<link href="' + svgicon + '" rel="icon" />' +
+                '<media:thumbnail url="' + svgicon + '" height="' + height + 
+                '" width="' + width + '" xmlns:media="http://search.yahoo.com/mrss/" />'
+                )
+        } else {
+            return chunk.write('<link href="' + imgicon + '" rel="icon" />' +
+                '<media:thumbnail url="' + imgicon + '" height="' + height + 
+                '" width="' + width + '" xmlns:media="http://search.yahoo.com/mrss/" />'
+                )
+        }
+    }
+
     dust.helpers.icon = function(chunk, context, bodies, params) {
         var size = context.resolve(params.size);
         if (!size) {
