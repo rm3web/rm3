@@ -51,6 +51,7 @@ exports = module.exports = function(dust, db, query) {
         var site = context.get('site');
         var protoset = context.get('protoset');
         var security = context.get('security');
+        var blobstores = context.get('blobstores');
         var state_ctx = {
             ctx: ctx,
             db: db,
@@ -58,7 +59,8 @@ exports = module.exports = function(dust, db, query) {
             scheme: scheme,
             site: site,
             protoset: protoset,
-            access: security
+            access: security,
+            blobstores: blobstores
         }
         if (textblock) {
             return chunk.map(function(chunk) {
