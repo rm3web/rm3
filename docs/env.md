@@ -3,6 +3,11 @@ Environment variables for rm3
 
 All dangerous environment variables, the sort of thing that you probably don't want to do unless you are going to be really careful about it, will contain the string `DANGER` as a warning.
 
+RM3_LISTEN_PORT
+---------------
+
+The port that rm3 should listen at.
+
 RM3_PG
 ------
 

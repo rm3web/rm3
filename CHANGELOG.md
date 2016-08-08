@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Index uses thumbnails for photos and vector graphics.
 - Atom feeds are now available
 - Adding ETags to responses for HTTP caching.
+- Can configure the listening port with `RM3_LISTEN_PORT`
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
