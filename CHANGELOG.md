@@ -13,9 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Checkbox when you edit a page to control if you want to edit the draft further or create a new draft.
 - Index uses thumbnails for photos and vector graphics.
 - Atom feeds are now available
+- Adding ETags to responses for HTTP caching.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
+- Changed setting so that a session cookie isn't generated until needed.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 
