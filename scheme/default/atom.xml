@@ -10,6 +10,7 @@
   {@basicQuery}
   <entry>
     <link href="{@sitePathToUrl path=path /}" rel="alternate" />
+    {@linkIcon/}
     <title>{title}</title>
     <id>{@sitePathToUrl path=path /}?revisionId={guid}</id>
     <updated>{date|toISOString}</updated>
@@ -17,6 +18,7 @@
     <summary type="xhtml">
         <div xmlns="http://www.w3.org/1999/xhtml">{summary}</div>
     </summary>
+
   </entry>
   {/basicQuery}
   
