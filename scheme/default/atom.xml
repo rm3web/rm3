@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <id>{@sitePathToUrl path=path /}</id>
+  <title>{summary.title}</title>
+  <updated>2015-11-08T22:18:52+00:00</updated>
+  <author>
+      <name>Wirehead</name>
+  </author>
+
+  {@basicQuery}
+  <entry>
+    <link href="{@sitePathToUrl path=path /}" rel="alternate" />
+    <title>{title}</title>
+    <id>{@sitePathToUrl path=path /}?revisionId={guid}</id>
+    <updated>{date|toISOString}</updated>
+    <published>{pubdate|toISOString}</published>
+    <summary type="xhtml">
+        <div xmlns="http://www.w3.org/1999/xhtml">{summary}</div>
+    </summary>
+  </entry>
+  {/basicQuery}
+  
+</feed>

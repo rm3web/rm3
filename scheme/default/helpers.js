@@ -23,6 +23,13 @@ exports = module.exports = function(dust, db, query) {
       return value;
     }
 
+    dust.filters.toISOString = function(value) {
+      if (value instanceof Date) {
+        return value.toISOString();
+      }
+      return value;
+    }
+
     dust.helpers.icon = function(chunk, context, bodies, params) {
         var size = context.resolve(params.size);
         if (!size) {
