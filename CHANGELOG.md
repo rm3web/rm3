@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Checkbox when you edit a page to control if you want to edit the draft further or create a new draft.
 - Index uses thumbnails for photos and vector graphics.
 - Atom feeds are now available
+- Can configure the listening port with `RM3_LISTEN_PORT`
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
