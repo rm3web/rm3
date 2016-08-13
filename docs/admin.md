@@ -27,11 +27,13 @@ Production apps tend to work best when they are run with process supervision.  W
 
 ### HTTP proxy
 
-**Note: You probably don't want to turn on caching right now.**
-
 You want to put a proxy in front of rm3, nginx or Apache.  The proxy is there to handle static resources (the files for the scheme, as well as the static blobs if you've implemented those) and also to load-balance between rm3 instances.  Remember, node.js is asynchronous but not parallel, so a single rm3 process can only utilize one CPU.  You can tune the number of proxy processes against the number of rm3 processes as needed.
 
 Furthermore, the front-end proxy can handle tasks like DDoS protection.
+
+You also probably want to use a front-end cache, as rm3 doesn't try to cache rendered pages.  As rm3 does work very hard to generate correct ETags and Vary and Cache-Control headers for all situations, it should just magically work.
+
+Check out the [cache.md](caching guide) for more details.
 
 ### Avoid giving users access
 

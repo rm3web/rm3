@@ -68,6 +68,11 @@ If you don't specify this key, Rm3 will generate a random string for you and use
 
 This should be fairly long and unguessable.
 
+RM3_CACHE_CONTROL_DISABLE
+-------------------------
+
+If this env variable is set, rm3 won't try to generate ETags or Cache-Control headers, which means that all of the intervening caches won't work.  This is only really useful if you are trying to develop the front-end.
+
 RM3_DANGER_FORCE_AUTH
 ---------------------
 

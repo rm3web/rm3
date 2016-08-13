@@ -15,10 +15,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Atom feeds are now available
 - Adding ETags to responses for HTTP caching.
 - Can configure the listening port with `RM3_LISTEN_PORT`
+- Added `RM3_CACHE_CONTROL_DISABLE` to make things easier for dev work.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
 - Changed setting so that a session cookie isn't generated until needed.
+- Removed `connect-flash` and replaced it with tiny middlware, because sessions were being generated when they shouldn't.
+- Security router is split out from command router, now if you don't supply a security router, the page is default-deny.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 
