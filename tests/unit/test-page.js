@@ -78,10 +78,10 @@ describe('page', function() {
       };
 
       var page = new Page();
-      page.securityRouter.routeAll('', function(req, res, next) {
+      page.securityRouter.get('', function(req, res, next) {
         next();
       });
-      page.freshnessRouter.routeAll('', function(req, res, next) {
+      page.freshnessRouter.get('', function(req, res, next) {
         next();
       });
       page.viewRouter.get('', function(req, res, next) {
@@ -105,10 +105,10 @@ describe('page', function() {
       };
 
       var page = new Page();
-      page.freshnessRouter.routeAll('glitter.html', function(req, res, next) {
+      page.freshnessRouter.get('glitter.html', function(req, res, next) {
         next();
       });
-      page.securityRouter.routeAll('glitter.html', function(req, res, next) {
+      page.securityRouter.get('glitter.html', function(req, res, next) {
         next();
       });
       page.viewRouter.get('glitter.html', function(req, res, next) {
@@ -140,10 +140,10 @@ describe('page', function() {
       page.commandRouter.post('glitter.html', function(req, res, next) {
         next();
       });
-      page.freshnessRouter.routeAll('glitter.html', function(req, res, next) {
+      page.freshnessRouter.post('glitter.html', function(req, res, next) {
         next();
       });
-      page.securityRouter.routeAll('glitter.html', function(req, res, next) {
+      page.securityRouter.post('glitter.html', function(req, res, next) {
         next();
       });
       page.viewRouter.routeAll('glitter.html', function(req, res, next) {
