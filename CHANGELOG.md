@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Adding ETags to responses for HTTP caching.
 - Can configure the listening port with `RM3_LISTEN_PORT`
 - Added `RM3_CACHE_CONTROL_DISABLE` to make things easier for dev work.
+- Added the ability to configure sites and disable the login button.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
