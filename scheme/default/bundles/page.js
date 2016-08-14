@@ -13,6 +13,8 @@ var root = formData.path;
 var title = formData.title;
 var abstract = formData.abstract;
 
+var excludeChildrenDisplay = formData.excludeChildrenDisplay;
+
 var renderTarget = document.getElementById('pageform');
 var PathFactory = React.createFactory(PageFormComponent);
 
@@ -38,7 +40,8 @@ var renderedComponent = ReactDOM.render(
     proto: proto,
     errors: errors,
     isDraft: isDraft,
-    revisionId: revisionId
+    revisionId: revisionId,
+    excludeChildrenDisplay: excludeChildrenDisplay
   }),
   renderTarget
 );
