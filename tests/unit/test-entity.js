@@ -19,6 +19,7 @@ describe('stubEntity', function() {
           hidden: false,
           modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           summary: {title: 'blrg', abstract: 'some text goes here'},
           tags: {}
       }],
@@ -48,6 +49,7 @@ describe('stubEntity', function() {
       e2._revisionNum = 1;
       e2._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e2._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2.summary =
       {"title": "blrg",
        "abstract": "some text goes here"};
@@ -65,6 +67,7 @@ describe('stubEntity', function() {
       e._revisionNum = 1;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.summary =
       {"title": "blrg",
        "abstract": "some text goes here"};
@@ -76,7 +79,8 @@ describe('stubEntity', function() {
          revisionNum: 1,
          sitePath: ['wh'],
          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
+         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+         touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
         summary: {title: 'blrg', abstract: 'some text goes here'},
         permissions: {}};
 
@@ -93,6 +97,7 @@ describe('stubEntity', function() {
       e._revisionNum = 1;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.summary =
       {"title": "blrg",
        "abstract": "some text goes here"};
@@ -119,6 +124,7 @@ describe('entity', function() {
           hidden: false,
           modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           summary: {title: 'blrg', abstract: 'some text goes here'},
           data: {posting: '<div>Test test</div>'},
           tags: {}
@@ -133,6 +139,7 @@ describe('entity', function() {
         {name: 'proto', dataTypeID: 25},
         {name: 'modified', dataTypeID: 1114},
         {name: 'created', dataTypeID: 1114},
+        {name: 'touched', dataTypeID: 1114},
         {name: 'summary', dataTypeID: 114},
         {name: 'data', dataTypeID: 114},
         {name: 'tags', dataTypeId: 114}],
@@ -153,6 +160,7 @@ describe('entity', function() {
       e2._hidden = false;
       e2._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e2._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2.data.posting = '<div>Test test</div>';
       e2.summary =
       {"title": "blrg",
@@ -178,6 +186,7 @@ describe('entity', function() {
       e._hidden = false;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.data.posting = '<div>Test test</div>';
       e.summary =
       {"title": "blrg",
@@ -192,7 +201,8 @@ describe('entity', function() {
          sitePath: ['wh'],
          hidden: false,
          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
+         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+         touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
         summary: {title: 'blrg', abstract: 'some text goes here'},
         data: {posting: '<div>Test test</div>'},
         permissions: {}};
@@ -211,6 +221,7 @@ describe('entity', function() {
       e._proto = "base";
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.data.posting = '<div>Test test</div>';
       e.summary =
       {"title": "blrg",
@@ -243,7 +254,8 @@ describe('entity', function() {
          hidden: false,
          sitePath: ['wh'],
          modified: now,
-         created: now},
+         created: now,
+         touched: now},
         summary: {title: 'blrg', abstract: 'some text goes here'},
         data: {posting: '<div>Test test</div>'},
         permissions: {}};
@@ -275,10 +287,12 @@ describe('entity', function() {
         tomorrow.setDate(tomorrow.getDate() + 1);
 
         now.should.be.equal(e.view().meta.modified);
+        now.should.be.equal(e.view().meta.touched);
 
         e.updateTimes(tomorrow);
 
         tomorrow.should.be.equal(e.view().meta.modified);
+        tomorrow.should.be.equal(e.view().meta.touched);
       });
     });
 
