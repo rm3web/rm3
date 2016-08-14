@@ -27,6 +27,9 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Removed `connect-flash` and replaced it with tiny middlware, because sessions were being generated when they shouldn't.
 - Security router is split out from command router, now if you don't supply a security router, the page is default-deny.
 
+### Fixed
+- Search page doesn't cause errors when you don't pass it the right search.
+
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 
 ### Fixed
