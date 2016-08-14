@@ -26,6 +26,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Changed setting so that a session cookie isn't generated until needed.
 - Removed `connect-flash` and replaced it with tiny middlware, because sessions were being generated when they shouldn't.
 - Security router is split out from command router, now if you don't supply a security router, the page is default-deny.
+- The index class isn't very temporary.
 
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
