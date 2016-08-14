@@ -47,6 +47,7 @@
   </div></div>
   {/requireUser}
   </div>
+  {@eq key=data.excludeChildrenDisplay value=true}
   <div class="pure-menu">
     <ul class="pure-menu-list">
   {@basicQuery}
@@ -54,6 +55,7 @@
     {/basicQuery}
     </ul>    
   </div>
+  {/eq}
   {@requireUser}
   {:else}
   {@ifLoginEnabled}

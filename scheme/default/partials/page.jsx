@@ -20,6 +20,7 @@ var PageFormComponent = ReactIntl.injectIntl(React.createClass({
     }
     state.title = this.props.title;
     state.abstract = this.props.abstract;
+    state.excludeChildrenDisplay = this.props.excludeChildrenDisplay;
     return state;
   },
 
@@ -92,7 +93,13 @@ var PageFormComponent = ReactIntl.injectIntl(React.createClass({
       </fieldset>
       {pathBit}
       <TextBlockComponent prefix="posting" {...this.props} />
-
+      <fieldset>
+      <label htmlFor="excludeChildrenDisplay" className="pure-checkbox">
+        <input id="excludeChildrenDisplay" name="excludeChildrenDisplay" type="checkbox" value="true"
+        checkedLink={this.linkState('excludeChildrenDisplay')} />
+        <FormattedMessage id={'EXCLUDE_CHILDREN_DISPLAY'} />
+      </label>
+      </fieldset>
       <ErrorsList errors={this.state.errors.__all__} />
       {submitBit}
       

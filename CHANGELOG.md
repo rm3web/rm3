@@ -22,6 +22,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Tracking 'touched' time separately from the official 'modified' time.
 - Full text search.
 - Rate limit (tracked via Redis) to prevent brute-force on logins.
+- Can disable the search on the sidebar for child pages.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
