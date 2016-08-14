@@ -4,6 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path from 0.2.x databases is to dump using rm3backup to a directory that you load with rm3load.
+
 ### Added
 - More operational docs, explained some of the authentication pipeline.
 - Ability to change the number of items per page.
@@ -17,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Can configure the listening port with `RM3_LISTEN_PORT`
 - Added `RM3_CACHE_CONTROL_DISABLE` to make things easier for dev work.
 - Added the ability to configure sites and disable the login button.
+- Tracking 'touched' time separately from the official 'modified' time.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
