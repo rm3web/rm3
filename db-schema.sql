@@ -1,5 +1,12 @@
 CREATE EXTENSION ltree;
 
+CREATE TABLE wh_siteconfig (
+	PRIMARY KEY(site, path),
+	site text,
+	path ltree,
+	data json
+);
+
 CREATE TABLE wh_entity (
 	PRIMARY KEY(path),
 	path ltree,
@@ -14,7 +21,8 @@ CREATE TABLE wh_entity (
 	touched timestamp,
 	summary jsonb,
 	data json,
-	tags json
+	tags jsonb,
+	search tsvector
 );
 
 CREATE TABLE wh_log (
