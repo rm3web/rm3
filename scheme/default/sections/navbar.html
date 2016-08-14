@@ -56,7 +56,9 @@
   </div>
   {@requireUser}
   {:else}
+  {@ifLoginEnabled}
   <a class="pure-button" href="/$login/">{@formatMessage _key="LOGIN"/}</a>
+  {/ifLoginEnabled}
   {/requireUser}
   {@requireUser}
   {@requirePermission permission="edit"}
