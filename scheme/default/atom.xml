@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <id>{@sitePathToUrl path=path /}</id>
+  <id>{@siteUrlRoot /}{@sitePathToUrl path=path /}</id>
   <title>{summary.title}</title>
   <updated>{@mostRecentChange /}</updated>
   <author>
@@ -12,7 +12,7 @@
     <link href="{@sitePathToUrl path=path /}" rel="alternate" />
     {@linkIcon/}
     <title>{title}</title>
-    <id>{@sitePathToUrl path=path /}?revisionId={guid}</id>
+    <id>{@siteUrlRoot /}{@sitePathToUrl path=path /}?revisionId={guid}</id>
     <updated>{date|toISOString}</updated>
     <published>{pubdate|toISOString}</published>
     <summary type="xhtml">
