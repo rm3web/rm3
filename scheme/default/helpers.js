@@ -82,6 +82,11 @@ exports = module.exports = function(dust, db, query) {
         }
     }
 
+    dust.helpers.siteUrlRoot = function(chunk, context, bodies, params) {
+        var site = context.get('site');
+        chunk.write(site.urlroot);
+    }
+
     dust.helpers.textblock = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
         var resolve = context.resolve(params.resolve);
