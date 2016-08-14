@@ -20,6 +20,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Added `RM3_CACHE_CONTROL_DISABLE` to make things easier for dev work.
 - Added the ability to configure sites and disable the login button.
 - Tracking 'touched' time separately from the official 'modified' time.
+- Full text search.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
