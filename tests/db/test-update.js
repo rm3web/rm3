@@ -206,7 +206,7 @@ function stepGenericRevidCheck(desc, mark, check) {
 function stepGenericLogCheck(desc, ent, check) {
   step(desc, function(done) {
     var query = "SELECT \"evtClass\", \"entityId\", \"revisionId\", \"revisionNum\", \"evtFinal\", \"evtEnd\" FROM wh_log WHERE path = '" +
-      ent.path().toDottedPath() + "'";
+      ent.path().toDottedPath() + "' ORDER BY \"evtEnd\"";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
       check(result);
