@@ -18,6 +18,15 @@ RM3_SESSION_REDIS
 
 The Redis instance to store session data in, in Redis URL form (`redis://netloc:port/dbnumber`).
 
+You want to have one redis instance for session data, shared between all rm3 processes.  For small configurations, you can share it with the cache redis.
+
+RM3_CACHE_REDIS
+-----------------
+
+The Redis instance to store cache data in, in Redis URL form (`redis://netloc:port/dbnumber`).
+
+You can have multiple different local instances of the cache redis, there's nothing that's not a cache of the database stored here.  For small configurations, you can share it with the session redis.
+
 RM3_LOCAL_BLOBS
 ---------------
 

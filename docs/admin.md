@@ -31,7 +31,7 @@ You want to put a proxy in front of rm3, nginx or Apache.  The proxy is there to
 
 Furthermore, the front-end proxy can handle tasks like DDoS protection.
 
-You also probably want to use a front-end cache, as rm3 doesn't try to cache rendered pages.  As rm3 does work very hard to generate correct ETags and Vary and Cache-Control headers for all situations, it should just magically work.
+You also probably want to use a front-end cache, as rm3 doesn't try to cache rendered pages.  As rm3 does work very hard to generate correct ETags and Vary and Cache-Control headers for all situations, it should just magically work, although you might need to configure your cache to cache values with a cache-control marked as 'private'.
 
 Check out the [cache.md](caching guide) for more details.
 
