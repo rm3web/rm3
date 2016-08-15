@@ -7,8 +7,8 @@ var should = require('should');
 describe('update', function() {
   it('executes correctly', function(done) {
     var insertQuery = 'INSERT INTO wh_entity (path, stub, "entityId", "revisionId", \
-"revisionNum", proto, modified, created, touched, hidden, summary, data, tags) VALUES ($1, $2, \
-$3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)';
+"revisionNum", proto, modified, created, touched, hidden, summary, data, tags, search) VALUES ($1, $2, \
+$3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, (to_tsvector(\'english\', $14)))';
     var insertTagQuery = 'INSERT INTO wh_tag ("subjPath", "objClass", \
 "predPath", "objStr") VALUES ($1, $2, $3, $4)';
     var deleteBeforeQuery = 'DELETE FROM wh_entity WHERE (path = $1) AND (stub = true)';
