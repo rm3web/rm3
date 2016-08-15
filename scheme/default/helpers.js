@@ -8,10 +8,10 @@ var SiteHelpers = require('../../lib/sitehelpers');
 var SchemeHelpers = require('../../lib/schemehelpers');
 var Pagination = require('../../lib/pagination');
 
-exports = module.exports = function(dust, db, query) {
+exports = module.exports = function(dust, db, cache, query) {
 
     ActivityFeed.installDust(dust, db, query);
-    IndexFeed.installDust(dust, db, query);
+    IndexFeed.installDust(dust, db, cache, query);
     TagHelpers.installDust(dust, db, query);
     SiteHelpers.installDust(dust, db, query);
     SchemeHelpers.installDust(dust, db, query);
