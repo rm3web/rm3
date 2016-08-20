@@ -191,7 +191,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.fail(err);
       } else {
@@ -213,19 +213,129 @@ describe('query', function() {
       var client = {};
       client.query = function(spec, func) {
         should.deepEqual(spec.text, selectQuery);
-        func(null, {rowCount: 1, rows: ['root']});
+        func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
       };
       queryfunc(null, client, function() {
         plan.ok(true);
       });
     };
 
-    query.fetchEffectivePermissions(db, {}, user, entpath, function(err, entity) {
+    query.fetchEffectivePermissions(db, false, {}, user, entpath, function(err, entity) {
       if (err) {
         should.fail(err);
       } else {
       }
+      entity.permission.should.equal('role');
       plan.ok(true);
+    });
+  });
+
+  it('#fetchEffectivePermissions() cache stored fail', function(done) {
+    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+
+    var entpath = new sitepath(['wh']);
+    var user = new sitepath(['wh', 'users', 'wirehead']);
+
+    var db = {};
+
+    var cache = {};
+
+    cache.get = function(key, next) {
+      next(null, {notFound: true});
+    };
+
+    db.connectWrap = function(queryfunc) {
+      var client = {};
+      client.query = function(spec, func) {
+        should.fail('should not try to call');
+      };
+      queryfunc(null, client, function() {
+      });
+    };
+
+    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+      if (err) {
+        err.name.should.equal('PermissionsNotFoundError');
+        done();
+      } else {
+        should.fail('shouldn\'t succeed when given a cached error');
+      }
+    });
+  });
+
+  it('#fetchEffectivePermissions() cache miss', function(done) {
+    var plan = new Plan(4, done);
+    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+
+    var entpath = new sitepath(['wh']);
+    var user = new sitepath(['wh', 'users', 'wirehead']);
+
+    var db = {};
+
+    var cache = {};
+
+    cache.get = function(key, next) {
+      plan.ok(true);
+      next(null, null);
+    };
+
+    cache.set = function(key, value, timeout) {
+      plan.ok(true);
+      key.should.equal('p:wh:wh.users.wirehead');
+      value.should.eql({response: {permission: 'role'}});
+    };
+
+    db.connectWrap = function(queryfunc) {
+      var client = {};
+      client.query = function(spec, func) {
+        should.deepEqual(spec.text, selectQuery);
+        func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
+      };
+      queryfunc(null, client, function() {
+        plan.ok(true);
+      });
+    };
+
+    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+      if (err) {
+        should.fail(err);
+      } else {
+      }
+      entity.permission.should.equal('role');
+      plan.ok(true);
+    });
+  });
+
+  it('#fetchEffectivePermissions() cache hit', function(done) {
+    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+
+    var entpath = new sitepath(['wh']);
+    var user = new sitepath(['wh', 'users', 'wirehead']);
+
+    var db = {};
+
+    var cache = {};
+
+    cache.get = function(key, next) {
+      next(null, {response: {permission: 'role'}});
+    };
+
+    db.connectWrap = function(queryfunc) {
+      var client = {};
+      client.query = function(spec, func) {
+        should.fail('should not try to call');
+      };
+      queryfunc(null, client, function() {
+      });
+    };
+
+    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+      if (err) {
+        should.fail(err);
+      } else {
+      }
+      entity.permission.should.equal('role');
+      done(err);
     });
   });
 
@@ -254,7 +364,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'EntityNotFoundError');
         should.deepEqual(err.path, entpath.toDottedPath());
@@ -290,7 +400,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'QueryError');
       } else {
@@ -327,7 +437,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, '1234', function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, '1234', function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'RevisionIdNotFoundError');
       } else {
@@ -364,7 +474,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, '1535', function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, '1535', function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'QueryError');
       } else {
