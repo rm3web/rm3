@@ -21,7 +21,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Added the ability to configure sites and disable the login button.
 - Tracking 'touched' time separately from the official 'modified' time.
 - Full text search.
-- Rate limit (tracked via Redis) to prevent brute-force on logins.
+- Rate limit (tracked via Redis) to prevent brute-force on logins and comments.
 - Can disable the search on the sidebar for child pages.
 - Caching SQL requests in redis:
   - fetchMostRecentChange
