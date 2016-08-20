@@ -25,6 +25,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Can disable the search on the sidebar for child pages.
 - Caching SQL requests in redis:
   - fetchMostRecentChange
+- Caching the SQL query generation to cache the slow squel part (424 ops/s vs. 102 ops/s)
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
