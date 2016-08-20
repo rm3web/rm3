@@ -26,6 +26,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Caching SQL requests in redis:
   - fetchMostRecentChange
 - Caching the SQL query generation to cache the slow squel part (424 ops/s vs. 102 ops/s)
+- Removing some unnecessary copypasta so that most common CRUD operations need one less file.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
@@ -33,9 +34,11 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Removed `connect-flash` and replaced it with tiny middlware, because sessions were being generated when they shouldn't.
 - Security router is split out from command router, now if you don't supply a security router, the page is default-deny.
 - The index class isn't very temporary.
+- Removed default require for babel, now only running babel when importing JSX.
 
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
+- Some uninitialized variables in the forms.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 

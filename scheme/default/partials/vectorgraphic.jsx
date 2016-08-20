@@ -26,7 +26,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
     var buttonMessage = 'submit';
     var action = 'create.html?type=' + this.props.proto;
     var self = this;
-    var pathBit;
+    var pathBit, submitBit;
 
     if (this.props.section === 'edit') {
       buttonMessage = 'edit';
