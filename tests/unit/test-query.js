@@ -242,7 +242,7 @@ describe('query', function() {
 
     cache.get = function(key, next) {
       next(null, {notFound: true});
-    }
+    };
 
     db.connectWrap = function(queryfunc) {
       var client = {};
@@ -258,13 +258,12 @@ describe('query', function() {
         err.name.should.equal('PermissionsNotFoundError');
         done();
       } else {
-        should.fail('shouldn\'t succeed when given a cached error')
+        should.fail('shouldn\'t succeed when given a cached error');
       }
-      
     });
   });
 
-it('#fetchEffectivePermissions() cache miss', function(done) {
+  it('#fetchEffectivePermissions() cache miss', function(done) {
     var plan = new Plan(4, done);
     var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
 
@@ -278,13 +277,13 @@ it('#fetchEffectivePermissions() cache miss', function(done) {
     cache.get = function(key, next) {
       plan.ok(true);
       next(null, null);
-    }
+    };
 
     cache.set = function(key, value, timeout) {
       plan.ok(true);
       key.should.equal('p:wh:wh.users.wirehead');
-      value.should.eql({response: {permission: 'role'}})
-    }
+      value.should.eql({response: {permission: 'role'}});
+    };
 
     db.connectWrap = function(queryfunc) {
       var client = {};
@@ -319,7 +318,7 @@ it('#fetchEffectivePermissions() cache miss', function(done) {
 
     cache.get = function(key, next) {
       next(null, {response: {permission: 'role'}});
-    }
+    };
 
     db.connectWrap = function(queryfunc) {
       var client = {};
@@ -339,7 +338,6 @@ it('#fetchEffectivePermissions() cache miss', function(done) {
       done(err);
     });
   });
-
 
   it('query fromDb not_found', function(done) {
     var plan = new Plan(2, done);
