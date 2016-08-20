@@ -37,6 +37,13 @@ RM3_RESOURCES
 
 The directory (can be relative or absolute) where rm3 is to find it's static resources (e.g. the scheme).  The default should work.
 
+RM3_DANGER_TRUST_PROXY
+----------------------
+
+**Warning: Do be careful with this setting.  If anyone can connect to your http endpoint and insert environment variables, they can bypass https checks and masacarde as other IP addresses.**
+
+See [Express documentation for running behind a proxy](http://expressjs.com/en/guide/behind-proxies.html) to see how to set this.  If you are running nginx or varnish or apache on the same node, you probably want to set this to `loopback`.  Otherwise, some combination of `'loopback`, `linklocal`, or `uniquelocal` might be better.
+
 RM3_TWITTER_CONSUMER_KEY & RM3_TWITTER_CONSUMER_SECRET
 ------------------------------------------------------
 
@@ -90,3 +97,12 @@ RM3_DANGER_FORCE_AUTH
 This will force all connections to be authenticated as the user contained within this environment variable.
 
 This is, obviously, a great way to get rooted.  It's also really handy for debugging and playing with things.
+
+RM3_DANGER_DISABLE_HTTPS_CHECKS
+-------------------------------
+
+**Dangerous flag: If you have this running on the public web, passwords are getting passed in cleartext.**
+
+Disables the HTTPS checks for sensitive operations.  This means you can log in over HTTP instead of HTTPS.
+
+This is, obviously, a great way to get rooted if you tend to use coffeeshop or other public networks.  It's also really handy for debugging and playing with things.

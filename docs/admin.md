@@ -31,6 +31,8 @@ You want to put a proxy in front of rm3, nginx or Apache.  The proxy is there to
 
 Furthermore, the front-end proxy can handle tasks like DDoS protection.
 
+You probably want to set the `RM3_DANGER_TRUST_PROXY` environment variable.  See [Express documentation for running behind a proxy](http://expressjs.com/en/guide/behind-proxies.html) to see how to set this.  If you are running nginx or varnish or apache on the same node, you probably want to set this to `loopback`.  Otherwise, some combination of `'loopback`, `linklocal`, or `uniquelocal` might be better.
+
 You also probably want to use a front-end cache, as rm3 doesn't try to cache rendered pages.  As rm3 does work very hard to generate correct ETags and Vary and Cache-Control headers for all situations, it should just magically work, although you might need to configure your cache to cache values with a cache-control marked as 'private'.
 
 Check out the [cache.md](caching guide) for more details.

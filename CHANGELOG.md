@@ -27,6 +27,9 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
   - fetchMostRecentChange
 - Caching the SQL query generation to cache the slow squel part (424 ops/s vs. 102 ops/s)
 - Removing some unnecessary copypasta so that most common CRUD operations need one less file.
+- Setting `X-Frame-Options` and `X-Content-Type-Options` and disabling the `X-Powered-By` header.
+- Checking for HTTPS when trying to log in (can be disabled with `RM3_DANGER_DISABLE_HTTPS_CHECKS`)
+- Adding `RM3_DANGER_TRUST_PROXY` for use behind an nginx or apache or varnish or other such proxy.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
