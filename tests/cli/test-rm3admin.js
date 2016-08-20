@@ -21,7 +21,7 @@ describe('rm3admin', function() {
   it('should add a user', function(done) {
     childProcess.execSync('./bin/rm3admin adduser ponies omgponies');
 
-    query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"},
+    query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"},
       new sitepath('wh.users.ponies'), null, function(err, ent) {
         should.not.exist(err);
         ent.summary.title.should.equal('omgponies');

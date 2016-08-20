@@ -25,6 +25,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Can disable the search on the sidebar for child pages.
 - Caching SQL requests in redis:
   - fetchMostRecentChange
+  - fetchEffectivePermissions
 - Caching the SQL query generation to cache the slow squel part (424 ops/s vs. 102 ops/s)
 - Removing some unnecessary copypasta so that most common CRUD operations need one less file.
 - Setting `X-Frame-Options` and `X-Content-Type-Options` and disabling the `X-Powered-By` header.
