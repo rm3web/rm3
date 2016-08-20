@@ -9,5 +9,7 @@
   {"type": "permit", "role": "root", "permission": "grant", "path": "*"},
   {"type": "permit", "role": "root", "permission": "viewdraft", "path": "*"},
   {"type": "permit", "role": "root", "permission": "comment", "path": "*"},
-  {"type": "permit", "role": "nobody", "permission": "view", "path": "wh.!users.*"}
+  {"type": "permit", "role": "root", "permission": "history", "path": "*"},
+  {"type": "permit", "role": "nobody", "permission": "view", "path": "wh.!users.*"},
+  {"type": "permit", "role": "nobody", "permission": "history", "path": "wh.!users.*"}
 ]

@@ -5,7 +5,7 @@
 <div class="predicatePill">{@predTag /}</div> <div class="tagPill">{@objLink /}</div>
   {/tags}
   {@requirePermission permission="edit"}<a class="pure-button" href="{@sitePathToUrl path=path /}tag.html">Edit Tags</a>{/requirePermission}
-  <br />Revision: <a href="{@sitePathToUrl path=path /}history.cgi"><span>{@formatNumber val=meta.revisionNum /}</span>:<span>{meta.revisionId}</span></a>
+  {@requirePermission permission="history"}<br />Revision: <a href="{@sitePathToUrl path=path /}history.cgi"><span>{@formatNumber val=meta.revisionNum /}</span>:<span>{meta.revisionId}</span></a>{/requirePermission}
   <br />{@formatMessage _key="LAST_UPDATED"/}: <time class="updated" datetime="{meta.modified}">{@formatRelative val=meta.modified/}</time>
   <br />{@formatMessage _key="POSTED"/}: <time class="published" datetime="{meta.created}">{@formatRelative val=meta.created/}</time></p>
 
