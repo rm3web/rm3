@@ -80,79 +80,79 @@ describe('query gen', function() {
     var tests = [
       {desc: 'with user of nobody',
        args: [{}, 'wh', 'child', 'count', {}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_permission_to_role ON (wh_entity.path ~ wh_permission_to_role.query) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND (role = \'nobody\') AND (permission = \'view\')'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_permission_to_role ON (wh_entity.path ~ wh_permission_to_role.query) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (role = \'nobody\') AND (permission = \'view\')'},
       {desc: 'for an entity query (all the fields), basic child under a path',
        args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) ORDER BY path ASC, "entityId" ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY path ASC, "entityId" ASC'},
       {desc: 'to count child under a path',
        args: [root, 'wh', 'child', 'count', {}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false)'},
       {desc: 'for parents under a path',
        args: [root, 'wh', 'parents', 'count', {}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path @> $1) AND (hidden = false)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path @> $1) AND (wh_entity.hidden = false)'},
       {desc: 'for just the first-level children',
        args: [root, 'wh', 'dir', 'count', {}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path ~ lquery($1 || \'.*{1}\')) AND (hidden = false)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path ~ lquery($1 || \'.*{1}\')) AND (wh_entity.hidden = false)'},
       {desc: 'for just a specific proto',
        args: [root, 'wh', 'child', 'count', {protos: ['blah']}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND (proto = $2)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (proto = $2)'},
       {desc: 'for everything that is not a specific proto',
        args: [root, 'wh', 'child', 'count', {notprotos: ['blah']}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND (proto <> $2)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (proto <> $2)'},
       {desc: 'created before a time',
        args: [root, 'wh', 'child', 'count', {before: 123}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND (created < $2)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (created < $2)'},
       {desc: 'created after a time',
        args: [root, 'wh', 'child', 'count', {after: 123}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND (created >= $2)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (created >= $2)'},
       {desc: 'for navbar entities',
        args: [root, 'wh', 'child', 'count', {navbar: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'navbar\')'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'navbar\')'},
       {desc: 'for comment entries',
        args: [root, 'wh', 'child', 'count', {comment: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity LEFT JOIN wh_entity AS actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
+       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity LEFT JOIN wh_entity AS actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
       {desc: 'for plain tags',
        args: [root, 'wh', 'child', 'count', {predicate: 'plain', tag: 'bears'}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ("objStr" = $2) AND ("predPath" = $3)'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("objStr" = $2) AND ("predPath" = $3)'},
       {desc: 'for predicates',
        args: [root, 'wh', 'child', 'count', {predicates: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'predicate\')'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'predicate\')'},
       {desc: 'for a year-month filter',
        args: [root, 'wh', 'child', 'count', {yearMonth: new Date()}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND (date_trunc(\'month\', created) = date_trunc(\'month\', $2::date))'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (date_trunc(\'month\', created) = date_trunc(\'month\', $2::date))'},
       {desc: 'for sorting by changed',
        args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) ORDER BY modified DESC, "entityId" DESC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY modified DESC, "entityId" DESC'},
       {desc: 'for sorting by created',
        args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) ORDER BY created DESC, "entityId" DESC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY created DESC, "entityId" DESC'},
       {desc: 'for faceting by month created',
        args: [root, 'wh', 'child', 'count', {}, 'created', {on: 'month'}, {}],
-       expected: 'SELECT count(*), date_trunc(\'month\', created) AS facet FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) GROUP BY date_trunc(\'month\', created) ORDER BY date_trunc(\'month\', created) DESC'},
+       expected: 'SELECT count(*), date_trunc(\'month\', created) AS facet FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) GROUP BY date_trunc(\'month\', created) ORDER BY date_trunc(\'month\', created) DESC'},
       {desc: 'for faceting by month modified',
        args: [root, 'wh', 'child', 'count', {}, 'changed', {on: 'month'}, {}],
-       expected: 'SELECT count(*), date_trunc(\'month\', modified) AS facet FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) GROUP BY date_trunc(\'month\', modified) ORDER BY date_trunc(\'month\', modified) DESC'},
+       expected: 'SELECT count(*), date_trunc(\'month\', modified) AS facet FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) GROUP BY date_trunc(\'month\', modified) ORDER BY date_trunc(\'month\', modified) DESC'},
       {desc: 'for faceting by tag',
        args: [root, 'wh', 'child', 'count', {}, 'created', {on: 'tag'}, {}],
-       expected: 'SELECT count(*), "objStr" AS facet FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ("predPath" <> \'navigation\') GROUP BY "objStr" ORDER BY "objStr" ASC'},
+       expected: 'SELECT count(*), "objStr" AS facet FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" <> \'navigation\') GROUP BY "objStr" ORDER BY "objStr" ASC'},
       {desc: 'for faceting by predicate',
        args: [root, 'wh', 'child', 'count', {}, 'created', {on: 'predicate'}, {}],
-       expected: 'SELECT count(*), "predPath" AS facet FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ("predPath" <> \'navigation\') GROUP BY "predPath" ORDER BY "predPath" ASC'},
+       expected: 'SELECT count(*), "predPath" AS facet FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" <> \'navigation\') GROUP BY "predPath" ORDER BY "predPath" ASC'},
       {desc: 'with pagination with a token',
        args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {token: new sitepath(['wh','errr']), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ((wh_entity."path", wh_entity."entityId") > ($2,$3)) ORDER BY path ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ((wh_entity."path", wh_entity."entityId") > ($2,$3)) ORDER BY path ASC, "entityId" ASC LIMIT 12'},
       {desc: 'with pagination with numbers',
        args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
       {desc: 'with pagination using an entity id',
        args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
       {desc: 'with pagination using a date sorting by changed',
        args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ((wh_entity."modified", wh_entity."entityId") < ($2,$3)) ORDER BY modified DESC, "entityId" DESC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ((wh_entity."modified", wh_entity."entityId") < ($2,$3)) ORDER BY modified DESC, "entityId" DESC LIMIT 12'},
       {desc: 'with pagination using a date sorting by created',
        args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) AND ((wh_entity."created", wh_entity."entityId") < ($2,$3)) ORDER BY created DESC, "entityId" DESC LIMIT 12'}
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ((wh_entity."created", wh_entity."entityId") < ($2,$3)) ORDER BY created DESC, "entityId" DESC LIMIT 12'}
     ];
 
     tests.forEach(function(test, index) {
@@ -486,7 +486,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('query', function(done) {
     var plan = new Plan(3, done);
-    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false) ORDER BY path ASC, "entityId" ASC';
+    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY path ASC, "entityId" ASC';
 
     var entpath = new sitepath(['wh']);
 
@@ -538,7 +538,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('query count', function(done) {
     var plan = new Plan(3, done);
-    var selectQuery = 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (hidden = false)';
+    var selectQuery = 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false)';
 
     var entpath = new sitepath(['wh']);
 
