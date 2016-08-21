@@ -74,7 +74,7 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
         var width = context.get('meta.rm3\:icon.' + size + '.width');
         if (svgicon) {
             return chunk.write('<picture><source srcset="' + svgicon +
-                '" type="image/svg+xml"><img srcset="' + imgicon + '" alt="' + imgicon +
+                '" type="image/svg+xml"><img srcset="' + imgicon +
                 '"  height="' + height + '" width="' + width + '" border="0" /></picture>');
         } else {
             return chunk.write('<img src="' + imgicon + '"  height="' + height + 
