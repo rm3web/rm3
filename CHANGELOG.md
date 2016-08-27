@@ -47,6 +47,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
 - Some uninitialized variables in the forms.
+- Increased the range of SVGs able to work by running svgo before domPurify.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 
