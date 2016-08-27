@@ -26,7 +26,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
     var buttonMessage = 'submit';
     var action = 'create.html?type=' + this.props.proto;
     var self = this;
-    var pathBit, submitBit;
+    var pathBit;
 
     if (this.props.section === 'edit') {
       buttonMessage = 'edit';
@@ -37,43 +37,6 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
     } else {
       pathBit = (<JsxForms.PathNameComponent {...this.props} />);
     }
-
-    if (this.props.isDraft) {
-      submitBit = (<fieldset>
-        <div className="pure-g-r">
-          <div className="pure-u-1-3">
-            <button type="submit" className="pure-button pure-button-primary">{buttonMessage}</button>
-          </div>
-          <div className="pure-u-1-3">
-            <label htmlFor="saveAsDraft" className="pure-checkbox">
-              <input id="saveAsDraft" name="saveAsDraft" type="checkbox" value="true" checked="true" />
-              <FormattedMessage id={'SAVE_AS_DRAFT'} />
-            </label>
-          </div>
-          <div className="pure-u-1-3">
-            <label htmlFor="createNewDraft" className="pure-checkbox">
-              <input id="createNewDraft" name="createNewDraft" type="checkbox" value="true" />
-              <FormattedMessage id={'CREATE_NEW_DRAFT'} />
-            </label>
-          </div>
-        </div>
-        </fieldset>)
-    } else {
-      submitBit = (<fieldset>
-        <div className="pure-g-r">
-          <div className="pure-u-1-3">
-            <button type="submit" className="pure-button pure-button-primary">{buttonMessage}</button>
-          </div>
-          <div className="pure-u-2-3">
-            <label htmlFor="saveAsDraft" className="pure-checkbox">
-              <input id="saveAsDraft" name="saveAsDraft" type="checkbox" value="true" />
-              <FormattedMessage id={'SAVE_AS_DRAFT'} />
-            </label>
-          </div>
-        </div>
-        </fieldset>)
-    }
-
 
     return (
       <form encType="multipart/form-data" action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
@@ -98,7 +61,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
 
       <ErrorsList errors={this.state.errors.__all__} />
 
-      {submitBit}
+      <JsxForms.SubmitButton isDraft={this.props.isDraft} buttonMessage={buttonMessage} />
       
     </form>);
   }
