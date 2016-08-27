@@ -14,7 +14,7 @@ var MenuButton = ReactIntl.injectIntl(React.createClass({
     if (value.func) {
       value.func();
     } else if (value.confirm) {
-      answer = confirm(this.props.intl.formatMessage({id:"DO_YOU_REALLY_WANT_TO_GO_HERE"}));
+      var answer = confirm(this.props.intl.formatMessage({id:"DO_YOU_REALLY_WANT_TO_GO_HERE"}));
       if (answer !=0) {
         window.location.href = value.url + "?sure=yes"
       }
