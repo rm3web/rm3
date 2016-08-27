@@ -3,6 +3,7 @@ var gulp = require('gulp')
   , nodemon = require('gulp-nodemon')
   , shell = require('gulp-shell')
   , bower = require('gulp-bower')
+  , runSequence = require('run-sequence')
   ;
 
 require('./tests.js');
