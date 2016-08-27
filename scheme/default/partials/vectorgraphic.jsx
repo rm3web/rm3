@@ -76,7 +76,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
 
 
     return (
-      <form id="draft" encType="multipart/form-data" action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
+      <form encType="multipart/form-data" action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
       <fieldset><h1>
        <textarea rows="1" className="pure-input-1" 
         placeholder={this.props.intl.formatMessage({id: "TITLE"})} name="title" 
