@@ -24,22 +24,17 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
 
   render: function() {
     var buttonMessage = 'submit';
-    var action = 'create.html?type=' + this.props.proto;
     var self = this;
     var pathBit;
 
     if (this.props.section === 'edit') {
-      buttonMessage = 'edit';
-      action = 'edit.html'
-      if (this.props.revisionId) {
-        action = action + '?revisionId=' + this.props.revisionId;
-      }
+      buttonMessage = 'edit';      
     } else {
       pathBit = (<JsxForms.PathNameComponent {...this.props} />);
     }
 
     return (
-      <form encType="multipart/form-data" action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
+      <JsxForms.FormWrapper encType="multipart/form-data" onSubmit={this.onSubmit} proto={this.props.proto} section={this.props.section} revisionId={this.props.revisionId}>
       <fieldset><h1>
        <textarea rows="1" className="pure-input-1" 
         placeholder={this.props.intl.formatMessage({id: "TITLE"})} name="title" 
@@ -61,9 +56,9 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
 
       <ErrorsList errors={this.state.errors.__all__} />
 
-      <JsxForms.SubmitButton isDraft={this.props.isDraft} buttonMessage={buttonMessage} />
+      <JsxForms.SubmitButton locales={this.props.intl.locales} messages={this.props.intl.messages} isDraft={this.props.isDraft} buttonMessage={buttonMessage} />
       
-    </form>);
+    </JsxForms.FormWrapper>);
   }
 }));
 
