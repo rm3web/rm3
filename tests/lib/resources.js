@@ -1,4 +1,4 @@
-var user = require('../../lib/user');
+var user = require('../../lib/authentication/user');
 var entity = require('../../lib/entity');
 var db = require('../../lib/db');
 var update = require('../../lib/update');
