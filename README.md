@@ -49,20 +49,15 @@ How to get started?
     * You can set the RM3_PG environment variable to something different if you want a different database username and password (and definitely should, if you want to run this in production)
   * `createdb rm3test`
   * `psql rm3test -U wirehead < db-schema.sql`
+  * `./bin/rm3admin createworkflow`
 * Load some default content
   * `./bin/rm3load -f default_frontpage.json`
   * `./bin/rm3load -f default_users.json`
-* Add a user and assign them to the root group
-  * `./bin/rm3admin adduser wirehead "Some New User" -p "Some profile text" -u http://www.wirewd.com/ -e email@example.com --password password`
-  * `./bin/rm3admin assign wirehead root`
-* Add permissions for the root group
-  * `./bin/rm3admin permit root edit \*`
-  * `./bin/rm3admin permit root delete \*`
-  * `./bin/rm3admin permit root view \*`
-* Add permissions for the special 'nobody' group
-  * `./bin/rm3admin permit nobody view wh.!users`
+  * `./bin/rm3admin loadtemplate base_access.json wh`
+
 * Run it
   * `./node_modules/.bin/gulp develop`
+  * In the template a user named "wirehead" is created with a password of "password".
 
 [Docs](docs)
 ------------
