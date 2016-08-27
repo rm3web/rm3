@@ -3,6 +3,7 @@ var gulp = require('gulp')
   , nodemon = require('gulp-nodemon')
   , shell = require('gulp-shell')
   , bower = require('gulp-bower')
+  , runSequence = require('run-sequence')
   ;
 
 require('./tests.js');
@@ -31,7 +32,14 @@ gulp.task('bower', function() {
 
 gulp.task('travis', ['prepublish', 'lint'])
 
-gulp.task('prepublish', ['bower', 'imagemin', 'cssbundle', 'icon', 'browserify'])
+gulp.task('prepublish', function(callback) {
+  runSequence('bower',
+              'imagemin',
+              'cssbundle',
+              'icon',
+              'browserify',
+              callback);
+});
 
 gulp.task('develop', function () {
   nodemon(
