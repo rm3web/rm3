@@ -35,6 +35,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Added image enrichment, to replace `img` tags with responsive images.
 - Added `RM3_LISTEN_HOST` so you can only listen on the localhost.
 - Added OpenGraph and Twitter Cards support.
+- Added link proto
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
