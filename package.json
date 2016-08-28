@@ -103,7 +103,7 @@
     "require-compiled": "^1.4.0",
     "require-https": "^1.1.1",
     "rm3-page-router": "0.0.2",
-    "rm3-react-controls": "0.0.7",
+    "rm3-react-controls": "0.0.10",
     "rm3-tag-control": "0.0.6",
     "rolling-rate-limiter": "^0.1.4",
     "serve-favicon": "~2.3.0",

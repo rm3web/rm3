@@ -33,6 +33,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Adding `RM3_DANGER_TRUST_PROXY` for use behind an nginx or apache or varnish or other such proxy.
 - Added by default the `history` permission that controls if the user can see the history.
 - Added image enrichment, to replace `img` tags with responsive images.
+- Added `RM3_LISTEN_HOST` so you can only listen on the localhost.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
@@ -41,10 +42,12 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Security router is split out from command router, now if you don't supply a security router, the page is default-deny.
 - The index class isn't very temporary.
 - Removed default require for babel, now only running babel when importing JSX.
+- Cleaned up the setup for the view JSON and removed repeated ugly code.
 
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
 - Some uninitialized variables in the forms.
+- Increased the range of SVGs able to work by running svgo before domPurify.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 

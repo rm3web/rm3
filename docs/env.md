@@ -8,6 +8,15 @@ RM3_LISTEN_PORT
 
 The port that rm3 should listen at.
 
+RM3_LISTEN_HOST
+---------------
+
+The address that rm3 is listening at.  By default, it's only listening only on the loopback address (e.g. 127.0.0.1)
+
+If you change this to `0.0.0.0`, rm3 will be accessible on the public internet.  This may not be what you want; rm3 is mostly designed to work with a reverse proxy such as nginx or apache running in front of it.
+
+You can use this to bind to a particular interface, if you are setting up a separate network to run just load balancers on.
+
 RM3_PG
 ------
 

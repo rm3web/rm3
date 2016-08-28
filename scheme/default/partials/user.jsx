@@ -48,12 +48,10 @@ var UserFormComponent = ReactIntl.injectIntl(React.createClass({
   },
   render: function() {
     var buttonMessage = 'submit';
-    var action = 'create.html?type=' + this.props.proto;
     var self = this;
 
     if (this.props.section === 'edit') {
       buttonMessage = 'edit';
-      action = 'edit.html'
     }
 
     var body = {};
@@ -66,7 +64,8 @@ var UserFormComponent = ReactIntl.injectIntl(React.createClass({
       });
     }
 
-    return (<form action={action} id="userform-form" method="post" className="pure-form pure-form-stacked" onSubmit={this.onSubmit}>
+    return (
+      <JsxForms.FormWrapper onSubmit={this.onSubmit} proto={this.props.proto} section={this.props.section}>
       <fieldset>
         <label htmlFor="username" className="pure-input-1"><FormattedMessage id={'LOGIN_ASCII_TEXT_NOSPACES'} />:</label>
         <Username section={this.props.section} username={this.props.username} />
@@ -110,7 +109,7 @@ var UserFormComponent = ReactIntl.injectIntl(React.createClass({
 
       <ErrorsList errors={this.state.errors.__all__} />
       <button type="submit">{buttonMessage}</button>
-    </form>);
+    </JsxForms.FormWrapper>);
   }
 }));
 
