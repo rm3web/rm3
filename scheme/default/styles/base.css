@@ -47,3 +47,9 @@
 {
     background: rgb(237, 237, 217);
 }
+
+.via-link
+{
+    margin-left: .5em;
+    font-size: 75%;
+}
