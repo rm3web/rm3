@@ -23,15 +23,45 @@ Once you've created the package, you probably want to store it in some sort of r
 
 ### Service supervision
 
-Production apps tend to work best when they are run with process supervision.  With Docker, you can just set a restart policy to restart the container when it crashes.
+Production apps tend to work best when they are run with process supervision, to protect against the process crashing unexpectedly.
+
+#### Using docker
+
+With Docker, you can just set a restart policy to restart the container when it crashes.
+
+#### Using pm2
+
+pm2 is a fairly fast way to get things moving outside of docker.
+
+An example getting-started configuration file for pm2 looks something like this:
+
+```
+{
+  apps : [{
+    name        : "web",
+    script      : "./node_modules/rm3/bin/rm3front",
+    watch       : true,
+    env: {
+      "NODE_ENV": "development",
+      "RM3_ENV_VARIABLES": "can be set here"
+    },
+    env_production : {
+      "NODE_ENV": "production"
+      "RM3_ENV_VARIABLES": "can be set here"
+     },
+     instances  : 0,
+     exec_mode  : "cluster"
+   }]
+}
+```
 
 ### HTTP proxy
 
-You want to put a proxy in front of rm3, nginx or Apache.  The proxy is there to handle static resources (the files for the scheme, as well as the static blobs if you've implemented those) and also to load-balance between rm3 instances.  Remember, node.js is asynchronous but not parallel, so a single rm3 process can only utilize one CPU.  You can tune the number of proxy processes against the number of rm3 processes as needed.
-
-Furthermore, the front-end proxy can handle tasks like DDoS protection.
+You want to put a proxy in front of rm3, nginx or Apache.  The proxy is there to handle static resources (the files for the scheme, as well as the static blobs if you've implemented those), to load-balance between rm3 instances, to provide caching, to provide HTTPS, and to provide outward-facing abuse protection.  Remember, node.js is asynchronous but not parallel, so a single rm3 process can only utilize one CPU.  You can tune the number of proxy processes against the number of rm3 processes as needed.
 
 You probably want to set the `RM3_DANGER_TRUST_PROXY` environment variable.  See [Express documentation for running behind a proxy](http://expressjs.com/en/guide/behind-proxies.html) to see how to set this.  If you are running nginx or varnish or apache on the same node, you probably want to set this to `loopback`.  Otherwise, some combination of `'loopback`, `linklocal`, or `uniquelocal` might be better.
+
+rm3 is set up to only serve http, where the proxy server is expected to provide https.  
 
 You also probably want to use a front-end cache, as rm3 doesn't try to cache rendered pages.  As rm3 does work very hard to generate correct ETags and Vary and Cache-Control headers for all situations, it should just magically work, although you might need to configure your cache to cache values with a cache-control marked as 'private'.
 
@@ -81,7 +111,15 @@ Monitoring
 
 **This section will improve as rm3 approaches 1.0**
 
-Obviously, you want an HTTP check.  You want to look for a string pattern towards the end of the page, say something in your scheme's footer, to ensure the page is being rendered.
+The sorts of things you should be monitoring are:
+ * PostgreSQL database
+ * Redis cache
+ * rm3 service
+    * Each process should respond to HTTP requests within a certain time-frame, with the correct response code.  You probably want to look for a known string pattern towards the end of the page, say something in your scheme's footer, to ensure the page is being rendered.
+    * Memory usage and CPU usage within known bounds
+ * rm3 workflow
+ * Front-end cache / reverse proxy
+    * The front-end cache should respond to HTTP requests within a certain time-frame, with the correct response code.  You probably want to look for a known string pattern towards the end of the page, say something in your scheme's footer, to ensure the page is being rendered.
 
 Diagnostics
 -----------
