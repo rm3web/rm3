@@ -45,11 +45,13 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - The index class isn't very temporary.
 - Removed default require for babel, now only running babel when importing JSX.
 - Cleaned up the setup for the view JSON and removed repeated ugly code.
+- Reduced a bunch of routes that weren't really routable after all.
 
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
 - Some uninitialized variables in the forms.
 - Increased the range of SVGs able to work by running svgo before domPurify.
+- Twitter auth wasn't quite storing the right profile info.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 
