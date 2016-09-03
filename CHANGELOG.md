@@ -47,6 +47,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Cleaned up the setup for the view JSON and removed repeated ugly code.
 - Security: Reduced a bunch of routes that weren't really routable after all.
 - Security: Session cookies are now httpOnly.
+- Refactored protos for less repeated code.
 
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
