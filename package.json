@@ -58,6 +58,7 @@
     "dompurify": "^0.8.0",
     "dont-sniff-mimetype": "^1.0.0",
     "dotenv": "^2.0.0",
+    "dotty": "0.0.2",
     "downsize": "0.0.8",
     "dust-intl": "~1.1.0",
     "dustjs-helpers": "~1.7.3",
