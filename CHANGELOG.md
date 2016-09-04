@@ -39,6 +39,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Added the ability to load history with rm3load
   - added --nohistory flag to smash history
   - breaks on 0.2.0 backups currently because it tries to assign a user to a permission once when it loads user history and once when it loads the credentials file.
+- Inspects URLs passed by bookmarklet for OpenGraph and other information.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
