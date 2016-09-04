@@ -36,6 +36,7 @@ How to get started?
 * Install PostgreSQL 9.4 or later.  See [PostgreSQL installation](http://www.postgresql.org/download/linux/ubuntu/) -- you want to install it off of the PostgreSQL Apt Repository if your operating system doesn't package 9.5 or newer
 * Install node.js 4.4 or later (node.js 6.0 is not yet supported).  See [NodeJS install via package manager](https://nodejs.org/en/download/package-manager/)
 * Install Redis 2.0 or later.
+* Install ExifTool (see https://www.npmjs.com/package/url-inspector)
 * Install LibRSVG library and header files (see https://www.npmjs.com/package/librsvg)
 * Git clone this repo
 * `npm install`
