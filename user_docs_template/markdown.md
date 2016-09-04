@@ -39,8 +39,11 @@ Heading 2
     \*not emphasized*
 
 *emphasis*
+
 **strong emphasis**
+
 `Inline code`
+
 \*not emphasized*
 
 # Hyperlinks
@@ -50,6 +53,7 @@ Heading 2
 # Images
 
     ![Image](http://url/a.png) 
+    ![Image](/qwe){data-size=medium data-float=left data-title=title data-desc=description}
 
 # Blocks
 
@@ -77,6 +81,16 @@ Heading 2
 
 # Lists
 
+    * List
+    * List 
+
+    - List
+    - List
+
+    1. One
+    2. Two
+    3. Three 
+
 * List
 * List 
 
@@ -86,10 +100,6 @@ Heading 2
 1. One
 2. Two
 3. Three 
-
-1) One
-2) Two
-3) Three 
 
 # Breaks
 
