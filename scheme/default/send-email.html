@@ -1,7 +1,11 @@
 {>"layouts/full_with_nav"/}
 {<view-content}
 
-{summary.title}
+<h1>{summary.title}</h2>
 {data.description}
+
+<div class="commentform" id="emailbutton"></div>
+<script src="./email.js"></script>
+<script src="{@schemeStaticResource path="bundles/sendemail.js" /}"></script>
 
 {/view-content}
