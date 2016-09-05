@@ -42,6 +42,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Inspects URLs passed by bookmarklet for OpenGraph and other information.
 - Added email form proto
 - Refactored permissions to have more fine-grained permissions.
+- Made comments able to be held in a moderation state.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
