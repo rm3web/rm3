@@ -148,9 +148,12 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
     dust.helpers.requirePermission = function(chunk, context, bodies, params) {
         var path = context.resolve(params.path);
         var permission = context.resolve(params.permission);
+        if (permission === 'edit' || permission === 'delete') {
+            permission = 'post.' + permission;
+        }
 
         var user = context.get('user');
-        var permissions = context.get('permissions');
+        var permissions = context.get('permissions');  
 
         if (permission && permissions.hasOwnProperty(permission)) {
             return chunk.render(bodies.block, context);
