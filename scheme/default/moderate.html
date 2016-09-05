@@ -1,0 +1,11 @@
+{>"layouts/full_with_nav"/}
+{<view-content}
+
+<h1>{@formatMessage _key="HISTORY"/}</h1>
+
+<ul>
+{@activityFeed paginationKey="activity" needsReview="true"}
+<li>{@activityActor key=actor /} {@activityDid /} "{@activityVerb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
+{/activityFeed}
+</ul>
+{/view-content}
