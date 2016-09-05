@@ -46,6 +46,11 @@ RM3_RESOURCES
 
 The directory (can be relative or absolute) where rm3 is to find it's static resources (e.g. the scheme).  The default should work.
 
+RM3_EMAIL
+---------
+
+The email server to relay mail through (e.g. `smtps://127.0.0.1`)
+
 RM3_DANGER_TRUST_PROXY
 ----------------------
 
