@@ -134,4 +134,106 @@ describe('authorize', function() {
       });
     });
   });
+
+  describe('authorizeAnd', function() {
+    it('should pass if both succeed', function(done) {
+      var req = {};
+      var res = {};
+      req.entity = {permissions: {'post.edit': 'fff', 'post.delete': 'qqqq'}};
+
+      authorize.authorizeAnd(authorize({permission: 'edit'}),
+        authorize({permission: 'delete'}))(req, res, function next(err) {
+          if (err) {
+            should.fail();
+          }
+          done(err);
+        });
+    });
+
+    it('should fail if first fails', function(done) {
+      var req = {};
+      var res = {};
+      req.entity = {permissions: {'post.delete': 'qqqq'}};
+
+      authorize.authorizeAnd(authorize({permission: 'edit'}),
+        authorize({permission: 'delete'}))(req, res, function next(err) {
+          if (!err) {
+            should.fail();
+          }
+          done();
+        });
+    });
+
+    it('should fail if second fails', function(done) {
+      var req = {};
+      var res = {};
+      req.entity = {permissions: {'post.edit': 'fff'}};
+
+      authorize.authorizeAnd(authorize({permission: 'edit'}),
+        authorize({permission: 'delete'}))(req, res, function next(err) {
+          if (!err) {
+            should.fail();
+          }
+          done();
+        });
+    });
+  });
+
+  describe('authorizeOr', function() {
+    it('should pass if both succeed', function(done) {
+      var req = {};
+      var res = {};
+      req.entity = {permissions: {'post.edit': 'fff', 'post.delete': 'qqqq'}};
+
+      authorize.authorizeOr(authorize({permission: 'edit'}),
+        authorize({permission: 'delete'}))(req, res, function next(err) {
+          if (err) {
+            should.fail();
+          }
+          done(err);
+        });
+    });
+
+    it('should pass if first fails', function(done) {
+      var req = {};
+      var res = {};
+      req.entity = {permissions: {'post.delete': 'qqqq'}};
+
+      authorize.authorizeOr(authorize({permission: 'edit'}),
+        authorize({permission: 'delete'}))(req, res, function next(err) {
+          if (err) {
+            should.fail();
+          }
+          done(err);
+        });
+    });
+
+    it('should pass if second fails', function(done) {
+      var req = {};
+      var res = {};
+      req.entity = {permissions: {'post.edit': 'fff'}};
+
+      authorize.authorizeOr(authorize({permission: 'edit'}),
+        authorize({permission: 'delete'}))(req, res, function next(err) {
+          if (err) {
+            should.fail();
+          }
+          done(err);
+        });
+    });
+
+    it('should fail if both fails', function(done) {
+      var req = {};
+      var res = {};
+      req.entity = {permissions: {}};
+
+      authorize.authorizeOr(authorize({permission: 'edit'}),
+        authorize({permission: 'delete'}))(req, res, function next(err) {
+          if (!err) {
+            should.fail();
+          }
+          done();
+        });
+    });
+  });
 });
