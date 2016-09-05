@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path from 0.2.x databases is to dump using rm3backup to a directory that you load with rm3load.
+This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path from 0.2.x databases is to dump using rm3backup to a directory that you load with rm3load and recreate the permissions  (You can manually edit `permissions.json` if necessary)
 
 ### Added
 - More operational docs, explained some of the authentication pipeline.
@@ -41,6 +41,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
   - breaks on 0.2.0 backups currently because it tries to assign a user to a permission once when it loads user history and once when it loads the credentials file.
 - Inspects URLs passed by bookmarklet for OpenGraph and other information.
 - Added email form proto
+- Refactored permissions to have more fine-grained permissions.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
