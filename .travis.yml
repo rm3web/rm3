@@ -14,7 +14,6 @@ addons:
     packages:
     - g++-4.8
     - librsvg2-dev
-    - libimage-exiftool-perl
 before_install:
 - which phantomjs
 - phantomjs --version
