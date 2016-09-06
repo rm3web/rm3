@@ -12,6 +12,7 @@
   <form id="publish" method="post" action="publish.html" class="pure-form">
     <input type="hidden" name="revisionId" value="{meta.revisionId}" />
     <button type="submit" class="pure-button pure-u-1">{@formatMessage _key="PUBLISH"/}</button>
+  </form>
   {:else}
   <a class="pure-button pure-u-1 pure-button-disabled" href="#">{@formatMessage _key="PUBLISH"/}</a>
   {/sectionDisable}
