@@ -56,7 +56,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Security: Reduced a bunch of routes that weren't really routable after all.
 - Security: Session cookies are now httpOnly.
 - Refactored protos for less repeated code.
-- Improved error display.  403, 404, 429 pages all have rendered templates, disable stackdumps in production
+- Improved error display.  403, 404, 410, 429 pages all have rendered templates, disable stackdumps in production
 
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
