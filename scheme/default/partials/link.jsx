@@ -27,9 +27,14 @@ var LinkFormComponent = ReactIntl.injectIntl(React.createClass({
     var buttonMessage = 'submit';
     var self = this;
     var pathBit;
+    var minorChange;
 
     if (this.props.section === 'edit') {
       buttonMessage = 'edit';      
+      minorChange = (<label htmlFor="minorChange" className="pure-checkbox">
+        <input id="minorChange" name="minorChange" type="checkbox" value="true" />
+        <FormattedMessage id={'MINOR_CHANGE'} />
+        </label>)
     } else {
       pathBit = (<JsxForms.PathNameComponent {...this.props} />);
     }
@@ -54,9 +59,16 @@ var LinkFormComponent = ReactIntl.injectIntl(React.createClass({
         placeholder={this.props.intl.formatMessage({id:"URL"})} name="url" 
         valueLink={this.linkState('url')} />
 
+      <fieldset style={{background: 'rgb(237, 237, 237)'}}>
+      <textarea rows="1" className="pure-input-1" 
+        placeholder={this.props.intl.formatMessage({id:"MEMO"})} name="memo" 
+        valueLink={this.linkState('memo')} />
+        {minorChange}
+      </fieldset>
+
       <ErrorsList errors={this.state.errors.__all__} />
       <JsxForms.SubmitButton locales={this.props.intl.locales} messages={this.props.intl.messages} isDraft={this.props.isDraft} buttonMessage={buttonMessage} />
-      
+
     </JsxForms.FormWrapper>);
   }
 }));
