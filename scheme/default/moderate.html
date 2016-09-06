@@ -1,11 +1,17 @@
 {>"layouts/full_with_nav"/}
 {<view-content}
 
-<h1>{@formatMessage _key="HISTORY"/}</h1>
+<h1>{@formatMessage _key="MODERATE"/}</h1>
 
-<ul>
+
 {@activityFeed paginationKey="activity" needsReview="true"}
-<li>{@activityActor key=actor /} {@activityDid /} "{@activityVerb /}" to {@activityObject key=object /} {@formatRelative val=updated /}</li>
+<div>
+{@activityActor key=actor /} {@activityDid /} "{@activityVerb /}" to {@activityObject key=object /} {@formatRelative val=updated /}
+<form id="publish" method="post" action="{@activityBareUrl /}moderate.cgi" class="pure-form">
+    <input type="hidden" name="revisionId" value="{@activityId /}" />
+    <button type="submit" class="pure-button pure-u-1">{@formatMessage _key="PUBLISH"/}</button>
+  </form>
+</div>
 {/activityFeed}
 </ul>
 {/view-content}
