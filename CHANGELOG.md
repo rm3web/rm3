@@ -44,6 +44,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Refactored permissions to have more fine-grained permissions.
 - Made comments able to be held in a moderation state.
 - Allowed the user to set the 'memo' field and not update the update time (For minor textual changes)
+- Added a tree view page to browse all of the pages within a site.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.

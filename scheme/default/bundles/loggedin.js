@@ -18,6 +18,10 @@ if (gearRenderTarget) {
     actions.push({url: baseurl+'delete.html', label: 'DELETE', confirm: true});
   }
 
+  if (permissions.hasOwnProperty('view')) {
+    actions.push({url: baseurl+'tree.html', label: 'TREE'});
+  }
+
   if (permissions.hasOwnProperty('post.edit')) {
     actions.push({func: function() {
       var apiClient = new ApiClient('http://127.0.0.1:4000');
