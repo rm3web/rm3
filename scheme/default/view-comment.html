@@ -1,6 +1,9 @@
 {>"layouts/full_with_nav"/}
 {<view-content}
 
+Posted by {author|s} <time class="updated" datetime="{meta.created}">{@formatRelative val=meta.created/}</time>:
+<div class="comment-body">
 {data.comment|s}
+</div>
 
 {/view-content}
