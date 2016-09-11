@@ -23,7 +23,16 @@ program
   .option('-f, --file [infile]','Input file','-')
   .option('-h, --nohistory','Don\'t try to Load history', true)
   .option('-p, --path [path]','Change the path to the new destination path',parse_sitepath)
+  .option('-u, --user [path]','Change the user to the new destination path',parse_sitepath)
   .parse(process.argv);
+
+
+var security = {context: 'ROOT'}
+
+if (program.user) {
+  security = {context: 'STANDARD'};
+  security.user = program.user;
+}
 
 if (program.directory) {  
   if (!fs.lstatSync(program.directory).isDirectory()) {
@@ -33,18 +42,14 @@ if (program.directory) {
   }
 
   workflow.loadConf(function() {
-    runWorkflows(function() {
-      loaddump.loadFromCatalog(db, program.directory, program.path, new SitePath(['wh','users']), !program.nohistory, function(err) {
-        if (err) {
-          winston.error('Error:', err);
-          db.gunDatabase();
-          process.exit(1);
-        }
-        runWorkflows.endWorkflows(function() {
-          db.gunDatabase();
-          process.exit(0);
-        });
-      });
+    loaddump.loadFromCatalog(db, security, program.directory, program.path, new SitePath(['wh','users']), !program.nohistory, function(err) {
+      if (err) {
+        winston.error('Error:', err);
+        db.gunDatabase();
+        process.exit(1);
+      }
+      db.gunDatabase();
+      process.exit(0);
     });
   });
 
@@ -67,7 +72,7 @@ if (program.directory) {
   stdin.on('end', function () {
     var inputData = inputChunks.join();
     var parsedData = JSON.parse(inputData);
-    loaddump.loadEntity(db, parsedData, program.path, false, !program.nohistory, {}, function(err) {
+    loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();
@@ -83,7 +88,7 @@ if (program.directory) {
       winston.error('Error:', err);
       process.exit(1);
     }
-    loaddump.loadEntity(db, parsedData, program.path, false, !program.nohistory, {}, function(err) {
+    loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();
