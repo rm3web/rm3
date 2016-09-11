@@ -70,6 +70,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Increased the range of SVGs able to work by running svgo before domPurify.
 - Twitter auth wasn't quite storing the right profile info.
 - rm3load doesn't try to start a workflow worker, just the workflow system.
+- Entity#clone() didn't really work the way I wanted it to.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 
