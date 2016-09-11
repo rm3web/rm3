@@ -35,12 +35,14 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Added image enrichment, to replace `img` tags with responsive images.
 - Added `RM3_LISTEN_HOST` so you can only listen on the localhost.
 - Added OpenGraph and Twitter Cards support.
-- Added link proto
+- Added protos:
+  - Link
+  - Email form
+  - Audio
 - Added the ability to load history with rm3load
   - added --nohistory flag to smash history
   - breaks on 0.2.0 backups currently because it tries to assign a user to a permission once when it loads user history and once when it loads the credentials file.
 - Inspects URLs passed by bookmarklet for OpenGraph and other information.
-- Added email form proto
 - Refactored permissions to have more fine-grained permissions.
 - Made comments able to be held in a moderation state.
 - Allowed the user to set the 'memo' field and not update the update time (For minor textual changes)
