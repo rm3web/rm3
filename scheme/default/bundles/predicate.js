@@ -20,6 +20,11 @@ if (!window.hasOwnProperty('errors')) {
   errors = {}
 }
 
+if (!window.hasOwnProperty('isDraft')) {
+  isDraft = false;
+  revisionId = false;
+}
+
 var renderedComponent = ReactDOM.render(
   PathFactory({
     locales: intl.locales,
@@ -31,7 +36,9 @@ var renderedComponent = ReactDOM.render(
     uri: uri,
     proto: 'predicate',
     proto: proto,
-    errors: errors
+    errors: errors,
+    isDraft: isDraft,
+    revisionId: revisionId
   }),
   renderTarget
 );

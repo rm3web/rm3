@@ -78,13 +78,23 @@ describe('page', function() {
       };
 
       var page = new Page();
+      page.securityRouter.get('', function(req, res, next) {
+        next();
+      });
+      page.freshnessRouter.get('', function(req, res, next) {
+        next();
+      });
       page.viewRouter.get('', function(req, res, next) {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
         next();
       });
 
-      page.render(req, res, function() {});
+      page.render(req, res, function(err) {
+        if (err) {
+          should.fail();
+        }
+      });
     });
 
     it('should render a view', function(done) {
@@ -95,6 +105,12 @@ describe('page', function() {
       };
 
       var page = new Page();
+      page.freshnessRouter.get('glitter.html', function(req, res, next) {
+        next();
+      });
+      page.securityRouter.get('glitter.html', function(req, res, next) {
+        next();
+      });
       page.viewRouter.get('glitter.html', function(req, res, next) {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
@@ -105,7 +121,11 @@ describe('page', function() {
         should.fail();
       });
 
-      page.render(req, res, function() {});
+      page.render(req, res, function(err) {
+        if (err) {
+          should.fail();
+        }
+      });
     });
 
     it('should map a command', function(done) {
@@ -120,7 +140,12 @@ describe('page', function() {
       page.commandRouter.post('glitter.html', function(req, res, next) {
         next();
       });
-
+      page.freshnessRouter.post('glitter.html', function(req, res, next) {
+        next();
+      });
+      page.securityRouter.post('glitter.html', function(req, res, next) {
+        next();
+      });
       page.viewRouter.routeAll('glitter.html', function(req, res, next) {
         var view = req.entity.view();
         req.scheme.render('view', view, req.page._renderPageResponse.bind(this, req, res));
@@ -131,13 +156,35 @@ describe('page', function() {
         should.fail();
       });
 
-      page.render(req, res, function() {});
+      page.render(req, res, function(err) {
+        if (err) {
+          should.fail();
+        }
+      });
+    });
+  });
+
+  context('without security', function() {
+    it('should throw an error', function(done) {
+      var page = new Page();
+
+      page.render(req, res, function(err) {
+        err.name.should.equal('DefaultDenyError');
+        done();
+      });
     });
   });
 
   context('without view', function() {
     it('should throw an error', function(done) {
       var page = new Page();
+
+      page.securityRouter.routeAll('', function(req, res, next) {
+        next();
+      });
+      page.freshnessRouter.routeAll('', function(req, res, next) {
+        next();
+      });
 
       page.render(req, res, function(err) {
         err.name.should.equal('NoViewFoundError');

@@ -13,11 +13,18 @@ var root = formData.path;
 var title = formData.title;
 var abstract = formData.abstract;
 
+var excludeChildrenDisplay = formData.excludeChildrenDisplay;
+
 var renderTarget = document.getElementById('pageform');
 var PathFactory = React.createFactory(PageFormComponent);
 
 if (!window.hasOwnProperty('errors')) {
   errors = {}
+}
+
+if (!window.hasOwnProperty('isDraft')) {
+  isDraft = false;
+  revisionId = false;
 }
 
 var renderedComponent = ReactDOM.render(
@@ -31,7 +38,10 @@ var renderedComponent = ReactDOM.render(
     proto: 'user',
     block: block,
     proto: proto,
-    errors: errors
+    errors: errors,
+    isDraft: isDraft,
+    revisionId: revisionId,
+    excludeChildrenDisplay: excludeChildrenDisplay
   }),
   renderTarget
 );

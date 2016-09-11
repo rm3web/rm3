@@ -100,6 +100,7 @@ function spawnServerForTests(db, executable, params, timeout, setup, next) {
   ctx.env.RM3_PG = db;
   ctx.env['RM3_JWT_SECRET'] = 'poniesandstuff';
   ctx.env['RM3_JWT_ISSUER'] = 'wirewd.com';
+  ctx.env['RM3_DANGER_DISABLE_HTTPS_CHECKS'] = true;
   var server = spawn(executable, params, ctx);
   setup(server);
   tcpPortUsed.waitUntilUsed(4000, 500, timeout)

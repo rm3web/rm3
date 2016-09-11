@@ -4,15 +4,72 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path from 0.2.x databases is to dump using rm3backup to a directory that you load with rm3load and recreate the permissions  (You can manually edit `permissions.json` if necessary)
+
 ### Added
 - More operational docs, explained some of the authentication pipeline.
 - Ability to change the number of items per page.
 - Ability to have hidden pages.
 - Card view now has tags.
 - State machine to control drafts / approvals / blob workflow.
+- Checkbox when you edit a page to control if you want to edit the draft further or create a new draft.
+- Index uses thumbnails for photos and vector graphics.
+- Atom feeds are now available
+- Adding ETags to responses for HTTP caching.
+- Can configure the listening port with `RM3_LISTEN_PORT`
+- Added `RM3_CACHE_CONTROL_DISABLE` to make things easier for dev work.
+- Added the ability to configure sites and disable the login button.
+- Tracking 'touched' time separately from the official 'modified' time.
+- Full text search.
+- Rate limit (tracked via Redis) to prevent brute-force on logins and comments.
+- Can disable the search on the sidebar for child pages.
+- Caching SQL requests in redis:
+  - fetchMostRecentChange
+  - fetchEffectivePermissions
+- Caching the SQL query generation to cache the slow squel part (424 ops/s vs. 102 ops/s)
+- Removing some unnecessary copypasta so that most common CRUD operations need one less file.
+- Setting `X-Frame-Options` and `X-Content-Type-Options` and disabling the `X-Powered-By` header.
+- Checking for HTTPS when trying to log in (can be disabled with `RM3_DANGER_DISABLE_HTTPS_CHECKS`)
+- Adding `RM3_DANGER_TRUST_PROXY` for use behind an nginx or apache or varnish or other such proxy.
+- Added by default the `history` permission that controls if the user can see the history.
+- Added image enrichment, to replace `img` tags with responsive images.
+- Added `RM3_LISTEN_HOST` so you can only listen on the localhost.
+- Added OpenGraph and Twitter Cards support.
+- Added protos:
+  - Link
+  - Email form
+  - Audio
+- Added the ability to load history with rm3load
+  - added --nohistory flag to smash history
+  - breaks on 0.2.0 backups currently because it tries to assign a user to a permission once when it loads user history and once when it loads the credentials file.
+- Inspects URLs passed by bookmarklet for OpenGraph and other information.
+- Refactored permissions to have more fine-grained permissions.
+- Made comments able to be held in a moderation state.
+- Allowed the user to set the 'memo' field and not update the update time (For minor textual changes)
+- Added a tree view page to browse all of the pages within a site.
+- Added the ability to load a dump under a username.
+- Added textblock to the photo / vectorgraphic / audio protos.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
+- Changed setting so that a session cookie isn't generated until needed.
+- Removed `connect-flash` and replaced it with tiny middlware, because sessions were being generated when they shouldn't.
+- Security router is split out from command router, now if you don't supply a security router, the page is default-deny.
+- The index class isn't very temporary.
+- Removed default require for babel, now only running babel when importing JSX.
+- Cleaned up the setup for the view JSON and removed repeated ugly code.
+- Security: Reduced a bunch of routes that weren't really routable after all.
+- Security: Session cookies are now httpOnly.
+- Refactored protos for less repeated code.
+- Improved error display.  403, 404, 410, 429 pages all have rendered templates, disable stackdumps in production
+- Abstracts are now HTML text and are sanitized before being inserted into the system.
+
+### Fixed
+- Search page doesn't cause errors when you don't pass it the right search.
+- Some uninitialized variables in the forms.
+- Increased the range of SVGs able to work by running svgo before domPurify.
+- Twitter auth wasn't quite storing the right profile info.
+- rm3load doesn't try to start a workflow worker, just the workflow system.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 

@@ -45,11 +45,11 @@ function stepGenericCreate(desc, path, ents, entidx, provisional, now) {
   });
 }
 
-function stepGenericUpdate(desc, ents, startidx, nextidx) {
+function stepGenericUpdate(desc, ents, startidx, nextidx, provisional, sameRevision) {
   ents[nextidx] = ents[startidx].clone();
   ents[nextidx].data.posting = "<div>blah blah blah</div>";
   step(desc, function(done) {
-    update.updateEntity(db, {}, {context: "ROOT"}, ents[startidx], ents[nextidx], true, 'update',
+    update.updateEntity(db, {}, {context: "ROOT"}, ents[startidx], ents[nextidx], provisional, sameRevision, 'update',
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -206,7 +206,7 @@ function stepGenericRevidCheck(desc, mark, check) {
 function stepGenericLogCheck(desc, ent, check) {
   step(desc, function(done) {
     var query = "SELECT \"evtClass\", \"entityId\", \"revisionId\", \"revisionNum\", \"evtFinal\", \"evtEnd\" FROM wh_log WHERE path = '" +
-      ent.path().toDottedPath() + "'";
+      ent.path().toDottedPath() + "' ORDER BY \"evtEnd\"";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
       check(result);
@@ -321,7 +321,67 @@ describe('update', function() {
 
     stepValidateEntityExistence('check create', ents.start);
 
-    stepGenericUpdate('update', ents, 'start', 'next');
+    stepGenericUpdate('update', ents, 'start', 'next', true, false);
+
+    stepValidateEntityExistence('verify update', ents.next);
+
+    stepValidateTagExistence('verify the tags are still there', ents.next);
+
+    stepGenericLogCheck('check log after update', ents.start, function(result) {
+      var ent = ents.start;
+      var ent2 = ents.next;
+
+      should.deepEqual(result.rowCount, 2);
+      checkLogCreate(result.rows[0], ent);
+      checkLogUpdate(result.rows[1], ent, ent2);
+    });
+
+    stepGenericDelete('delete', ents.next, delMark);
+
+    stepValidateNonEntityExistence('check create after delete', ents.next);
+
+    stepValidateTagNonExistence('check delete tags', ents.next);
+
+    stepGenericLogCheck('check log after delete', ents.start, function(result) {
+      var ent = ents.start;
+      var ent2 = ents.next;
+
+      should.deepEqual(result.rowCount, 3);
+      checkLogCreate(result.rows[0], ent);
+      checkLogUpdate(result.rows[1], ent, ent2);
+      checkLogDelete(result.rows[2], ent, delMark);
+      should.notDeepEqual(result.rows[2].revisionId, result.rows[1].revisionId);
+      should.notDeepEqual(result.rows[2].revisionNum, result.rows[1].revisionNum);
+    });
+  });
+
+  describe('create-update-sameRevisionUpdate-delete', function() {
+    var now = new Date();
+    var ents = {};
+    var delMark = {};
+
+    stepGenericCreate('create', new sitepath(['wh', 'create_update_sru_delete']), ents,
+      'start', true, now);
+
+    stepValidateEntityExistence('check create', ents.start);
+
+    stepGenericUpdate('update', ents, 'start', 'next', false, false);
+
+    stepGenericUpdate('update', ents, 'next', 'final', false, true);
+
+    step('commit', function(done) {
+      update.commitEntityRev(db, {}, ents.final._revisionId,
+        function(err, entityId, revisionId, revisionNum) {
+          if (err) {
+            should.fail(err);
+          }
+          entityId.should.be.an.instanceof(String);
+          entityId.should.equal(ents.start._entityId);
+          revisionId.should.be.an.instanceof(String);
+          revisionNum.should.be.an.instanceof(Number);
+          done(err);
+        });
+    });
 
     stepValidateEntityExistence('verify update', ents.next);
 

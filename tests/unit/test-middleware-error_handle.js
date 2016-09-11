@@ -5,7 +5,7 @@ var util = require('util'),
 var Plan = require('test-plan');
 
 describe('middleware:errorHandle', function() {
-  var middleware = errorHandle();
+  var middleware = errorHandle.errorFallThrough;
   should.deepEqual(typeof middleware, "function");
   var req, res;
 

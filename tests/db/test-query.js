@@ -4,7 +4,7 @@ var sitepath = require ('sitepath');
 var update = require('../../lib/update');
 var query = require('../../lib/query');
 var db = require('../../lib/db');
-var user = require('../../lib/user');
+var user = require('../../lib/authentication/user');
 var should = require('should');
 var resources = require('../lib/resources.js');
 var uuid = require('node-uuid');
@@ -35,7 +35,7 @@ describe('query', function() {
     it('returns not found exceptions', function(done) {
       var badpath = new sitepath(['wh', 'rainbows']);
 
-      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, badpath, null, function(err, ent) {
+      query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, badpath, null, function(err, ent) {
         should.deepEqual(err.name, 'EntityNotFoundError');
         should.deepEqual(err.path, badpath.toDottedPath());
         done();
@@ -43,7 +43,7 @@ describe('query', function() {
     });
 
     it('returns entities', function(done) {
-      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2) {
+      query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2) {
         var ent = ents.one;
         entitiesShouldMostlyEqual(ent, ent2);
         should.deepEqual(ent2._created, now);
@@ -54,7 +54,7 @@ describe('query', function() {
 
     it('returns entities using revid', function(done) {
       var ent = ents.one;
-      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, ent._revisionId, function(err, ent2) {
+      query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path, ent._revisionId, function(err, ent2) {
         entitiesShouldMostlyEqual(ent, ent2);
         should.deepEqual(ent2._created, now);
         should.deepEqual(ent2._modified, now);
@@ -144,7 +144,7 @@ describe('query', function() {
       ents.updated = ents.one.clone();
       ents.updated.data.posting = "<div>blah blah blah</div>";
       ents.updated.summary.title = 'updated';
-      update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, 'update',
+      update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, false, 'update',
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           revisionId.should.be.an.instanceof(String);
@@ -234,7 +234,7 @@ describe('query', function() {
       var entpath = new sitepath(['wh', 'query', 'roles', 'node']);
 
       it('fetches for a user', function(done) {
-        query.fetchEffectivePermissions(db, {}, ents.user.path(), entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, false, {}, ents.user.path(), entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -245,7 +245,7 @@ describe('query', function() {
       });
 
       it('fetches for nobody', function(done) {
-        query.fetchEffectivePermissions(db, {}, undefined, entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, false, {}, undefined, entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -257,7 +257,7 @@ describe('query', function() {
 
       it('fetches deeper permissions', function(done) {
         var entpath2 = new sitepath(['wh', 'query', 'roles', 'node', 'node2', 'node3']);
-        query.fetchEffectivePermissions(db, {}, ents.user.path(), entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, false, {}, ents.user.path(), entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -271,7 +271,7 @@ describe('query', function() {
     describe('#fetch_entityFromPath', function() {
       var entpath = new sitepath(['wh', 'query', 'user', 'querytest']);
       it('fetches the permissions with a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: entpath}, entpath, undefined, function(err, ent2) {
+        query.entityFromPath(db, false, entity.Entity, {}, {context: 'STANDARD', user: entpath}, entpath, undefined, function(err, ent2) {
           if (err) {
             should.fail(err);
           } else {
@@ -282,7 +282,7 @@ describe('query', function() {
       });
 
       it('fetches the permissions without a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: undefined}, entpath, undefined, function(err, ent2) {
+        query.entityFromPath(db, false, entity.Entity, {}, {context: 'STANDARD', user: undefined}, entpath, undefined, function(err, ent2) {
           if (err) {
             should.fail(err);
           } else {

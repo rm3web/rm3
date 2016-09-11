@@ -9,6 +9,11 @@ var async = require('async');
 var resources = require('../tests/lib/resources.js');
 var makeFakeEntity = require('../tests/lib/fakedata').makeFakeEntity;
 
+var redisModule = require('cache-service-redis');
+var cs = require('cache-service');
+var redisCache = new redisModule({redisUrl: Conf.getEndpoint('cacheRedis')});
+var cacheService = new cs({}, [redisCache]);
+
 var winston = require('winston');
 
 winston.remove(winston.transports.Console);
@@ -46,26 +51,33 @@ suite('query#entityFromPath', function() {
   });
 
   bench('root access', function(done) {
-    query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2){
+    query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2){
       done(err);
     });
   });
 
+  bench('root access cached', function(done) {
+    query.entityFromPath(db, cacheService, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2){
+      done(err);
+    });
+  });
+
+
   bench('root access minus db', function(done) {
-    query.entityFromPath(mockdb, MockEntclass, {}, {context: "ROOT"}, path, null, function(err, ent2) {
+    query.entityFromPath(mockdb, false, MockEntclass, {}, {context: "ROOT"}, path, null, function(err, ent2) {
       done(err);
     });
   });
 
   bench('root access by revisionId', function(done) {
-    query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path,
+    query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path,
                          ents.one._entityId, function(err, ent2){
       done(err);
     });
   });
 
   bench('root access by revisionId minus db', function(done) {
-    query.entityFromPath(mockdb, MockEntclass, {}, {context: "ROOT"}, path, 
+    query.entityFromPath(mockdb, false, MockEntclass, {}, {context: "ROOT"}, path, 
                          ents.one._entityId, function(err, ent2){
       done(err);
     });
@@ -73,13 +85,19 @@ suite('query#entityFromPath', function() {
 
 
   bench('nobody access', function(done) {
-    query.entityFromPath(db, entity.Entity, {}, {context: "STANDARD"}, path, null, function(err, ent2){
+    query.entityFromPath(db, false, entity.Entity, {}, {context: "STANDARD"}, path, null, function(err, ent2){
+      done();
+    });
+  });
+
+  bench('nobody access cached', function(done) {
+    query.entityFromPath(db, cacheService, entity.Entity, {}, {context: "STANDARD"}, path, null, function(err, ent2){
       done();
     });
   });
 
   bench('nobody access minus db', function(done) {
-    query.entityFromPath(mockdb, MockEntclass, {}, {context: "STANDARD"}, path, null, function(err, ent2) {
+    query.entityFromPath(mockdb, false, MockEntclass, {}, {context: "STANDARD"}, path, null, function(err, ent2) {
       done(err);
     });
   });
@@ -142,7 +160,7 @@ suite("query#query_history", function() {
     ents.updated = ents.one.clone();
     ents.updated.data.posting = "<div>blah blah blah</div>";
     ents.updated.summary.title = 'updated';
-    update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, 'update',
+    update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, false, 'update',
       function(err, entityId, revisionId, revisionNum) {
         ents.updated._entityId = entityId;
         ents.updated._revisionId = revisionId;
