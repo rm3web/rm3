@@ -63,6 +63,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Refactored protos for less repeated code.
 - Improved error display.  403, 404, 410, 429 pages all have rendered templates, disable stackdumps in production
 - Abstracts are now HTML text and are sanitized before being inserted into the system.
+- Improved formatting on comment permalink view.
 
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
