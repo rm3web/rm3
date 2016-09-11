@@ -45,7 +45,7 @@ gulp.task('develop', function () {
   nodemon(
     { script: 'bin/rm3front', 
       ext: 'js jsx css html', 
-      tasks: ['browserify', 'cssbundle'],
+      tasks: ['cssbundle'],
       watch: [
         "lib/", 
         "lib/middleware/",
