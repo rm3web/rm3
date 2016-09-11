@@ -5,6 +5,7 @@ var FormattedMessage  = ReactIntl.FormattedMessage;
 var JsxForms = require('rm3-react-controls');
 var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
+var TextBlockComponent = require('textblocks-react-editor').TextBlockComponent;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
@@ -54,6 +55,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
       <ErrorsList errors={this.state.errors.abstract} />
       </fieldset>
       {pathBit}
+      <TextBlockComponent prefix="posting" {...this.props} />
 
       <fieldset>
       <input type="file" name="svg" />
