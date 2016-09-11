@@ -48,6 +48,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Allowed the user to set the 'memo' field and not update the update time (For minor textual changes)
 - Added a tree view page to browse all of the pages within a site.
 - Added the ability to load a dump under a username.
+- Added textblock to the photo / vectorgraphic / audio protos.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
