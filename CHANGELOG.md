@@ -47,6 +47,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Made comments able to be held in a moderation state.
 - Allowed the user to set the 'memo' field and not update the update time (For minor textual changes)
 - Added a tree view page to browse all of the pages within a site.
+- Added the ability to load a dump under a username.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
@@ -66,6 +67,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Some uninitialized variables in the forms.
 - Increased the range of SVGs able to work by running svgo before domPurify.
 - Twitter auth wasn't quite storing the right profile info.
+- rm3load doesn't try to start a workflow worker, just the workflow system.
 
 ## [0.2.3] - 2016-7-23: Importing it's grandparents edition
 
