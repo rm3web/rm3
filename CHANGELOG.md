@@ -49,6 +49,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Added a tree view page to browse all of the pages within a site.
 - Added the ability to load a dump under a username.
 - Added textblock to the photo / vectorgraphic / audio protos.
+- Backed off the default workflow poll rate, allow it to be set with by the `RM3_WF_RUN_INTERVAL` environment variable.
 
 ### Changed
 - Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
