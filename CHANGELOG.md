@@ -8,7 +8,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 
 ### Added
 - More operational docs, explained some of the authentication pipeline.
-- Ability to change the number of items per page.
+- Ability to change the number of items per page and select protos and child paths.
 - Ability to have hidden pages.
 - Card view now has tags.
 - State machine to control drafts / approvals / blob workflow.

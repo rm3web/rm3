@@ -119,7 +119,7 @@
     "superagent": "~1.7.2",
     "svgo": "^0.6.2",
     "textblocks": "0.0.16",
-    "textblocks-react-editor": "0.0.9",
+    "textblocks-react-editor": "0.0.10",
     "thirty-two": "^1.0.1",
     "validator": "~4.6.1",
     "wavesurfer.js": "^1.1.12",
