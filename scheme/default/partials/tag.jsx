@@ -27,14 +27,14 @@ var TagPageComponent = ReactIntl.injectIntl(React.createClass({
 
   handleSave: function(e) {
     e.preventDefault();
-    var apiClient = new ApiClient('http://127.0.0.1:4000');
+    var apiClient = new ApiClient(this.props.apiPath);
     apiClient.page(this.props.baseurl).tags({tags: this.state.tags}).end(function(err, res) {
     });
   },
 
   handleRevert: function(e) {
     var self = this;
-    var apiClient = new ApiClient('http://127.0.0.1:4000');
+    var apiClient = new ApiClient(this.props.apiPath);
     apiClient.page(this.props.baseurl).tags().end(function(err, res) {
       // Slightly weird logic here because React doesn't like it if 
       // we just put the newly de-serialized tags structure 
@@ -54,7 +54,7 @@ var TagPageComponent = ReactIntl.injectIntl(React.createClass({
 
   componentDidMount: function() {
     var self = this;
-    var apiClient = new ApiClient('http://127.0.0.1:4000');
+    var apiClient = new ApiClient(this.props.apiPath);
     apiClient.page(this.props.baseurl).tags().end(function(err, res) {
       // Slightly weird logic here because React doesn't like it if 
       // we just put the newly de-serialized tags structure 
