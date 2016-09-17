@@ -3,6 +3,10 @@ if (!global.Intl) {
   global.Intl = require('intl');
 }
 
+var url = require('url');
+var path = url.parse(window.location.href);
+var apiPath = path.protocol + "//" + path.host;
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var MenuButtonComponent = require('../partials/menubutton.jsx');
@@ -24,13 +28,13 @@ if (gearRenderTarget) {
 
   if (permissions.hasOwnProperty('post.edit')) {
     actions.push({func: function() {
-      var apiClient = new ApiClient('http://127.0.0.1:4000');
+      var apiClient = new ApiClient(apiPath);
       apiClient.page(baseurl).toggleNavbar().end(function(err, res) {
         return location.reload(true);
       });
     }, label: 'NAVBAR'});
     actions.push({func: function() {
-      var apiClient = new ApiClient('http://127.0.0.1:4000');
+      var apiClient = new ApiClient(apiPath);
       apiClient.page(baseurl).toggleHidden().end(function(err, res) {
         return location.reload(true);
       });
