@@ -66,6 +66,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Abstracts are now HTML text and are sanitized before being inserted into the system.
 - Improved formatting on comment permalink view.
 - Added a parent query for pages that are 3 layers deep in the site.
+- Tweaked icons to add more icon types and make them more centered.
 
 ### Fixed
 - Search page doesn't cause errors when you don't pass it the right search.
