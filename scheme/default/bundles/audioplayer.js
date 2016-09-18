@@ -26,18 +26,17 @@ class AudioPlayerComponent extends React.Component {
   render() {
     var playOrPause;
     if (this.state.playing) {
-      playOrPause = "pause"
+      playOrPause = (<picture className="pure-u-1-1"><source srcSet="/resources/images/pause.svg" type="image/svg+xml" /><img srcSet="/resources/images/pause-75.png"  height="75" width="75" border="0" /></picture>);
     } else {
-      playOrPause = "play"
+      playOrPause = (<picture className="pure-u-1-1"><source srcSet="/resources/images/play.svg" type="image/svg+xml" /><img srcSet="/resources/images/play-75.png"  height="75" width="75" border="0" /></picture>);
     }
     var roundedPos = Math.round(this.state.pos);
     return (
       <div className="pure-g">
         <div className="pure-u-1-8">
           <div style={{margin: ".5em"}}>
-            <button onClick={this.handleTogglePlay} className="pure-button pure-u-1-1 pure-button-primary">
-            {playOrPause}
-            </button>{roundedPos} s
+            <a onClick={this.handleTogglePlay}>{playOrPause}</a>
+            {roundedPos} s
             </div>
             </div>
         <div className="pure-u-7-8">
