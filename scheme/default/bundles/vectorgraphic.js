@@ -7,6 +7,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var VectorGraphicFormComponent = require('../partials/vectorgraphic.jsx');
 
+var block = formData.block;
 var root = formData.path;
 
 var title = formData.title;
@@ -19,6 +20,11 @@ if (!window.hasOwnProperty('errors')) {
   errors = {}
 }
 
+if (!window.hasOwnProperty('isDraft')) {
+  isDraft = false;
+  revisionId = false;
+}
+
 var renderedComponent = ReactDOM.render(
   PathFactory({
     locales: intl.locales,
@@ -27,9 +33,12 @@ var renderedComponent = ReactDOM.render(
     path: root,
     title: title,
     abstract: abstract,
+    block: block,
     proto: 'user',
     proto: proto,
-    errors: errors
+    errors: errors,
+    isDraft: isDraft,
+    revisionId: revisionId
   }),
   renderTarget
 );

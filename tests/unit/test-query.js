@@ -21,28 +21,28 @@ describe('activity query gen', function() {
     var tests = [
       {desc: 'for the children of a node with no user or filters',
        args: [root, 'wh', 'child', null, {}, {}],
-       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
       {desc: 'for the parents of a node with no user or filters',
        args: [root, 'wh', 'parents', null, {}, {}],
-       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path @> $1) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path @> $1) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
       {desc: 'for the first-level children of a node with no user or filters',
        args: [root, 'wh', 'dir', null, {}, {}],
-       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path ~ lquery($1 || \'.*{1}\')) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path ~ lquery($1 || \'.*{1}\')) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
       {desc: 'for the children of a node with a user',
        args: [root, 'wh', 'child', new sitepath(['wh','errr']), {}, {}],
-       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log."actorPath" = $1) AND (wh_log.path <@ $2) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log."actorPath" = $1) AND (wh_log.path <@ $2) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
       {desc: 'for paginated queries with a token',
        args: [root, 'wh', 'child', null, {}, {startId: 123, startNum: 10, startDate: new Date()}],
-       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) AND ((wh_log."evtEnd", wh_log."revisionNum", wh_log."revisionId") < ($2,$3,$4)) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) AND ((wh_log."evtEnd", wh_log."revisionNum", wh_log."revisionId") < ($2,$3,$4)) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
       {desc: 'for paginated queries with an offset',
        args: [root, 'wh', 'child', null, {}, {start: 123}],
-       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC OFFSET 123'},
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC OFFSET 123'},
       {desc: 'for drafts',
        args: [root, 'wh', 'child', null, {drafts: true}, {}],
-       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) AND ("evtFinal" = $2) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
+       expected: 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", "revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_entity LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) AND (wh_log."evtFinal" = $2) ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'},
       {desc: 'for nobody',
        args: [{}, 'wh', 'child', null, {}, {}],
-       expected: 'SELECT wh_log.path, wh_log."entityId", wh_log.note, wh_log."baseRevisionId", wh_log."replaceRevisionId", wh_log."revisionId", wh_log."revisionNum", wh_log."evtStart", wh_log."evtEnd", wh_log."evtTouched", wh_log."evtClass", wh_log."evtFinal", wh_log."actorPath", wh_log.data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_log INNER JOIN wh_permission_to_role ON (wh_log.path ~ wh_permission_to_role.query) LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) AND (role = \'nobody\') AND (permission = \'view\') ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'}
+       expected: 'SELECT wh_log.path, wh_log."entityId", wh_log.note, wh_log."baseRevisionId", wh_log."replaceRevisionId", wh_log."revisionId", wh_log."revisionNum", wh_log."evtStart", wh_log."evtEnd", wh_log."evtTouched", wh_log."evtClass", wh_log."evtFinal", wh_log."actorPath", wh_log.workflow, wh_log.data, obj.proto AS "objProto", obj.summary AS "objSummary", actor.proto AS "actorProto", actor.summary AS "actorSummary", obj."revisionId" AS "objRevisionId" FROM wh_log INNER JOIN wh_permission_to_role ON (wh_log.path ~ wh_permission_to_role.query) LEFT JOIN wh_entity AS obj ON (obj.path = wh_log.path) LEFT JOIN wh_entity AS actor ON (actor.path = wh_log."actorPath") WHERE (wh_log.path <@ $1) AND (role = \'nobody\') AND (permission = \'view\') ORDER BY wh_log."evtEnd" DESC, wh_log."revisionNum" DESC, wh_log."revisionId" DESC'}
     ];
 
     tests.forEach(function(test, index) {
@@ -80,79 +80,79 @@ describe('query gen', function() {
     var tests = [
       {desc: 'with user of nobody',
        args: [{}, 'wh', 'child', 'count', {}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_permission_to_role ON (wh_entity.path ~ wh_permission_to_role.query) WHERE (stub <> true) AND (wh_entity.path <@ $1) AND (role = \'nobody\') AND (permission = \'view\')'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_permission_to_role ON (wh_entity.path ~ wh_permission_to_role.query) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (role = \'nobody\') AND (permission = \'view\')'},
       {desc: 'for an entity query (all the fields), basic child under a path',
        args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY path ASC, "entityId" ASC'},
       {desc: 'to count child under a path',
        args: [root, 'wh', 'child', 'count', {}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false)'},
       {desc: 'for parents under a path',
        args: [root, 'wh', 'parents', 'count', {}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path @> $1)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path @> $1) AND (wh_entity.hidden = false)'},
       {desc: 'for just the first-level children',
        args: [root, 'wh', 'dir', 'count', {}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path ~ lquery($1 || \'.*{1}\'))'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path ~ lquery($1 || \'.*{1}\')) AND (wh_entity.hidden = false)'},
       {desc: 'for just a specific proto',
        args: [root, 'wh', 'child', 'count', {protos: ['blah']}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND (proto = $2)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (proto = $2)'},
       {desc: 'for everything that is not a specific proto',
        args: [root, 'wh', 'child', 'count', {notprotos: ['blah']}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND (proto <> $2)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (proto <> $2)'},
       {desc: 'created before a time',
        args: [root, 'wh', 'child', 'count', {before: 123}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND (created < $2)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (created < $2)'},
       {desc: 'created after a time',
        args: [root, 'wh', 'child', 'count', {after: 123}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND (created >= $2)'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (created >= $2)'},
       {desc: 'for navbar entities',
        args: [root, 'wh', 'child', 'count', {navbar: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'navbar\')'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'navbar\')'},
       {desc: 'for comment entries',
        args: [root, 'wh', 'child', 'count', {comment: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity LEFT JOIN wh_entity AS actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
+       expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity LEFT JOIN wh_entity AS actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
       {desc: 'for plain tags',
        args: [root, 'wh', 'child', 'count', {predicate: 'plain', tag: 'bears'}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ("objStr" = $2) AND ("predPath" = $3)'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("objStr" = $2) AND ("predPath" = $3)'},
       {desc: 'for predicates',
        args: [root, 'wh', 'child', 'count', {predicates: true}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ("predPath" = \'navigation\' AND "objStr" = \'predicate\')'},
+       expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'predicate\')'},
       {desc: 'for a year-month filter',
        args: [root, 'wh', 'child', 'count', {yearMonth: new Date()}, undefined, undefined, {}],
-       expected: 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND (date_trunc(\'month\', created) = date_trunc(\'month\', $2::date))'},
+       expected: 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND (date_trunc(\'month\', created) = date_trunc(\'month\', $2::date))'},
       {desc: 'for sorting by changed',
        args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) ORDER BY modified ASC, "entityId" ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY modified DESC, "entityId" DESC'},
       {desc: 'for sorting by created',
        args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) ORDER BY created ASC, "entityId" ASC'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY created DESC, "entityId" DESC'},
       {desc: 'for faceting by month created',
        args: [root, 'wh', 'child', 'count', {}, 'created', {on: 'month'}, {}],
-       expected: 'SELECT count(*), date_trunc(\'month\', created) AS facet FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) GROUP BY date_trunc(\'month\', created) ORDER BY date_trunc(\'month\', created) ASC'},
+       expected: 'SELECT count(*), date_trunc(\'month\', created) AS facet FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) GROUP BY date_trunc(\'month\', created) ORDER BY date_trunc(\'month\', created) DESC'},
       {desc: 'for faceting by month modified',
        args: [root, 'wh', 'child', 'count', {}, 'changed', {on: 'month'}, {}],
-       expected: 'SELECT count(*), date_trunc(\'month\', modified) AS facet FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) GROUP BY date_trunc(\'month\', modified) ORDER BY date_trunc(\'month\', modified) ASC'},
+       expected: 'SELECT count(*), date_trunc(\'month\', modified) AS facet FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) GROUP BY date_trunc(\'month\', modified) ORDER BY date_trunc(\'month\', modified) DESC'},
       {desc: 'for faceting by tag',
        args: [root, 'wh', 'child', 'count', {}, 'created', {on: 'tag'}, {}],
-       expected: 'SELECT count(*), "objStr" AS facet FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ("predPath" <> \'navigation\') GROUP BY "objStr" ORDER BY "objStr" ASC'},
+       expected: 'SELECT count(*), "objStr" AS facet FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" <> \'navigation\') GROUP BY "objStr" ORDER BY "objStr" ASC'},
       {desc: 'for faceting by predicate',
        args: [root, 'wh', 'child', 'count', {}, 'created', {on: 'predicate'}, {}],
-       expected: 'SELECT count(*), "predPath" AS facet FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ("predPath" <> \'navigation\') GROUP BY "predPath" ORDER BY "predPath" ASC'},
+       expected: 'SELECT count(*), "predPath" AS facet FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" <> \'navigation\') GROUP BY "predPath" ORDER BY "predPath" ASC'},
       {desc: 'with pagination with a token',
        args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {token: new sitepath(['wh','errr']), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."path", wh_entity."entityId") > ($2,$3)) ORDER BY path ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ((wh_entity."path", wh_entity."entityId") > ($2,$3)) ORDER BY path ASC, "entityId" ASC LIMIT 12'},
       {desc: 'with pagination with numbers',
        args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
       {desc: 'with pagination using an entity id',
        args: [root, 'wh', 'child', 'entity', {}, undefined, undefined, {entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY path ASC, "entityId" ASC LIMIT 12 OFFSET 12'},
       {desc: 'with pagination using a date sorting by changed',
        args: [root, 'wh', 'child', 'entity', {}, 'changed', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."modified", wh_entity."entityId") > ($2,$3)) ORDER BY modified ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ((wh_entity."modified", wh_entity."entityId") < ($2,$3)) ORDER BY modified DESC, "entityId" DESC LIMIT 12'},
       {desc: 'with pagination using a date sorting by created',
        args: [root, 'wh', 'child', 'entity', {}, 'created', undefined, {token: new Date(), entityId: '2355', start: 12, limit: 12}],
-       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) AND ((wh_entity."created", wh_entity."entityId") > ($2,$3)) ORDER BY created ASC, "entityId" ASC LIMIT 12'},
+       expected: 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ((wh_entity."created", wh_entity."entityId") < ($2,$3)) ORDER BY created DESC, "entityId" DESC LIMIT 12'}
     ];
 
     tests.forEach(function(test, index) {
@@ -191,7 +191,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.fail(err);
       } else {
@@ -213,19 +213,129 @@ describe('query', function() {
       var client = {};
       client.query = function(spec, func) {
         should.deepEqual(spec.text, selectQuery);
-        func(null, {rowCount: 1, rows: ['root']});
+        func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
       };
       queryfunc(null, client, function() {
         plan.ok(true);
       });
     };
 
-    query.fetchEffectivePermissions(db, {}, user, entpath, function(err, entity) {
+    query.fetchEffectivePermissions(db, false, {}, user, entpath, function(err, entity) {
       if (err) {
         should.fail(err);
       } else {
       }
+      entity.permission.should.equal('role');
       plan.ok(true);
+    });
+  });
+
+  it('#fetchEffectivePermissions() cache stored fail', function(done) {
+    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+
+    var entpath = new sitepath(['wh']);
+    var user = new sitepath(['wh', 'users', 'wirehead']);
+
+    var db = {};
+
+    var cache = {};
+
+    cache.get = function(key, next) {
+      next(null, {notFound: true});
+    };
+
+    db.connectWrap = function(queryfunc) {
+      var client = {};
+      client.query = function(spec, func) {
+        should.fail('should not try to call');
+      };
+      queryfunc(null, client, function() {
+      });
+    };
+
+    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+      if (err) {
+        err.name.should.equal('PermissionsNotFoundError');
+        done();
+      } else {
+        should.fail('shouldn\'t succeed when given a cached error');
+      }
+    });
+  });
+
+  it('#fetchEffectivePermissions() cache miss', function(done) {
+    var plan = new Plan(4, done);
+    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+
+    var entpath = new sitepath(['wh']);
+    var user = new sitepath(['wh', 'users', 'wirehead']);
+
+    var db = {};
+
+    var cache = {};
+
+    cache.get = function(key, next) {
+      plan.ok(true);
+      next(null, null);
+    };
+
+    cache.set = function(key, value, timeout) {
+      plan.ok(true);
+      key.should.equal('p:wh:wh.users.wirehead');
+      value.should.eql({response: {permission: 'role'}});
+    };
+
+    db.connectWrap = function(queryfunc) {
+      var client = {};
+      client.query = function(spec, func) {
+        should.deepEqual(spec.text, selectQuery);
+        func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
+      };
+      queryfunc(null, client, function() {
+        plan.ok(true);
+      });
+    };
+
+    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+      if (err) {
+        should.fail(err);
+      } else {
+      }
+      entity.permission.should.equal('role');
+      plan.ok(true);
+    });
+  });
+
+  it('#fetchEffectivePermissions() cache hit', function(done) {
+    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+
+    var entpath = new sitepath(['wh']);
+    var user = new sitepath(['wh', 'users', 'wirehead']);
+
+    var db = {};
+
+    var cache = {};
+
+    cache.get = function(key, next) {
+      next(null, {response: {permission: 'role'}});
+    };
+
+    db.connectWrap = function(queryfunc) {
+      var client = {};
+      client.query = function(spec, func) {
+        should.fail('should not try to call');
+      };
+      queryfunc(null, client, function() {
+      });
+    };
+
+    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+      if (err) {
+        should.fail(err);
+      } else {
+      }
+      entity.permission.should.equal('role');
+      done(err);
     });
   });
 
@@ -254,7 +364,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'EntityNotFoundError');
         should.deepEqual(err.path, entpath.toDottedPath());
@@ -290,7 +400,7 @@ describe('query', function() {
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'QueryError');
       } else {
@@ -303,7 +413,7 @@ describe('query', function() {
   it('query fromDb not_found log', function(done) {
     var plan = new Plan(2, done);
     var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
-"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data \
+"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data \
 FROM wh_log WHERE ("revisionId" = $1)';
 
     var entpath = new sitepath(['wh', 'rq']);
@@ -327,7 +437,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, '1234', function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, '1234', function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'RevisionIdNotFoundError');
       } else {
@@ -340,7 +450,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
   it('query fromDb error log', function(done) {
     var plan = new Plan(2, done);
     var selectQuery = 'SELECT path, "entityId", note, "baseRevisionId", "replaceRevisionId", \
-"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", data \
+"revisionId", "revisionNum", "evtStart", "evtEnd", "evtTouched", "evtClass", "evtFinal", "actorPath", workflow, data \
 FROM wh_log WHERE ("revisionId" = $1)';
 
     var entpath = new sitepath(['wh', 'rq']);
@@ -364,7 +474,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
       });
     };
 
-    query.entityFromPath(db, Entclass, {}, {context: "ROOT"}, entpath, '1535', function(err, entity) {
+    query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, '1535', function(err, entity) {
       if (err) {
         should.deepEqual(err.name, 'QueryError');
       } else {
@@ -376,7 +486,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('query', function(done) {
     var plan = new Plan(3, done);
-    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1) ORDER BY path ASC, "entityId" ASC';
+    var selectQuery = 'SELECT path, stub, hidden, "entityId", "revisionId", "revisionNum", proto, modified, created, touched, summary, data, tags FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) ORDER BY path ASC, "entityId" ASC';
 
     var entpath = new sitepath(['wh']);
 
@@ -428,7 +538,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
   it('query count', function(done) {
     var plan = new Plan(3, done);
-    var selectQuery = 'SELECT count(*) FROM wh_entity WHERE (stub <> true) AND (wh_entity.path <@ $1)';
+    var selectQuery = 'SELECT count(*) FROM wh_entity WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false)';
 
     var entpath = new sitepath(['wh']);
 
@@ -472,7 +582,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     var selectQuery = 'SELECT wh_log.path, wh_log."entityId", wh_log.note, \
 wh_log."baseRevisionId", wh_log."replaceRevisionId", wh_log."revisionId", \
 wh_log."revisionNum", wh_log."evtStart", wh_log."evtEnd", wh_log."evtTouched", \
-wh_log."evtClass", wh_log."evtFinal", wh_log."actorPath", wh_log.data, actor.proto \
+wh_log."evtClass", wh_log."evtFinal", wh_log."actorPath", wh_log.workflow, wh_log.data, actor.proto \
 AS "actorProto", actor.summary AS "actorSummary" FROM wh_log LEFT JOIN wh_entity AS actor \
 ON (actor.path = wh_log."actorPath") WHERE (wh_log.path = $1) ORDER BY wh_log."revisionNum" \
 ASC';

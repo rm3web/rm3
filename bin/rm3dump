@@ -23,7 +23,7 @@ program
   .parse(process.argv)
   ;
 
-dumpEntity(db, entity.Entity, program.path, program.log, function(err, ent, log) {
+dumpEntity(db, entity.Entity, program.path, program.log, function(err, ent, log, blobs) {
   if (!err) {
     if (program.friendly) {
       console.log('Path: %s', ent._path.toDottedPath());

@@ -1,21 +1,20 @@
 var React = require('react');
 var ReactIntl = require('react-intl');
-var IntlMixin  = ReactIntl.IntlMixin;
 var FormattedMessage  = ReactIntl.FormattedMessage;
+var IntlProvider = ReactIntl.IntlProvider;
 var AriaMenuButton = require('react-aria-menubutton');
 var AmbWrapper = AriaMenuButton.Wrapper;
 var AmbButton = AriaMenuButton.Button;
 var AmbMenu = AriaMenuButton.Menu;
 var AmbMenuItem = AriaMenuButton.MenuItem;
 
-var MenuButton = React.createClass({
-  mixins: [IntlMixin],
+var MenuButton = ReactIntl.injectIntl(React.createClass({
 
   handleSelection: function(value, event) {
     if (value.func) {
       value.func();
     } else if (value.confirm) {
-      answer = confirm(this.getIntlMessage("DO_YOU_REALLY_WANT_TO_GO_HERE"));
+      var answer = confirm(this.props.intl.formatMessage({id:"DO_YOU_REALLY_WANT_TO_GO_HERE"}));
       if (answer !=0) {
         window.location.href = value.url + "?sure=yes"
       }
@@ -34,11 +33,11 @@ var MenuButton = React.createClass({
           tag='li'
           value={item}
           id={item.label}
-          text={self.getIntlMessage(item.label)}
+          text={self.props.intl.formatMessage({id: item.label})}
           className='pure-menu-item AriaMenuButton-menuItem'
         > 
           <FormattedMessage
-            message={self.getIntlMessage(item.label)}  />
+            id={item.label}  />
         </AmbMenuItem>
       );
     });
@@ -51,7 +50,7 @@ var MenuButton = React.createClass({
         <AmbButton className='AriaMenuButton-trigger pure-button pure-u-1'>
           <span className='AriaMenuButton-triggerText'>
             <FormattedMessage
-            message={this.getIntlMessage(this.props.label)}  />
+            id={this.props.label}  />
           </span>
         </AmbButton>
         <AmbMenu className='pure-menu AriaMenuButton-menu'>
@@ -62,6 +61,10 @@ var MenuButton = React.createClass({
       </AmbWrapper>
     );
   }
-})
+}));
 
-module.exports = MenuButton;
+var MenuButtonWrapper = function MenuButtonWrapper(props) {
+  return <IntlProvider messages={props.messages} locale='en'><MenuButton {...props} /></IntlProvider>
+};
+
+module.exports = MenuButtonWrapper;

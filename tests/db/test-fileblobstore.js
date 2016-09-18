@@ -14,12 +14,15 @@ describe('file blob store', function() {
 
   var filepath = {
     path: os.tmpdir(),
-    urlroot: 'localhost:'
+    urlroot: 'localhost:',
+    category: 'public'
   };
 
   var st = new FileBlobStore(filepath, db);
 
   var revisionId = uuid.v1();
+  var revisionId2 = uuid.v1();
+  var revisionId3 = uuid.v1();
 
   var buf = new Buffer('test');
 
@@ -34,7 +37,7 @@ describe('file blob store', function() {
 
     step('#getBlobUrl', function(done) {
       st.getBlobUrl({}, path.toDottedPath(), 'filename', revisionId, function(err, blobUrl) {
-        blobUrl.should.equal('localhost:' + path.toDottedPath() + '-' + revisionId + '-' + 'filename');
+        blobUrl.should.equal('localhost:' + path.toDottedPath() + '-' + revisionId + '-filename');
         done(err);
       });
     });
@@ -47,21 +50,57 @@ describe('file blob store', function() {
     });
 
     step('#doesBlobExist', function(done) {
-      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId, function(exist) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId, function(err, exist) {
         exist.should.equal(true);
-        done();
+        done(err);
       });
     });
 
-    step('#doesBlobExist', function(done) {
-      st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(exist) {
+    step('#doesBlobExist where there should be no filename', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(err, exist) {
         exist.should.equal(false);
-        done();
+        done(err);
+      });
+    });
+
+    step('#aliasUnchangedBlob', function(done) {
+      st.aliasUnchangedBlob({}, path.toDottedPath(), 'filename', revisionId2, true, true, revisionId, done);
+    });
+
+    step('#doesBlobExist for alias', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId2, function(err, exist) {
+        exist.should.equal(true);
+        done(err);
+      });
+    });
+
+    step('#doesBlobExist for alias where there should be no filename', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'badfilename', revisionId, function(err, exist) {
+        exist.should.equal(false);
+        done(err);
+      });
+    });
+
+    step('#aliasUnchangedBlob again', function(done) {
+      st.aliasUnchangedBlob({}, path.toDottedPath(), 'filename', revisionId3, true, true, revisionId2, done);
+    });
+
+    step('#doesBlobExist for next alias', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId3, function(err, exist) {
+        exist.should.equal(true);
+        done(err);
       });
     });
 
     step('#deleteBlob', function(done) {
       st.deleteBlob({}, path.toDottedPath(), 'filename', revisionId, done);
+    });
+
+    step('#doesBlobExist after #deleteBlob', function(done) {
+      st.doesBlobExist({}, path.toDottedPath(), 'filename', revisionId, function(err, exist) {
+        exist.should.equal(false);
+        done(err);
+      });
     });
 
   });

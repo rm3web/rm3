@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactIntl = require('react-intl');
-var IntlMixin  = ReactIntl.IntlMixin;
+var IntlProvider = ReactIntl.IntlProvider;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 var TagControl = require('rm3-tag-control');
 var JsxForms = require('rm3-react-controls');
@@ -11,8 +11,8 @@ var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 var ReactSuperSelect = require('react-super-select');
 var ApiClient = require('../../../lib/apiclient');
 
-var TagPageComponent = React.createClass({
-  mixins: [IntlMixin, LinkedStateMixin],
+var TagPageComponent = ReactIntl.injectIntl(React.createClass({
+  mixins: [LinkedStateMixin],
 
   getInitialState: function() {
     var state = {
@@ -27,14 +27,14 @@ var TagPageComponent = React.createClass({
 
   handleSave: function(e) {
     e.preventDefault();
-    var apiClient = new ApiClient('http://127.0.0.1:4000');
+    var apiClient = new ApiClient(this.props.apiPath);
     apiClient.page(this.props.baseurl).tags({tags: this.state.tags}).end(function(err, res) {
     });
   },
 
   handleRevert: function(e) {
     var self = this;
-    var apiClient = new ApiClient('http://127.0.0.1:4000');
+    var apiClient = new ApiClient(this.props.apiPath);
     apiClient.page(this.props.baseurl).tags().end(function(err, res) {
       // Slightly weird logic here because React doesn't like it if 
       // we just put the newly de-serialized tags structure 
@@ -54,7 +54,7 @@ var TagPageComponent = React.createClass({
 
   componentDidMount: function() {
     var self = this;
-    var apiClient = new ApiClient('http://127.0.0.1:4000');
+    var apiClient = new ApiClient(this.props.apiPath);
     apiClient.page(this.props.baseurl).tags().end(function(err, res) {
       // Slightly weird logic here because React doesn't like it if 
       // we just put the newly de-serialized tags structure 
@@ -89,19 +89,23 @@ var TagPageComponent = React.createClass({
          readOnlyPredicates={{'navigation': true}} />
         <TagControl.TagInput ref="input" ready={this.state.ready} 
           predicates={this.state.predicateList} addTag={this.addTag} 
-          selectPlaceholder={this.getIntlMessage('SELECT_A_PREDICATE')} 
-          addMessage={this.getIntlMessage('ADD')}
+          selectPlaceholder={this.props.intl.formatMessage({id:'SELECT_A_PREDICATE'})} 
+          addMessage={this.props.intl.formatMessage({id:'ADD'})}
           defaultPredicate={{"id": "plain"}} />
         <hr />
         <button className="pure-button pure-button-primary" disabled={this.state.isSubmitting}
           onClick={this.handleSave} type="button"> <FormattedMessage
-                    message={this.getIntlMessage('SAVE')}  /></button>
+                    id={'SAVE'}  /></button>
         <button className="pure-button"
           onClick={this.handleRevert} type="button"> <FormattedMessage
-                    message={this.getIntlMessage('REVERT_CHANGES')}  /></button>
+                    id={'REVERT_CHANGES'}  /></button>
       </form>);
 
   }
-});
+}));
 
-module.exports = TagPageComponent;
+var TagPageWrapper = function TagPageWrapper(props) {
+  return <IntlProvider messages={props.messages} locale='en'><TagPageComponent {...props} /></IntlProvider>
+};
+
+module.exports = TagPageWrapper;

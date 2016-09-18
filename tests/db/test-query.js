@@ -4,7 +4,7 @@ var sitepath = require ('sitepath');
 var update = require('../../lib/update');
 var query = require('../../lib/query');
 var db = require('../../lib/db');
-var user = require('../../lib/user');
+var user = require('../../lib/authentication/user');
 var should = require('should');
 var resources = require('../lib/resources.js');
 var uuid = require('node-uuid');
@@ -35,7 +35,7 @@ describe('query', function() {
     it('returns not found exceptions', function(done) {
       var badpath = new sitepath(['wh', 'rainbows']);
 
-      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, badpath, null, function(err, ent) {
+      query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, badpath, null, function(err, ent) {
         should.deepEqual(err.name, 'EntityNotFoundError');
         should.deepEqual(err.path, badpath.toDottedPath());
         done();
@@ -43,7 +43,7 @@ describe('query', function() {
     });
 
     it('returns entities', function(done) {
-      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2) {
+      query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2) {
         var ent = ents.one;
         entitiesShouldMostlyEqual(ent, ent2);
         should.deepEqual(ent2._created, now);
@@ -54,7 +54,7 @@ describe('query', function() {
 
     it('returns entities using revid', function(done) {
       var ent = ents.one;
-      query.entityFromPath(db, entity.Entity, {}, {context: "ROOT"}, path, ent._revisionId, function(err, ent2) {
+      query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path, ent._revisionId, function(err, ent2) {
         entitiesShouldMostlyEqual(ent, ent2);
         should.deepEqual(ent2._created, now);
         should.deepEqual(ent2._modified, now);
@@ -144,7 +144,7 @@ describe('query', function() {
       ents.updated = ents.one.clone();
       ents.updated.data.posting = "<div>blah blah blah</div>";
       ents.updated.summary.title = 'updated';
-      update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, 'update',
+      update.updateEntity(db, {}, {context: "ROOT"}, ents.one, ents.updated, true, false, 'update',
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.an.instanceof(String);
           revisionId.should.be.an.instanceof(String);
@@ -186,11 +186,11 @@ describe('query', function() {
     var ents = {};
     var now = new Date();
 
-    resources.userResource(userpath, 'test', ents, 'user', now);
+    resources.userResource(userpath, 'querytest', ents, 'user', now);
     resources.permissionResource('query-role', 'view', path);
     resources.permissionResource('query-role', 'stuff', path);
     resources.permissionResource('nobody', 'view', path);
-    resources.assignmentResource(userpath, 'test', 'query-role');
+    resources.assignmentResource(userpath, 'querytest', 'query-role');
 
     describe('#query', function() {
       var otherpath = new sitepath(['wh', 'query2', 'node']);
@@ -234,7 +234,7 @@ describe('query', function() {
       var entpath = new sitepath(['wh', 'query', 'roles', 'node']);
 
       it('fetches for a user', function(done) {
-        query.fetchEffectivePermissions(db, {}, ents.user.path(), entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, false, {}, ents.user.path(), entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -245,7 +245,7 @@ describe('query', function() {
       });
 
       it('fetches for nobody', function(done) {
-        query.fetchEffectivePermissions(db, {}, undefined, entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, false, {}, undefined, entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -257,7 +257,7 @@ describe('query', function() {
 
       it('fetches deeper permissions', function(done) {
         var entpath2 = new sitepath(['wh', 'query', 'roles', 'node', 'node2', 'node3']);
-        query.fetchEffectivePermissions(db, {}, ents.user.path(), entpath, function(err, permissions) {
+        query.fetchEffectivePermissions(db, false, {}, ents.user.path(), entpath, function(err, permissions) {
           if (err) {
             should.fail(err);
           } else {
@@ -269,10 +269,9 @@ describe('query', function() {
     });
 
     describe('#fetch_entityFromPath', function() {
-      var entpath = new sitepath(['wh', 'query', 'user', 'test']);
+      var entpath = new sitepath(['wh', 'query', 'user', 'querytest']);
       it('fetches the permissions with a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: entpath},
-                               entpath, undefined, function(err, ent2) {
+        query.entityFromPath(db, false, entity.Entity, {}, {context: 'STANDARD', user: entpath}, entpath, undefined, function(err, ent2) {
           if (err) {
             should.fail(err);
           } else {
@@ -283,8 +282,7 @@ describe('query', function() {
       });
 
       it('fetches the permissions without a user', function(done) {
-        query.entityFromPath(db, entity.Entity, {}, {context: 'STANDARD', user: undefined},
-                               entpath, undefined, function(err, ent2) {
+        query.entityFromPath(db, false, entity.Entity, {}, {context: 'STANDARD', user: undefined}, entpath, undefined, function(err, ent2) {
           if (err) {
             should.fail(err);
           } else {
@@ -401,15 +399,31 @@ describe('query', function() {
     var revisionId = uuid.v1();
 
     step('create', function createCredential(done) {
-      update.addBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, true, true, {'angels': true}, done);
+      update.addBlob(db, {}, 'test', 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, true, true, {'angels': true}, done);
     });
 
     step('check created blob', function checkCredential(done) {
-      query.findBlob(db, {}, 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, function(err, rec) {
+      query.findBlob(db, {}, 'test', 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, function(err, rec) {
         if (err) {
           return done(err);
         }
         rec.angels.should.equal(true);
+        done();
+      });
+    });
+
+    step('list blob', function checkCredential(done) {
+      var resp = query.listBlobs(db, {}, entityPath.toDottedPath());
+      var arts = [];
+      resp.on('article', function(article) {
+        arts.push(article);
+      });
+      resp.on('error', function(err) {
+        should.fail(err);
+      });
+      resp.on('end', function() {
+        arts.length.should.equal(1);
+        arts[0].details.angels.should.equal(true);
         done();
       });
     });

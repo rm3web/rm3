@@ -3,6 +3,10 @@ if (!global.Intl) {
   global.Intl = require('intl');
 }
 
+var url = require('url');
+var path = url.parse(window.location.href);
+var apiPath = path.protocol + "//" + path.host;
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var MenuButtonComponent = require('../partials/menubutton.jsx');
@@ -14,17 +18,27 @@ var ApiClient = require('../../../lib/apiclient');
 if (gearRenderTarget) {
   var actions = [];
 
-  if (permissions.hasOwnProperty('delete')) {
+  if (permissions.hasOwnProperty('post.delete')) {
     actions.push({url: baseurl+'delete.html', label: 'DELETE', confirm: true});
   }
 
-  if (permissions.hasOwnProperty('edit')) {
+  if (permissions.hasOwnProperty('view')) {
+    actions.push({url: baseurl+'tree.html', label: 'TREE'});
+  }
+
+  if (permissions.hasOwnProperty('post.edit')) {
     actions.push({func: function() {
-      var apiClient = new ApiClient('http://127.0.0.1:4000');
+      var apiClient = new ApiClient(apiPath);
       apiClient.page(baseurl).toggleNavbar().end(function(err, res) {
         return location.reload(true);
       });
     }, label: 'NAVBAR'});
+    actions.push({func: function() {
+      var apiClient = new ApiClient(apiPath);
+      apiClient.page(baseurl).toggleHidden().end(function(err, res) {
+        return location.reload(true);
+      });
+    }, label: 'HIDDEN'});
   }
 
   var gearComponent = ReactDOM.render(

@@ -15,8 +15,7 @@ It also needs to handle cases like this:
  * Worker jobs that get stuck and never progress
  * Infrastructure failure
 
-Work queues inside of rm3 are used for a variety of tasks, including:
- * Processing posted images
+Work queues inside of rm3 are used for a variety of tasks, primarily processing posted images.
 
 Choosing a workflow engine
 --------------------------

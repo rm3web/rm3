@@ -3,7 +3,7 @@ var entity = require('../../lib/entity');
 var sitepath = require ('sitepath');
 var async = require('async');
 var uuid = require('node-uuid');
-var user = require('../../lib/user');
+var user = require('../../lib/authentication/user');
 var resources = require('../lib/resources.js');
 var should = require('should');
 var db = require('../../lib/db');
@@ -16,11 +16,11 @@ describe('user', function() {
   var ents = {};
   var userpath = new sitepath(['wh', 'users']);
 
-  resources.userResource(userpath, 'test', ents, 'user', now);
+  resources.userResource(userpath, 'usertest', ents, 'user', now);
 
   describe('user login', function() {
     step('#findByUsername', function(done) {
-      user.findByUsername(db, {}, query, entity.Entity, userpath, 'test', function(err, ent2) {
+      user.findByUsername(db, {}, query, entity.Entity, userpath, 'usertest', function(err, ent2) {
         ents.req = ent2;
         if (err) {
           should.fail(err);
@@ -28,12 +28,21 @@ describe('user', function() {
         done(err);
       });
     });
-    step('#check_password', function(done) {
-      user.authenticatePassword('meow_kitty', ents.req, function(err) {
+    step('#authenticatePassword', function(done) {
+      user.authenticatePassword(db, {}, query, 'usertest', 'meow_kitty', function(err) {
         if (err) {
           should.fail(err);
         }
         done(err);
+      });
+    });
+    step('#authenticatePassword with bad password', function(done) {
+      user.authenticatePassword(db, {}, query, 'usertest', 'screach_kitty', function(err) {
+        if (err) {
+          done();
+        } else {
+          should.fail();
+        }
       });
     });
   });

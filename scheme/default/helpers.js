@@ -7,11 +7,22 @@ var TagHelpers = require('../../lib/taghelpers');
 var SiteHelpers = require('../../lib/sitehelpers');
 var SchemeHelpers = require('../../lib/schemehelpers');
 var Pagination = require('../../lib/pagination');
+var path = require('path');
+var React = require('react');
+var ReactDOM = require('react-dom/server');
+var requireCompiled = require('require-compiled').babelOptions({"presets": ["react", "es2015"]});  
 
-exports = module.exports = function(dust, db, query) {
+
+var renderComponentToString = function renderComponent(reactDir, file, props) {
+    var component = requireCompiled(path.resolve(path.join(reactDir, file)));
+    var factory = React.createFactory(component);
+    return ReactDOM.renderToString(factory(props))
+}
+
+exports = module.exports = function(dust, db, cache, query, reactDir) {
 
     ActivityFeed.installDust(dust, db, query);
-    IndexFeed.installDust(dust, db, query);
+    IndexFeed.installDust(dust, db, cache, query);
     TagHelpers.installDust(dust, db, query);
     SiteHelpers.installDust(dust, db, query);
     SchemeHelpers.installDust(dust, db, query);
@@ -21,6 +32,47 @@ exports = module.exports = function(dust, db, query) {
         return value.toDottedPath();
       }
       return value;
+    }
+
+    dust.filters.toISOString = function(value) {
+      if (value instanceof Date) {
+        return value.toISOString();
+      }
+      return value;
+    }
+
+    dust.helpers.onlyThirdLevel = function(chunk, context, bodies, params) {
+        var pageCurPath = context.get('path');
+        var pathLength = pageCurPath.pathArray().length;
+        if (pathLength > 2) {
+            return chunk.render(bodies.block, context);
+        } else {
+            if (bodies["else"]) {
+                return chunk.render(bodies["else"], context);
+            }
+        }
+    }
+
+    dust.helpers.linkIcon = function(chunk, context, bodies, params) {
+        var size = context.resolve(params.size);
+        if (!size) {
+            size = 'sq';
+        }
+        var svgicon = context.get('meta.rm3\:icon.' + size + '.svg');
+        var imgicon = context.get('meta.rm3\:icon.' + size + '.alt');
+        var height = context.get('meta.rm3\:icon.' + size + '.height');
+        var width = context.get('meta.rm3\:icon.' + size + '.width');
+        if (svgicon) {
+            return chunk.write('<link href="' + svgicon + '" rel="icon" />' +
+                '<media:thumbnail url="' + svgicon + '" height="' + height + 
+                '" width="' + width + '" xmlns:media="http://search.yahoo.com/mrss/" />'
+                )
+        } else {
+            return chunk.write('<link href="' + imgicon + '" rel="icon" />' +
+                '<media:thumbnail url="' + imgicon + '" height="' + height + 
+                '" width="' + width + '" xmlns:media="http://search.yahoo.com/mrss/" />'
+                )
+        }
     }
 
     dust.helpers.icon = function(chunk, context, bodies, params) {
@@ -33,17 +85,61 @@ exports = module.exports = function(dust, db, query) {
         var height = context.get('meta.rm3\:icon.' + size + '.height');
         var width = context.get('meta.rm3\:icon.' + size + '.width');
         if (svgicon) {
-            return chunk.write('<img src="' + svgicon + '" alt="' + imgicon +
-                '"  height="' + height + '" width="' + width + '" border="0" />')
+            return chunk.write('<picture><source srcset="' + svgicon +
+                '" type="image/svg+xml"><img srcset="' + imgicon +
+                '"  height="' + height + '" width="' + width + '" border="0" /></picture>');
         } else {
             return chunk.write('<img src="' + imgicon + '"  height="' + height + 
                 '" width="' + width + '" border="0" />')
         }
     }
 
+    dust.helpers.ifLoginEnabled = function(chunk, context, bodies, params) {
+        var site = context.get('site');
+        if (site.loginVisible) {
+            return chunk.render(bodies.block, context);
+        } else {
+            if (bodies["else"]) {
+                return chunk.render(bodies["else"], context);
+            }
+        }
+    }
+
+    dust.helpers.siteUrlRoot = function(chunk, context, bodies, params) {
+        var site = context.get('site');
+        chunk.write(site.urlroot);
+    }
+
     dust.helpers.textblock = function(chunk, context, bodies, params) {
         var textblock = context.resolve(params.field);
-        return chunk.write(textblocks.outputTextBlock(textblock));
+        var resolve = context.resolve(params.resolve);
+        var ctx = context.get('ctx');
+        var sitepath = context.get('path');
+        var scheme = context.get('scheme');
+        var site = context.get('site');
+        var protoset = context.get('protoset');
+        var security = context.get('security');
+        var blobstores = context.get('blobstores');
+        var state_ctx = {
+            ctx: ctx,
+            db: db,
+            sitepath: sitepath,
+            scheme: scheme,
+            site: site,
+            protoset: protoset,
+            access: security,
+            blobstores: blobstores
+        }
+        if (textblock) {
+            return chunk.map(function(chunk) {
+                textblocks.outputTextBlock(textblock, resolve, state_ctx ,function(err, output) {
+                    chunk.write(output);
+                    return chunk.end();
+                })
+            });
+        } else {
+            return chunk.end();
+        }
     }
 
     dust.helpers.sectionDisable = function(chunk, context, bodies, params) {
@@ -64,11 +160,38 @@ exports = module.exports = function(dust, db, query) {
     dust.helpers.requirePermission = function(chunk, context, bodies, params) {
         var path = context.resolve(params.path);
         var permission = context.resolve(params.permission);
+        if (permission === 'edit' || permission === 'delete') {
+            permission = 'post.' + permission;
+        }
+
+        var user = context.get('user');
+        var permissions = context.get('permissions');  
+
+        if (permission && permissions.hasOwnProperty(permission)) {
+            return chunk.render(bodies.block, context);
+        } else {
+            if (bodies["else"]) {
+                return chunk.render(bodies["else"], context);
+            }
+        }
+    }
+
+    dust.helpers.requirePermissionOr = function(chunk, context, bodies, params) {
+        var path = context.resolve(params.path);
+        var permission = context.resolve(params.permission);
+        if (permission === 'edit' || permission === 'delete') {
+            permission = 'post.' + permission;
+        }
+
+        var permissionOr = context.resolve(params.permissionOr);
+        if (permissionOr === 'edit' || permissionOr === 'delete') {
+            permissionOr = 'post.' + permissionOr;
+        }
 
         var user = context.get('user');
         var permissions = context.get('permissions');
 
-        if (permission && permissions.hasOwnProperty(permission)) {
+        if (permission && (permissions.hasOwnProperty(permission) || permissions.hasOwnProperty(permissionOr))) {
             return chunk.render(bodies.block, context);
         } else {
             if (bodies["else"]) {
@@ -170,6 +293,52 @@ exports = module.exports = function(dust, db, query) {
             } else {
                 return chunk.render(bodies.block, context);
             }
+        }
+    }
+
+    dust.helpers.reactForm = function(chunk, context, bodies, params) {
+        try {
+            var file = context.resolve(params.component);
+            var div = context.resolve(params.div);
+
+            var scheme = context.get('scheme');
+
+            var intlData = context.get('intl');
+            var bundlePath = context.resolve(params.bundle);
+            var bundle = scheme.getResourcePath(bundlePath);
+
+            var revisionId = context.get('meta.revisionId');
+            var isDraft = context.get('isDraft');
+            var formData = context.get('formData');
+            var errors = context.get('errors');
+            var proto = context.get('meta.proto');
+            var section = context.get('section');
+
+            props = {};
+
+            for(var element in formData) {
+                if (formData.hasOwnProperty(element)) {
+                    props[element] = formData[element];
+                }
+            }
+
+            props.locales = intlData.locales;
+            props.messages = intlData.messages;
+            props.revisionId = revisionId;
+            props.isDraft = isDraft;
+            props.errors = errors;
+            props.proto = proto;
+            props.section = section;
+
+            var markup = renderComponentToString(reactDir, file, props);
+
+            chunk.write('<div id="' + div + '">'+ markup+'</div>' +
+                '<script src="' + bundle + '"></script>');
+            return chunk;
+        } catch (e) {
+            chunk.setError(e);
+            console.log(e);
+            console.log(e.stack);
         }
     }
 }

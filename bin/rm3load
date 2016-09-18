@@ -1,44 +1,61 @@
 #!/usr/bin/env node
-
-var update = require('../lib/update');
-var entity = require('../lib/entity');
-var sitepath = require ('sitepath');
 var db = require('../lib/db');
+var SitePath = require ('sitepath');
 var program = require('commander');
 var pjson = require('../package.json');
+var fs = require('fs');
+var jsonfile = require('jsonfile');
+var loaddump = require('../lib/loaddump');
 var winston = require('winston');
+var workflow = require('../lib/workflow'),
+    runWorkflows = require('../lib/runworkflows');
 
 winston.cli();
 
 function parse_sitepath(val) {
-  var pth = new sitepath(val);
+  var pth = new SitePath(val);
   return pth;
 }
 
 program
   .version(pjson.version)
+  .option('-d, --directory [dir]','Input directory')
   .option('-f, --file [infile]','Input file','-')
+  .option('-h, --nohistory','Don\'t try to Load history', true)
   .option('-p, --path [path]','Change the path to the new destination path',parse_sitepath)
+  .option('-u, --user [path]','Change the user to the new destination path',parse_sitepath)
   .parse(process.argv);
 
-function loadData(parsedData) {
-  ent = new entity.Entity();
-  ent.fromDb({rows: [parsedData]});
-  if (program.path) {
-    ent._path = program.path
-  }
-  update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
-    'loaded via rm3load', function(err, entityId, revisionId, revisionNum) {
-      if (err) {
-        winston.error('Error:', err);
-      } else {
-        winston.info('Created ', {entityId: entityId, revisionId: revisionId, revisionNum: revisionNum});
-      }
-      db.gunDatabase();
-    });
+
+var security = {context: 'ROOT'}
+
+if (program.user) {
+  security = {context: 'STANDARD'};
+  security.user = program.user;
 }
 
-if (program.file === '-') {
+if (program.directory) {  
+  if (!fs.lstatSync(program.directory).isDirectory()) {
+    winston.error('Path isn\'t a directory');
+    db.gunDatabase();
+    process.exit(1);
+  }
+
+  workflow.loadConf(function() {
+    loaddump.loadFromCatalog(db, security, program.directory, program.path, new SitePath(['wh','users']), !program.nohistory, function(err) {
+      if (err) {
+        winston.error('Error:', err);
+        db.gunDatabase();
+        process.exit(1);
+      }
+      db.gunDatabase();
+      process.exit(0);
+    });
+  });
+
+
+
+} else if (program.file === '-') {
   winston.info('Loading from stdin');
   var stdin = process.stdin
   var inputChunks = [];
@@ -55,14 +72,29 @@ if (program.file === '-') {
   stdin.on('end', function () {
     var inputData = inputChunks.join();
     var parsedData = JSON.parse(inputData);
-    loadData(parsedData);
+    loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
+      if (err) {
+        winston.error('Error:', err);
+        db.gunDatabase();
+        process.exit(1);
+      }
+      db.gunDatabase();
+    });
   });
 } else {
   winston.info('Loading from %s', program.file);
-  var fs = require('fs');
-  var inputData = fs.readFileSync(program.file);
-  var parsedData = JSON.parse(inputData);
-  loadData(parsedData);
+  jsonfile.readFile(program.file, function(err, parsedData) {
+    if (err) {
+      winston.error('Error:', err);
+      process.exit(1);
+    }
+    loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
+      if (err) {
+        winston.error('Error:', err);
+        db.gunDatabase();
+        process.exit(1);
+      }
+      db.gunDatabase();
+    });
+  })
 }
-
-ent = new entity.Entity();

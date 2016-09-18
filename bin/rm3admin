@@ -7,7 +7,7 @@ var SitePath = require ('sitepath');
 var db = require('../lib/db');
 var program = require('commander');
 var pjson = require('../package.json');
-var user = require('../lib/user');
+var user = require('../lib/authentication/user');
 var validator = require('validator');
 var crypto = require('crypto');
 var loadTemplate = require('../lib/loadtemplate');
@@ -71,23 +71,22 @@ program
       pw = buf.toString('base64');
       winston.info('Randomly generated password is:', pw)
     }
-    user.encodePassword(pw, ent, function(err) {
+
+    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
+                         'cli', function(err, entity_id, revision_id, revision_num) {
       if (err) {
         winston.error('error:', err);
-        return;
-      }
-      
-      update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 
-                           'cli', function(err, entity_id, revision_id, revision_num) {
-        if (err) {
-          winston.error('error:', err);
-        } else {
-          winston.info('Created');
+      } else {
+        user.createCredential(db, {}, options.email, options.userroot, name, pw, function(err) {
+          if (err) {
+            winston.error('error:', err);
+          } else {
+            winston.info('Created');
+          }
           db.gunDatabase();
-        }
-      });
+        });
+      }
     });
-
   });
 
 program
@@ -193,8 +192,6 @@ program
     });
   });
 
-
-
 program
   .command('roleinfo [role]')
   .description('information about the role')
@@ -273,6 +270,26 @@ program
         winston.info('Deleted');
         db.gunDatabase();
       }
+    });
+  });
+
+program
+  .command('listcredentials')
+  .description('List credentials')
+  .action(function(options){
+    winston.data('Credentials');
+    var resp = query.listCredentials(db, {});
+    resp.on('article', function(article) {
+      winston.data('Provider: %s\tUser ID: %s\tUser Path:%s\t', 
+        article.provider, article.userId, article.userPath);
+      winston.data('Provider Details: %s', article.providerDetails);
+    });
+    resp.on('error', function(err) {
+      winston.error('error:', err);
+    });
+    resp.on('end', function() {
+      winston.data('---');
+      db.gunDatabase();
     });
   });
 

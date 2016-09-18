@@ -8,21 +8,64 @@ Setting up for real
 
 rm3 is designed to be neutral to any particular devops working framework.  It should be able to work within a container-styled infrastructure just as easily as on Chef or Puppet managed nodes.
 
-rm3 is designed to work using npm.  Thus, the desired state for a new install of rm3 is that you will create a package that depends on the `rm3` package, as well as any accessory plugin modules, and then run from that package.  Schemes and plugins and so on are all also delivered as accessory modules.
+I felt it was important that rm3 core run in a 'semi-batteries included' sort of way, such that you could play with it easily.  However, if you are going to run a site 'for real', you want to create a custon npm package for installation purposes with all of the dependencies bundled and versioned.  This way, your plugins are isolated, so you can update them separately and not worry as much about maintaining patches against rm3 as it develops.  And this also means I don't need to implement a bad ersatz version of everything npm already does for you.
 
-npm is pretty good about pulling from wherever.  If you have site-specific modules, you can npm install from any random git repo or tarball URL.
+Thus, the desired state for a new install of rm3 is that you will create a package that depends on the `rm3` package, as well as any accessory plugin modules, and then run from that package.  Schemes and plugins and so on are all also delivered as accessory modules.
 
-Your install package can be checked into github, so you can keep track of versions.
+Once you've created the package, you probably want to store it in some sort of revision control system like git (maybe a github or gitlab repo).  npm can be set to install a package from a git repo or a tarball, so this doesn't mean that you have to publish your potentially sensitive config with packages you don't really want to have out in the public to npm.
+
+1. Make a subdirectory to hold your new package: `mkdir rm3-demo`
+2. Initialize a package: `npm init` (You can just hit enter a few times)
+3. Install rm3: `npm install rm3`
+4. Customize...
+
+**This section will improve as rm3 approaches 1.0**
 
 ### Service supervision
 
-Production apps tend to work best when they are run with process supervision.  With Docker, you can just set a restart policy to restart the container when it crashes.
+Production apps tend to work best when they are run with process supervision, to protect against the process crashing unexpectedly.
+
+#### Using docker
+
+With Docker, you can just set a restart policy to restart the container when it crashes.
+
+#### Using pm2
+
+pm2 is a fairly fast way to get things moving outside of docker.
+
+An example getting-started configuration file for pm2 looks something like this:
+
+```
+{
+  apps : [{
+    name        : "web",
+    script      : "./node_modules/rm3/bin/rm3front",
+    watch       : true,
+    env: {
+      "NODE_ENV": "development",
+      "RM3_ENV_VARIABLES": "can be set here"
+    },
+    env_production : {
+      "NODE_ENV": "production"
+      "RM3_ENV_VARIABLES": "can be set here"
+     },
+     instances  : 0,
+     exec_mode  : "cluster"
+   }]
+}
+```
 
 ### HTTP proxy
 
-**Note: You probably don't want to turn on caching right now.**
+You want to put a proxy in front of rm3, nginx or Apache.  The proxy is there to handle static resources (the files for the scheme, as well as the static blobs if you've implemented those), to load-balance between rm3 instances, to provide caching, to provide HTTPS, and to provide outward-facing abuse protection.  Remember, node.js is asynchronous but not parallel, so a single rm3 process can only utilize one CPU.  You can tune the number of proxy processes against the number of rm3 processes as needed.
 
-You want to put a proxy in front of rm3, nginx or Apache.
+You probably want to set the `RM3_DANGER_TRUST_PROXY` environment variable.  See [Express documentation for running behind a proxy](http://expressjs.com/en/guide/behind-proxies.html) to see how to set this.  If you are running nginx or varnish or apache on the same node, you probably want to set this to `loopback`.  Otherwise, some combination of `'loopback`, `linklocal`, or `uniquelocal` might be better.
+
+rm3 is set up to only serve http, where the proxy server is expected to provide https.  
+
+You also probably want to use a front-end cache, as rm3 doesn't try to cache rendered pages.  As rm3 does work very hard to generate correct ETags and Vary and Cache-Control headers for all situations, it should just magically work, although you might need to configure your cache to cache values with a cache-control marked as 'private'.
+
+Check out the [cache.md](caching guide) for more details.
 
 ### Avoid giving users access
 
@@ -68,7 +111,15 @@ Monitoring
 
 **This section will improve as rm3 approaches 1.0**
 
-Obviously, you want an HTTP check.  You want to look for a string pattern towards the end of the page, say something in your scheme's footer, to ensure the page is being rendered.
+The sorts of things you should be monitoring are:
+ * PostgreSQL database
+ * Redis cache
+ * rm3 service
+    * Each process should respond to HTTP requests within a certain time-frame, with the correct response code.  You probably want to look for a known string pattern towards the end of the page, say something in your scheme's footer, to ensure the page is being rendered.
+    * Memory usage and CPU usage within known bounds
+ * rm3 workflow
+ * Front-end cache / reverse proxy
+    * The front-end cache should respond to HTTP requests within a certain time-frame, with the correct response code.  You probably want to look for a known string pattern towards the end of the page, say something in your scheme's footer, to ensure the page is being rendered.
 
 Diagnostics
 -----------
@@ -88,11 +139,15 @@ A backup to the same machine that's hosting the site is not much of a backup at 
 
 Furthermore, you really want to rotate your backups.  Depending on performance, take a backup every few hours, but keep daily, weekly, and monthly backups.
 
-### Database table backup
+A backup necessarily needs to contain sensitive stuff like passwords, so you probably should encrypt them.
 
-A database backup should be able to get you out of most simple failures quickly.  You can use a file rotation tool to store it back in history so you can go back in time before a database corruption.  
+If you are hosting a site with a lot of images, be warned that your backups could get very large because the backup must necessarily contain all of the images.
 
-You should be able to back up the postgresql cluster.
+### Database table backup + File Blob store backup
+
+The contents of rm3 is stored both in the database and the blob store.  You cannot just backup the database, you also need to backup the blob store.
+
+A database backup should be able to get you out of most simple failures quickly.  You can use a file rotation tool to store it back in history so you can go back in time before a database corruption.
 
 A CLI command like `pg_dump -Fc <database name>` should generate a dump file to standard out that you can redirect into a file and then load later on with `pg_restore`
 
@@ -102,20 +157,43 @@ You can also use [wal-e](https://github.com/wal-e/wal-e) to get a continuous str
 
 **This may not save you from all possible problems**.  As a general rule, if there's a weird semantic corruption of the database in ways the developers haven't seen ever before, loading a table dump might put you back where you started.  Thus, a semantic backup is also important.
 
+You also need to backup the blobs; those are currently configured to the directory set in `RM3_LOCAL_BLOBS`.
+
+To restore, you should be able to load the database backup, place the blobs where rm3 expects them, and everything will be fine.
+
 ### Semantic backup
 
-`rm3backup <directory>` will create a directory named `<directory>` with a semantic backup.  It will create at least one file per entity, where the primary entity dump is located in a file suffixed by `-data.json`
+`rm3backup <directory>` will create a directory named `<directory>` with a semantic backup.
+
+There's a file called `catalog.json` in that directory that describes what the backup contains.  It will create at least one file per entity, where the primary entity dump is located in a file suffixed by `-data.json`, where the blobs have a different suffix.
+
+The credentials (passwords, OAuth tokens, etc) are stored in `credentials.json` and the permissions (e.g. which users have root) are stored in `permissions.json`.
 
 There are a lot of ways to go from here.  Again, in practice, [the ruby backup gem](https://github.com/backup/backup) will make this process go a bit more smoothly.
 
-Because it breaks things out into a series of files, rsync should provide a speed-up, although you also want to use `--delete` to make sure that it doesn't leave any extraneous deleted nodes around.
+You can use rsync or similar mechanisms to speed up remote backups.  You want to delete or move the existing backup (rm3backup requires the directory to not exist, so it doesn't accidentally write an incoherent backup), run rm3backup, then trigger the rsync with the `--delete` flag to make sure that backup doesn't leave any extraneous deleted nodes around.
 
-**Note: Loading from backups is presently laborious and will be fixed soon**
+It is significantly easier to edit a backup from rm3backup than it is to edit a backup from the database, although you should consider even the act of editing the database as a highly dangerous operation that might cause issues.
+
+**Currently, rm3load does not try to load revision history, although rm3backup is set up to store it; therefore history serialized by rm3backup with v0.2 might have issues.**
 
 Failure Recovery
 ----------------
 
 **This section will improve as rm3 approaches 1.0**
+
+### Zapping the workflow
+
+Sometimes the workflow system can get into a bad state.  To kill everything in the workflow system and set it all up all over again, you can first execute these SQL statements against your database:
+```sql
+drop table wf_jobs;
+drop table wf_jobs_info;
+drop table wf_runners;
+drop table wf_locked_targets;
+drop table wf_workflows;
+```
+
+And then you can create the workflows again: `./bin/rm3admin createworkflow`
 
 Tuning
 ------

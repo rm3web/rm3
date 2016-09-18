@@ -1,6 +1,6 @@
 var React = require('react/addons');
 var ReactIntl = require('react-intl');
-var IntlMixin  = ReactIntl.IntlMixin;
+var IntlProvider = ReactIntl.IntlProvider;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 var request = require('superagent');
 var JsxForms = require('rm3-react-controls');
@@ -10,7 +10,7 @@ var ErrorsList = JsxForms.ErrorsList;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 
 var CommentFormComponent = React.createClass({
-  mixins: [IntlMixin, LinkedStateMixin],
+  mixins: [LinkedStateMixin],
 
   getInitialState: function() {
     var state = {comment: '', errors: {}, message: ''};
@@ -60,7 +60,7 @@ var CommentFormComponent = React.createClass({
             return location.reload(true);
           }
           if (res.body.moderated) {
-            return self.setState({comment: '', message: 'This message has been held for moderation'})
+            return location.reload(true);
           }
         }
         FormLib.markError(self.state.errors,'__all__','unidentified response');
@@ -87,16 +87,16 @@ var CommentFormComponent = React.createClass({
     }
 
     return (
-    <form onSubmit={this.onSubmit} method="post" className="pure-form pure-form-stacked">
+    <IntlProvider messages={this.props.messages} locale='en'><form onSubmit={this.onSubmit} method="post" className="pure-form pure-form-stacked">
     {userInfo}
     <legend>Add comment (plain text, no HTML, put a blank line between paragraphs)</legend>
     <textarea rows="5" className="pure-input-1" id="comment" name="comment"
       value={this.state.comment} onChange={this.handleChange}></textarea>
     <ErrorsList errors={this.state.errors.__all__} />
     <button className="pure-button pure-button-primary" disabled={ready || this.state.isSubmitting}> <FormattedMessage
-                    message={this.getIntlMessage('SUBMIT')}  /></button>
+                    id={'SUBMIT'}  /></button>
     <div>{this.state.message}</div>
-    </form>
+    </form></IntlProvider>
     );
   }
 })

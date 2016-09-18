@@ -5,8 +5,7 @@
 <div id="nothead" class="errormessage">{@formatMessage _key="YOU_ARE_EDITING_AN_OLD_REV"/}</div>
 {/isNotHead}
 
-<div id="pageform">{@react component="page.jsx" locales=intl.locales messages=intl.messages section=section title=summary.title abstract=summary.abstract block=data.posting proto=meta.proto errors=errors noCache="true" /}</div>
-<script src="{@schemeStaticResource path="bundles/page.js" /}"></script>
+{@reactForm div="pageform" bundle=bundle component=component /}
 {/view-content}
 
 {<pagefooter}

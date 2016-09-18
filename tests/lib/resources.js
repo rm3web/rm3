@@ -1,4 +1,4 @@
-var user = require('../../lib/user');
+var user = require('../../lib/authentication/user');
 var entity = require('../../lib/entity');
 var db = require('../../lib/db');
 var update = require('../../lib/update');
@@ -16,13 +16,12 @@ exports.entityResource = function entityResource(path, ents, entidx, provisional
   }
 
   before(function createEntityResource(done) {
-    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'create',
-      function(err, entityId, revisionId, revisionNum) {
-        ents[entidx]._entityId = entityId;
-        ents[entidx]._revisionId = revisionId;
-        ents[entidx]._revisionNum = revisionNum;
-        done(err);
-      });
+    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'create', function(err, entityId, revisionId, revisionNum) {
+      ents[entidx]._entityId = entityId;
+      ents[entidx]._revisionId = revisionId;
+      ents[entidx]._revisionNum = revisionNum;
+      done(err);
+    });
   });
 
   after(function deleteEntityResource(done) {
@@ -40,18 +39,18 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
 
   ents[entidx] = ent;
 
-  before(function encodePassword(done) {
-    user.encodePassword('meow_kitty', ent, done);
-  });
-
   before(function createUserResource(done) {
-    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'create',
-      function(err, entityId, revisionId, revisionNum) {
-        ents[entidx]._entityId = entityId;
-        ents[entidx]._revisionId = revisionId;
-        ents[entidx]._revisionNum = revisionNum;
+    update.createEntity(db, {}, {context: 'ROOT'}, ent, true, 'create', function(err, entityId, revisionId, revisionNum) {
+      if (err) {
+        return done(err);
+      }
+      ents[entidx]._entityId = entityId;
+      ents[entidx]._revisionId = revisionId;
+      ents[entidx]._revisionNum = revisionNum;
+      user.createCredential(db, {}, ent.data.email, userpath, username, 'meow_kitty', function(err) {
         done(err);
       });
+    });
   });
 
   after(function deleteUserResource(done) {

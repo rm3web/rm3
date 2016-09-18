@@ -54,7 +54,7 @@ describe('db', function() {
     });
 
     it('should handle open_transaction errors', function(next) {
-      db.openTransaction(client, undefined, function(err) {
+      db.openTransaction({}, client, undefined, function(err) {
         if (err) {
           err.name.should.equal('DbError');
         } else {
@@ -65,7 +65,7 @@ describe('db', function() {
     });
 
     it('should handle commit_transaction errors', function(next) {
-      db.commitTransaction(client, function(err) {
+      db.commitTransaction({}, client, function(err) {
         if (err) {
           err.name.should.equal('DbCommitFailedError');
         } else {
@@ -76,7 +76,7 @@ describe('db', function() {
     });
 
     it('should handle rollback_transaction errors', function(next) {
-      db.rollbackTransaction(client, function(err) {
+      db.rollbackTransaction({},client, function(err) {
         if (err) {
           err.name.should.equal('DbRollbackFailedError');
         } else {

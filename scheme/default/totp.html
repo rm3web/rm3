@@ -1,0 +1,23 @@
+{>"layouts/full_tiny_sidebar"/}
+{<view-content}
+<div id="loginform">
+  <form action="/$login/totp/" method="post" class="pure-form pure-form-aligned">
+  <input type="hidden" name="_csrf" value="{csrfToken}" />
+  <div class="pure-control-group">
+  <label htmlFor="code">{@formatMessage _key="PASSWORD"/}:</label>
+  <input type="text" name="code" />
+  </div>
+  <div class="pure-controls">
+  <button class="pure-button pure-button-primary">{@formatMessage _key="SUBMIT"/}</button>
+  </div>
+  </form>
+</div>
+{/view-content}
+
+{<pagefooter}
+<div class="pure-g" style="padding-top: 1em;">
+ <div class="pure-u-1 footer">
+   &nbsp;
+  </div>
+</div>
+{/pagefooter}

@@ -7,8 +7,8 @@ var should = require('should');
 describe('update', function() {
   it('executes correctly', function(done) {
     var insertQuery = 'INSERT INTO wh_entity (path, stub, "entityId", "revisionId", \
-"revisionNum", proto, modified, created, summary, data, tags) VALUES ($1, $2, \
-$3, $4, $5, $6, $7, $8, $9, $10, $11)';
+"revisionNum", proto, modified, created, touched, hidden, summary, data, tags, search) VALUES ($1, $2, \
+$3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, (to_tsvector(\'english\', $14)))';
     var insertTagQuery = 'INSERT INTO wh_tag ("subjPath", "objClass", \
 "predPath", "objStr") VALUES ($1, $2, $3, $4)';
     var deleteBeforeQuery = 'DELETE FROM wh_entity WHERE (path = $1) AND (stub = true)';
@@ -26,11 +26,11 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
     ent.addTag('navigation', 'navbar');
 
     var db = {};
-    db.openTransaction = function(client, done, callback) {
+    db.openTransaction = function(ctx, client, done, callback) {
       callback(null, client, done);
     };
 
-    db.commitTransaction = function(client, callback) {
+    db.commitTransaction = function(ctx, client, callback) {
       callback(null);
     };
 
@@ -44,8 +44,8 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
           should.deepEqual(spec.values[1], false); //stub
           should.deepEqual(spec.values[4], 1); //revisionNum
           should.deepEqual(spec.values[5], 'base'); //proto
-          should.deepEqual(spec.values[8], JSON.stringify(ent.summary)); // summary
-          should.deepEqual(spec.values[9], JSON.stringify(ent.data)); // summary
+          should.deepEqual(spec.values[10], JSON.stringify(ent.summary)); // summary
+          should.deepEqual(spec.values[11], JSON.stringify(ent.data)); // summary
           func(null, {});
         } else if (spec.name === 'insert_tag_query') {
           spec.name.should.equal('insert_tag_query');
@@ -69,7 +69,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
           should.deepEqual(spec.values[6], 1); //revisionNum
           should.deepEqual(spec.values[10], 'Create');
           should.deepEqual(spec.values[11], true);
-          var data = JSON.parse(spec.values[13]);
+          var data = JSON.parse(spec.values[14]);
           should.deepEqual(data.toData.summary, ent.summary);
           should.deepEqual(data.toData.data, ent.data);
           func(null, {});
@@ -88,9 +88,10 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11)';
   });
   it('fails on bad evt_class', function(done) {
     var logentry = {
-      evtClass: 'this_is_not_valid'
+      evtClass: 'this_is_not_valid',
+      workflow: {}
     };
-    update._private.execLogentry(true, undefined, undefined, logentry, function(err) {
+    update._private.execLogentry({}, true, undefined, undefined, logentry, function(err) {
       if (err) {
         should.deepEqual(err.name, 'InvalidLogClass');
         done();

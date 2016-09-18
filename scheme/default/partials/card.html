@@ -1,3 +1,4 @@
+<div>
 {#data}
 <div class="hentry hentry-card">
   <a class="icon" href="{@sitePathToUrl path=path /}">
@@ -5,16 +6,22 @@
   </a>
   <span class="entry-title">
     {@titleLink rel="bookmark" /}
+    {@viaLink rel="alternate" /}
   </span>
   <time class="updated" datetime="{date}">{@formatRelative val=date/}</time>
   <div class="entry-summary">
-    {summary}
+    {summary|s}
   </div>
+  {@tags showNav="false" obj=tags}
+  <div class="predicatePill">{@predTag /}</div> <div class="tagPill">{@objLink /}</div>
+  {/tags}
 </div>
 {/data}
+</div>
+<div style="clear: left;">
 {moreLink|s}
+</div>
 {?facets}
-<br clear="all" />
 <div class="pure-g">
 
 {?facets.predicates}

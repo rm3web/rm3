@@ -16,14 +16,17 @@ describe('stubEntity', function() {
           entityId: '96010990-36ad-11e4-863b-614e8d833a23',
           revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
           revisionNum: 1,
+          hidden: false,
           modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           summary: {title: 'blrg', abstract: 'some text goes here'},
           tags: {}
       }],
       fields:
       [{name: 'path', dataTypeID: 17555},
         {name: 'stub', dataTypeID: 16},
+        {name: 'hidden', dataTypeID: 16},
         {name: 'entityId', dataTypeID: 2950},
         {name: 'revisionId', dataTypeID: 2950},
         {name: 'revisionNum', dataTypeID: 23},
@@ -31,7 +34,7 @@ describe('stubEntity', function() {
         {name: 'created', dataTypeID: 1114},
         {name: 'summary', dataTypeID: 114},
         {name: 'data', dataTypeID: 114}],
-    rowAsArray: false};
+      rowAsArray: false};
 
     beforeEach(function() {
       e = new entity.StubEntity();
@@ -46,6 +49,7 @@ describe('stubEntity', function() {
       e2._revisionNum = 1;
       e2._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e2._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2.summary =
       {"title": "blrg",
        "abstract": "some text goes here"};
@@ -63,20 +67,22 @@ describe('stubEntity', function() {
       e._revisionNum = 1;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.summary =
       {"title": "blrg",
        "abstract": "some text goes here"};
 
       var v = {
-      meta:
+        meta:
        {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
          revisionNum: 1,
          sitePath: ['wh'],
          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
-      summary: {title: 'blrg', abstract: 'some text goes here'},
-      permissions: {}};
+         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+         touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
+        summary: {title: 'blrg', abstract: 'some text goes here'},
+        permissions: {}};
 
       e.view().should.have.properties(v);
     });
@@ -91,6 +97,7 @@ describe('stubEntity', function() {
       e._revisionNum = 1;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.summary =
       {"title": "blrg",
        "abstract": "some text goes here"};
@@ -114,8 +121,10 @@ describe('entity', function() {
           revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
           revisionNum: 1,
           proto: 'base',
+          hidden: false,
           modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
           summary: {title: 'blrg', abstract: 'some text goes here'},
           data: {posting: '<div>Test test</div>'},
           tags: {}
@@ -123,16 +132,18 @@ describe('entity', function() {
       fields:
       [{name: 'path', dataTypeID: 17555},
         {name: 'stub', dataTypeID: 16},
+        {name: 'hidden', dataTypeID: 16},
         {name: 'entityId', dataTypeID: 2950},
         {name: 'revisionId', dataTypeID: 2950},
         {name: 'revisionNum', dataTypeID: 23},
         {name: 'proto', dataTypeID: 25},
         {name: 'modified', dataTypeID: 1114},
         {name: 'created', dataTypeID: 1114},
+        {name: 'touched', dataTypeID: 1114},
         {name: 'summary', dataTypeID: 114},
         {name: 'data', dataTypeID: 114},
         {name: 'tags', dataTypeId: 114}],
-    rowAsArray: false};
+      rowAsArray: false};
 
     beforeEach(function() {
       e = new entity.Entity();
@@ -146,8 +157,10 @@ describe('entity', function() {
       e2._revisionId = '96010991-36ad-11e4-863b-614e8d833a23';
       e2._revisionNum = 1;
       e2._proto = "base";
+      e2._hidden = false;
       e2._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e2._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2.data.posting = '<div>Test test</div>';
       e2.summary =
       {"title": "blrg",
@@ -170,25 +183,29 @@ describe('entity', function() {
       e._revisionId = '96010991-36ad-11e4-863b-614e8d833a23';
       e._revisionNum = 1;
       e._proto = "base";
+      e._hidden = false;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.data.posting = '<div>Test test</div>';
       e.summary =
       {"title": "blrg",
        "abstract": "some text goes here"};
 
       var v = {
-      meta:
+        meta:
        {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
          revisionNum: 1,
          proto: 'base',
          sitePath: ['wh'],
+         hidden: false,
          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
-      summary: {title: 'blrg', abstract: 'some text goes here'},
-      data: {posting: '<div>Test test</div>'},
-      permissions: {}};
+         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+         touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
+        summary: {title: 'blrg', abstract: 'some text goes here'},
+        data: {posting: '<div>Test test</div>'},
+        permissions: {}};
 
       e.view().should.have.properties(v);
     });
@@ -204,6 +221,7 @@ describe('entity', function() {
       e._proto = "base";
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.data.posting = '<div>Test test</div>';
       e.summary =
       {"title": "blrg",
@@ -228,17 +246,19 @@ describe('entity', function() {
        "abstract": "some text goes here"};
 
       var v = {
-      meta:
+        meta:
        {entityId: null,
          revisionId: null,
          revisionNum: null,
          proto: 'base',
+         hidden: false,
          sitePath: ['wh'],
          modified: now,
-         created: now},
-      summary: {title: 'blrg', abstract: 'some text goes here'},
-      data: {posting: '<div>Test test</div>'},
-      permissions: {}};
+         created: now,
+         touched: now},
+        summary: {title: 'blrg', abstract: 'some text goes here'},
+        data: {posting: '<div>Test test</div>'},
+        permissions: {}};
 
       e.view().should.have.properties(v);
     });
@@ -267,10 +287,12 @@ describe('entity', function() {
         tomorrow.setDate(tomorrow.getDate() + 1);
 
         now.should.be.equal(e.view().meta.modified);
+        now.should.be.equal(e.view().meta.touched);
 
         e.updateTimes(tomorrow);
 
         tomorrow.should.be.equal(e.view().meta.modified);
+        tomorrow.should.be.equal(e.view().meta.touched);
       });
     });
 

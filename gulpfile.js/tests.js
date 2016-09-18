@@ -100,6 +100,7 @@ function spawnServerForTests(db, executable, params, timeout, setup, next) {
   ctx.env.RM3_PG = db;
   ctx.env['RM3_JWT_SECRET'] = 'poniesandstuff';
   ctx.env['RM3_JWT_ISSUER'] = 'wirewd.com';
+  ctx.env['RM3_DANGER_DISABLE_HTTPS_CHECKS'] = true;
   var server = spawn(executable, params, ctx);
   setup(server);
   tcpPortUsed.waitUntilUsed(4000, 500, timeout)
@@ -201,9 +202,9 @@ gulp.task('coverage:core', function(callback) {
               callback);
 });
 
-gulp.task('base-coverage', shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/gulp base-coverage:core',
+gulp.task('base-coverage', shell.task(['./node_modules/.bin/nyc --cache ./node_modules/.bin/gulp base-coverage:core',
   './node_modules/.bin/nyc report -r html -r lcov -r html']));
 
-gulp.task('coverage', shell.task(['./node_modules/.bin/nyc ./node_modules/.bin/gulp coverage:core',
+gulp.task('coverage', shell.task(['./node_modules/.bin/nyc --cache ./node_modules/.bin/gulp coverage:core',
   './node_modules/.bin/nyc report -r html -r lcov -r html']));
 

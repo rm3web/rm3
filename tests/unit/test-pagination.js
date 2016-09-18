@@ -19,12 +19,16 @@ describe('pagination', function() {
   describe('#parsePath', function() {
     it('works when partial = null', function() {
       var pagination = {};
-      Pagination.parsePath(pagination, '1235', undefined, function(a,b) {should.fail();});
+      Pagination.parsePath(pagination, '1235', undefined, function(a,b) {
+        should.fail();
+      });
       pagination.should.deepEqual({});
     });
     it('works for simple count partials', function() {
       var pagination = {};
-      Pagination.parsePath(pagination, 'g', ['g', '14'], function(a,b) {should.fail();});
+      Pagination.parsePath(pagination, 'g', ['g', '14'], function(a,b) {
+        should.fail();
+      });
       pagination.should.deepEqual({start: 14});
     });
     it('works for more complicated count partials', function() {

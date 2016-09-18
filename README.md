@@ -6,7 +6,7 @@ rm3
 What is it?
 -----------
 
-rm3 is a system for managing stuff on the web. It's a little more than just a blog engine, but a little less than an enterprise CMS. It is to Drupal as Ghost is to WordPress. When farther along, it will be able to be used as a blog, or a wiki, or a photo archive, or a combination of things. Like a blog, it lets you create a series of blog articles in a collection. Like a wiki, it maintains a history of all changes.  Like a CMS, it lets you create a site with more structure than a mere list of posts.
+rm3 is a system for managing stuff on the web. It's a little more than just a blog engine, but a little less than an enterprise CMS. It is to Drupal as Ghost is to WordPress. It can be a blog, a wiki, a photo archive, or a combination of all of that and more.  Like a blog, it lets you create a series of blog articles in a collection. Like a wiki, it maintains a history of all changes.  Like a CMS, it lets you create a site with more structure than a mere list of posts.  It has good support for both SVG vector graphics and photos.
 
 Release Status
 --------------
@@ -33,10 +33,10 @@ How to get started?
 
 ### Manual Setup
 
-* Install PostgreSQL 9.3 or later.
-* Install node.js 0.12 or later.
+* Install PostgreSQL 9.4 or later.  See [PostgreSQL installation](http://www.postgresql.org/download/linux/ubuntu/) -- you want to install it off of the PostgreSQL Apt Repository if your operating system doesn't package 9.5 or newer
+* Install node.js 4.4 or later (node.js 6.0 is not yet supported).  See [NodeJS install via package manager](https://nodejs.org/en/download/package-manager/)
 * Install Redis 2.0 or later.
-* Install LibRSVG library and header files (see https://www.npmjs.com/package/rsvg)
+* Install LibRSVG library and header files (see https://www.npmjs.com/package/librsvg)
 * Git clone this repo
 * `npm install`
 * Create the database in postgresql
@@ -49,20 +49,15 @@ How to get started?
     * You can set the RM3_PG environment variable to something different if you want a different database username and password (and definitely should, if you want to run this in production)
   * `createdb rm3test`
   * `psql rm3test -U wirehead < db-schema.sql`
+  * `./bin/rm3admin createworkflow`
 * Load some default content
   * `./bin/rm3load -f default_frontpage.json`
   * `./bin/rm3load -f default_users.json`
-* Add a user and assign them to the root group
-  * `./bin/rm3admin adduser wirehead "Some New User" -p "Some profile text" -u http://www.wirewd.com/ -e email@example.com --password password`
-  * `./bin/rm3admin assign wirehead root`
-* Add permissions for the root group
-  * `./bin/rm3admin permit root edit \*`
-  * `./bin/rm3admin permit root delete \*`
-  * `./bin/rm3admin permit root view \*`
-* Add permissions for the special 'nobody' group
-  * `./bin/rm3admin permit nobody view wh.!users`
+  * `./bin/rm3admin loadtemplate base_access.json wh`
+
 * Run it
   * `./node_modules/.bin/gulp develop`
+  * In the template a user named "wirehead" is created with a password of "password".
 
 [Docs](docs)
 ------------
