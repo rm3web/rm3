@@ -7,7 +7,7 @@
       <name>Wirehead</name>
   </author>
 
-  {@basicQuery}
+  {@basicQuery select="child" sort="created" limit="16"}
   <entry>
     <link href="{@sitePathToUrl path=path /}" rel="alternate" />
     {@linkIcon/}
