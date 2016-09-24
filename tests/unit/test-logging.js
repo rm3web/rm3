@@ -36,6 +36,16 @@ describe('logging', function() {
           });
       });
 
+      it('#logAndIgnoreError logs an error', function(cb) {
+        plan = new Plan(2, cb);
+        var err = new Error();
+        err.fear = 'beer';
+
+        logging.logAndIgnoreError(boundLogger, err, 'logging test', 'loggingmock',
+          {data: 'data'});
+        plan.ok(true);
+      });
+
       it('#logAndCreateError creates an error', function(cb) {
         plan = new Plan(2, cb);
         var err = new Error();
