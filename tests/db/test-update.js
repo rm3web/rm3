@@ -714,6 +714,24 @@ describe('update', function() {
         done(err);
       });
     });
+
+    step('update', function createCredential(done) {
+      update.updateCredential(db, {}, 'test', 'store', {}, done);
+    });
+
+    step('check update credential', function checkCredential(done) {
+      var query = "SELECT provider, \"userId\", \"userPath\" FROM wh_credential WHERE provider = 'test' AND \"userId\" = 'gor';";
+      quickQuery(db, query, function(err, result) {
+        if (err) {
+          should.fail(err);
+        }
+        should.deepEqual(result.rowCount, 1);
+        should.deepEqual(result.rows[0].provider, 'test');
+        should.deepEqual(result.rows[0].userId, 'gor');
+        should.deepEqual(result.rows[0].userPath, null);
+        done(err);
+      });
+    });
   });
 
   describe('blob', function() {

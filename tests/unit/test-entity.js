@@ -296,6 +296,21 @@ describe('entity', function() {
       });
     });
 
+    describe('#updateTouched', function() {
+      it('should work', function() {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        now.should.be.equal(e.view().meta.modified);
+        now.should.be.equal(e.view().meta.touched);
+
+        e.updateTouched(tomorrow);
+
+        now.should.be.equal(e.view().meta.modified);
+        tomorrow.should.be.equal(e.view().meta.touched);
+      });
+    });
+
     describe('#addTag', function() {
       it('should work', function() {
         e.addTag(null, 'sparklefish');
@@ -310,6 +325,11 @@ describe('entity', function() {
 
         e._tags.hasTag('wh.ponies', {'@id': 'twilight', 'objClass': 'tag'}).should.equal(true);
         e._tags.hasTag('wh.ponies', {'@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(true);
+
+        e.hasTag(null, 'sparklefish').should.equal(true);
+        e.hasTag('navigation', 'navbar').should.equal(true);
+        e.hasTag(new sitepath(['wh', 'ponies']), 'twilight').should.equal(true);
+        e.hasTag(new sitepath(['wh', 'ponies']), new sitepath(['wh', 'princess'])).should.equal(true);
       });
 
       it('should reject invalid values', function() {
