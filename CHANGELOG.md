@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path from 0.2.x databases is to dump using rm3backup to a directory that you load with rm3load and recreate the permissions  (You can manually edit `permissions.json` if necessary)
+This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path from 0.2.x databases is to dump using rm3backup to a directory that you load with rm3load and recreate the permissions  (You can manually edit `permissions.json` if necessary).  You will also need to manually set hidden to false (use `update wh_entity set hidden=false;` in your SQL database)
 
 ### Added
 - More operational docs, explained some of the authentication pipeline.
@@ -41,7 +41,6 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
   - Audio
 - Added the ability to load history with rm3load
   - added --nohistory flag to smash history
-  - breaks on 0.2.0 backups currently because it tries to assign a user to a permission once when it loads user history and once when it loads the credentials file.
 - Inspects URLs passed by bookmarklet for OpenGraph and other information.
 - Refactored permissions to have more fine-grained permissions.
 - Made comments able to be held in a moderation state.

@@ -116,7 +116,7 @@ program
       winston.warn('File and path are required')
     }
     loadTemplate(db, entity.Entity, update, 
-      jsonfile.readFileSync(file), new SitePath(path), new SitePath(['wh','users']), function(err) {
+      jsonfile.readFileSync(file), new SitePath(path), new SitePath(['wh','users']), {}, function(err) {
       if (err) {
         winston.error('error:', err);
       } else {
