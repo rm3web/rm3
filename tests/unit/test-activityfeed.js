@@ -260,6 +260,37 @@ describe('activityfeed', function() {
         dust.helpers.activityVerb(chunk, context, {}, params);
       });
     });
-  });
 
+    describe('#activityId', function() {
+      it('works', function(cb) {
+        var chunk = {}, context = {}, params = {};
+        chunk.write = function(str) {
+          str.should.equal('the id goes here');
+          cb();
+        };
+        context.get = function(param) {
+          param.should.equal('rm3:revisionId');
+          return 'the id goes here';
+        };
+
+        dust.helpers.activityId(chunk, context, {}, params);
+      });
+    });
+
+    describe('#activityBareUrl', function() {
+      it('works', function(cb) {
+        var chunk = {}, context = {}, params = {};
+        chunk.write = function(str) {
+          str.should.equal('http://example.com');
+          cb();
+        };
+        context.get = function(param) {
+          param.should.equal('object');
+          return {'rm3:rootUrl': 'http://example.com'};
+        };
+
+        dust.helpers.activityBareUrl(chunk, context, {}, params);
+      });
+    });
+  });
 });
