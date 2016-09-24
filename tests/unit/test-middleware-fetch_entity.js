@@ -73,6 +73,26 @@ describe('middleware:fetchEntity', function() {
       });
     });
 
+    it('middleware fetchEntity revision_id post', function(done) {
+      req.body = {};
+      req.body.revisionId = '11111111-1111-1111-a111-111111111111';
+
+      query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
+        ent.should.eql(entity);
+        sp.should.eql(new sitepath(['sparklepony']));
+        should.deepEqual(rev, '11111111-1111-1111-a111-111111111111');
+        next(null, {e: 'sr'});
+      };
+
+      var middleware = fetchEntity(db, {}, query, entity, StubEntity);
+      should.deepEqual(typeof middleware, "function");
+
+      middleware(req, res, function() {
+        req.entity.should.eql({e: 'sr'});
+        done();
+      });
+    });
+
     it('middleware fetchEntity bad revision_id', function(done) {
       req.query = {};
       req.query.revisionId = '11111111-1111-1111-a111';
@@ -89,6 +109,27 @@ describe('middleware:fetchEntity', function() {
 
       middleware(req, res, function() {
         req.entity.should.eql({e: 'sq'});
+        done();
+      });
+    });
+
+    it('middleware fetchEntity revision_id unauthorized', function(done) {
+      req.query = {};
+      req.query.revisionId = '11111111-1111-1111-a111-111111111111';
+
+      query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
+        ent.should.eql(entity);
+        sp.should.eql(new sitepath(['sparklepony']));
+        should.deepEqual(rev, '11111111-1111-1111-a111-111111111111');
+        next(null, {e: 'sr', permissions: {}, curLogRev: {evtFinal: false}});
+      };
+
+      var middleware = fetchEntity(db, {}, query, entity, StubEntity);
+      should.deepEqual(typeof middleware, "function");
+
+      middleware(req, res, function(err) {
+        should.deepEqual(err.name, 'ForbiddenError');
+        should.deepEqual(err.httpResponseCode, 403);
         done();
       });
     });
@@ -116,6 +157,48 @@ describe('middleware:fetchEntity', function() {
         done();
       });
 
+    });
+
+    it('middleware fetchEntity permissions_not_found_error', function(done) {
+      function PermissionsNotFoundError() {
+        this.message = "Entity not found";
+      }
+      util.inherits(PermissionsNotFoundError, Error);
+      errs.register('query.permissions_not_found', PermissionsNotFoundError);
+
+      query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
+        next(errs.create('query.permissions_not_found', {
+          path: 'sparklepony',
+          revisionId: null
+        }));
+      };
+
+      var middleware = fetchEntity(db, {}, query, entity, StubEntity);
+      should.deepEqual(typeof middleware, "function");
+
+      middleware(req, res, function(err) {
+        should.deepEqual(err.name, 'ForbiddenError');
+        should.deepEqual(err.httpResponseCode, 403);
+        done();
+      });
+    });
+
+    it('middleware fetchEntity gone', function(done) {
+      query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
+        ent.should.eql(entity);
+        sp.should.eql(new sitepath(['sparklepony']));
+        should.deepEqual(rev, null);
+        next(null, new StubEntity());
+      };
+
+      var middleware = fetchEntity(db, {}, query, entity, StubEntity);
+      should.deepEqual(typeof middleware, "function");
+
+      middleware(req, res, function(err) {
+        should.deepEqual(err.name, 'GoneError');
+        should.deepEqual(err.httpResponseCode, 410);
+        done();
+      });
     });
 
     it('middleware fetchEntity db_error', function(done) {
