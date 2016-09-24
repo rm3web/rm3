@@ -26,4 +26,13 @@ describe('middleware:pathMap', function() {
       });
     });
   });
+
+  it('should throw when encountering an invalid path', function(cb) {
+    var req = {path: 'wet==-wwrt---vbdfg.wretjh', ctx: {}};
+    middleware(req, res, function(err) {
+      err.message.should.equal('NOT_FOUND');
+      err.name.should.equal('UnparsablePathError');
+      cb();
+    });
+  });
 });
