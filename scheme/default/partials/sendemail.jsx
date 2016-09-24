@@ -8,6 +8,7 @@ var FormLib = require('../../../lib/formlib');
 var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
+var validator = require('validator');
 
 var SendEmailFormComponent = React.createClass({
   mixins: [LinkedStateMixin],
@@ -63,8 +64,17 @@ var SendEmailFormComponent = React.createClass({
   },
   render: function() {
     var userInfo, ready;
+    var emailValid = false;
 
-    ready = !(this.state.comment && this.state.email);
+    if (this.state.email) {
+      if (validator.isEmail(this.state.email)) {
+        emailValid = true;
+      }
+    }
+    ready = emailValid && this.state.comment;
+    if (this.state.isSubmitting) {
+      ready = false;
+    }
 
     return (
     <IntlProvider messages={this.props.messages} locale='en'><form onSubmit={this.onSubmit} method="post" className="pure-form pure-form-stacked">
@@ -72,13 +82,13 @@ var SendEmailFormComponent = React.createClass({
     <label htmlFor="name">Name:</label>
     <input className="pure-input-1" type="text" name="name" onChange={this.handleChange} /><br/>
     <label htmlFor="email">Email (required):</label>
-    <input className="pure-input-1" type="text" name="email" required onChange={this.handleChange} /><br/>
+    <input className="pure-input-1" type="text" name="email" onChange={this.handleChange} /><br/>
     </div>
-    <legend>Add comment (plain text, no HTML, put a blank line between paragraphs)</legend>
+    <legend>Email text:</legend>
     <textarea rows="15" className="pure-input-1" id="comment" name="comment"
       value={this.state.comment} onChange={this.handleChange}></textarea>
     <ErrorsList errors={this.state.errors.__all__} />
-    <button className="pure-button pure-button-primary" disabled={ready || this.state.isSubmitting}> <FormattedMessage
+    <button className="pure-button pure-button-primary" disabled={!ready}> <FormattedMessage
                     id={'SUBMIT'}  /></button>
     <div>{this.state.message}</div>
     </form></IntlProvider>
