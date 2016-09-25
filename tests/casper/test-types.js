@@ -58,7 +58,14 @@ describe('Types', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       'div.pure-u-2-3'.should.contain.text('Blog stuff here...');
       'div.pure-u-2-3'.should.contain.text('Comment goes here');
-      this.click('a[href*=wirehead]');
+    });
+
+    casper.thenOpen('http://127.0.0.1:4000/link/', function() {
+      // Link type
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'div.pure-u-2-3'.should.contain.text('Test link');
+      'div.pure-u-2-3 a'.should.contain.text('Link');
+      'a[href*=example]'.should.be.inDOM.and.be.visible;
     });
   });
 });
