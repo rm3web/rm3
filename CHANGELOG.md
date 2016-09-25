@@ -2,14 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## Release urgency levels:
+
+* Low: Just new features and bugfixes
+* Moderate: There's some important new features.  You don't want to skip moderate releases, but there's nothing urgent.
+* High: There's a critical bug that may impact a percentage of the users.  Upgrade!
+* Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
+
 ## [Unreleased]
+
+This version is the first I'm actually trying to run in production.
 
 This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path from 0.2.x databases is to dump using rm3backup to a directory that you load with rm3load and recreate the permissions  (You can manually edit `permissions.json` if necessary).  You will also need to manually set hidden to false (use `update wh_entity set hidden=false;` in your SQL database)
 
 ### Added
 - More operational docs, explained some of the authentication pipeline.
 - Ability to change the number of items per page and select protos and child paths.
-- Ability to have hidden pages.
+- BREAKING: Ability to have hidden pages.
 - Card view now has tags.
 - State machine to control drafts / approvals / blob workflow.
 - Checkbox when you edit a page to control if you want to edit the draft further or create a new draft.
@@ -51,7 +60,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - Backed off the default workflow poll rate, allow it to be set with by the `RM3_WF_RUN_INTERVAL` environment variable.
 
 ### Changed
-- Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
+- BREAKING: Upgraded to textblocks-0.14, removed support for pragma blocks entirely.
 - Changed setting so that a session cookie isn't generated until needed.
 - Removed `connect-flash` and replaced it with tiny middlware, because sessions were being generated when they shouldn't.
 - Security router is split out from command router, now if you don't supply a security router, the page is default-deny.
@@ -75,14 +84,14 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - rm3load doesn't try to start a workflow worker, just the workflow system.
 - API-driven commands were defaulting to the wrong path.
 
-## [0.2.3] - 2016-7-23: Importing it's grandparents edition
+## [0.2.3] - Low - 2016-7-23: Importing it's grandparents edition
 
 ### Fixed
 - "More" links weren't wrapping properly.
 - Month/Year Facets are in the wrong order.
 - Switched to private branch for `wf-pg-backend` because of build issues.
 
-## [0.2.2] - 2016-7-23: Special perfectly swell bugfix edition
+## [0.2.2] - Low - 2016-7-23: Special perfectly swell bugfix edition
 
 ### Changed
 - Updated dependencies
@@ -91,7 +100,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - If you load a dump and it doesn't have credentials or permissions, it won't try to load.
 - Query generation was generating oldest-first queries when it needed newest-first queries.
 
-## [0.2.1] - 2016-7-23: With the skin still itchy edition
+## [0.2.1] - Medium - 2016-7-23: With the skin still itchy edition
 
 ### Changed
 - Updated dependencies
@@ -101,7 +110,7 @@ This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path f
 - In the BaseBehavior mixin, the list of fields that can be inserted can be defined by the underlying proto.
 - Creates a blob alias after a tag so that images don't break if you add a tag to them.
 
-## [0.2.0] - 2016-7-17: Special Sunny July with Poison Ivy edition
+## [0.2.0] - High - 2016-7-17: Special Sunny July with Poison Ivy edition
 
 This version is incompatable with 0.1.x databases.
 
@@ -151,7 +160,7 @@ This version is incompatable with 0.1.x databases.
 - CVE-2016-5118: sharp prior to 0.15.0 uses insecure Magick.
 - CWE-400: negotiator prior to 0.6.1 are vulnerable to ReDoS.
 
-## [0.1.2] - 2016-3-5: Special documentation on a Rainy Day edition
+## [0.1.2] - High - 2016-3-5: Special documentation on a Rainy Day edition
 ### Added
 - rm3backup command
 - Faceting based on tags
@@ -163,13 +172,13 @@ This version is incompatable with 0.1.x databases.
 ### Fixed
 - Login form had some React-isms that were breaking the Dust version.
 
-## [0.1.1] - 2016-2-28
+## [0.1.1] - Low - 2016-2-28
 ### Fixed
 - Fails to operate correctly when there's no JWT token
 - Removed login form in JSX and just went for straight Dust.
 - Added generated Travis tarball to npmignore.
 
-## rm3 0.1.0 - 2016-2-28: Special Pirates of Penzance Sing-Along edition
+## rm3 0.1.0 - Medium - 2016-2-28: Special Pirates of Penzance Sing-Along edition
 ### Added
 - First release.
 
