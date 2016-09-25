@@ -52,5 +52,13 @@ describe('Types', function() {
       'a[href*=logout]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
     });
+
+    casper.thenOpen('http://127.0.0.1:4000/blog/', function() {
+      // Blog + Comment type
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'div.pure-u-2-3'.should.contain.text('Blog stuff here...');
+      'div.pure-u-2-3'.should.contain.text('Comment goes here');
+      this.click('a[href*=wirehead]');
+    });
   });
 });
