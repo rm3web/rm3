@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.0] - Medium - 2016-9-24: Coming to you live and direct edition...
+
 This version is the first I'm actually trying to run in production.
 
 This version is incompatible with 0.1.x and 0.2.x databases.  The upgrade path from 0.2.x databases is to dump using rm3backup to a directory that you load with rm3load and recreate the permissions  (You can manually edit `permissions.json` if necessary).  You will also need to manually set hidden to false (use `update wh_entity set hidden=false;` in your SQL database)
