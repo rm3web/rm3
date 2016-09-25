@@ -6,6 +6,8 @@
     "proto": "index",
     "modified": "2014-10-31T15:02:56.845Z",
     "created": "2014-10-31T15:02:56.845Z",
+    "hidden": false,
+    "stub":false,
     "summary": {
         "title": "Welcome to rm3",
         "abstract": "Welcome to rm3"

@@ -1,0 +1,25 @@
+{
+   "path":"wh.link",
+   "entityId":"97c96af0-82b5-11e6-afcf-357edaa7b7f9",
+   "revisionId":"97c96af1-82b5-11e6-afcf-357edaa7b7f9",
+   "revisionNum":1,
+   "proto":"link",
+   "stub":false,
+   "modified":"2016-09-25T00:18:32.836Z",
+   "created":"2016-09-25T00:18:32.836Z",
+   "touched":"2016-09-25T00:18:32.863Z",
+   "hidden":false,
+   "summary":{
+      "url":"http://www.example.com/",
+      "title":"Link",
+      "abstract":"Test link"
+   },
+   "data":{
+
+   },
+   "tags":{
+
+   },
+   "dump_date":"2016-09-25T00:18:43.839Z",
+   "dump_version":"0.2.3"
+}
