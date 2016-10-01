@@ -1,10 +1,11 @@
 var Masonry = require('masonry-layout');
 var imagesLoaded = require('imagesloaded');
 
-var msnry = new Masonry( '.masonry-grid', 
-  { "itemSelector": ".hentry-grid", "columnWidth": 200 });
+var elem = document.querySelector('.masonry-grid');
+var msnry = new Masonry( elem, 
+  { "itemSelector": ".hentry-masonry"});
 
 // selector string
-imagesLoaded( '#container', function() {
+imagesLoaded( elem , function() {
   msnry.layout();
 });

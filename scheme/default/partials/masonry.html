@@ -1,11 +1,10 @@
-<script src="{@schemeStaticResource path="bundles/masonry.js" /}"></script>
 <div class="masonry-grid">
 {#data}
-<div class="hentry hentry-grid">
+<div class="hentry hentry-masonry">
   <div class="hentry-grid-inner">
     {?thumbnail}
     <a class="icon" href="{@sitePathToUrl path=path /}">
-      {@icon/}
+      {@thumbnail size="240" /}
     </a>
     <div class="entry-title">
       {@titleLink rel="bookmark" /}
@@ -20,6 +19,7 @@
       {@viaLink rel="alternate" /}
       <div class="entry-summary"><small>
         {summary|s}
+        <br /><a href="{@sitePathToUrl path=path /}">More...</a>
       </small></div>
     </div>
     {/thumbnail}
@@ -60,3 +60,4 @@
 
 </div>
 {/facets}
+<script src="{@schemeStaticResource path="bundles/masonry.js" /}"></script>

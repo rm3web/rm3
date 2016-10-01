@@ -7,6 +7,7 @@ var TagHelpers = require('../../lib/taghelpers');
 var SiteHelpers = require('../../lib/sitehelpers');
 var SchemeHelpers = require('../../lib/schemehelpers');
 var Pagination = require('../../lib/pagination');
+var imageScale = require('../../lib/imagescale');
 var path = require('path');
 var React = require('react');
 var ReactDOM = require('react-dom/server');
@@ -91,6 +92,22 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
         } else {
             return chunk.write('<img src="' + imgicon + '"  height="' + height + 
                 '" width="' + width + '" border="0" />')
+        }
+    }
+
+    dust.helpers.thumbnail = function(chunk, context, bodies, params) {
+        var size = context.resolve(params.size);
+        var svgicon = context.get('meta.rm3\:svg');
+        var imgicon = context.get('meta.rm3\:srcset');
+        var sizes = context.get('meta.rm3\:sizes');
+        var scaleSize = imageScale.scaleBestFit(sizes.width, sizes.height, size);
+        if (svgicon) {
+            return chunk.write('<picture><source srcset="' + svgicon +
+                '" type="image/svg+xml"><img srcset="' + imgicon +
+                '"  height="' + scaleSize.height + '" width="' + scaleSize.width + '" border="0" /></picture>');
+        } else {
+            return chunk.write('<img srcset="' + imgicon + '"  height="' + scaleSize.height + 
+                '" width="' + scaleSize.width + '" border="0" />')
         }
     }
 
