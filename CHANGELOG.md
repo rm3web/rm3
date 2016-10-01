@@ -4,12 +4,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Release urgency levels:
 
-* Low: Just new features and bugfixes
-* Moderate: There's some important new features.  You don't want to skip moderate releases, but there's nothing urgent.
+* Low: Just new features and bugfixes.  Nothing that will change the database format.
+* Moderate: There's some important new features.  You don't want to skip moderate releases, but there's nothing urgent.  Anything that changes the format of the database is by default a moderate change or higher.
 * High: There's a critical bug that may impact a percentage of the users.  Upgrade!
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+
+### Changed
+
+- Tweaked grid formatting to make the grids line up.
 
 ## [0.3.0] - Medium - 2016-9-24: Coming to you live and direct edition...
 
