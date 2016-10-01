@@ -85,5 +85,47 @@ describe('BlobStores', function() {
         path.should.eql(['long-path-filename', 'long-path-file2']);
       });
     });
+
+    it('should handle the middle one missing as expected', function() {
+      var blobstore = {
+        doesBlobExist: function(ctx, path, filename, revisionId, next) {
+          path.should.equal('path');
+          revisionId.should.equal('revisionId');
+          if (filename === 'file2') {
+            next(null, false);
+          } else {
+            next(null, true);
+          }
+        },
+        getBlobUrl: function(ctx, path, filename, revisionId, next) {
+          path.should.equal('path');
+          revisionId.should.equal('revisionId');
+          next(null, 'long-path-' + filename);
+        }
+      };
+      BlobStores.fetchBlobBatch({}, blobstore, 'path', ['filename', 'file2', 'file3'], 'revisionId', function(err, path) {
+        should.not.exist(err);
+        path.should.eql(['long-path-filename', undefined, 'long-path-file3']);
+      });
+    });
+
+    it('should pass errors', function() {
+      var blobstore = {
+        doesBlobExist: function(ctx, path, filename, revisionId, next) {
+          path.should.equal('path');
+          revisionId.should.equal('revisionId');
+          next(null, true);
+        },
+        getBlobUrl: function(ctx, path, filename, revisionId, next) {
+          path.should.equal('path');
+          revisionId.should.equal('revisionId');
+          next(new Error('fer'));
+        }
+      };
+      BlobStores.fetchBlobBatch({}, blobstore, 'path', ['filename', 'file2', 'file3'], 'revisionId', function(err, path) {
+        should.exist(err);
+        err.message.should.equal('fer');
+      });
+    });
   });
 });
