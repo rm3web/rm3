@@ -3,7 +3,7 @@ var entity = require('../../lib/entity');
 var sitepath = require ('sitepath');
 var async = require('async');
 var db = require('../../lib/db');
-var should = require('should');
+var should = require('chai').should();
 require('mocha-steps');
 var Plan = require('test-plan');
 
@@ -19,7 +19,7 @@ describe('db', function() {
         cl.should.be.an.instanceof(Object);
         client = cl;
         dbDone = dbd;
-        should.deepEqual(client.database, "rm3unit");
+        client.database.should.equal('rm3unit');
 
         next();
       });

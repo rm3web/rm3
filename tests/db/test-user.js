@@ -5,7 +5,7 @@ var async = require('async');
 var uuid = require('node-uuid');
 var user = require('../../lib/authentication/user');
 var resources = require('../lib/resources.js');
-var should = require('should');
+var should = require('chai').should();
 var db = require('../../lib/db');
 var query = require('../../lib/query');
 require('mocha-steps');

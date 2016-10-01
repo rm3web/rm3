@@ -1,5 +1,5 @@
 var uuid = require('node-uuid');
-var should = require('should');
+var should = require('chai').should();
 var runWorkflows = require('../../lib/runworkflows');
 var workflow = require('../../lib/workflow');
 
