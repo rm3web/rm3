@@ -1,5 +1,5 @@
 var ActivityFeed = require ('../../lib/activityfeed');
-var should = require('should');
+var should = require('chai').should();
 var SitePath = require ('sitepath');
 var events = require("events");
 
@@ -43,7 +43,7 @@ describe('activityfeed', function() {
       };
 
       output.on('article', function(rec) {
-        rec.should.have.properties(['object', '@type', 'updated', 'startTime',
+        rec.should.contain.all.keys(['object', '@type', 'updated', 'startTime',
           'endTime', '@id', 'published', 'actor']);
         rec.object.url.should.equal('/sunlit/pony/?revisionId=uuid13566');
         rec.object.displayName.should.equal('Sunlit Ponies!');
@@ -51,7 +51,7 @@ describe('activityfeed', function() {
         rec['@type'].should.equal('post');
         rec.updated.should.equal(now);
         rec['@id'].should.equal('urn:uuid13566:1');
-        rec.actor.should.have.properties('@type', '@id', 'url');
+        rec.actor.should.contain.all.keys('@type', '@id', 'url');
         rec.actor['@type'].should.equal('Person');
         rec.actor.url.should.equal('/midnight/kitty/');
         rec.actor['rm3:proto'].should.equal('user');
@@ -81,14 +81,14 @@ describe('activityfeed', function() {
       };
 
       output.on('article', function(rec) {
-        rec.should.have.properties(['object', '@type', 'updated', 'startTime',
+        rec.should.contain.all.keys(['object', '@type', 'updated', 'startTime',
           'endTime', '@id', 'actor']);
-        rec.should.not.have.properties(['published']);
+        rec.should.not.have.all.keys(['published']);
         rec.object.url.should.equal('/sunlit/pony/?revisionId=uuid13566');
         rec['@type'].should.equal('post');
         rec.updated.should.equal(now);
         rec['@id'].should.equal('urn:uuid13566:1');
-        rec.actor.should.have.properties('@type', '@id', 'url');
+        rec.actor.should.have.all.keys('@type', '@id', 'url');
         rec.actor['@type'].should.equal('Person');
         rec.actor.url.should.equal('/midnight/kitty/');
         cb();
@@ -116,7 +116,7 @@ describe('activityfeed', function() {
       };
 
       output.on('article', function(rec) {
-        rec.should.have.properties(['object', '@type', 'updated', 'startTime',
+        rec.should.contain.all.keys(['object', '@type', 'updated', 'startTime',
           'endTime', '@id', 'published', 'actor']);
         rec.object.url.should.equal('/sunlit/pony/?revisionId=uuid13566');
         rec['@type'].should.equal('post');

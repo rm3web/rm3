@@ -1,5 +1,5 @@
 var imageScale = require ('../../lib/imagescale');
-var should = require('should');
+var should = require('chai').should();
 var jsc = require("jsverify");
 
 describe("#scaleBestFit", function() {

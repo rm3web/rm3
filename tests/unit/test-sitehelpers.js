@@ -1,6 +1,6 @@
 var SiteHelpers = require ('../../lib/sitehelpers');
 var SitePath = require ('sitepath');
-var should = require('should');
+var should = require('chai').should();
 
 describe('sitehelpers', function() {
   var dust, db, query;

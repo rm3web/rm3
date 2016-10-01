@@ -1,5 +1,5 @@
 var logging = require('../../lib/logging');
-var should = require('should');
+var should = require('chai').should();
 var util = require('util'),
     errs = require('errs');
 var Plan = require('test-plan');

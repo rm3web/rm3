@@ -1,12 +1,12 @@
 var errorHandle = require('../../lib/middleware/error_handle');
-var should = require('should');
+var should = require('chai').should();
 var util = require('util'),
     errs = require('errs');
 var Plan = require('test-plan');
 
 describe('middleware:errorHandle', function() {
   var middleware = errorHandle.errorFallThrough;
-  should.deepEqual(typeof middleware, "function");
+  middleware.should.be.a("function");
   var req, res;
 
   beforeEach(function() {
@@ -117,7 +117,7 @@ describe('middleware:errorHandle', function() {
           str.should.equal('Internal Error');
         };
         res.write = function(str) {
-          str.should.match('render_sync output');
+          str.should.equal('render_sync output');
           plan.ok(true);
         };
         res.end = function() {
@@ -139,7 +139,7 @@ describe('middleware:errorHandle', function() {
         };
         res.write = function(str) {
           plan.ok(true);
-          str.should.match('render_sync output');
+          str.should.equal('render_sync output');
         };
         res.end = function() {
           plan.ok(true);
@@ -159,7 +159,7 @@ describe('middleware:errorHandle', function() {
           plan.ok(true);
         };
         res.write = function(str) {
-          str.should.match('render_sync output');
+          str.should.equal('render_sync output');
           plan.ok(true);
         };
         res.end = function() {
@@ -184,7 +184,7 @@ describe('middleware:errorHandle', function() {
           plan.ok(true);
         };
         res.write = function(str) {
-          str.should.match('render_sync output');
+          str.should.equal('render_sync output');
           plan.ok(true);
         };
         res.end = function() {

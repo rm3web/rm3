@@ -1,5 +1,5 @@
 var Conf = require ('../../lib/conf');
-var should = require('should');
+var should = require('chai').should();
 var childProcess = require('child_process');
 
 var db = require('../../lib/db');
