@@ -3,7 +3,7 @@ var entity = require('../../lib/entity');
 var sitepath = require ('sitepath');
 var query = require ('../../lib/query');
 var events = require("events");
-var should = require('should');
+var should = require('chai').should();
 var Plan = require('test-plan');
 
 describe('activity query gen', function() {
@@ -192,7 +192,7 @@ describe('query', function() {
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         func(null, {rowCount: 1, rows: [{stub:false}]});
       };
       queryfunc(null, client, function() {
@@ -221,7 +221,7 @@ describe('query', function() {
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
       };
       queryfunc(null, client, function() {
@@ -297,7 +297,7 @@ describe('query', function() {
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
       };
       queryfunc(null, client, function() {
@@ -365,7 +365,7 @@ describe('query', function() {
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         func(null, {rowCount: 0});
       };
       queryfunc(null, client, function() {
@@ -375,8 +375,8 @@ describe('query', function() {
 
     query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
-        should.deepEqual(err.name, 'EntityNotFoundError');
-        should.deepEqual(err.path, entpath.toDottedPath());
+        err.name.should.eql('EntityNotFoundError');
+        err.path.should.eql(entpath.toDottedPath());
       } else {
         should.fail('should not succeed');
       }
@@ -401,7 +401,7 @@ describe('query', function() {
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         func(new Error("Connection was ended during query"));
       };
       queryfunc(null, client, function() {
@@ -411,7 +411,7 @@ describe('query', function() {
 
     query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, null, function(err, entity) {
       if (err) {
-        should.deepEqual(err.name, 'QueryError');
+        err.name.should.eql('QueryError');
       } else {
         should.fail('should not succeed');
       }
@@ -438,7 +438,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         func(null, {rowCount: 0});
       };
       queryfunc(null, client, function() {
@@ -448,7 +448,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, '1234', function(err, entity) {
       if (err) {
-        should.deepEqual(err.name, 'RevisionIdNotFoundError');
+        err.name.should.eql('RevisionIdNotFoundError');
       } else {
         should.fail('should not succeed');
       }
@@ -475,7 +475,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec, func) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         func(new Error("Connection was ended during query"));
       };
       queryfunc(null, client, function() {
@@ -485,7 +485,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     query.entityFromPath(db, false, Entclass, {}, {context: "ROOT"}, entpath, '1535', function(err, entity) {
       if (err) {
-        should.deepEqual(err.name, 'QueryError');
+        err.name.should.eql('QueryError');
       } else {
         should.fail('should not succeed');
       }
@@ -515,7 +515,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         var ee = new events.EventEmitter();
         process.nextTick(function() {
           ee.emit('row', rec);
@@ -532,9 +532,9 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var resp = query.query(db, {}, root, entpath, 'child', 'entity', {}, undefined, undefined, {});
     resp.on('article', function(article) {
-      should.deepEqual(article.summary.title, rec.summary.title);
-      should.deepEqual(article.summary.abstract, rec.summary.abstract);
-      should.deepEqual(article.entityId, rec.entityId);
+      article.summary.title.should.eql(rec.summary.title);
+      article.summary.abstract.should.eql(rec.summary.abstract);
+      article.entityId.should.eql(rec.entityId);
       plan.ok(true);
     });
     resp.on('error', function(err) {
@@ -558,7 +558,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         var ee = new events.EventEmitter();
         process.nextTick(function() {
           ee.emit('row', rec);
@@ -575,7 +575,7 @@ FROM wh_log WHERE ("revisionId" = $1)';
 
     var resp = query.query(db, {}, root, entpath, 'child', 'count', {}, undefined, undefined, {});
     resp.on('count', function(article) {
-      should.deepEqual(article.count, '2');
+      article.count.should.eql('2');
       plan.ok(true);
     });
     resp.on('error', function(err) {
@@ -616,7 +616,7 @@ ASC';
     db.connectWrap = function(queryfunc) {
       var client = {};
       client.query = function(spec) {
-        should.deepEqual(spec.text, selectQuery);
+        spec.text.should.eql(selectQuery);
         var ee = new events.EventEmitter();
         process.nextTick(function() {
           ee.emit('row', rec);
@@ -631,9 +631,9 @@ ASC';
 
     var resp = query.queryHistory(db, {}, {}, entpath, null, {});
     resp.on('article', function(article) {
-      should.deepEqual(article.note, rec.note);
-      should.deepEqual(article.data, rec.data);
-      should.deepEqual(article.revisionId, rec.revisionId);
+      article.note.should.eql(rec.note);
+      article.data.should.eql(rec.data);
+      article.revisionId.should.eql(rec.revisionId);
       plan.ok(true);
     });
     resp.on('error', function(err) {

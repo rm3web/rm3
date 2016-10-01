@@ -1,11 +1,11 @@
 var contextCreate = require('../../lib/middleware/context_create');
-var should = require('should');
+var should = require('chai').should();
 var util = require('util'),
     errs = require('errs');
 
 describe('middleware:contextCreate', function() {
   var middleware = contextCreate();
-  should.deepEqual(typeof middleware, "function");
+  middleware.should.be.a("function");
   var req, res;
 
   beforeEach(function() {

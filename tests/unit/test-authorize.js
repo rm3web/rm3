@@ -1,5 +1,5 @@
 var authorize = require ('../../lib/authorize');
-var should = require('should');
+var should = require('chai').should();
 var SitePath = require ('sitepath');
 
 describe('authorize', function() {

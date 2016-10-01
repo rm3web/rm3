@@ -1,6 +1,6 @@
 var SchemeHelpers = require ('../../lib/schemehelpers');
 var SitePath = require ('sitepath');
-var should = require('should');
+var should = require('chai').should();
 
 describe('schemehelpers', function() {
   var dust, db, query;

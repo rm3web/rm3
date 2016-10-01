@@ -1,5 +1,5 @@
 var fetchEntity = require('../../lib/middleware/fetch_entity');
-var should = require('should');
+var should = require('chai').should();
 var sitepath = require ('sitepath');
 var util = require('util'),
     errs = require('errs');
@@ -39,12 +39,13 @@ describe('middleware:fetchEntity', function() {
       query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
-        should.deepEqual(rev, null);
+        should.not.exist(rev);
         next(null, {e: 'st'});
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+
+      middleware.should.be.a("function");
 
       middleware(req, res, function() {
         req.entity.should.eql({e: 'st'});
@@ -60,12 +61,12 @@ describe('middleware:fetchEntity', function() {
       query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
-        should.deepEqual(rev, '11111111-1111-1111-a111-111111111111');
+        rev.should.equal('11111111-1111-1111-a111-111111111111');
         next(null, {e: 'sr'});
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function() {
         req.entity.should.eql({e: 'sr'});
@@ -80,12 +81,12 @@ describe('middleware:fetchEntity', function() {
       query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
-        should.deepEqual(rev, '11111111-1111-1111-a111-111111111111');
+        rev.should.equal('11111111-1111-1111-a111-111111111111');
         next(null, {e: 'sr'});
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function() {
         req.entity.should.eql({e: 'sr'});
@@ -100,12 +101,12 @@ describe('middleware:fetchEntity', function() {
       query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
-        should.deepEqual(rev, null);
+        should.not.exist(rev);
         next(null, {e: 'sq'});
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function() {
         req.entity.should.eql({e: 'sq'});
@@ -120,16 +121,16 @@ describe('middleware:fetchEntity', function() {
       query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
-        should.deepEqual(rev, '11111111-1111-1111-a111-111111111111');
+        rev.should.equal('11111111-1111-1111-a111-111111111111');
         next(null, {e: 'sr', permissions: {}, curLogRev: {evtFinal: false}});
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function(err) {
-        should.deepEqual(err.name, 'ForbiddenError');
-        should.deepEqual(err.httpResponseCode, 403);
+        err.name.should.equal('ForbiddenError');
+        err.httpResponseCode.should.equal(403);
         done();
       });
     });
@@ -149,11 +150,11 @@ describe('middleware:fetchEntity', function() {
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function(err) {
-        should.deepEqual(err.name, 'PathNotFoundError');
-        should.deepEqual(err.httpResponseCode, 404);
+        err.name.should.equal('PathNotFoundError');
+        err.httpResponseCode.should.equal(404);
         done();
       });
 
@@ -174,11 +175,11 @@ describe('middleware:fetchEntity', function() {
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function(err) {
-        should.deepEqual(err.name, 'ForbiddenError');
-        should.deepEqual(err.httpResponseCode, 403);
+        err.name.should.equal('ForbiddenError');
+        err.httpResponseCode.should.equal(403);
         done();
       });
     });
@@ -187,16 +188,16 @@ describe('middleware:fetchEntity', function() {
       query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
         ent.should.eql(entity);
         sp.should.eql(new sitepath(['sparklepony']));
-        should.deepEqual(rev, null);
+        should.not.exist(rev);
         next(null, new StubEntity());
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function(err) {
-        should.deepEqual(err.name, 'GoneError');
-        should.deepEqual(err.httpResponseCode, 410);
+        err.name.should.equal('GoneError');
+        err.httpResponseCode.should.equal(410);
         done();
       });
     });
@@ -207,10 +208,10 @@ describe('middleware:fetchEntity', function() {
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function(err) {
-        should.deepEqual(err.name, 'Error');
+        err.name.should.equal('Error');
         done();
       });
 
@@ -231,10 +232,10 @@ describe('middleware:fetchEntity', function() {
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function(err) {
-        should.deepEqual(err.name, 'OtherKindOfError');
+        err.name.should.equal('OtherKindOfError');
         done();
       });
 
@@ -258,7 +259,7 @@ describe('middleware:fetchEntity', function() {
       };
 
       var middleware = fetchEntity(db, {}, query, entity, StubEntity);
-      should.deepEqual(typeof middleware, "function");
+      middleware.should.be.a("function");
 
       middleware(req, res, function() {
         req.entity.should.eql({e: 'rr'});

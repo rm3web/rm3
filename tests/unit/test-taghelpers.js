@@ -1,5 +1,5 @@
 var TagHelpers = require ('../../lib/taghelpers');
-var should = require('should');
+var should = require('chai').should();
 var events = require("events");
 
 describe('taghelpers', function() {

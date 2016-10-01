@@ -1,11 +1,11 @@
 var flash = require('../../lib/middleware/flash');
-var should = require('should');
+var should = require('chai').should();
 var util = require('util'),
     errs = require('errs');
 
 describe('middleware:flash', function() {
   var middleware = flash();
-  should.deepEqual(typeof middleware, "function");
+  middleware.should.be.a("function");
   var req, res;
 
   beforeEach(function() {
@@ -15,7 +15,7 @@ describe('middleware:flash', function() {
 
   it('should no-op normally', function(cb) {
     middleware(req, res, function() {
-      req.session.should.deepEqual({});
+      req.session.should.eql({});
       cb();
     });
   });
@@ -23,10 +23,10 @@ describe('middleware:flash', function() {
   it('should not add a session unnecessarily', function(cb) {
     middleware(req, res, function() {
       var msgs = req.getFlashMsgs();
-      msgs.should.deepEqual([]);
+      msgs.should.eql([]);
       msgs = req.getFlashMsgs('error');
-      msgs.should.deepEqual([]);
-      req.session.should.deepEqual({});
+      msgs.should.eql([]);
+      req.session.should.eql({});
       cb();
     });
   });
@@ -35,8 +35,8 @@ describe('middleware:flash', function() {
     middleware(req, res, function() {
       req.flash('error', 'error message');
       var msgs = req.getFlashMsgs('error');
-      msgs.should.deepEqual(['error message']);
-      req.session.should.deepEqual({flash: {}});
+      msgs.should.eql(['error message']);
+      req.session.should.eql({flash: {}});
       cb();
     });
   });
@@ -45,8 +45,8 @@ describe('middleware:flash', function() {
     req.session = {flash:{error:['error message']}};
     middleware(req, res, function() {
       var msgs = req.getFlashMsgs('error');
-      msgs.should.deepEqual(['error message']);
-      req.session.should.deepEqual({flash: {}});
+      msgs.should.eql(['error message']);
+      req.session.should.eql({flash: {}});
       cb();
     });
   });
@@ -56,8 +56,8 @@ describe('middleware:flash', function() {
     middleware(req, res, function() {
       req.flash('error', 'error message 2');
       var msgs = req.getFlashMsgs('error');
-      msgs.should.deepEqual(['error message', 'error message 2']);
-      req.session.should.deepEqual({flash: {}});
+      msgs.should.eql(['error message', 'error message 2']);
+      req.session.should.eql({flash: {}});
       cb();
     });
   });

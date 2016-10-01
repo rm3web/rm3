@@ -1,12 +1,12 @@
 var pathMap = require('../../lib/middleware/path_map');
 var sitepath = require ('sitepath');
-var should = require('should');
+var should = require('chai').should();
 
 describe('middleware:pathMap', function() {
   var res = {};
 
   var middleware = pathMap();
-  should.deepEqual(typeof middleware, "function");
+  middleware.should.be.a("function");
 
   var tests = [
     {args: '/',       expected: new sitepath(['wh'])},

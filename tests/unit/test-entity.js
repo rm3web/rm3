@@ -1,6 +1,6 @@
 var entity = require ('../../lib/entity');
 var sitepath = require ('sitepath');
-var should = require('should');
+var should = require('chai').should();
 var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 
 describe('stubEntity', function() {
@@ -84,7 +84,7 @@ describe('stubEntity', function() {
         summary: {title: 'blrg', abstract: 'some text goes here'},
         permissions: {}};
 
-      e.view().should.have.properties(v);
+      e.view().should.contain.all.keys(v);
     });
   });
 
@@ -207,7 +207,7 @@ describe('entity', function() {
         data: {posting: '<div>Test test</div>'},
         permissions: {}};
 
-      e.view().should.have.properties(v);
+      e.view().should.contain.all.keys(v);
     });
   });
 
@@ -260,7 +260,7 @@ describe('entity', function() {
         data: {posting: '<div>Test test</div>'},
         permissions: {}};
 
-      e.view().should.have.properties(v);
+      e.view().should.contain.all.keys(v);
     });
     it('should only run once', function() {
       (function() {
