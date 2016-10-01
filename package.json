@@ -80,6 +80,7 @@
     "linked-data-box": "0.0.5",
     "lodash": "^4.13.1",
     "machina": "^2.0.0",
+    "masonry-layout": "^4.1.1",
     "meta-extractor": "^1.0.5",
     "morgan": "~1.7",
     "multer": "^1.1.0",
