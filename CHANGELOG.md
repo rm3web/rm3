@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- All of the unit tests use Chai instead of Should.
+
 ## [0.3.0] - Medium - 2016-9-24: Coming to you live and direct edition...
 
 This version is the first I'm actually trying to run in production.
