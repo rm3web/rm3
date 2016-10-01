@@ -164,7 +164,6 @@
     "mocha-steps": "^1.0.0",
     "nyc": "^8.1.0",
     "run-sequence": "^1.1.5",
-    "should": "^11.1.0",
     "tcp-port-used": "^0.1.2",
     "test-plan": "~0.1.1",
     "vinyl-source-stream": "^1.1.0"
