@@ -20,6 +20,15 @@ describe('middleware:flash', function() {
     });
   });
 
+  it('should detect no sessions', function() {
+    var req = {};
+    (function() {
+      middleware(req, res, function() {
+        req.flash('ff');
+      });
+    }).should.throw(Error,'req.flash() requires sessions');
+  });
+
   it('should not add a session unnecessarily', function(cb) {
     middleware(req, res, function() {
       var msgs = req.getFlashMsgs();
