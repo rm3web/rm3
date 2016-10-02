@@ -104,10 +104,13 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
         if (svgicon) {
             return chunk.write('<picture><source srcset="' + svgicon +
                 '" type="image/svg+xml"><img srcset="' + imgicon +
-                '"  height="' + scaleSize.height + '" width="' + scaleSize.width + '" border="0" /></picture>');
+                '"  height="' + scaleSize.height + '" width="' +
+                scaleSize.width + '" border="0" data-width="' +
+                scaleSize.width + '" data-height="' + scaleSize.height + '"/></picture>');
         } else {
             return chunk.write('<img srcset="' + imgicon + '"  height="' + scaleSize.height + 
-                '" width="' + scaleSize.width + '" border="0" />')
+                '" width="' + scaleSize.width + '" border="0" data-width="' +
+                scaleSize.width + '" data-height="' + scaleSize.height + '"/>')
         }
     }
 

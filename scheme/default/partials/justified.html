@@ -1,16 +1,18 @@
-<div class="grid">
+<div class="justified-grid">
 {#data}
-<div class="hentry hentry-grid">
-  <div class="hentry-grid-inner">
-    <a class="icon" href="{@sitePathToUrl path=path /}">
-      {@icon/}
-    </a>
-    <div class="entry-title">
-      {@titleLink rel="bookmark" /}
-      {@viaLink rel="alternate" /}
-    </div>
-  </div>
+{?thumbnail}
+<div class="hentry">
+  <a href="{@sitePathToUrl path=path /}">
+    {@thumbnail size="240" /}
+  </a>
 </div>
+{:else}
+<div class="hentry">
+  <a href="{@sitePathToUrl path=path /}">
+    {@icon/}
+  </a>
+</div>
+{/thumbnail}
 {/data}
 </div>
 <div style="clear: left;">
@@ -46,3 +48,4 @@
 
 </div>
 {/facets}
+<script src="{@schemeStaticResource path="bundles/justified.js" /}"></script>

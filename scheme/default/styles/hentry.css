@@ -12,6 +12,17 @@
   list-style: none;
 }
 
+.justified-grid {
+  padding: 0;
+}
+.justified-grid div {
+  padding: 0;
+  display: inline-block;
+}
+.justified-grid div img {
+  vertical-align: middle;
+}
+
 .hentry-card {
   clear: left;
 }
