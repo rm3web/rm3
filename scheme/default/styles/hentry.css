@@ -12,6 +12,17 @@
   list-style: none;
 }
 
+.justified-grid {
+  padding: 0;
+}
+.justified-grid div {
+  padding: 0;
+  display: inline-block;
+}
+.justified-grid div img {
+  vertical-align: middle;
+}
+
 .hentry-card {
   clear: left;
 }
@@ -19,6 +30,12 @@
 .hentry-grid {
   float: left;
   width: 150px;
+  margin: .1em;
+}
+
+.hentry-masonry {
+  float: left;
+  width: 250px;
   margin: .1em;
 }
 

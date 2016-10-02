@@ -1,0 +1,63 @@
+<div class="masonry-grid">
+{#data}
+<div class="hentry hentry-masonry">
+  <div class="hentry-grid-inner">
+    {?thumbnail}
+    <a class="icon" href="{@sitePathToUrl path=path /}">
+      {@thumbnail size="240" /}
+    </a>
+    <div class="entry-title">
+      {@titleLink rel="bookmark" /}
+      {@viaLink rel="alternate" /}
+    </div>
+    {:else}
+    <div>
+      <a href="{@sitePathToUrl path=path /}">
+        {@icon size="24" /}
+      </a>
+      <span class="entry-title">{@titleLink rel="bookmark" /}</span>
+      {@viaLink rel="alternate" /}
+      <div class="entry-summary"><small>
+        {summary|s}
+        <br /><a href="{@sitePathToUrl path=path /}">More...</a>
+      </small></div>
+    </div>
+    {/thumbnail}
+  </div>
+</div>
+{/data}
+</div>
+<div style="clear: left;">
+{moreLink|s}
+</div>
+{?facets}
+<br clear="all" />
+<div class="pure-g">
+
+{?facets.predicates}
+  <div class="pure-u-1-3">
+{#facets.predicates}
+ <br /><a href="{link}">{facet} ({count})</a>
+{/facets.predicates}
+</div>
+{/facets.predicates}
+
+{?facets.tags}
+  <div class="pure-u-1-3">
+{#facets.tags}
+ <br /><a href="{link}">{facet} ({count})</a>
+{/facets.tags}
+</div>
+{/facets.tags}
+
+{?facets.months}
+  <div class="pure-u-1-3">
+{#facets.months}
+ <br /><a href="{link}">{@formatDate val=facet month="long" year="numeric" /} ({count} )</a>
+{/facets.months}
+</div>
+{/facets.months}
+
+</div>
+{/facets}
+<script src="{@schemeStaticResource path="bundles/masonry.js" /}"></script>

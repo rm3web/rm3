@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Justified and Masonry views.
+
 ### Changed
 - All of the unit tests use Chai instead of Should.
 - Tweaked grid formatting to make the grids line up.
