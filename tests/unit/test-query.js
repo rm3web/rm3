@@ -5,6 +5,7 @@ var query = require ('../../lib/query');
 var events = require("events");
 var should = require('chai').should();
 var Plan = require('test-plan');
+var uuid = require('node-uuid');
 
 describe('activity query gen', function() {
   var root = {context: "ROOT"};
@@ -209,142 +210,144 @@ describe('query', function() {
     });
   });
 
-  it('#fetchEffectivePermissions()', function(done) {
-    var plan = new Plan(2, done);
-    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+  describe('#fetchEffectivePermissions', function() {
+    it('works', function(done) {
+      var plan = new Plan(2, done);
+      var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
 
-    var entpath = new sitepath(['wh']);
-    var user = new sitepath(['wh', 'users', 'wirehead']);
+      var entpath = new sitepath(['wh']);
+      var user = new sitepath(['wh', 'users', 'wirehead']);
 
-    var db = {};
+      var db = {};
 
-    db.connectWrap = function(queryfunc) {
-      var client = {};
-      client.query = function(spec, func) {
-        spec.text.should.eql(selectQuery);
-        func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
+      db.connectWrap = function(queryfunc) {
+        var client = {};
+        client.query = function(spec, func) {
+          spec.text.should.eql(selectQuery);
+          func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
+        };
+        queryfunc(null, client, function() {
+          plan.ok(true);
+        });
       };
-      queryfunc(null, client, function() {
+
+      query.fetchEffectivePermissions(db, false, {}, user, entpath, function(err, entity) {
+        if (err) {
+          should.fail(err);
+        } else {
+        }
+        entity.permission.should.equal('role');
         plan.ok(true);
       });
-    };
-
-    query.fetchEffectivePermissions(db, false, {}, user, entpath, function(err, entity) {
-      if (err) {
-        should.fail(err);
-      } else {
-      }
-      entity.permission.should.equal('role');
-      plan.ok(true);
     });
-  });
 
-  it('#fetchEffectivePermissions() cache stored fail', function(done) {
-    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+    it('cache stored fail', function(done) {
+      var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
 
-    var entpath = new sitepath(['wh']);
-    var user = new sitepath(['wh', 'users', 'wirehead']);
+      var entpath = new sitepath(['wh']);
+      var user = new sitepath(['wh', 'users', 'wirehead']);
 
-    var db = {};
+      var db = {};
 
-    var cache = {};
+      var cache = {};
 
-    cache.get = function(key, next) {
-      next(null, {notFound: true});
-    };
-
-    db.connectWrap = function(queryfunc) {
-      var client = {};
-      client.query = function(spec, func) {
-        should.fail('should not try to call');
+      cache.get = function(key, next) {
+        next(null, {notFound: true});
       };
-      queryfunc(null, client, function() {
+
+      db.connectWrap = function(queryfunc) {
+        var client = {};
+        client.query = function(spec, func) {
+          should.fail('should not try to call');
+        };
+        queryfunc(null, client, function() {
+        });
+      };
+
+      query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+        if (err) {
+          err.name.should.equal('PermissionsNotFoundError');
+          done();
+        } else {
+          should.fail('shouldn\'t succeed when given a cached error');
+        }
       });
-    };
-
-    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
-      if (err) {
-        err.name.should.equal('PermissionsNotFoundError');
-        done();
-      } else {
-        should.fail('shouldn\'t succeed when given a cached error');
-      }
     });
-  });
 
-  it('#fetchEffectivePermissions() cache miss', function(done) {
-    var plan = new Plan(4, done);
-    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+    it('cache miss', function(done) {
+      var plan = new Plan(4, done);
+      var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
 
-    var entpath = new sitepath(['wh']);
-    var user = new sitepath(['wh', 'users', 'wirehead']);
+      var entpath = new sitepath(['wh']);
+      var user = new sitepath(['wh', 'users', 'wirehead']);
 
-    var db = {};
+      var db = {};
 
-    var cache = {};
+      var cache = {};
 
-    cache.get = function(key, next) {
-      plan.ok(true);
-      next(null, null);
-    };
-
-    cache.set = function(key, value, timeout) {
-      plan.ok(true);
-      key.should.equal('p:wh:wh.users.wirehead');
-      value.should.eql({response: {permission: 'role'}});
-    };
-
-    db.connectWrap = function(queryfunc) {
-      var client = {};
-      client.query = function(spec, func) {
-        spec.text.should.eql(selectQuery);
-        func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
+      cache.get = function(key, next) {
+        plan.ok(true);
+        next(null, null);
       };
-      queryfunc(null, client, function() {
+
+      cache.set = function(key, value, timeout) {
+        plan.ok(true);
+        key.should.equal('p:wh:wh.users.wirehead');
+        value.should.eql({response: {permission: 'role'}});
+      };
+
+      db.connectWrap = function(queryfunc) {
+        var client = {};
+        client.query = function(spec, func) {
+          spec.text.should.eql(selectQuery);
+          func(null, {rowCount: 1, rows: [{permission: 'permission', role: 'role'}]});
+        };
+        queryfunc(null, client, function() {
+          plan.ok(true);
+        });
+      };
+
+      query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+        if (err) {
+          should.fail(err);
+        } else {
+        }
+        entity.permission.should.equal('role');
         plan.ok(true);
       });
-    };
-
-    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
-      if (err) {
-        should.fail(err);
-      } else {
-      }
-      entity.permission.should.equal('role');
-      plan.ok(true);
     });
-  });
 
-  it('#fetchEffectivePermissions() cache hit', function(done) {
-    var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
+    it('cache hit', function(done) {
+      var selectQuery = 'SELECT permission, wh_subject_to_roles.role FROM wh_permission_to_role INNER JOIN wh_subject_to_roles ON (wh_permission_to_role.role = wh_subject_to_roles.role) WHERE (subject = $1) AND (ltree(text($2)) ~ wh_permission_to_role.query)';
 
-    var entpath = new sitepath(['wh']);
-    var user = new sitepath(['wh', 'users', 'wirehead']);
+      var entpath = new sitepath(['wh']);
+      var user = new sitepath(['wh', 'users', 'wirehead']);
 
-    var db = {};
+      var db = {};
 
-    var cache = {};
+      var cache = {};
 
-    cache.get = function(key, next) {
-      next(null, {response: {permission: 'role'}});
-    };
-
-    db.connectWrap = function(queryfunc) {
-      var client = {};
-      client.query = function(spec, func) {
-        should.fail('should not try to call');
+      cache.get = function(key, next) {
+        next(null, {response: {permission: 'role'}});
       };
-      queryfunc(null, client, function() {
-      });
-    };
 
-    query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
-      if (err) {
-        should.fail(err);
-      } else {
-      }
-      entity.permission.should.equal('role');
-      done(err);
+      db.connectWrap = function(queryfunc) {
+        var client = {};
+        client.query = function(spec, func) {
+          should.fail('should not try to call');
+        };
+        queryfunc(null, client, function() {
+        });
+      };
+
+      query.fetchEffectivePermissions(db, cache, {}, user, entpath, function(err, entity) {
+        if (err) {
+          should.fail(err);
+        } else {
+        }
+        entity.permission.should.equal('role');
+        done(err);
+      });
     });
   });
 
@@ -641,6 +644,134 @@ ASC';
     });
     resp.on('end', function() {
       plan.ok(true);
+    });
+  });
+
+  describe('#findBlob', function() {
+    it('works', function(done) {
+      var plan = new Plan(2, done);
+      var selectQuery = 'SELECT details FROM wh_blob WHERE (provider = $1) AND ("entityPath" = $2) AND ("blobPath" = $3) AND ("revisionId" = $4)';
+
+      var entpath = new sitepath(['wh']);
+      var revisionId = uuid.v1();
+
+      var db = {};
+
+      db.connectWrap = function(queryfunc) {
+        var client = {};
+        client.query = function(spec, func) {
+          spec.text.should.eql(selectQuery);
+          func(null, {rowCount: 1, rows: [{details: {ponies: true}}]});
+        };
+        queryfunc(null, client, function() {
+          plan.ok(true);
+        });
+      };
+
+      query.findBlob(db, null, {}, 'test', 'test', entpath.toDottedPath(), 'blobpath', revisionId, function(err, rec) {
+        should.not.exist(err);
+        rec.ponies.should.equal(true);
+        plan.ok(true);
+      });
+    });
+
+    it('cache stored fail', function(done) {
+      var entpath = new sitepath(['wh']);
+      var revisionId = uuid.v1();
+
+      var db = {};
+
+      var cache = {};
+
+      cache.get = function(key, next) {
+        next(null, {notFound: true});
+      };
+
+      db.connectWrap = function(queryfunc) {
+        var client = {};
+        client.query = function(spec, func) {
+          should.fail('should not try to call');
+        };
+        queryfunc(null, client, function() {
+        });
+      };
+
+      query.findBlob(db, cache, {}, 'test', 'test', entpath.toDottedPath(), 'blobpath', revisionId, function(err, rec) {
+        if (err) {
+          err.name.should.equal('BlobNotFoundError');
+          done();
+        } else {
+          should.fail('shouldn\'t succeed when given a cached error');
+        }
+      });
+    });
+
+    it('cache miss', function(done) {
+      var plan = new Plan(4, done);
+      var selectQuery = 'SELECT details FROM wh_blob WHERE (provider = $1) AND ("entityPath" = $2) AND ("blobPath" = $3) AND ("revisionId" = $4)';
+
+      var entpath = new sitepath(['wh']);
+      var revisionId = uuid.v1();
+
+      var db = {};
+
+      var cache = {};
+
+      cache.get = function(key, next) {
+        plan.ok(true);
+        next(null, null);
+      };
+
+      cache.set = function(key, value, timeout) {
+        plan.ok(true);
+        key.should.equal('b:test-test-wh-' + revisionId + '-blobpath');
+        value.should.eql({response: {ponies: true}});
+      };
+
+      db.connectWrap = function(queryfunc) {
+        var client = {};
+        client.query = function(spec, func) {
+          spec.text.should.eql(selectQuery);
+          func(null, {rowCount: 1, rows: [{details: {ponies: true}}]});
+        };
+        queryfunc(null, client, function() {
+          plan.ok(true);
+        });
+      };
+
+      query.findBlob(db, cache, {}, 'test', 'test', entpath.toDottedPath(), 'blobpath', revisionId, function(err, rec) {
+        should.not.exist(err);
+        rec.ponies.should.equal(true);
+        plan.ok(true);
+      });
+    });
+
+    it('cache hit', function(done) {
+      var entpath = new sitepath(['wh']);
+      var revisionId = uuid.v1();
+
+      var db = {};
+
+      var cache = {};
+
+      cache.get = function(key, next) {
+        next(null, {response: {permission: 'role'}});
+      };
+
+      db.connectWrap = function(queryfunc) {
+        var client = {};
+        client.query = function(spec, func) {
+          should.fail('should not try to call');
+        };
+        queryfunc(null, client, function() {
+        });
+      };
+
+      query.findBlob(db, cache, {}, 'test', 'test', entpath.toDottedPath(), 'blobpath', revisionId, function(err, rec) {
+        should.not.exist(err);
+        rec.permission.should.equal('role');
+        done(err);
+      });
     });
   });
 });

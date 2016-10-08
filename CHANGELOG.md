@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Justified and Masonry views.
+- Caching SQL requests in redis for findBlob
 
 ### Changed
 - All of the unit tests use Chai instead of Should.
