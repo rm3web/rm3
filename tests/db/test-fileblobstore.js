@@ -18,7 +18,7 @@ describe('file blob store', function() {
     category: 'public'
   };
 
-  var st = new FileBlobStore(filepath, db, {});
+  var st = new FileBlobStore(filepath, db, null);
 
   var revisionId = uuid.v1();
   var revisionId2 = uuid.v1();

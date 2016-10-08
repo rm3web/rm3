@@ -403,7 +403,7 @@ describe('query', function() {
     });
 
     step('check created blob', function checkCredential(done) {
-      query.findBlob(db, {}, {}, 'test', 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, function(err, rec) {
+      query.findBlob(db, null, {}, 'test', 'test', entityPath.toDottedPath(), 'blobpath2', revisionId, function(err, rec) {
         if (err) {
           return done(err);
         }
