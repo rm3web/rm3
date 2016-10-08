@@ -18,6 +18,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - All of the unit tests use Chai instead of Should.
 - Tweaked grid formatting to make the grids line up.
 
+### Fixed
+- If the Revision ID wasn't found, throw up a 400 error instead of a 500.
+
 ## [0.3.0] - Medium - 2016-9-24: Coming to you live and direct edition...
 
 This version is the first I'm actually trying to run in production.
