@@ -202,6 +202,30 @@ describe('middleware:fetchEntity', function() {
       });
     });
 
+    it('middleware fetchEntity revision_not_found_error', function(done) {
+      function RevisionIdNotFoundError() {
+        this.message = "Entity not found";
+      }
+      util.inherits(RevisionIdNotFoundError, Error);
+      errs.register('query.revision_id_not_found', RevisionIdNotFoundError);
+
+      query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
+        next(errs.create('query.revision_id_not_found', {
+          path: 'sparklepony',
+          revisionId: null
+        }));
+      };
+
+      var middleware = fetchEntity(db, {}, query, entity, StubEntity);
+      middleware.should.be.a("function");
+
+      middleware(req, res, function(err) {
+        err.name.should.equal('RevisionNotFoundError');
+        err.httpResponseCode.should.equal(400);
+        done();
+      });
+    });
+
     it('middleware fetchEntity db_error', function(done) {
       query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
         next(new Error("Connection was ended during query"));
