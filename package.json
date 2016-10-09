@@ -121,7 +121,7 @@
     "squel": "^5.0.4",
     "superagent": "~1.7.2",
     "svgo": "^0.6.2",
-    "textblocks": "0.0.16",
+    "textblocks": "0.0.17",
     "textblocks-react-editor": "0.0.10",
     "thirty-two": "^1.0.1",
     "validator": "~4.6.1",
