@@ -20,7 +20,7 @@ rm3 has rapidly improving support for media:  It supports photos, but it also su
 Release Status
 --------------
 
-See [CHANGELOG.md] for recent changes.
+See [CHANGELOG.md](CHANGELOG.md) for recent changes.
 
 This is currently in ALPHA state, defined as:
 * I'm running it in production

@@ -64,6 +64,38 @@ rm3 generates cache control headers that specify a 'private' cache, which means 
 
 Some caches are configured by default to treat themselves as specialized caches and will, by default, cache 'private' content.  Otherwise, you may need to configure them to ignore the 'private'.
 
+#### Apache2 caching
+
+You should just be able to, after making sure that mod_cache is installed, add this snippet to your site's config:
+
+```
+   <IfModule mod_cache.c>
+    CacheLock on
+    CacheLockPath "/tmp/mod_cache-lock"
+    CacheLockMaxAge 5
+    CacheDetailHeader on
+    CacheEnable disk /
+    CacheStorePrivate On
+  </IfModule>
+```
+
+Apache2 doesn't automatically clean up the cache drive, so you probably want to use htcacheclean on a regular basis.  The manual isn't entirely clear about this, unfortunately.  If the site content doesn't change too often, you can just set up a daily cache-clean job that works something like this:
+
+```
+9 2 * * * www-data htcacheclean -n -l100M -p/var/cache/apache2/mod_cache_disk/
+```
+(where `www-data` is the apache2 user, `/var/cache/apache2/mod_cache_disk/` is the cache path and `100M` is the size of the cache that you want to preserve)
+
+Or you can use -d to run htcacheclean in daemon mode.
+
+#### nginx caching
+
+**This section will improve as rm3 approaches 1.0**
+
+#### Varnish caching
+
+**This section will improve as rm3 approaches 1.0**
+
 Part 2: The back end
 --------------------
 
