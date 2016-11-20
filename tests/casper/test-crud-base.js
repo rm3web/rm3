@@ -66,7 +66,7 @@ describe('Base type CRUD', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
-         password: 'password'}, true);
+          password: 'password'}, true);
     });
 
     casper.wait(100);
@@ -87,7 +87,7 @@ describe('Base type CRUD', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=create]',
         {title: 'CasperJS Test',
-         'posting[source]': 'post data here do stuff etc'}, true);
+          'posting[source]': 'post data here do stuff etc'}, true);
     });
 
     casper.wait(100);
@@ -108,9 +108,9 @@ describe('Base type CRUD', function() {
     casper.then(function() {
       this.fill('form[action*=edit]',
         {'posting[blocks][0][source]': '# edited\n\ndid some stuff',
-         'posting[blocks][0][format]': 'markdown',
-         'posting[blocks][1][source]': '<strong>html stuff</strong>',
-         'posting[blocks][1][format]': 'html'}, true);
+          'posting[blocks][0][format]': 'markdown',
+          'posting[blocks][1][source]': '<strong>html stuff</strong>',
+          'posting[blocks][1][format]': 'html'}, true);
     });
 
     casper.then(function() {

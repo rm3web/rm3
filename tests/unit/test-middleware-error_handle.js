@@ -8,17 +8,17 @@ describe('middleware:errorHandle', function() {
 
   var tests = [
     {code: 403,
-     middleware: errorHandle.handle403,
-     name: '#handle403'},
+      middleware: errorHandle.handle403,
+      name: '#handle403'},
     {code: 404,
-     middleware: errorHandle.handle404,
-     name: '#handle404'},
+      middleware: errorHandle.handle404,
+      name: '#handle404'},
     {code: 410,
-     middleware: errorHandle.handle410,
-     name: '#handle410'},
+      middleware: errorHandle.handle410,
+      name: '#handle410'},
     {code: 429,
-     middleware: errorHandle.handle429,
-     name: '#handle429'}
+      middleware: errorHandle.handle429,
+      name: '#handle429'}
   ];
 
   tests.forEach(function(test, index) {

@@ -24,7 +24,7 @@ describe('Types', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
-         password: 'password'}, true);
+          password: 'password'}, true);
     });
 
     casper.then(function() {
