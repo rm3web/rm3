@@ -21,7 +21,7 @@ var renderedComponent = ReactDOM.render(
     locales: intl.locales,
     messages: intl.messages,
     baseurl: baseurl,
-    apiPath: apiPath,
+    apiPath: apiPath
   }),
   renderTarget
 );

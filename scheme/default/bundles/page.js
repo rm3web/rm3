@@ -19,7 +19,7 @@ var renderTarget = document.getElementById('pageform');
 var PathFactory = React.createFactory(PageFormComponent);
 
 if (!window.hasOwnProperty('errors')) {
-  errors = {}
+  errors = {};
 }
 
 if (!window.hasOwnProperty('isDraft')) {

@@ -17,7 +17,7 @@ var renderTarget = document.getElementById('pageform');
 var PathFactory = React.createFactory(VectorGraphicFormComponent);
 
 if (!window.hasOwnProperty('errors')) {
-  errors = {}
+  errors = {};
 }
 
 if (!window.hasOwnProperty('isDraft')) {

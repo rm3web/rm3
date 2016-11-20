@@ -18,7 +18,7 @@ var renderTarget = document.getElementById('pageform');
 var PathFactory = React.createFactory(EmailFormComponent);
 
 if (!window.hasOwnProperty('errors')) {
-  errors = {}
+  errors = {};
 }
 
 if (!window.hasOwnProperty('isDraft')) {

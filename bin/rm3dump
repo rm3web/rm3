@@ -16,7 +16,7 @@ function parse_sitepath(val) {
 }
 
 program
-  .version(pjson.version)  
+  .version(pjson.version)
   .option('-l, --log','Get history', false)
   .option('-p, --path [path]','Get path',parse_sitepath,new sitepath(['wh']))
   .option('-f, --friendly','Human-readable friendly format')
@@ -33,9 +33,9 @@ dumpEntity(db, entity.Entity, program.path, program.log, function(err, ent, log,
       console.log('Created: %s', ent._created);
       console.log('Modified: %s', ent._modified);
       console.log('Summary:');
-      console.log(util.inspect(ent.summary, { depth: null }));
+      console.log(util.inspect(ent.summary, {depth: null}));
       console.log('\nData:');
-      console.log(util.inspect(ent.data, { depth: null }));
+      console.log(util.inspect(ent.data, {depth: null}));
       console.log();
       if (log) {
         console.log('History:');
@@ -49,10 +49,10 @@ dumpEntity(db, entity.Entity, program.path, program.log, function(err, ent, log,
           console.log('Event Ended: %s', entry.evt_end);
           console.log('Event Touched: %s', entry.evt_touched);
           if (entry.evt_final) {
-            console.log('Finalized event')
+            console.log('Finalized event');
           }
           console.log('Data:');
-          console.log(util.inspect(entry.data, { depth: null }));
+          console.log(util.inspect(entry.data, {depth: null}));
           console.log();
         });
       }

@@ -19,11 +19,11 @@ if (gearRenderTarget) {
   var actions = [];
 
   if (permissions.hasOwnProperty('post.delete')) {
-    actions.push({url: baseurl+'delete.html', label: 'DELETE', confirm: true});
+    actions.push({url: baseurl + 'delete.html', label: 'DELETE', confirm: true});
   }
 
   if (permissions.hasOwnProperty('view')) {
-    actions.push({url: baseurl+'tree.html', label: 'TREE'});
+    actions.push({url: baseurl + 'tree.html', label: 'TREE'});
   }
 
   if (permissions.hasOwnProperty('post.edit')) {
@@ -56,12 +56,12 @@ if (gearRenderTarget) {
 if (protoRenderTarget) {
   var protoList = [];
 
-  for(var proto in protos) {
+  for (var proto in protos) {
     if (protos.hasOwnProperty(proto)) {
       protoList.push({
         url: '/$new' + baseurl + 'create.html?type=' + proto,
         label: protos[proto].desc
-      })
+      });
     }
   }
 
