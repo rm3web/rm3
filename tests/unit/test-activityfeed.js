@@ -169,23 +169,23 @@ describe('activityfeed', function() {
 
       var tests = [
         {desc: 'returns a string if given a string',
-        input: 'long noses',
-        output: 'long noses'},
+          input: 'long noses',
+          output: 'long noses'},
         {desc: 'returns root',
-        input: {'@type': 'http://rm3.wirewd.com/Site'},
-        output: 'root'},
+          input: {'@type': 'http://rm3.wirewd.com/Site'},
+          output: 'root'},
         {desc: 'returns an id and URL',
-        input: {url: 'url', '@id': 'id'},
-        output: '<a href="url">id</a>'},
+          input: {url: 'url', '@id': 'id'},
+          output: '<a href="url">id</a>'},
         {desc: 'returns a displayName and URL',
-        input: {url: 'url', '@id': 'id', displayName: 'pony'},
-        output: '<a href="url">pony</a>'},
+          input: {url: 'url', '@id': 'id', displayName: 'pony'},
+          output: '<a href="url">pony</a>'},
         {desc: 'returns an id',
-        input: {'@id': 'sad_id'},
-        output: 'sad_id'},
+          input: {'@id': 'sad_id'},
+          output: 'sad_id'},
         {desc: 'handles complete unknown situations',
-        input: {},
-        output: 'unknown'}
+          input: {},
+          output: 'unknown'}
       ];
 
       tests.forEach(function(test, index) {
@@ -214,20 +214,20 @@ describe('activityfeed', function() {
 
       var tests = [
         {desc: 'returns a string if given a string',
-        input: 'screwball humor',
-        output: 'screwball humor'},
+          input: 'screwball humor',
+          output: 'screwball humor'},
         {desc: 'returns an id and URL',
-        input: {url: 'url', '@id': 'id'},
-        output: '<a href="url">id</a>'},
+          input: {url: 'url', '@id': 'id'},
+          output: '<a href="url">id</a>'},
         {desc: 'returns a displayName and URL',
-        input: {url: 'url', '@id': 'id', displayName: 'kitten'},
-        output: '<a href="url">kitten</a>'},
+          input: {url: 'url', '@id': 'id', displayName: 'kitten'},
+          output: '<a href="url">kitten</a>'},
         {desc: 'returns an id',
-        input: {'@id': 'sad_id'},
-        output: 'sad_id'},
+          input: {'@id': 'sad_id'},
+          output: 'sad_id'},
         {desc: 'handles complete unknown situations',
-        input: {},
-        output: 'unknown object'}
+          input: {},
+          output: 'unknown object'}
       ];
 
       tests.forEach(function(test, index) {
