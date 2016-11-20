@@ -44,24 +44,23 @@ suite('query#entityFromPath', function() {
   var now = new Date();
 
   resources.entityResource(path, ents, 'one', false, now);
-  before(function(done) {    
+  before(function(done) {
     async.times(10, function(n, next) {
       makeFakeEntity(path, next);
     }, done);
   });
 
   bench('root access', function(done) {
-    query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2){
+    query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2) {
       done(err);
     });
   });
 
   bench('root access cached', function(done) {
-    query.entityFromPath(db, cacheService, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2){
+    query.entityFromPath(db, cacheService, entity.Entity, {}, {context: "ROOT"}, path, null, function(err, ent2) {
       done(err);
     });
   });
-
 
   bench('root access minus db', function(done) {
     query.entityFromPath(mockdb, false, MockEntclass, {}, {context: "ROOT"}, path, null, function(err, ent2) {
@@ -71,27 +70,26 @@ suite('query#entityFromPath', function() {
 
   bench('root access by revisionId', function(done) {
     query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, path,
-                         ents.one._entityId, function(err, ent2){
-      done(err);
-    });
+                         ents.one._entityId, function(err, ent2) {
+                           done(err);
+                         });
   });
 
   bench('root access by revisionId minus db', function(done) {
-    query.entityFromPath(mockdb, false, MockEntclass, {}, {context: "ROOT"}, path, 
-                         ents.one._entityId, function(err, ent2){
-      done(err);
-    });
+    query.entityFromPath(mockdb, false, MockEntclass, {}, {context: "ROOT"}, path,
+                         ents.one._entityId, function(err, ent2) {
+                           done(err);
+                         });
   });
 
-
   bench('nobody access', function(done) {
-    query.entityFromPath(db, false, entity.Entity, {}, {context: "STANDARD"}, path, null, function(err, ent2){
+    query.entityFromPath(db, false, entity.Entity, {}, {context: "STANDARD"}, path, null, function(err, ent2) {
       done();
     });
   });
 
   bench('nobody access cached', function(done) {
-    query.entityFromPath(db, cacheService, entity.Entity, {}, {context: "STANDARD"}, path, null, function(err, ent2){
+    query.entityFromPath(db, cacheService, entity.Entity, {}, {context: "STANDARD"}, path, null, function(err, ent2) {
       done();
     });
   });
@@ -103,19 +101,18 @@ suite('query#entityFromPath', function() {
   });
 });
 
-
-suite('query#query', function () {
+suite('query#query', function() {
   var ents = {};
 
   var path1 = new sitepath(['wh','query']);
   var path2 = new sitepath(['wh','query','sub']);
   var now = new Date();
 
-  resources.entityResource(path1, ents, 'one', false, now, function(e){
+  resources.entityResource(path1, ents, 'one', false, now, function(e) {
     e.addTag('navigation','navbar');
   });
 
-  resources.entityResource(path2, ents, 'two', false, now, function(e){
+  resources.entityResource(path2, ents, 'two', false, now, function(e) {
     e.addTag(null,'navbar');
   });
 
@@ -170,7 +167,7 @@ suite("query#query_history", function() {
     );
   });
 
-  bench('query', function(done){
+  bench('query', function(done) {
     var resp = query.queryHistory(db, {}, {}, path, null, {});
     var arts = [];
     resp.on('article', function(article) {
@@ -181,6 +178,6 @@ suite("query#query_history", function() {
     });
     resp.on('end', function() {
       done();
-    });      
+    });
   });
 });

@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 var db = require('../lib/db');
 var SitePath = require ('sitepath');
 var program = require('commander');
@@ -26,15 +27,14 @@ program
   .option('-u, --user [path]','Change the user to the new destination path',parse_sitepath)
   .parse(process.argv);
 
-
-var security = {context: 'ROOT'}
+var security = {context: 'ROOT'};
 
 if (program.user) {
   security = {context: 'STANDARD'};
   security.user = program.user;
 }
 
-if (program.directory) {  
+if (program.directory) {
   if (!fs.lstatSync(program.directory).isDirectory()) {
     winston.error('Path isn\'t a directory');
     db.gunDatabase();
@@ -53,23 +53,21 @@ if (program.directory) {
     });
   });
 
-
-
 } else if (program.file === '-') {
   winston.info('Loading from stdin');
-  var stdin = process.stdin
+  var stdin = process.stdin;
   var inputChunks = [];
 
   stdin.setEncoding('utf8');
- 
-  stdin.on('readable', function () {
+
+  stdin.on('readable', function() {
     var chunk = process.stdin.read();
     if (chunk !== null) {
       inputChunks.push(chunk);
     }
   });
- 
-  stdin.on('end', function () {
+
+  stdin.on('end', function() {
     var inputData = inputChunks.join();
     var parsedData = JSON.parse(inputData);
     loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
@@ -96,5 +94,5 @@ if (program.directory) {
       }
       db.gunDatabase();
     });
-  })
+  });
 }
