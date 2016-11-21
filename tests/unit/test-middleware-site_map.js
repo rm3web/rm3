@@ -33,6 +33,7 @@ describe('middleware:contextCreate', function() {
       req.site.urlroot.should.equal('http://www.example.com/');
       req.site.loginVisible.should.equal(false);
       req.site.sitePathToUrl(req.site.root).should.equal('/');
+      req.site.sitePathToUrl(req.site.root, '70d6b401-7d30-11e6-ab80-e1f1f8b99979').should.equal('/?revisionId=70d6b401-7d30-11e6-ab80-e1f1f8b99979');
       cb();
     });
   });
