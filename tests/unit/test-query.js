@@ -5,7 +5,7 @@ var query = require ('../../lib/query');
 var events = require("events");
 var should = require('chai').should();
 var Plan = require('test-plan');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 
 describe('activity query gen', function() {
   var root = {context: "ROOT"};

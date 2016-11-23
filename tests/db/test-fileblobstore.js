@@ -1,7 +1,7 @@
 var Conf = require ('../../lib/conf');
 var entity = require('../../lib/entity');
 var sitepath = require ('sitepath');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 var should = require('chai').should();
 var db = require('../../lib/db');
 var os = require('os');

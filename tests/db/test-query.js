@@ -7,7 +7,7 @@ var db = require('../../lib/db');
 var user = require('../../lib/authentication/user');
 var should = require('chai').should();
 var resources = require('../lib/resources.js');
-var uuid = require('node-uuid');
+var uuid = require('uuid');
 require('mocha-steps');
 
 function entitiesShouldMostlyEqual(ent, ent2) {
