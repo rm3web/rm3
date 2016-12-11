@@ -14,8 +14,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Justified and Masonry views.
 - Caching SQL requests in redis for findBlob
+- Added the initialization of schemes to a overridable phase of startup.
 
 ### Changed
+- Updated dependencies
 - All of the unit tests use Chai instead of Should.
 - Tweaked grid formatting to make the grids line up.
 
@@ -208,7 +210,8 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.2.3...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/rm3web/rm3/compare/v0.2.3...v0.3.0
 [0.2.3]: https://github.com/rm3web/rm3/compare/v0.2.2...v0.2.3
 [0.2.2]: https://github.com/rm3web/rm3/compare/v0.2.1...v0.2.2
 [0.2.1]: https://github.com/rm3web/rm3/compare/v0.2.0...v0.2.1
