@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Caching SQL requests in redis for findBlob
 
 ### Changed
+- Updated dependencies
 - All of the unit tests use Chai instead of Should.
 - Tweaked grid formatting to make the grids line up.
 
