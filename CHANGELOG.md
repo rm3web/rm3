@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Justified and Masonry views.
 - Caching SQL requests in redis for findBlob
+- Added the initialization of schemes to a overridable phase of startup.
 
 ### Changed
 - Updated dependencies
