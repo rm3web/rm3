@@ -24,6 +24,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - If the Revision ID wasn't found, throw up a 400 error instead of a 500.
 - When you create a page as draft, redirect the user to the right URL.
+- When you create a page as draft, then edit it as a draft, the workflow was getting messed up.
 
 ## [0.3.0] - Medium - 2016-9-24: Coming to you live and direct edition...
 
