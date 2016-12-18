@@ -540,7 +540,7 @@ describe('update', function() {
     stepGenericDelete('delete', ents.start, delMark);
   });
 
-  describe('provisional create-provisional update-create', function() {
+  describe('provisional create-provisional update-create sameRevision', function() {
     var now = new Date();
     var ents = {};
     var delMark = {};
@@ -560,7 +560,7 @@ describe('update', function() {
 
     stepValidateTagNonExistence('check tag non creation', ents.start);
 
-    stepGenericUpdate('update', ents, 'start', 'next', true, false);
+    stepGenericUpdate('update', ents, 'start', 'next', false, true);
 
     step('commit', function(done) {
       update.commitEntityRev(db, {}, ents.next._revisionId,
