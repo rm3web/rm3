@@ -129,6 +129,7 @@ function stepValidateEntityExistence(desc, ent) {
       ent.path().toDottedPath() + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
+      result.rowCount.should.equal(1);
       result.rows[0].entityId.should.equal(ent._entityId);
       result.rows[0].revisionId.should.equal(ent._revisionId);
       result.rows[0].revisionNum.should.equal(ent._revisionNum);
@@ -537,6 +538,111 @@ describe('update', function() {
     stepValidateTagExistence('check tag create', ents.start);
 
     stepGenericDelete('delete', ents.start, delMark);
+  });
+
+  describe('provisional create-provisional update-create sameRevision', function() {
+    var now = new Date();
+    var ents = {};
+    var delMark = {};
+    var commitMark = {};
+
+    stepGenericCreate('create', new sitepath(['wh', 'pcreate2']), ents,
+      'start', false, now);
+
+    stepValidateNonEntityExistence('validate provisional wont create', ents.start);
+
+    stepGenericLogCheck('check log after provisional create', ents.start, function(result) {
+      var ent = ents.start;
+
+      result.rowCount.should.equal(1);
+      checkLogPcreate(result.rows[0], ent);
+    });
+
+    stepValidateTagNonExistence('check tag non creation', ents.start);
+
+    stepGenericUpdate('update', ents, 'start', 'next', false, true);
+
+    step('commit', function(done) {
+      update.commitEntityRev(db, {}, ents.next._revisionId,
+        function(err, entityId, revisionId, revisionNum) {
+          if (err) {
+            should.fail(err);
+          }
+          entityId.should.be.a('string');
+          entityId.should.equal(ents.next._entityId);
+          revisionId.should.be.a('string');
+          revisionNum.should.be.a('number');
+          commitMark.revisionId = revisionId;
+          commitMark.revisionNum = revisionNum;
+          done(err);
+        });
+    });
+
+    stepValidateEntityExistence('check create', ents.start);
+
+    stepGenericLogCheck('check create log', ents.next, function(result) {
+      var ent = ents.next;
+
+      result.rowCount.should.equal(1);
+      checkLogCreate(result.rows[0], ent);
+    });
+
+    stepValidateTagExistence('check tag create', ents.next);
+
+    stepGenericDelete('delete', ents.next, delMark);
+  });
+
+  describe('provisional create-provisional update-create', function() {
+    var now = new Date();
+    var ents = {};
+    var delMark = {};
+    var commitMark = {};
+
+    stepGenericCreate('create', new sitepath(['wh', 'pcreate3']), ents,
+      'start', false, now);
+
+    stepValidateNonEntityExistence('validate provisional wont create', ents.start);
+
+    stepGenericLogCheck('check log after provisional create', ents.start, function(result) {
+      var ent = ents.start;
+
+      result.rowCount.should.equal(1);
+      checkLogPcreate(result.rows[0], ent);
+    });
+
+    stepValidateTagNonExistence('check tag non creation', ents.start);
+
+    stepGenericUpdate('update', ents, 'start', 'next', false, false);
+
+    step('commit', function(done) {
+      update.commitEntityRev(db, {}, ents.next._revisionId,
+        function(err, entityId, revisionId, revisionNum) {
+          if (err) {
+            should.fail(err);
+          }
+          entityId.should.be.a('string');
+          entityId.should.equal(ents.next._entityId);
+          revisionId.should.be.a('string');
+          revisionNum.should.be.a('number');
+          commitMark.revisionId = revisionId;
+          commitMark.revisionNum = revisionNum;
+          done(err);
+        });
+    });
+
+    stepValidateEntityExistence('check create', ents.next);
+
+    stepGenericLogCheck('check create log', ents.next, function(result) {
+      var ent = ents.next;
+
+      result.rowCount.should.equal(2);
+
+      checkLogCreate(result.rows[0], ent);
+    });
+
+    stepValidateTagExistence('check tag create', ents.next);
+
+    stepGenericDelete('delete', ents.next, delMark);
   });
 
   it('fails on invalid revisionNum', function(done) {
