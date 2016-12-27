@@ -165,6 +165,7 @@
     "mocha-casperjs": "^0.5.4",
     "mocha-steps": "^1.0.0",
     "nyc": "^10.0.0",
+    "proxyquire": "^1.7.10",
     "run-sequence": "^1.1.5",
     "tcp-port-used": "^0.1.2",
     "test-plan": "~0.1.1",

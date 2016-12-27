@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Refactored how things are hooked up at startup so that the db and cache land in `app.locals`
 - Refactored rate limiting code
+- Migrated code away from `scheme/default/helper.js`
 
 ### Fixed
 - When you update a page as draft, redirect the user to the right URL.
