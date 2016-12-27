@@ -27,30 +27,11 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
   SiteHelpers.installDust(dust, db, query);
   SchemeHelpers.installDust(dust, db, query);
 
-  dust.filters.toDottedPath = function(value) {
-    if (value instanceof SitePath) {
-      return value.toDottedPath();
-    }
-    return value;
-  };
-
   dust.filters.toISOString = function(value) {
     if (value instanceof Date) {
       return value.toISOString();
     }
     return value;
-  };
-
-  dust.helpers.onlyThirdLevel = function(chunk, context, bodies, params) {
-    var pageCurPath = context.get('path');
-    var pathLength = pageCurPath.pathArray().length;
-    if (pathLength > 2) {
-      return chunk.render(bodies.block, context);
-    } else {
-      if (bodies.else) {
-        return chunk.render(bodies.else, context);
-      }
-    }
   };
 
   dust.helpers.linkIcon = function(chunk, context, bodies, params) {
@@ -111,22 +92,6 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
                 '" width="' + scaleSize.width + '" border="0" data-width="' +
                 scaleSize.width + '" data-height="' + scaleSize.height + '"/>');
     }
-  };
-
-  dust.helpers.ifLoginEnabled = function(chunk, context, bodies, params) {
-    var site = context.get('site');
-    if (site.loginVisible) {
-      return chunk.render(bodies.block, context);
-    } else {
-      if (bodies.else) {
-        return chunk.render(bodies.else, context);
-      }
-    }
-  };
-
-  dust.helpers.siteUrlRoot = function(chunk, context, bodies, params) {
-    var site = context.get('site');
-    chunk.write(site.urlroot);
   };
 
   dust.helpers.textblock = function(chunk, context, bodies, params) {
