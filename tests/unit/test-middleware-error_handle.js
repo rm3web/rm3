@@ -37,6 +37,9 @@ describe('middleware:errorHandle', function() {
           code.should.equal(test.code);
           plan.ok(true);
         };
+        res.set = function(header, value) {
+
+        };
         res.cacheControl.noCache = function() {
           plan.ok(true);
         };

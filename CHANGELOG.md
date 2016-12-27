@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Refactored rate limiting code
+
 ## [0.3.1] - Low - 2016-12-27: George Michael + Carrie Fisher edition
 
 ### Added
