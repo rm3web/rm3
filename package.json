@@ -182,7 +182,10 @@
     "prepublish": "./node_modules/.bin/gulp prepublish"
   },
   "keywords": [
-    "cms"
+    "cms",
+    "blog",
+    "gallery",
+    "wiki"
   ],
   "homepage": "https://github.com/rm3web/rm3",
   "author": "Wirehead <wh-npm@wirewd.com>",
