@@ -94,22 +94,6 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
     }
   };
 
-  dust.helpers.ifLoginEnabled = function(chunk, context, bodies, params) {
-    var site = context.get('site');
-    if (site.loginVisible) {
-      return chunk.render(bodies.block, context);
-    } else {
-      if (bodies.else) {
-        return chunk.render(bodies.else, context);
-      }
-    }
-  };
-
-  dust.helpers.siteUrlRoot = function(chunk, context, bodies, params) {
-    var site = context.get('site');
-    chunk.write(site.urlroot);
-  };
-
   dust.helpers.textblock = function(chunk, context, bodies, params) {
     var textblock = context.resolve(params.field);
     var resolve = context.resolve(params.resolve);

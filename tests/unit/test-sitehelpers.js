@@ -24,6 +24,24 @@ describe('sitehelpers', function() {
     proxy.installDust(dust, {}, {});
   });
 
+  describe('#siteUrlRoot', function() {
+    var siteTemplate = "{@siteUrlRoot /}";
+    it('works', function(cb) {
+      dustRender(siteTemplate , 'sitehelpers.siteurlroot', {site: {urlroot: 'lof'}}, 'lof', cb);
+    });
+  });
+
+  describe('#ifLoginEnabled', function() {
+    it('works for a sitepath', function(cb) {
+      var trueTemplate = "{@ifLoginEnabled}works{:else}bro{/ifLoginEnabled}";
+      dustRender(trueTemplate, 'sitehelpers.thirdlevel.sitepath', {site: {loginVisible: true}}, 'works', cb);
+    });
+    it('works', function(cb) {
+      var trueTemplate = "{@ifLoginEnabled}bro{:else}works{/ifLoginEnabled}";
+      dustRender(trueTemplate, 'sitehelpers.thirdlevel.else', {site: {loginVisible: false}}, 'works', cb);
+    });
+  });
+
   describe('#toDottedPath', function() {
     var dottedPathTemplate = "{myInput|toDottedPath}";
     it('works for a sitepath', function(cb) {
