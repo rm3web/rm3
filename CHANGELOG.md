@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Changed
+- Refactored how things are hooked up at startup so that the db and cache land in `app.locals`
 - Refactored rate limiting code
 
 ## [0.3.1] - Low - 2016-12-27: George Michael + Carrie Fisher edition
