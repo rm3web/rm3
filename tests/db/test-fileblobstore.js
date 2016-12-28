@@ -10,6 +10,7 @@ var FileBlobStore = require('../../lib/fileblobstore');
 require('mocha-steps');
 
 describe('file blob store', function() {
+  this.timeout(8000); // This might take a bit of time
   var path = new sitepath(['wh', 'fileblobstore']);
 
   var filepath = {

@@ -14,6 +14,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Users can now add i10n strings.
 
+### Changed
+- More test coverage improvements
+
 ## [0.3.2] - Low - 2016-12-27: Vera Rubin two-releases-in-a-day edition
 
 ### Changed
