@@ -27,13 +27,6 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
   SiteHelpers.installDust(dust, db, query);
   SchemeHelpers.installDust(dust, db, query);
 
-  dust.filters.toISOString = function(value) {
-    if (value instanceof Date) {
-      return value.toISOString();
-    }
-    return value;
-  };
-
   dust.helpers.linkIcon = function(chunk, context, bodies, params) {
     var size = context.resolve(params.size);
     if (!size) {
