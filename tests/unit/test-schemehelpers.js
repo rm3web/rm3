@@ -45,7 +45,7 @@ describe('schemehelpers', function() {
   });
 
   describe('#isNotHead', function() {
-    it('works for a sitepath', function(cb) {
+    it('works for for a non-head', function(cb) {
       var template = "{@isNotHead}works{:else}bro{/isNotHead}";
       dustRender(dust, template, 'schemehelpers.isNotHead.head', {curLogRev: {revisionId: '12345'}}, 'works', cb);
     });
@@ -56,9 +56,13 @@ describe('schemehelpers', function() {
   });
 
   describe('#isDraft', function() {
-    it('works for a sitepath', function(cb) {
+    it('works with a non-final Revision', function(cb) {
+      var template = "{@isDraft}bro{:else}works{/isDraft}";
+      dustRender(dust, template, 'schemehelpers.isDraft.head', {curLogRev: {revisionId: '12345', evtFinal: true}}, 'works', cb);
+    });
+    it('works with a final Revision', function(cb) {
       var template = "{@isDraft}works{:else}bro{/isDraft}";
-      dustRender(dust, template, 'schemehelpers.isDraft.head', {curLogRev: {revisionId: '12345'}}, 'works', cb);
+      dustRender(dust, template, 'schemehelpers.isDraft.head', {curLogRev: {revisionId: '12345', evtFinal: false}}, 'works', cb);
     });
     it('works', function(cb) {
       var template = "{@isDraft}bro{:else}works{/isDraft}";
