@@ -57,6 +57,16 @@ describe('authorizehelpers', function() {
       };
       dustRender(dust, template, 'authorizehelpers.requirePermissionOr.3', context, 'works', cb);
     });
+    it('works when you have both permissions', function(cb) {
+      var template = "{@requirePermissionOr permission=\"edit\" permissionOr=\"delete\"}works{/requirePermissionOr}";
+      var context = {
+        permissions: {
+          'post.edit': 'true',
+          'post.delete': 'true'
+        }
+      };
+      dustRender(dust, template, 'authorizehelpers.requirePermissionOr.4', context, 'works', cb);
+    });
     it('works when you don\'t', function(cb) {
       var template = "{@requirePermissionOr permission=\"comment.submit\" permissionOr=\"comment.create\"}{:else}works{/requirePermissionOr}";
       var context = {
