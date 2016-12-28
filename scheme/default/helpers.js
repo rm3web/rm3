@@ -6,18 +6,8 @@ var IndexFeed = require('../../lib/indexfeed');
 var TagHelpers = require('../../lib/taghelpers');
 var SiteHelpers = require('../../lib/sitehelpers');
 var SchemeHelpers = require('../../lib/schemehelpers');
-var Pagination = require('../../lib/pagination');
+var ReactHelpers = require('../../lib/reacthelpers');
 var imageScale = require('../../lib/imagescale');
-var path = require('path');
-var React = require('react');
-var ReactDOM = require('react-dom/server');
-var requireCompiled = require('require-compiled').babelOptions({"presets": ["react", "es2015"]});
-
-var renderComponentToString = function renderComponent(reactDir, file, props) {
-  var component = requireCompiled(path.resolve(path.join(reactDir, file)));
-  var factory = React.createFactory(component);
-  return ReactDOM.renderToString(factory(props));
-};
 
 exports = module.exports = function(dust, db, cache, query, reactDir) {
 
@@ -26,6 +16,7 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
   TagHelpers.installDust(dust, db, query);
   SiteHelpers.installDust(dust, db, query);
   SchemeHelpers.installDust(dust, db, query);
+  ReactHelpers.installDust(dust, db, query, reactDir);
 
   dust.helpers.thumbnail = function(chunk, context, bodies, params) {
     var size = context.resolve(params.size);
@@ -199,49 +190,4 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
     }
   };
 
-  dust.helpers.reactForm = function(chunk, context, bodies, params) {
-    try {
-      var file = context.resolve(params.component);
-      var div = context.resolve(params.div);
-
-      var scheme = context.get('scheme');
-
-      var intlData = context.get('intl');
-      var bundlePath = context.resolve(params.bundle);
-      var bundle = scheme.getResourcePath(bundlePath);
-
-      var revisionId = context.get('meta.revisionId');
-      var isDraft = context.get('isDraft');
-      var formData = context.get('formData');
-      var errors = context.get('errors');
-      var proto = context.get('meta.proto');
-      var section = context.get('section');
-
-      props = {};
-
-      for (var element in formData) {
-        if (formData.hasOwnProperty(element)) {
-          props[element] = formData[element];
-        }
-      }
-
-      props.locales = intlData.locales;
-      props.messages = intlData.messages;
-      props.revisionId = revisionId;
-      props.isDraft = isDraft;
-      props.errors = errors;
-      props.proto = proto;
-      props.section = section;
-
-      var markup = renderComponentToString(reactDir, file, props);
-
-      chunk.write('<div id="' + div + '">' + markup + '</div>' +
-                '<script src="' + bundle + '"></script>');
-      return chunk;
-    } catch (e) {
-      chunk.setError(e);
-      console.log(e);
-      console.log(e.stack);
-    }
-  };
 };
