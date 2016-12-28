@@ -2,6 +2,7 @@ var AuthorizeHelpers = require ('../../lib/authorizehelpers');
 var should = require('chai').should();
 var dust = require('dustjs-linkedin');
 var dustRender = require('../lib/dustrender.js');
+var SitePath = require ('sitepath');
 
 AuthorizeHelpers.installDust(dust, {}, {});
 
@@ -64,6 +65,40 @@ describe('authorizehelpers', function() {
         }
       };
       dustRender(dust, template, 'authorizehelpers.requirePermissionOr.else', context, 'works', cb);
+    });
+  });
+
+  describe('#requireUser', function() {
+    it('works for a user', function(cb) {
+      var template = "{@requireUser}works{:else}bro{/requireUser}";
+      dustRender(dust, template, 'authorizehelpers.requireUser.present', {user: {}}, 'works', cb);
+    });
+    it('works for no user', function(cb) {
+      var template = "{@requireUser}bro{:else}works{/requireUser}";
+      dustRender(dust, template, 'authorizehelpers.requireUser.else', {}, 'works', cb);
+    });
+  });
+
+  describe('#isThisUser', function() {
+    it('works for this user', function(cb) {
+      var context = {
+        userPath: new SitePath('fm.cmo.wiur'),
+        path: new SitePath('fm.cmo.wiur')
+      };
+      var template = "{@isThisUser}works{:else}bro{/isThisUser}";
+      dustRender(dust, template, 'authorizehelpers.isThisUser.present', context, 'works', cb);
+    });
+    it('works for the wrong user', function(cb) {
+      var context = {
+        userPath: new SitePath('fm.cmo.wiur'),
+        path: new SitePath('fm.cmo')
+      };
+      var template = "{@isThisUser}bro{:else}works{/isThisUser}";
+      dustRender(dust, template, 'authorizehelpers.isThisUser.wrong', context, 'works', cb);
+    });
+    it('works for no user', function(cb) {
+      var template = "{@isThisUser}bro{:else}works{/isThisUser}";
+      dustRender(dust, template, 'authorizehelpers.isThisUser.else', {}, 'works', cb);
     });
   });
 });

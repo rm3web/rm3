@@ -6,6 +6,7 @@ var IndexFeed = require('../../lib/indexfeed');
 var TagHelpers = require('../../lib/taghelpers');
 var SiteHelpers = require('../../lib/sitehelpers');
 var SchemeHelpers = require('../../lib/schemehelpers');
+var AuthorizeHelpers = require('../../lib/authorizehelpers');
 var ReactHelpers = require('../../lib/reacthelpers');
 var imageScale = require('../../lib/imagescale');
 
@@ -17,6 +18,7 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
   SiteHelpers.installDust(dust, db, query);
   SchemeHelpers.installDust(dust, db, query);
   ReactHelpers.installDust(dust, db, query, reactDir);
+  AuthorizeHelpers.installDust(dust, db, query);
 
   dust.helpers.thumbnail = function(chunk, context, bodies, params) {
     var size = context.resolve(params.size);
@@ -66,17 +68,6 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
       });
     } else {
       return chunk.end();
-    }
-  };
-
-  dust.helpers.requireUser = function(chunk, context, bodies, params) {
-    var user = context.get('user');
-    if (user) {
-      return chunk.render(bodies.block, context);
-    } else {
-      if (bodies.else) {
-        return chunk.render(bodies.else, context);
-      }
     }
   };
 
@@ -131,18 +122,6 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
         chunk.end();
       });
     });
-  };
-
-  dust.helpers.isThisUser = function(chunk, context, bodies, params) {
-    var user = context.get('userPath');
-    var path = context.get('path');
-    if (user) {
-      if (user.toDottedPath() == path.toDottedPath()) {
-        return chunk.render(bodies.block, context);
-      } else {
-        return chunk.render(bodies.else, context);
-      }
-    }
   };
 
 };
