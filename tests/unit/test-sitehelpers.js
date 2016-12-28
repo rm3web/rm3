@@ -3,19 +3,7 @@ var SitePath = require ('sitepath');
 var should = require('chai').should();
 var proxyquire =  require('proxyquire');
 var dust = require('dustjs-linkedin');
-
-var dustRender = function(template, templateName, vars, match, cb) {
-  var trueTemplate = dust.compile(template, templateName);
-  dust.loadSource(trueTemplate);
-  dust.render(templateName, vars, function(err, output) {
-    if (err) {
-      should.fail();
-    } else {
-      output.should.equal(match);
-    }
-    cb(err);
-  });
-};
+var dustRender = require('../lib/dustrender.js');
 
 describe('sitehelpers', function() {
   var confStub = {};
@@ -27,39 +15,39 @@ describe('sitehelpers', function() {
   describe('#siteUrlRoot', function() {
     var siteTemplate = "{@siteUrlRoot /}";
     it('works', function(cb) {
-      dustRender(siteTemplate , 'sitehelpers.siteurlroot', {site: {urlroot: 'lof'}}, 'lof', cb);
+      dustRender(dust, siteTemplate , 'sitehelpers.siteurlroot', {site: {urlroot: 'lof'}}, 'lof', cb);
     });
   });
 
   describe('#ifLoginEnabled', function() {
     it('works for a sitepath', function(cb) {
       var trueTemplate = "{@ifLoginEnabled}works{:else}bro{/ifLoginEnabled}";
-      dustRender(trueTemplate, 'sitehelpers.thirdlevel.sitepath', {site: {loginVisible: true}}, 'works', cb);
+      dustRender(dust, trueTemplate, 'sitehelpers.thirdlevel.sitepath', {site: {loginVisible: true}}, 'works', cb);
     });
     it('works', function(cb) {
       var trueTemplate = "{@ifLoginEnabled}bro{:else}works{/ifLoginEnabled}";
-      dustRender(trueTemplate, 'sitehelpers.thirdlevel.else', {site: {loginVisible: false}}, 'works', cb);
+      dustRender(dust, trueTemplate, 'sitehelpers.thirdlevel.else', {site: {loginVisible: false}}, 'works', cb);
     });
   });
 
   describe('#toDottedPath', function() {
     var dottedPathTemplate = "{myInput|toDottedPath}";
     it('works for a sitepath', function(cb) {
-      dustRender(dottedPathTemplate , 'sitehelpers.dottedpath', {myInput: new SitePath(['wh','ff'])}, 'wh.ff', cb);
+      dustRender(dust, dottedPathTemplate , 'sitehelpers.dottedpath', {myInput: new SitePath(['wh','ff'])}, 'wh.ff', cb);
     });
     it('ignores everything else', function(cb) {
-      dustRender(dottedPathTemplate , 'sitehelpers.dottedpath', {myInput: '51'}, '51', cb);
+      dustRender(dust, dottedPathTemplate , 'sitehelpers.dottedpath', {myInput: '51'}, '51', cb);
     });
   });
 
   describe('#onlyThirdLevel', function() {
     it('works for a sitepath', function(cb) {
       var trueTemplate = "{@onlyThirdLevel}works{:else}bro{/onlyThirdLevel}";
-      dustRender(trueTemplate, 'sitehelpers.thirdlevel.sitepath', {path: new SitePath(['wh','ff','tt'])}, 'works', cb);
+      dustRender(dust, trueTemplate, 'sitehelpers.thirdlevel.sitepath', {path: new SitePath(['wh','ff','tt'])}, 'works', cb);
     });
     it('works', function(cb) {
       var trueTemplate = "{@onlyThirdLevel}bro{:else}works{/onlyThirdLevel}";
-      dustRender(trueTemplate, 'sitehelpers.thirdlevel.else', {path: new SitePath(['wh','ff'])}, 'works', cb);
+      dustRender(dust, trueTemplate, 'sitehelpers.thirdlevel.else', {path: new SitePath(['wh','ff'])}, 'works', cb);
     });
   });
 
@@ -122,7 +110,7 @@ describe('sitehelpers', function() {
         return undefined;
       };
       var trueTemplate = "{@hasAuthProviderEnabled provider=\"twitter\"}works{:else}brok{/hasAuthProviderEnabled}";
-      dustRender(trueTemplate, 'sitehelpers.auth.twitter', {}, 'works', cb);
+      dustRender(dust, trueTemplate, 'sitehelpers.auth.twitter', {}, 'works', cb);
     });
 
     it('works for Twitter', function(cb) {
@@ -130,7 +118,7 @@ describe('sitehelpers', function() {
         return undefined;
       };
       var trueTemplate = "{@hasAuthProviderEnabled provider=\"twitter\"}brok{:else}works{/hasAuthProviderEnabled}";
-      dustRender(trueTemplate, 'sitehelpers.auth.notwitter', {}, 'works', cb);
+      dustRender(dust, trueTemplate, 'sitehelpers.auth.notwitter', {}, 'works', cb);
     });
   });
 });
