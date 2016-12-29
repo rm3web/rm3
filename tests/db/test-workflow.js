@@ -24,6 +24,23 @@ describe('workflows', function() {
 
   describe('works', function() {
 
+    step('#addWorkflowDef', function() {
+      var def = {
+        name: 'dummy2',
+        chain: [{
+          name: 'Dummy task 2',
+          timeout: 30,
+          retry: 1,
+          body: function(job, cb) {
+            return cb(null, 'dummy task ran');
+          }
+        }],
+        timeout: 180,
+        onerror: []
+      };
+      workflow.addWorkflowDef('dummy2', def);
+    });
+
     step('#setupWorkflows', function(done) {
       workflow.setupWorkflows(done);
     });
@@ -62,6 +79,27 @@ describe('workflows', function() {
     });
 
     step('#waitForWorkflow #scheduleWorkflow', function(done) {
+      workflow.waitForWorkflow(500, jobUuid, function(err, info) {
+        if (err) {
+          should.fail(err);
+        }
+        info.execution.should.equal('succeeded');
+        info.chain_results[0].result.should.equal('dummy task ran');
+        done(err);
+      });
+    });
+
+    step('#launchWorkflow custom', function(done) {
+      workflow.launchWorkflow("dummy2", {}, function(err, jobid) {
+        if (err) {
+          should.fail(err);
+        }
+        jobUuid = jobid;
+        done(err);
+      });
+    });
+
+    step('#waitForWorkflow #launchWorkflow custom', function(done) {
       workflow.waitForWorkflow(500, jobUuid, function(err, info) {
         if (err) {
           should.fail(err);
