@@ -17,6 +17,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - More test coverage improvements
 
+### Fixed
+- Weird copypasta in the page bundle that might have messed up creation of some of the page-like entities.
+
 ## [0.3.2] - Low - 2016-12-27: Vera Rubin two-releases-in-a-day edition
 
 ### Changed
