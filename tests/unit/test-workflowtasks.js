@@ -32,7 +32,7 @@ describe('workflowtasks', function() {
       }});
     });
     it('works', function(cb) {
-      proxy.writeStringToBlob({}, 'fff', 'fn', 'string', 'revisionId', function(err) {
+      proxy.writeStringToBlob({}, 'fff', 'fn', 'revisionId', 'string', function(err) {
         cb();
       });
     });
