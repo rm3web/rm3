@@ -35,7 +35,7 @@ var renderedComponent = ReactDOM.render(
     path: root,
     title: title,
     abstract: abstract,
-    proto: 'user',
+    proto: proto,
     block: block,
     proto: proto,
     errors: errors,
