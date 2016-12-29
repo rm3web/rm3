@@ -123,6 +123,7 @@
     "textblocks": "0.0.17",
     "textblocks-react-editor": "0.0.11",
     "thirty-two": "^1.0.1",
+    "tmp": "0.0.31",
     "uuid": "^3.0.0",
     "validator": "~4.6.1",
     "wavesurfer.js": "^1.1.12",

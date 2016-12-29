@@ -12,7 +12,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
-- Users can now add i10n strings.
+- Users can now add i10n strings. (very alpha API, not ready for extensions yet)
+- Users can now add workflows. (very alpha API, not ready for extensions yet)
 
 ### Changed
 - More test coverage improvements
