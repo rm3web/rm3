@@ -1,6 +1,7 @@
 var workflowtasks = require('../../lib/workflowtasks');
 var should = require('chai').should();
 var fs = require('fs');
+var proxyquire =  require('proxyquire');
 
 describe('workflowtasks', function() {
   it('#withTempFile should work as expected', function(cb) {
@@ -17,6 +18,24 @@ describe('workflowtasks', function() {
       cb(err);
     });
   });
+  context('#writeStringToBlob', function() {
+    var proxy;
+    before(function() {
+      proxy = proxyquire('../../lib/workflowtasks', {'../blobstores': {
+        'getBlobStore': function(category) {
+          return {addBlob: function(ctx, entityPath, blobPath, revisionId, source, temporary, data, next) {
+            next();
+          }}
+        }
+      }});
+    });
+    it('works', function(cb) {
+      proxy.writeStringToBlob({}, 'fff', 'fn', 'string', 'revisionId', function(err) {
+        cb();
+      });
+    });
+  });
+
   context('#dangerousDoSpawn', function() {
     it('should succeed with true', function(cb) {
       var ctx = {};
