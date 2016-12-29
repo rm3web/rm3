@@ -2,6 +2,7 @@ var uuid = require('uuid');
 var should = require('chai').should();
 var runWorkflows = require('../../lib/runworkflows');
 var workflow = require('../../lib/workflow');
+var workflowtasks = require('../../lib/workflowtasks');
 
 require('mocha-steps');
 
@@ -32,7 +33,18 @@ describe('workflows', function() {
           timeout: 30,
           retry: 1,
           body: function(job, cb) {
-            return cb(null, 'dummy task ran');
+            workflowtasks.withTempFile(job.params.ctx, 'abc', 'abcString', function(err, path, fd, cleanupCallback) {
+              if (err) {
+                cb(err);
+              }
+              cleanupCallback();
+              workflowtasks.dangerousDoSpawn(job.params.ctx, 'true', 'true', [], function(err) {
+                if (err) {
+                  cb(err);
+                }
+                return cb(null, 'dummy task ran');
+              });
+            });
           }
         }],
         timeout: 180,
@@ -90,7 +102,7 @@ describe('workflows', function() {
     });
 
     step('#launchWorkflow custom', function(done) {
-      workflow.launchWorkflow("dummy2", {}, function(err, jobid) {
+      workflow.launchWorkflow("dummy2", {ctx: {}}, function(err, jobid) {
         if (err) {
           should.fail(err);
         }
