@@ -17,16 +17,42 @@ describe('workflowtasks', function() {
       cb(err);
     });
   });
-  it('#dangerousDoSpawn should work as expected', function(cb) {
-    var ctx = {};
-    workflowtasks.dangerousDoSpawn(ctx, 'true', 'true', [], function(err) {
-      if (err) {
-        should.fail();
+  context('#dangerousDoSpawn', function() {
+    it('should succeed with true', function(cb) {
+      var ctx = {};
+      workflowtasks.dangerousDoSpawn(ctx, 'true', 'true', [], function(err) {
+        if (err) {
+          should.fail();
+          cb(err);
+        }
+        ctx.true.stdOut.should.equal('');
+        ctx.true.stdErr.should.equal('');
         cb(err);
-      }
-      ctx.true.stdOut.should.equal('');
-      ctx.true.stdErr.should.equal('');
-      cb(err);
+      });
+    });
+
+    it('should succeed with echo', function(cb) {
+      var ctx = {};
+      workflowtasks.dangerousDoSpawn(ctx, 'echo', 'echo', ['blah'], function(err) {
+        if (err) {
+          should.fail();
+          cb(err);
+        }
+        ctx.echo.stdOut.should.equal('blah\n');
+        ctx.echo.stdErr.should.equal('');
+        cb(err);
+      });
+    });
+
+    it('should fail with false', function(cb) {
+      var ctx = {};
+      workflowtasks.dangerousDoSpawn(ctx, 'false', 'false', [], function(err) {
+        if (err) {
+          cb();
+        } else {
+          should.fail();
+        }
+      });
     });
   });
 });
