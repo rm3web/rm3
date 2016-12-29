@@ -23,9 +23,11 @@ describe('workflowtasks', function() {
     before(function() {
       proxy = proxyquire('../../lib/workflowtasks', {'../blobstores': {
         'getBlobStore': function(category) {
-          return {addBlob: function(ctx, entityPath, blobPath, revisionId, source, temporary, data, next) {
-            next();
-          }}
+          return {
+            addBlob: function(ctx, entityPath, blobPath, revisionId, source, temporary, data, next) {
+              next();
+            }
+          };
         }
       }});
     });
