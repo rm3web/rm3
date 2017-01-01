@@ -16,7 +16,7 @@ describe('middleware:pathMap', function() {
 
   tests.forEach(function(test) {
     it('correctly maps ' + test.args, function(done) {
-      var req = {path: test.args, ctx: {}};
+      var req = {path: test.args, ctx: {}, site: {root: new sitepath(['wh'])}};
       middleware(req, res, function() {
         req.sitepath.should.eql(test.expected);
         if (test.hasOwnProperty('creation')) {
@@ -28,7 +28,7 @@ describe('middleware:pathMap', function() {
   });
 
   it('should throw when encountering an invalid path', function(cb) {
-    var req = {path: 'wet==-wwrt---vbdfg.wretjh', ctx: {}};
+    var req = {path: 'wet==-wwrt---vbdfg.wretjh', ctx: {}, site: {root: new sitepath(['wh'])}};
     middleware(req, res, function(err) {
       err.message.should.equal('NOT_FOUND');
       err.name.should.equal('UnparsablePathError');
