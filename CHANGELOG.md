@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+### Added
+- More tweaks to internal workflow tasks.
 
 ## [0.3.3] - Low - 2017-01-01: New Years Day Sick-but-not-hungover edition
 

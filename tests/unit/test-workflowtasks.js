@@ -18,6 +18,21 @@ describe('workflowtasks', function() {
       cb(err);
     });
   });
+  it('#withTempFileName should work as expected', function(cb) {
+    var ctx = {};
+    workflowtasks.withTempFileName(ctx, 'abc', function(err, path) {
+      if (err) {
+        should.fail();
+        cb(err);
+      }
+      fs.writeFileSync(path, 'abcString');
+      var buff = fs.readFileSync(path, 'utf8');
+      buff.should.equal('abcString');
+      ctx.abc.should.equal(path);
+      fs.unlinkSync(path);
+      cb(err);
+    });
+  });
   context('#writeStringToBlob', function() {
     var proxy;
     before(function() {
@@ -25,6 +40,7 @@ describe('workflowtasks', function() {
         'getBlobStore': function(category) {
           return {
             addBlob: function(ctx, entityPath, blobPath, revisionId, source, temporary, data, next) {
+              data.should.equal('string');
               next();
             }
           };
@@ -34,6 +50,31 @@ describe('workflowtasks', function() {
     it('works', function(cb) {
       proxy.writeStringToBlob({}, 'fff', 'fn', 'revisionId', 'string', function(err) {
         cb();
+      });
+    });
+  });
+
+  context('#writeFileToBlob', function() {
+    var proxy;
+    before(function() {
+      proxy = proxyquire('../../lib/workflowtasks', {'../blobstores': {
+        'getBlobStore': function(category) {
+          return {
+            addBlob: function(ctx, entityPath, blobPath, revisionId, source, temporary, data, next) {
+              data.toString().should.equal('string');
+              next();
+            }
+          };
+        }
+      }});
+    });
+    it('works', function(cb) {
+      var ctx = {};
+      workflowtasks.withTempFileName(ctx, 'abc', function(err, path) {
+        fs.writeFileSync(path, 'string');
+        proxy.writeFileToBlob({}, 'fff', 'fn', 'revisionId', path, function(err) {
+          cb();
+        });
       });
     });
   });
