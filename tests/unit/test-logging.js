@@ -1,5 +1,5 @@
 var logging = require('../../lib/logging');
-var should = require('should');
+var should = require('chai').should();
 var util = require('util'),
     errs = require('errs');
 var Plan = require('test-plan');
@@ -34,6 +34,16 @@ describe('logging', function() {
             err.should.be.an.instanceOf(LoggingMockError);
             plan.ok(true);
           });
+      });
+
+      it('#logAndIgnoreError logs an error', function(cb) {
+        plan = new Plan(2, cb);
+        var err = new Error();
+        err.fear = 'beer';
+
+        logging.logAndIgnoreError(boundLogger, err, 'logging test', 'loggingmock',
+          {data: 'data'});
+        plan.ok(true);
       });
 
       it('#logAndCreateError creates an error', function(cb) {

@@ -1,6 +1,6 @@
 var Page = require ('../../lib/page');
 var events = require("events");
-var should = require('should');
+var should = require('chai').should();
 
 function mockReq() {
   var req = {scheme: {}, entity: {}, sitepath: {}, method: 'GET'};
@@ -25,7 +25,7 @@ function mockReqView(req) {
 
 function mockReqScheme(req) {
   req.scheme.render = function(view, data, callback) {
-    should.deepEqual(typeof callback, "function");
+    callback.should.be.a("function");
     var outstream = new events.EventEmitter();
     callback(null, outstream);
     outstream.emit("data", "thunk");
@@ -64,11 +64,11 @@ describe('page', function() {
     });
     beforeEach(function() {
       res.writeHead = function(type, data) {
-        should.deepEqual(type, 200);
-        should.deepEqual(data, {'Content-Type': 'text/html'});
+        type.should.equal(200);
+        data.should.eql({'Content-Type': 'text/html'});
       };
       res.write = function(data) {
-        should.deepEqual(data, "thunk");
+        data.should.eql("thunk");
       };
     });
 

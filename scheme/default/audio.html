@@ -1,0 +1,25 @@
+{>"layouts/full_with_nav"/}
+{<metatag}
+<meta property="og:audio" content="{audio}" />
+<meta property="og:audio:type" content="audio/mpeg" />
+{/metatag}
+{<typetag}
+<meta property="og:type" content="music.song" />
+{/typetag}
+
+{<view-content}
+<h2>{summary.title}</h2>
+
+{?audio}
+<div id="audioplayer">
+</div>
+<script src="{@schemeStaticResource path="bundles/audioplayer.js" /}"></script>
+<a href="listen.mp3">Download</a>
+{:else}
+{/audio}
+<hr noshade>
+<div>
+{@textblock field=data.posting resolve="posting"}{/textblock}
+</div>
+
+{/view-content}

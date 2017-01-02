@@ -1,6 +1,8 @@
 {>"layouts/full_with_nav"/}
 {<view-content}
 
+<h1>{summary.title}</h1>
+
 {@textblock field=data.posting resolve="posting"}{/textblock}
 
 <div class="comment-legend">Comments</div>
@@ -14,10 +16,10 @@ Posted by {@authorLink/} <time class="updated" datetime="{date}">{@formatRelativ
    </div>
   {/basicQuery}
 
-{@requirePermission permission="comment"}
+{@requirePermissionOr permission="comment.create" permissionOr="comment.submit"}
 <div class="commentform" id="commentbutton"></div>
 <script src="./comment.js"></script>
 <script src="{@schemeStaticResource path="bundles/comment.js" /}"></script>
-{/requirePermission}
+{/requirePermissionOr}
 
 {/view-content}

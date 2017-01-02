@@ -8,7 +8,7 @@ if (section === "password") {
   var PasswordFactory = React.createFactory(PasswordFormComponent);
 
   if (!window.hasOwnProperty('errors')) {
-    errors = {}
+    errors = {};
   }
 
   var renderedComponent = ReactDOM.render(
@@ -34,7 +34,7 @@ if (section === "password") {
   var disableLogin = document.getElementById('disableLogin').checked;
 
   if (!window.hasOwnProperty('errors')) {
-    errors = {}
+    errors = {};
   }
 
   var renderedComponent = ReactDOM.render(
@@ -54,4 +54,4 @@ if (section === "password") {
     }),
     renderTarget
   );
-};
+}

@@ -1,0 +1,25 @@
+{
+    "path": "wh.blog",
+    "entityId": "8f852800-88a4-11e4-9f02-218077cca34d",
+    "revisionId": "8f852801-88a4-11e4-9f02-218077cca34d",
+    "revisionNum": 1,
+    "proto": "blog",
+    "hidden": false,
+    "stub":false,
+    "modified": "2014-12-21T00:01:49.164Z",
+    "created": "2014-12-21T00:01:49.164Z",
+    "summary": {
+        "title": "User root",
+        "abstract": "User root"
+    },
+    "data": {
+        "posting": {
+            "source": "Blog stuff here...",
+            "format": "html",
+            "htmlslabs": ["Blog stuff here..."]
+        }
+    },
+    "tags": {},
+    "dump_date": "2014-12-21T00:02:48.016Z",
+    "dump_version": "0.0.0"
+}

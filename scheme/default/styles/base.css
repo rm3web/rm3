@@ -31,6 +31,12 @@
     background: rgb(217, 217, 237);
 }
 
+.childheadermenu {
+    border-bottom-color: black;
+    border-radius: 0;
+    background: rgb(227, 227, 247);
+}
+
 .textblockbox 
 {
     margin: .1em;

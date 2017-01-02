@@ -44,3 +44,6 @@ deploy:
       tags: true
       repo: rm3web/rm3
       node: '4'
+cache:
+  directories:
+    - node_modules

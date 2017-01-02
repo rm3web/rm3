@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var rm3 = require('../index.js');
+var rm3 = require('../lib/index.js');
 
 rm3(function(err) {
   if (err) {

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <link rel="alternate" href="/atom.xml" type="application/atom+xml" title="Atom Feed"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{summary.abstract}">
   <meta property="og:description" content="{summary.abstract}" />
@@ -17,8 +18,9 @@
   <meta property="og:title" content="{summary.title}" />
   {/titletag}
   <script>
-    // Picture element HTML5 shiv
+  {~n}
     document.createElement( "picture" );
+    {~n}
     {expose|s}
   </script>
   <link rel="stylesheet" href="{@schemeStaticResource path="bundle.css" /}">

@@ -23,7 +23,7 @@ describe('User', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
-         password: 'pass'}, true);
+          password: 'pass'}, true);
     });
 
     casper.then(function() {
@@ -46,7 +46,7 @@ describe('User', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'sparkleprincess',
-         password: 'pass'}, true);
+          password: 'pass'}, true);
     });
 
     casper.then(function() {
@@ -69,7 +69,7 @@ describe('User', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
-         password: 'password'}, true);
+          password: 'password'}, true);
     });
 
     casper.then(function() {

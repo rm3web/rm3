@@ -46,6 +46,11 @@ RM3_RESOURCES
 
 The directory (can be relative or absolute) where rm3 is to find it's static resources (e.g. the scheme).  The default should work.
 
+RM3_EMAIL
+---------
+
+The email server to relay mail through (e.g. `smtps://127.0.0.1`)
+
 RM3_DANGER_TRUST_PROXY
 ----------------------
 
@@ -115,3 +120,8 @@ RM3_DANGER_DISABLE_HTTPS_CHECKS
 Disables the HTTPS checks for sensitive operations.  This means you can log in over HTTP instead of HTTPS.
 
 This is, obviously, a great way to get rooted if you tend to use coffeeshop or other public networks.  It's also really handy for debugging and playing with things.
+
+RM3_WF_RUN_INTERVAL
+-------------------
+
+Controls the 'poll rate' for the workflow system.  Set to poll every 5 seconds which doesn't consume overly large amounts of CPU.  You can back this off further (but then uploads of images will take longer to post on the site) for even less CPU usage.

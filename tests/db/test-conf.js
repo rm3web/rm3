@@ -1,5 +1,5 @@
 var Conf = require ('../../lib/conf');
-var should = require('should');
+var should = require('chai').should();
 
 describe('conf', function() {
   it('should work as expected', function() {

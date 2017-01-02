@@ -10,3 +10,12 @@
    </ul>
   </div>
 </div>
+{@onlyThirdLevel}
+<div class="pure-u-1 childheadermenu">
+<div style="float:right">
+{@basicQuery select="parents"}
+  {@ne key=idx value=0} &raquo; {/ne} {@titleLink /}
+{/basicQuery}
+</div>
+</div>
+{/onlyThirdLevel}

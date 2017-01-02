@@ -24,4 +24,4 @@ Selected issues suitable for newcomers to the codebase will be marked with an "e
 ## Review Process
 
  * Honesty is not the opposite of politeness.  Mind the Code of Conduct.
- * Unless you say otherwise, A "maintainer-fixes" style of merging is assumed, where any quibbles or minor necessary tweaks are done for you.  If you specify "maintainer-reviews", A list of identified things to change will be maintained for you to fix.
+ * Unless you say otherwise, A "maintainer-fixes" style of merging is assumed, where any quibbles or minor necessary tweaks are done for you.  If you specify "maintainer-reviews", A list of identified things to change will be maintained for you to fix.  There's a checkbox in the GitHub UI where you can forbid maintainer edits.

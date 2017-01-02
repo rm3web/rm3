@@ -1,5 +1,5 @@
 var IndexFeed = require ('../../lib/indexfeed');
-var should = require('should');
+var should = require('chai').should();
 var SitePath = require ('sitepath');
 var events = require("events");
 

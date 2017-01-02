@@ -45,7 +45,8 @@ CREATE TABLE wh_log (
 	"evtFinal" boolean,
 	"actorPath" ltree,
 	workflow jsonb,
-	data json
+	data json,
+	private boolean
 );
 
 CREATE INDEX wh_log_evtEnd ON wh_log USING btree ("evtEnd");

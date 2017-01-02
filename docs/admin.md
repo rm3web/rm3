@@ -37,21 +37,23 @@ An example getting-started configuration file for pm2 looks something like this:
 
 ```
 {
-  apps : [{
-    name        : "web",
-    script      : "./node_modules/rm3/bin/rm3front",
-    watch       : true,
-    env: {
+  "apps" : [{
+    "name"        : "web",
+    "script"      : "/srv/rm3/bin/rm3front",
+    "watch"       : true,
+    "ignore_watch": ["/srv/rm3/blobs/", "/srv/rm3/.git/", "/srv/rm3/node_module
+s/"],
+    "env": {
       "NODE_ENV": "development",
       "RM3_ENV_VARIABLES": "can be set here"
     },
-    env_production : {
-      "NODE_ENV": "production"
+    "env_production" : {
+      "NODE_ENV": "production",
       "RM3_ENV_VARIABLES": "can be set here"
-     },
-     instances  : 0,
-     exec_mode  : "cluster"
-   }]
+    },
+    "instances"  : 0,
+    "exec_mode"  : "cluster"
+  }]
 }
 ```
 

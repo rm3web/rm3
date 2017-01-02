@@ -1,5 +1,5 @@
 var Conf = require ('../../lib/conf');
-var should = require('should');
+var should = require('chai').should();
 var childProcess = require('child_process');
 
 var db = require('../../lib/db');
@@ -8,7 +8,7 @@ var sitepath = require ('sitepath');
 var query = require('../../lib/query');
 
 describe('rm3admin', function() {
-  this.timeout(12000); // This might take a bit of time
+  this.timeout(24000); // This might take a bit of time
   it('should add a permission to a role and roleinfo should check', function() {
     childProcess.execSync('./bin/rm3admin permit root edit \\*');
 

@@ -1,5 +1,5 @@
 var states = require ('../../lib/states');
-var should = require('should');
+var should = require('chai').should();
 
 describe('publishWorkflow', function() {
   it('should publish normally', function() {

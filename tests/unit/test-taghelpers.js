@@ -1,5 +1,5 @@
 var TagHelpers = require ('../../lib/taghelpers');
-var should = require('should');
+var should = require('chai').should();
 var events = require("events");
 
 describe('taghelpers', function() {
@@ -44,6 +44,22 @@ describe('taghelpers', function() {
 
       dust.helpers.predTag(chunk, context, {}, params);
     });
+
+    it('works for predicates with a linkclass', function(cb) {
+      var chunk = {}, context = {}, params = {linkclass: 'linkclass', obj: {objClass: 'boof'}, pred: 'foof'};
+      context.resolve = function(param) {
+        return param;
+      };
+      chunk.write = function(str) {
+        str.should.equal('<a class="linkclass" href="/search.cgi/$/tag/foof">foof</a>');
+        cb();
+      };
+      context.get = function(param) {
+        return params[param];
+      };
+
+      dust.helpers.predTag(chunk, context, {}, params);
+    });
   });
 
   describe('#objLink', function() {
@@ -55,6 +71,23 @@ describe('taghelpers', function() {
       };
       chunk.write = function(str) {
         str.should.equal('<a href="/search.cgi/$/tag/plain/woof">woof</a>');
+        cb();
+      };
+      context.get = function(param) {
+        return params[param];
+      };
+
+      dust.helpers.objLink(chunk, context, {}, params);
+    });
+
+    it('works for plain tags with a linclass', function(cb) {
+      var chunk = {}, context = {};
+      var params = {linkclass: 'linkclass', obj: {objClass: 'tag'}, pred: 'plain', objKey: 'woof'};
+      context.resolve = function(param) {
+        return param;
+      };
+      chunk.write = function(str) {
+        str.should.equal('<a class="linkclass" href="/search.cgi/$/tag/plain/woof">woof</a>');
         cb();
       };
       context.get = function(param) {
