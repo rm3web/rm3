@@ -112,11 +112,12 @@ program
   .command('loadtemplate [file] [path]')
   .description('loads a content template file to rm3 instance with root of path')
   .action(function(file, path, options) {
+    var localPath = new SitePath(path);
     if (!(file && path)) {
       winston.warn('File and path are required');
     }
     loadTemplate(db, entity.Entity, update,
-      jsonfile.readFileSync(file), new SitePath(path), new SitePath(['wh','users']), {}, function(err) {
+      jsonfile.readFileSync(file), localPath, localPath.down('users'), {}, function(err) {
         if (err) {
           winston.error('error:', err);
         } else {
