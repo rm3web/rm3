@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.3] - Low - 2017-01-01: New Years Day Sick-but-not-hungover edition
+
 ### Added
 - Users can now add i10n strings. (very alpha API, not ready for extensions yet)
 - Users can now add workflows. (very alpha API, not ready for extensions yet)
@@ -236,7 +238,8 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.3...HEAD
+[0.3.3]: https://github.com/rm3web/rm3/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/rm3web/rm3/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/rm3web/rm3/compare/v0.3.0...v0.3.1
 [0.3.0]: https://github.com/rm3web/rm3/compare/v0.2.3...v0.3.0

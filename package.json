@@ -1,6 +1,6 @@
 {
   "name": "rm3",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "A node.js CMS toolkit",
   "main": "lib/index.js",
   "directories": {
