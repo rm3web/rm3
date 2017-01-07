@@ -125,3 +125,8 @@ RM3_WF_RUN_INTERVAL
 -------------------
 
 Controls the 'poll rate' for the workflow system.  Set to poll every 5 seconds which doesn't consume overly large amounts of CPU.  You can back this off further (but then uploads of images will take longer to post on the site) for even less CPU usage.
+
+RM3_WF_DISABLE
+--------------
+
+Disables the workflow system entirely.  By default, the workflow engine runs in the background for all rm3 processes.  That's probably too much if you have a large site with a bunch of rm3 processes, so you can only have it running on a subset of the rm3 processes.

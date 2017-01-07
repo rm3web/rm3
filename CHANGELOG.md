@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- You can now disable workflow processing entirely with the `RM3_WF_DISABLE` env variable.
 - More tweaks to internal workflow tasks.
 - Scheme can be a child of another scheme, where any changed files will override from the parent.  (Not really part of the public API yet)
 
