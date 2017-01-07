@@ -4,7 +4,7 @@ var path = require('path');
 
 describe('scheme', function() {
   it('should work as expected', function(cb) {
-    var scheme = new Scheme(path.join(__dirname, '../../scheme/default/'), {}, {}, {});
+    var scheme = new Scheme([path.join(__dirname, '../../scheme/default/')], {}, {}, {});
     scheme.getResourcePath('node').should.equal('/resources/node');
     var context = {};
     context.scheme = scheme;
