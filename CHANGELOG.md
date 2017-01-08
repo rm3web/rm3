@@ -15,6 +15,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - More tweaks to internal workflow tasks.
 - Scheme can be a child of another scheme, where any changed files will override from the parent.  (Not really part of the public API yet)
 
+### Changed
+
+- Refactored the protos such that there is now a simple decorator to expose blob files.
+
 ### Fixed
 - loaddump will load blob-less protos requiring workflow properly.
 
