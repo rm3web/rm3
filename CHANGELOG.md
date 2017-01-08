@@ -16,11 +16,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Scheme can be a child of another scheme, where any changed files will override from the parent.  (Not really part of the public API yet)
 
 ### Changed
-
+- Updated dependencies
 - Refactored the protos such that there is now a simple decorator to expose blob files.
 
 ### Fixed
 - loaddump will load blob-less protos requiring workflow properly.
+- In the audio proto, the play button disabled until the MP3 has loaded.
 
 ## [0.3.3] - Low - 2017-01-01: New Years Day Sick-but-not-hungover edition
 
