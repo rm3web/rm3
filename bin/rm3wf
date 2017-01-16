@@ -1,0 +1,19 @@
+#!/usr/bin/env node
+
+var Conf = require('../lib/conf');
+var workflow = require('../lib/workflow'),
+    runWorkflows = require('../lib/runworkflows');
+var winston = require('winston');
+
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {colorize: true});
+
+workflow.loadConf(function() {
+  runWorkflows(function(err) {
+    if (err) {
+      winston.error('front', 'Startup failed', {err:err});
+    } else {
+      winston.info('front', 'startup complete');
+    }
+  });
+});

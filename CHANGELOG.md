@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+### Added
+- `rm3wf` command to just run the workflow without responding to web requests.
 
 ### Changed
 - Cache key for most recent changed is now based on the path root.
