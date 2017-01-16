@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Cache key for most recent changed is now based on the path root.
+- Re-organized startup phases to make it easier to use debugging tools that catch errors and insert themselves into the express pipeline (sentry, rollbar, exceptional.io, et al)
 
 ## [0.3.4] - Low - 2017-01-08: California Rainpocalypse special edition
 ### Added
