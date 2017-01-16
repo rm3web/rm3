@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+
+## [0.3.5] - Low - 2017-01-16: Martin Luther King Jr. edition
 ### Added
 - `rm3wf` command to just run the workflow without responding to web requests.
 
@@ -258,7 +260,8 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.4...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.5...HEAD
+[0.3.5]: https://github.com/rm3web/rm3/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/rm3web/rm3/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/rm3web/rm3/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/rm3web/rm3/compare/v0.3.1...v0.3.2
