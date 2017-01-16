@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Cache key for most recent changed is now based on the path root.
+
 ## [0.3.4] - Low - 2017-01-08: California Rainpocalypse special edition
 ### Added
 - You can now disable workflow processing entirely with the `RM3_WF_DISABLE` env variable.
