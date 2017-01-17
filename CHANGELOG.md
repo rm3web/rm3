@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- `rm3wf` didn't support the blobstore, which broke things.
+
 ## [0.3.5] - Low - 2017-01-16: Martin Luther King Jr. edition
 ### Added
 - `rm3wf` command to just run the workflow without responding to web requests.
