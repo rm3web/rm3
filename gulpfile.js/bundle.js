@@ -1,5 +1,4 @@
 var gulp = require('gulp')
-  , bower = require('gulp-bower')
   , source = require('vinyl-source-stream')
   , shell = require('gulp-shell')
   , glob = require('glob')
@@ -33,7 +32,7 @@ gulp.task('icon-24', function() {
 });
 
 gulp.task('cssbundle', function() {
-  return gulp.src(['./bower_components/pure/pure.css',
+  return gulp.src(['./node_modules/purecss/build/pure.css',
     './node_modules/react-super-select/lib/react-super-select.css',
     './scheme/default/styles/*.css'])
     .pipe(concat('bundle.css'))

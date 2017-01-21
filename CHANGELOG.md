@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- PureCSS's npm package is in good shape these days; removing bower entirely.
+
 ### Fixed
 - `rm3wf` didn't support the blobstore, which broke things.
 

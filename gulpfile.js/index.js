@@ -2,7 +2,6 @@
 var gulp = require('gulp')
   , nodemon = require('gulp-nodemon')
   , shell = require('gulp-shell')
-  , bower = require('gulp-bower')
   , runSequence = require('run-sequence')
   ;
 
@@ -24,17 +23,10 @@ gulp.task('coveralls', shell.task([
   'cat ./coverage/lcov.info |  ./node_modules/codecov.io/bin/codecov.io.js'
 ]))
 
-gulp.task('bower', function() {
-  return bower()
-    .pipe(gulp.dest('./bower_components'));
-});
-
-
 gulp.task('travis', ['prepublish', 'lint'])
 
 gulp.task('prepublish', function(callback) {
-  runSequence('bower',
-              'imagemin',
+  runSequence('imagemin',
               'cssbundle',
               'icon',
               'browserify',
