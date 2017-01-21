@@ -9,11 +9,13 @@ var program = require('commander');
 var pjson = require('../package.json');
 var async = require('async');
 var util = require('util');
+var inquirer = require('inquirer');
 
 program
   .version(pjson.version)
   .arguments('<path>')
   .option('-E', '--expunge', 'Remove completely, including any history and blobs')
+  .option('-Y', '--yes', 'Answer yes')
   .parse(process.argv)
   ;
 
@@ -22,6 +24,28 @@ var path = new sitepath(program.args[0]);
 async.waterfall([
   function queryEnt(callback) {
     query.entityFromPath(db, false, entity.Entity, {}, {context: 'ROOT'}, path, null, callback);
+  },
+  function confirm(ent, callback) {
+    if (program.Y) {
+      return callback(null, ent);
+    }
+    if (ent) {
+      var questions = [{
+        type: 'confirm',
+        name: "ok",
+        message: "Do you want to delete node " + ent.path().toDottedPath() + "?",
+        default: false
+      }];
+      inquirer.prompt(questions).then(function (answers) {
+        if (!answers.ok) {
+          return callback(new Error('canceled'));
+        } else {
+          return callback(null, ent);
+        }
+      });
+    } else {
+      return callback(new Error('Entity doesn\'t exist'));
+    }
   },
   function doDelete(ent, callback) {
     if (program.E) {

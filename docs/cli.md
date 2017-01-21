@@ -39,6 +39,15 @@ Fills a directory with a semantic backup.
 
 In order to make sure that there aren't accidentally any excess files included in the backup, it requires an empty directory.
 
+rm3rm
+-----
+
+rm3rm will delete entites from the site.
+
+`rm3rm wh.the_meat` will delete an entity just like you'd expect if you deleted it via the web.
+
+`rm3rm -E wh.the_meat` will forcibly delete everything about the entity.  It will be as if it never existed (although any blob files will remain).  This is a dangerous operation.
+
 rm3admin
 --------
 

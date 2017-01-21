@@ -12,12 +12,23 @@ describe('rm3rm', function() {
 
   it('should delete', function(done) {
     childProcess.execSync('./bin/rm3load -f ./tests/page-fixtures/front.json -p wh.rm3rm.test1');
-    childProcess.execSync('./bin/rm3rm wh.rm3rm.test1');
+    childProcess.execSync('./bin/rm3rm -Y wh.rm3rm.test1');
 
     query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"},
       new sitepath('wh.rm3rm.test1'), null, function(err, ent) {
         should.not.exist(err);
         ent.summary.deleted.should.equal(true);
+        done();
+      });
+  });
+
+  it('should expunge', function(done) {
+    childProcess.execSync('./bin/rm3load -f ./tests/page-fixtures/front.json -p wh.rm3rm.test2');
+    childProcess.execSync('./bin/rm3rm -Y -E wh.rm3rm.test2');
+
+    query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"},
+      new sitepath('wh.rm3rm.test2'), null, function(err, ent) {
+        should.exist(err);
         done();
       });
   });
