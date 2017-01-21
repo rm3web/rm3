@@ -1,0 +1,37 @@
+#!/usr/bin/env node
+
+var query = require('../lib/query');
+var entity = require('../lib/entity');
+var update = require('../lib/update');
+var sitepath = require ('sitepath');
+var db = require('../lib/db');
+var program = require('commander');
+var pjson = require('../package.json');
+var async = require('async');
+var util = require('util');
+
+program
+  .version(pjson.version)
+  .arguments('<path>')
+  //.option('-E', '--Expunge', 'Remove completely, including any history and blobs')
+  .parse(process.argv)
+  ;
+
+var path = new sitepath(program.args[0]);
+
+async.waterfall([
+  function queryEnt(callback) {
+    query.entityFromPath(db, false, entity.Entity, {}, {context: 'ROOT'}, path, null, callback);
+  },
+  function doDelete(ent, callback) {
+    if (ent && ent.summary.deleted === true) {
+      return callback(new Error('Entity already deleted'));
+    }
+    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', callback);
+  }
+], function(err) {
+  if (err) {
+    console.log(err);
+  }
+  db.gunDatabase();
+});
