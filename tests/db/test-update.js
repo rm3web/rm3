@@ -97,6 +97,16 @@ function stepGenericDelete(desc, ent, delMark) {
   });
 }
 
+function stepGenericExpunge(desc, path) {
+  step(desc, function(done) {
+    update.expungeEntity(db, {}, path,
+      function(err) {
+        should.not.exist(err);
+        done(err);
+      });
+  });
+}
+
 function stepValidatePermissionExistence(desc, path) {
   step(desc, function(done) {
     var query = "SELECT role, permission, path FROM wh_permission_to_role WHERE path = '" +
@@ -353,6 +363,42 @@ describe('update', function() {
       checkLogDelete(result.rows[2], ent, delMark);
       result.rows[2].revisionId.should.not.eql(result.rows[1].revisionId);
       result.rows[2].revisionNum.should.not.eql(result.rows[1].revisionNum);
+    });
+  });
+
+  describe('create-update-expunge', function() {
+    var now = new Date();
+    var ents = {};
+    var delMark = {};
+
+    stepGenericCreate('create', new sitepath(['wh', 'create_update_expunge']), ents,
+      'start', true, now);
+
+    stepValidateEntityExistence('check create', ents.start);
+
+    stepGenericUpdate('update', ents, 'start', 'next', true, false);
+
+    stepValidateEntityExistence('verify update', ents.next);
+
+    stepValidateTagExistence('verify the tags are still there', ents.next);
+
+    stepGenericLogCheck('check log after update', ents.start, function(result) {
+      var ent = ents.start;
+      var ent2 = ents.next;
+
+      result.rowCount.should.equal(2);
+      checkLogCreate(result.rows[0], ent);
+      checkLogUpdate(result.rows[1], ent, ent2);
+    });
+
+    stepGenericExpunge('delete', new sitepath(['wh', 'create_update_expunge']), delMark);
+
+    stepValidateNonEntityExistence('check create after delete', ents.next);
+
+    stepValidateTagNonExistence('check delete tags', ents.next);
+
+    stepGenericLogCheck('check log after delete', ents.start, function(result) {
+      result.rowCount.should.equal(0);
     });
   });
 
