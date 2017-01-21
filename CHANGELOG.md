@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+### Added
+- `rm3rm` command to delete an entity via the CLI.
 
 ### Changed
 - PureCSS's npm package is in good shape these days; removing bower entirely.
