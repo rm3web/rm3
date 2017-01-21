@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - `rm3rm` command to delete an entity via the CLI.
+- Proper icon for audio
 
 ### Changed
 - PureCSS's npm package is in good shape these days; removing bower entirely.
