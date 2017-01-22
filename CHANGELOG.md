@@ -273,7 +273,8 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.5...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.6...HEAD
+[0.3.6]: https://github.com/rm3web/rm3/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/rm3web/rm3/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/rm3web/rm3/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/rm3web/rm3/compare/v0.3.2...v0.3.3
