@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+
+## [0.3.6] - Low - 2017-01-16: Women's March on Washington edition
 ### Added
 - `rm3rm` command to delete an entity via the CLI.
 - Proper icon for audio.
@@ -20,6 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `rm3wf` didn't support the blobstore, which broke things.
+- Weird formatting issue that crept in when creating a page with invalid HTML.
 
 ## [0.3.5] - Low - 2017-01-16: Martin Luther King Jr. edition
 ### Added
