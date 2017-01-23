@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+### Added
+- Blog index proto.
 
 ## [0.3.6] - Low - 2017-01-16: Women's March on Washington edition
 ### Added
