@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- If you tried to load a page with an unsupported proto, the index code would crash.  Now it will vaguely work.
+
 ## [0.3.6] - Low - 2017-01-16: Women's March on Washington edition
 ### Added
 - `rm3rm` command to delete an entity via the CLI.
