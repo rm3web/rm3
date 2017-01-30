@@ -1,4 +1,13 @@
 {>"layouts/full_with_nav"/}
+{<metatag}
+<meta name="og:image" content="{ogThumbnail}" />
+<meta property="og:image:type" content="image/jpeg" />
+{/metatag}
+{<typetag}
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+{/typetag}
+
 {<view-content}
 
 {?srcset}
@@ -16,4 +25,9 @@
 <rect width="{fallwidth}" height="{fallheight}" style="fill:rgba(0,0,0,0);stroke-width:1;stroke:rgb(0,0,0)" />
 </svg>
 {/srcset}
+
+<div>
+{@textblock field=data.posting resolve="posting"}{/textblock}
+</div>
+
 {/view-content}

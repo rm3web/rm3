@@ -1,5 +1,5 @@
 var phase = require ('../../lib/phase');
-var should = require('should');
+var should = require('chai').should();
 var Plan = require('test-plan');
 
 describe('phase', function() {

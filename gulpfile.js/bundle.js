@@ -1,6 +1,6 @@
 var gulp = require('gulp')
-  , bower = require('gulp-bower')
   , source = require('vinyl-source-stream')
+  , shell = require('gulp-shell')
   , glob = require('glob')
   , imagemin = require('gulp-imagemin')
   , rsvg_convert = require('gulp-rsvg')
@@ -32,7 +32,7 @@ gulp.task('icon-24', function() {
 });
 
 gulp.task('cssbundle', function() {
-  return gulp.src(['./bower_components/pure/pure.css',
+  return gulp.src(['./node_modules/purecss/build/pure.css',
     './node_modules/react-super-select/lib/react-super-select.css',
     './scheme/default/styles/*.css'])
     .pipe(concat('bundle.css'))
@@ -45,12 +45,12 @@ gulp.task('icon', ['icon-75', 'icon-24'], function() {
 })
 
 gulp.task('imagemin', function () { 
-    return gulp.src('./scheme/default/images/*.svg')
+    return gulp.src('./scheme/default/images/*')
         .pipe(imagemin({}))
         .pipe(gulp.dest('./scheme/default/static/images/'));
 });
- 
-gulp.task('browserify', function(cb) {
+
+gulp.task('browserify-bundle', function(cb) {
   var files = glob.sync('./scheme/default/bundles/*.js', {});
   async.each(files, function(file, next){
     return browserify(file)
@@ -62,3 +62,8 @@ gulp.task('browserify', function(cb) {
       .on('end', next);
   }, cb)
 });
+
+ 
+gulp.task('browserify', ['browserify-bundle'], shell.task([
+  "sed -i 's/\\$ = \\$ || jQuery || require('\\''jquery'\\'');/var \\$ = require('\\''jquery'\\'');/g' scheme/default/static/bundles/justified.js"
+]));

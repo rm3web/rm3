@@ -8,6 +8,15 @@ RM3_LISTEN_PORT
 
 The port that rm3 should listen at.
 
+RM3_LISTEN_HOST
+---------------
+
+The address that rm3 is listening at.  By default, it's only listening only on the loopback address (e.g. 127.0.0.1)
+
+If you change this to `0.0.0.0`, rm3 will be accessible on the public internet.  This may not be what you want; rm3 is mostly designed to work with a reverse proxy such as nginx or apache running in front of it.
+
+You can use this to bind to a particular interface, if you are setting up a separate network to run just load balancers on.
+
 RM3_PG
 ------
 
@@ -18,6 +27,15 @@ RM3_SESSION_REDIS
 
 The Redis instance to store session data in, in Redis URL form (`redis://netloc:port/dbnumber`).
 
+You want to have one redis instance for session data, shared between all rm3 processes.  For small configurations, you can share it with the cache redis.
+
+RM3_CACHE_REDIS
+-----------------
+
+The Redis instance to store cache data in, in Redis URL form (`redis://netloc:port/dbnumber`).
+
+You can have multiple different local instances of the cache redis, there's nothing that's not a cache of the database stored here.  For small configurations, you can share it with the session redis.
+
 RM3_LOCAL_BLOBS
 ---------------
 
@@ -27,6 +45,18 @@ RM3_RESOURCES
 -------------
 
 The directory (can be relative or absolute) where rm3 is to find it's static resources (e.g. the scheme).  The default should work.
+
+RM3_EMAIL
+---------
+
+The email server to relay mail through (e.g. `smtps://127.0.0.1`)
+
+RM3_DANGER_TRUST_PROXY
+----------------------
+
+**Warning: Do be careful with this setting.  If anyone can connect to your http endpoint and insert environment variables, they can bypass https checks and masacarde as other IP addresses.**
+
+See [Express documentation for running behind a proxy](http://expressjs.com/en/guide/behind-proxies.html) to see how to set this.  If you are running nginx or varnish or apache on the same node, you probably want to set this to `loopback`.  Otherwise, some combination of `'loopback`, `linklocal`, or `uniquelocal` might be better.
 
 RM3_TWITTER_CONSUMER_KEY & RM3_TWITTER_CONSUMER_SECRET
 ------------------------------------------------------
@@ -81,3 +111,22 @@ RM3_DANGER_FORCE_AUTH
 This will force all connections to be authenticated as the user contained within this environment variable.
 
 This is, obviously, a great way to get rooted.  It's also really handy for debugging and playing with things.
+
+RM3_DANGER_DISABLE_HTTPS_CHECKS
+-------------------------------
+
+**Dangerous flag: If you have this running on the public web, passwords are getting passed in cleartext.**
+
+Disables the HTTPS checks for sensitive operations.  This means you can log in over HTTP instead of HTTPS.
+
+This is, obviously, a great way to get rooted if you tend to use coffeeshop or other public networks.  It's also really handy for debugging and playing with things.
+
+RM3_WF_RUN_INTERVAL
+-------------------
+
+Controls the 'poll rate' for the workflow system.  Set to poll every 5 seconds which doesn't consume overly large amounts of CPU.  You can back this off further (but then uploads of images will take longer to post on the site) for even less CPU usage.
+
+RM3_WF_DISABLE
+--------------
+
+Disables the workflow system entirely.  By default, the workflow engine runs in the background for all rm3 processes.  That's probably too much if you have a large site with a bunch of rm3 processes, so you can only have it running on a subset of the rm3 processes.

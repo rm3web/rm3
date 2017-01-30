@@ -1,18 +1,66 @@
 var SiteHelpers = require ('../../lib/sitehelpers');
 var SitePath = require ('sitepath');
-var should = require('should');
+var should = require('chai').should();
+var proxyquire =  require('proxyquire');
+var dust = require('dustjs-linkedin');
+var dustRender = require('../lib/dustrender.js');
 
 describe('sitehelpers', function() {
-  var dust, db, query;
+  var confStub = {};
+  before(function() {
+    var proxy = proxyquire('../../lib/sitehelpers', {'./conf': confStub});
+    proxy.installDust(dust, {}, {});
+  });
 
-  beforeEach(function() {
-    dust = {helpers: {}};
-    db = {};
-    query = {};
-    SiteHelpers.installDust(dust, db, query);
+  describe('#siteUrlRoot', function() {
+    var siteTemplate = "{@siteUrlRoot /}";
+    it('works', function(cb) {
+      dustRender(dust, siteTemplate , 'sitehelpers.siteurlroot', {site: {urlroot: 'lof'}}, 'lof', cb);
+    });
+  });
+
+  describe('#ifLoginEnabled', function() {
+    it('works for a sitepath', function(cb) {
+      var trueTemplate = "{@ifLoginEnabled}works{:else}bro{/ifLoginEnabled}";
+      dustRender(dust, trueTemplate, 'sitehelpers.thirdlevel.sitepath', {site: {loginVisible: true}}, 'works', cb);
+    });
+    it('works', function(cb) {
+      var trueTemplate = "{@ifLoginEnabled}bro{:else}works{/ifLoginEnabled}";
+      dustRender(dust, trueTemplate, 'sitehelpers.thirdlevel.else', {site: {loginVisible: false}}, 'works', cb);
+    });
+  });
+
+  describe('#toDottedPath', function() {
+    var dottedPathTemplate = "{myInput|toDottedPath}";
+    it('works for a sitepath', function(cb) {
+      dustRender(dust, dottedPathTemplate , 'sitehelpers.dottedpath', {myInput: new SitePath(['wh','ff'])}, 'wh.ff', cb);
+    });
+    it('ignores everything else', function(cb) {
+      dustRender(dust, dottedPathTemplate , 'sitehelpers.dottedpath', {myInput: '51'}, '51', cb);
+    });
+  });
+
+  describe('#onlyThirdLevel', function() {
+    it('works for a sitepath', function(cb) {
+      var trueTemplate = "{@onlyThirdLevel}works{:else}bro{/onlyThirdLevel}";
+      dustRender(dust, trueTemplate, 'sitehelpers.thirdlevel.sitepath', {path: new SitePath(['wh','ff','tt'])}, 'works', cb);
+    });
+    it('works', function(cb) {
+      var trueTemplate = "{@onlyThirdLevel}bro{:else}works{/onlyThirdLevel}";
+      dustRender(dust, trueTemplate, 'sitehelpers.thirdlevel.else', {path: new SitePath(['wh','ff'])}, 'works', cb);
+    });
   });
 
   describe('#sitePathToUrl', function() {
+    var dust, db, query;
+
+    beforeEach(function() {
+      dust = {helpers: {}, filters: {}};
+      db = {};
+      query = {};
+      SiteHelpers.installDust(dust, db, query);
+    });
+
     it('works for sitepaths', function(cb) {
       var chunk = {}, context = {}, params = {path: new SitePath(['wh'])};
       chunk.write = function(str) {
@@ -50,6 +98,27 @@ describe('sitehelpers', function() {
       };
 
       dust.helpers.sitePathToUrl(chunk, context, {}, params);
+    });
+  });
+
+  describe('#hasAuthProviderEnabled', function() {
+    it('works for Twitter', function(cb) {
+      confStub.getCertificate = function(certificate) {
+        if (certificate === 'twitterConsumerKey') {
+          return 'abcd';
+        }
+        return undefined;
+      };
+      var trueTemplate = "{@hasAuthProviderEnabled provider=\"twitter\"}works{:else}brok{/hasAuthProviderEnabled}";
+      dustRender(dust, trueTemplate, 'sitehelpers.auth.twitter', {}, 'works', cb);
+    });
+
+    it('works for Twitter', function(cb) {
+      confStub.getCertificate = function(certificate) {
+        return undefined;
+      };
+      var trueTemplate = "{@hasAuthProviderEnabled provider=\"twitter\"}brok{:else}works{/hasAuthProviderEnabled}";
+      dustRender(dust, trueTemplate, 'sitehelpers.auth.notwitter', {}, 'works', cb);
     });
   });
 });

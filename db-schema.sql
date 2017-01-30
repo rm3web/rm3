@@ -1,5 +1,17 @@
 CREATE EXTENSION ltree;
 
+CREATE TABLE wh_siteconfig (
+	PRIMARY KEY(site, path),
+	site text,
+	path ltree,
+	data json
+);
+
+INSERT INTO wh_siteconfig (site, path, data) VALUES
+		('default', 'site', '{"name": "WireWorld"}'),
+    ('default', 'sitepath', '{"root": "wh", "urlroot": "http://127.0.0.1:4000"}'),
+    ('default', 'login', '{"visible": true}');
+
 CREATE TABLE wh_entity (
 	PRIMARY KEY(path),
 	path ltree,
@@ -14,7 +26,8 @@ CREATE TABLE wh_entity (
 	touched timestamp,
 	summary jsonb,
 	data json,
-	tags json
+	tags jsonb,
+	search tsvector
 );
 
 CREATE TABLE wh_log (
@@ -32,7 +45,8 @@ CREATE TABLE wh_log (
 	"evtFinal" boolean,
 	"actorPath" ltree,
 	workflow jsonb,
-	data json
+	data json,
+	private boolean
 );
 
 CREATE INDEX wh_log_evtEnd ON wh_log USING btree ("evtEnd");

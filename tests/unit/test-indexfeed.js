@@ -1,5 +1,5 @@
 var IndexFeed = require ('../../lib/indexfeed');
-var should = require('should');
+var should = require('chai').should();
 var SitePath = require ('sitepath');
 var events = require("events");
 
@@ -114,4 +114,48 @@ describe('indexfeed', function() {
       ee.emit('error', err);
     });
   });
+
+  describe('#mostRecentChange', function() {
+
+    var dust, db, query, chunk, str, contextData, context, now;
+
+    beforeEach(function() {
+      dust = {helpers: {}};
+      db = {};
+      query = {};
+      context = {};
+      contextData = {};
+      str = '';
+      now = new Date();
+
+      context.get = function(key) {
+        return contextData[key];
+      };
+
+      chunk = {};
+      chunk.write = function(instr) {
+        str = str + instr;
+      };
+
+      chunk.map = function(func) {
+        func(chunk);
+      };
+
+      query.fetchMostRecentChange = function(db, cache, ctx, path, next) {
+        next(null, now);
+      };
+
+      IndexFeed.installDust(dust, db, {}, query);
+    });
+
+    it('should handle a default author', function(cb) {
+      chunk.end = function() {
+        str.should.equal(now.toISOString());
+        cb();
+      };
+
+      dust.helpers.mostRecentChange(chunk, context, {}, {});
+    });
+  });
+
 });

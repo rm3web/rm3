@@ -1,8 +1,16 @@
 {>"layouts/full_with_nav"/}
 {<view-content}
 
+<div id="textSearch">
+  <form method="post" class="pure-form">
+  <input type="text" name="search" class="pure-u-5-6" placeholder="{@formatMessage _key="SEARCH"/}" />
+  <button class="pure-button pure-button-primary pure-u-1-6">{@formatMessage _key="SUBMIT"/}</button>
+  </form>
+</div>
+
+
 <ul style="list-style:none">
-{@basicQuery select="child" tagPathSearch="true"}
+{@basicQuery select="child" tagPathSearch="true" textSearch=search}
  <li>{@icon size="24" /}{@titleLink/}</li>
 {/basicQuery}
  </ul>

@@ -60,7 +60,7 @@ var CommentFormComponent = React.createClass({
             return location.reload(true);
           }
           if (res.body.moderated) {
-            return self.setState({comment: '', message: 'This message has been held for moderation'})
+            return location.reload(true);
           }
         }
         FormLib.markError(self.state.errors,'__all__','unidentified response');

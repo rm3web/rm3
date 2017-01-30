@@ -1,69 +1,51 @@
 rm3
 ===
 
+A platform for publishing more than just textual articles on the web.
+---------------------------------------------------------------------
+
 [![Build Status](https://travis-ci.org/rm3web/rm3.svg?branch=master)](https://travis-ci.org/rm3web/rm3) [![codecov.io](http://codecov.io/github/rm3web/rm3/coverage.svg?branch=master)](http://codecov.io/github/rm3web/rm3?branch=master) [![Dependency Status](https://david-dm.org/rm3web/rm3.svg)](https://david-dm.org/rm3web/rm3) [![npm version](https://badge.fury.io/js/rm3.svg)](https://badge.fury.io/js/rm3)
 
 What is it?
 -----------
 
-rm3 is a system for managing stuff on the web. It's a little more than just a blog engine, but a little less than an enterprise CMS. It is to Drupal as Ghost is to WordPress. It can be a blog, a wiki, a photo archive, or a combination of all of that and more.  Like a blog, it lets you create a series of blog articles in a collection. Like a wiki, it maintains a history of all changes.  Like a CMS, it lets you create a site with more structure than a mere list of posts.  It has good support for both SVG vector graphics and photos.
+rm3 is not just a blog engine, but it's still lighter-weight and friendlier than those enterprise-grade CMS systems.  Conceptually, it is to Drupal as Ghost is to WordPress.
+
+rm3 is able work as a blog, a wiki, a photo archive, or some combination of those... and more.
+
+rm3 has blog-styled views such that you can post a series of dated blog articles and view them as such.  But every entity on the site has a history, like how a wiki works.  Like some of those enterprise CMS systems, you aren't restricted to just creating a mere list of posts.
+
+rm3 has rapidly improving support for media:  It supports photos, but it also supports SVG vector graphics and audio files.  
 
 Release Status
 --------------
 
-This is currently in PRE-ALPHA state, defined as:
-* I'm not yet trying to run this in production, so you definitely shouldn't.
-* Any data you put in here you should be prepared to reconstruct without the benefit of a migration tool.
-* Security and stability bugs are to be expected.
-* Key features are missing.
-* The basic structure of code is assumed to be unstable and any APIs are subject to change
+See [CHANGELOG.md](CHANGELOG.md) for recent changes.
 
-The next milestone is ALPHA, defined as:
+This is currently in ALPHA state, defined as:
+* I'm running it in production
 * Key features are not missing
-* Any data you put in here you should be prepared to reconstruct without the benefit of a migration tool.
+* Any data you put in here you should be prepared to reconstruct without the benefit of a migration tool (but I'm going to try very hard to avoid that)
 * Security and stability bugs are to be expected.
 * Some stable internal APIs will be present.
+
+The next milestone is BETA, defined as:
+* Key features are not missing
+* Any data you put in here should be able to be migrated with an offline migration where you need to shut down the site momentarily
+* Stability bugs are to be expected.
+* Stable APIs will be present.
 
 How to get started?
 -------------------
 
 ### Automated Setup
 
-[Docker Compose](https://github.com/rm3web/rm3-docker-compose)
+ * [Docker Compose](https://github.com/rm3web/rm3-docker-compose)
 
-### Manual Setup
+### Other setup methods
 
-* Install PostgreSQL 9.4 or later.  See [PostgreSQL installation](http://www.postgresql.org/download/linux/ubuntu/) -- you want to install it off of the PostgreSQL Apt Repository if your operating system doesn't package 9.5 or newer
-* Install node.js 4.4 or later (node.js 6.0 is not yet supported).  See [NodeJS install via package manager](https://nodejs.org/en/download/package-manager/)
-* Install Redis 2.0 or later.
-* Install LibRSVG library and header files (see https://www.npmjs.com/package/librsvg)
-* Git clone this repo
-* `npm install`
-* Create the database in postgresql
-  * Set up a password and user.
-    * The default setup is to assume it can connect to a database named `rm3test` with username `wirehead` and password `rm3test`.  An example database setup sequence, assuming that the default installed admin PostgreSQL user is `postgres`:
-      * `psql -c 'create database rm3test;' -U postgres`
-      * `psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres`
-      * `psql -c "GRANT ALL PRIVILEGES ON database rm3test TO wirehead;" -U postgres`
-      * `psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres`
-    * You can set the RM3_PG environment variable to something different if you want a different database username and password (and definitely should, if you want to run this in production)
-  * `createdb rm3test`
-  * `psql rm3test -U wirehead < db-schema.sql`
-* Load some default content
-  * `./bin/rm3load -f default_frontpage.json`
-  * `./bin/rm3load -f default_users.json`
-* Add a user and assign them to the root group
-  * `./bin/rm3admin adduser wirehead "Some New User" -p "Some profile text" -u http://www.wirewd.com/ -e email@example.com --password password`
-  * `./bin/rm3admin assign wirehead root`
-* Add permissions for the root group
-  * `./bin/rm3admin permit root edit \*`
-  * `./bin/rm3admin permit root delete \*`
-  * `./bin/rm3admin permit root view \*`
-* Add permissions for the special 'nobody' group
-  * `./bin/rm3admin permit nobody view wh.!users`
-* Run it
-  * `./node_modules/.bin/gulp develop`
-
+ * [Installing rm3](docs/install.md)
+ 
 [Docs](docs)
 ------------
 
@@ -105,6 +87,8 @@ Contributing
 ------------
 
 There are a wide variety of ways to contribute.  Documentation, bug triage, detailed issues (including UI/UX, bug reports, etc), test cases, refactoring, artwork, schemes, and so on are all just as important as features.
+
+Sections of the code are kinda messy copypasta that I'm waiting for a good abstraction to refactor.  Patches to fix that are probably even more important than full features.
 
 Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
 

@@ -2,13 +2,13 @@ var Conf = require ('../../lib/conf');
 var entity = require('../../lib/entity');
 var sitepath = require ('sitepath');
 var update = require ('../../lib/update');
-var should = require('should');
+var should = require('chai').should();
 
 describe('update', function() {
   it('executes correctly', function(done) {
     var insertQuery = 'INSERT INTO wh_entity (path, stub, "entityId", "revisionId", \
-"revisionNum", proto, modified, created, hidden, summary, data, tags) VALUES ($1, $2, \
-$3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
+"revisionNum", proto, modified, created, touched, hidden, summary, data, tags, search) VALUES ($1, $2, \
+$3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, (to_tsvector(\'english\', $14)))';
     var insertTagQuery = 'INSERT INTO wh_tag ("subjPath", "objClass", \
 "predPath", "objStr") VALUES ($1, $2, $3, $4)';
     var deleteBeforeQuery = 'DELETE FROM wh_entity WHERE (path = $1) AND (stub = true)';
@@ -38,14 +38,14 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
       var client = {};
       client.query = function(spec, func) {
         if (spec.name === 'insert_entity_query') {
-          should.deepEqual(spec.text, insertQuery);
-          should.deepEqual(spec.name, 'insert_entity_query');
-          should.deepEqual(spec.values[0], 'wh'); //path
-          should.deepEqual(spec.values[1], false); //stub
-          should.deepEqual(spec.values[4], 1); //revisionNum
-          should.deepEqual(spec.values[5], 'base'); //proto
-          should.deepEqual(spec.values[9], JSON.stringify(ent.summary)); // summary
-          should.deepEqual(spec.values[10], JSON.stringify(ent.data)); // summary
+          spec.text.should.eql(insertQuery);
+          spec.name.should.eql('insert_entity_query');
+          spec.values[0].should.eql('wh'); //path
+          spec.values[1].should.eql(false); //stub
+          spec.values[4].should.eql(1); //revisionNum
+          spec.values[5].should.eql('base'); //proto
+          spec.values[10].should.eql(JSON.stringify(ent.summary)); // summary
+          spec.values[11].should.eql(JSON.stringify(ent.data)); // summary
           func(null, {});
         } else if (spec.name === 'insert_tag_query') {
           spec.name.should.equal('insert_tag_query');
@@ -62,16 +62,16 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
           func(null, {});
         } else {
           //t.deepEqual(spec.text, insertQuery);
-          should.deepEqual(spec.name, 'insert_log_query');
-          should.deepEqual(spec.values[0], 'wh'); //path
-          should.deepEqual(spec.values[3], null); //base_revisionId
-          should.deepEqual(spec.values[4], null); //replace_revisionId
-          should.deepEqual(spec.values[6], 1); //revisionNum
-          should.deepEqual(spec.values[10], 'Create');
-          should.deepEqual(spec.values[11], true);
+          spec.name.should.eql('insert_log_query');
+          spec.values[0].should.eql('wh'); //path
+          should.not.exist(spec.values[3]); //base_revisionId
+          should.not.exist(spec.values[4]); //replace_revisionId
+          spec.values[6].should.eql(1); //revisionNum
+          spec.values[10].should.eql('Create');
+          spec.values[11].should.eql(true);
           var data = JSON.parse(spec.values[14]);
-          should.deepEqual(data.toData.summary, ent.summary);
-          should.deepEqual(data.toData.data, ent.data);
+          data.toData.summary.should.eql(ent.summary);
+          data.toData.data.should.eql(ent.data);
           func(null, {});
         }
       };
@@ -93,7 +93,7 @@ $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
     };
     update._private.execLogentry({}, true, undefined, undefined, logentry, function(err) {
       if (err) {
-        should.deepEqual(err.name, 'InvalidLogClass');
+        err.name.should.equal('InvalidLogClass');
         done();
       } else {
         should.fail('this should error');

@@ -1,0 +1,29 @@
+{>"layouts/full_sidebar_nav"/}
+{<view-content}
+
+<h1>{summary.title}</h1>
+
+{@textblock field=data.posting resolve="posting"}{/textblock}
+
+<div class="comment-legend">Comments</div>
+{@basicQuery comment="true"}
+<div class="comment-block">
+Posted by {@authorLink/} <time class="updated" datetime="{date}">{@formatRelative val=date/}</time>:
+<div class="comment-body">
+   {description|s}
+</div>
+   <small><a href="{@sitePathToUrl path=path /}">permalink</a></small>
+   </div>
+  {/basicQuery}
+
+{@requirePermissionOr permission="comment.create" permissionOr="comment.submit"}
+<div class="commentform" id="commentbutton"></div>
+<script src="./comment.js"></script>
+<script src="{@schemeStaticResource path="bundles/comment.js" /}"></script>
+{/requirePermissionOr}
+
+{/view-content}
+
+{<sidebar-content}
+{@textblock field=data.sidebar resolve="sidebar"}{/textblock}
+{/sidebar-content}

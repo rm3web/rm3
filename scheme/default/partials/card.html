@@ -6,10 +6,11 @@
   </a>
   <span class="entry-title">
     {@titleLink rel="bookmark" /}
+    {@viaLink rel="alternate" /}
   </span>
   <time class="updated" datetime="{date}">{@formatRelative val=date/}</time>
   <div class="entry-summary">
-    {summary}
+    {summary|s}
   </div>
   {@tags showNav="false" obj=tags}
   <div class="predicatePill">{@predTag /}</div> <div class="tagPill">{@objLink /}</div>

@@ -24,7 +24,7 @@ describe('Types', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
         {username: 'wirehead',
-         password: 'password'}, true);
+          password: 'password'}, true);
     });
 
     casper.then(function() {
@@ -51,6 +51,21 @@ describe('Types', function() {
     casper.then(function() {
       'a[href*=logout]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
+    });
+
+    casper.thenOpen('http://127.0.0.1:4000/blog/', function() {
+      // Blog + Comment type
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'div.pure-u-2-3'.should.contain.text('Blog stuff here...');
+      'div.pure-u-2-3'.should.contain.text('Comment goes here');
+    });
+
+    casper.thenOpen('http://127.0.0.1:4000/link/', function() {
+      // Link type
+      'div.footer'.should.be.inDOM.and.be.visible;
+      'div.pure-u-2-3'.should.contain.text('Test link');
+      'div.pure-u-2-3 a'.should.contain.text('Link');
+      'a[href*=example]'.should.be.inDOM.and.be.visible;
     });
   });
 });

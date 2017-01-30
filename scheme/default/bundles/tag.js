@@ -3,6 +3,10 @@ if (!global.Intl) {
   global.Intl = require('intl');
 }
 
+var url = require('url');
+var path = url.parse(window.location.href);
+var apiPath = path.protocol + "//" + path.host;
+
 require("babel-polyfill");
 
 var React = require('react');
@@ -16,7 +20,8 @@ var renderedComponent = ReactDOM.render(
   PathFactory({
     locales: intl.locales,
     messages: intl.messages,
-    baseurl: baseurl
+    baseurl: baseurl,
+    apiPath: apiPath
   }),
   renderTarget
 );

@@ -1,8 +1,8 @@
 var Conf = require ('../../lib/conf');
 var entity = require('../../lib/entity');
 var sitepath = require ('sitepath');
-var uuid = require('node-uuid');
-var should = require('should');
+var uuid = require('uuid');
+var should = require('chai').should();
 var db = require('../../lib/db');
 var os = require('os');
 var FileBlobStore = require('../../lib/fileblobstore');
@@ -10,6 +10,7 @@ var FileBlobStore = require('../../lib/fileblobstore');
 require('mocha-steps');
 
 describe('file blob store', function() {
+  this.timeout(8000); // This might take a bit of time
   var path = new sitepath(['wh', 'fileblobstore']);
 
   var filepath = {
@@ -18,7 +19,7 @@ describe('file blob store', function() {
     category: 'public'
   };
 
-  var st = new FileBlobStore(filepath, db);
+  var st = new FileBlobStore(filepath, db, null);
 
   var revisionId = uuid.v1();
   var revisionId2 = uuid.v1();

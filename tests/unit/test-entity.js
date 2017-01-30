@@ -1,6 +1,6 @@
 var entity = require ('../../lib/entity');
 var sitepath = require ('sitepath');
-var should = require('should');
+var should = require('chai').should();
 var LinkedDataBox = require('linked-data-box').LinkedDataBox;
 
 describe('stubEntity', function() {
@@ -12,15 +12,16 @@ describe('stubEntity', function() {
       oid: NaN,
       rows:
       [{path: 'wh',
-          stub: true,
-          entityId: '96010990-36ad-11e4-863b-614e8d833a23',
-          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
-          revisionNum: 1,
-          hidden: false,
-          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-          summary: {title: 'blrg', abstract: 'some text goes here'},
-          tags: {}
+        stub: true,
+        entityId: '96010990-36ad-11e4-863b-614e8d833a23',
+        revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
+        revisionNum: 1,
+        hidden: false,
+        modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+        created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+        touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+        summary: {title: 'blrg', abstract: 'some text goes here'},
+        tags: {}
       }],
       fields:
       [{name: 'path', dataTypeID: 17555},
@@ -48,9 +49,10 @@ describe('stubEntity', function() {
       e2._revisionNum = 1;
       e2._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e2._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2.summary =
       {"title": "blrg",
-       "abstract": "some text goes here"};
+        "abstract": "some text goes here"};
 
       e.should.be.eql(e2);
     });
@@ -65,22 +67,24 @@ describe('stubEntity', function() {
       e._revisionNum = 1;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.summary =
       {"title": "blrg",
-       "abstract": "some text goes here"};
+        "abstract": "some text goes here"};
 
       var v = {
         meta:
-       {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
-         revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
-         revisionNum: 1,
-         sitePath: ['wh'],
-         modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
+        {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
+          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
+          revisionNum: 1,
+          sitePath: ['wh'],
+          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
         summary: {title: 'blrg', abstract: 'some text goes here'},
         permissions: {}};
 
-      e.view().should.have.properties(v);
+      e.view().should.contain.all.keys(v);
     });
   });
 
@@ -93,9 +97,10 @@ describe('stubEntity', function() {
       e._revisionNum = 1;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.summary =
       {"title": "blrg",
-       "abstract": "some text goes here"};
+        "abstract": "some text goes here"};
 
       e.path().should.be.eql(new sitepath(['wh']));
     });
@@ -111,17 +116,18 @@ describe('entity', function() {
       oid: NaN,
       rows:
       [{path: 'wh',
-          stub: false,
-          entityId: '96010990-36ad-11e4-863b-614e8d833a23',
-          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
-          revisionNum: 1,
-          proto: 'base',
-          hidden: false,
-          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-          summary: {title: 'blrg', abstract: 'some text goes here'},
-          data: {posting: '<div>Test test</div>'},
-          tags: {}
+        stub: false,
+        entityId: '96010990-36ad-11e4-863b-614e8d833a23',
+        revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
+        revisionNum: 1,
+        proto: 'base',
+        hidden: false,
+        modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+        created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+        touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+        summary: {title: 'blrg', abstract: 'some text goes here'},
+        data: {posting: '<div>Test test</div>'},
+        tags: {}
       }],
       fields:
       [{name: 'path', dataTypeID: 17555},
@@ -133,6 +139,7 @@ describe('entity', function() {
         {name: 'proto', dataTypeID: 25},
         {name: 'modified', dataTypeID: 1114},
         {name: 'created', dataTypeID: 1114},
+        {name: 'touched', dataTypeID: 1114},
         {name: 'summary', dataTypeID: 114},
         {name: 'data', dataTypeID: 114},
         {name: 'tags', dataTypeId: 114}],
@@ -153,10 +160,11 @@ describe('entity', function() {
       e2._hidden = false;
       e2._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e2._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e2.data.posting = '<div>Test test</div>';
       e2.summary =
       {"title": "blrg",
-       "abstract": "some text goes here"};
+        "abstract": "some text goes here"};
       e2._tags = new LinkedDataBox();
 
       e.should.be.eql(e2);
@@ -178,26 +186,28 @@ describe('entity', function() {
       e._hidden = false;
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.data.posting = '<div>Test test</div>';
       e.summary =
       {"title": "blrg",
-       "abstract": "some text goes here"};
+        "abstract": "some text goes here"};
 
       var v = {
         meta:
-       {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
-         revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
-         revisionNum: 1,
-         proto: 'base',
-         sitePath: ['wh'],
-         hidden: false,
-         modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
-         created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
+        {entityId: '96010990-36ad-11e4-863b-614e8d833a23',
+          revisionId: '96010991-36ad-11e4-863b-614e8d833a23',
+          revisionNum: 1,
+          proto: 'base',
+          sitePath: ['wh'],
+          hidden: false,
+          modified: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          created: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)'),
+          touched: new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)')},
         summary: {title: 'blrg', abstract: 'some text goes here'},
         data: {posting: '<div>Test test</div>'},
         permissions: {}};
 
-      e.view().should.have.properties(v);
+      e.view().should.contain.all.keys(v);
     });
   });
 
@@ -211,10 +221,11 @@ describe('entity', function() {
       e._proto = "base";
       e._modified = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e._created = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
+      e._touched = new Date('Sun Sep 07 2014 09:39:50 GMT-0700 (PDT)');
       e.data.posting = '<div>Test test</div>';
       e.summary =
       {"title": "blrg",
-       "abstract": "some text goes here"};
+        "abstract": "some text goes here"};
 
       e.path().should.be.eql(new sitepath(['wh']));
     });
@@ -232,23 +243,24 @@ describe('entity', function() {
       e.data.posting = '<div>Test test</div>';
       e.summary =
       {"title": "blrg",
-       "abstract": "some text goes here"};
+        "abstract": "some text goes here"};
 
       var v = {
         meta:
-       {entityId: null,
-         revisionId: null,
-         revisionNum: null,
-         proto: 'base',
-         hidden: false,
-         sitePath: ['wh'],
-         modified: now,
-         created: now},
+        {entityId: null,
+          revisionId: null,
+          revisionNum: null,
+          proto: 'base',
+          hidden: false,
+          sitePath: ['wh'],
+          modified: now,
+          created: now,
+          touched: now},
         summary: {title: 'blrg', abstract: 'some text goes here'},
         data: {posting: '<div>Test test</div>'},
         permissions: {}};
 
-      e.view().should.have.properties(v);
+      e.view().should.contain.all.keys(v);
     });
     it('should only run once', function() {
       (function() {
@@ -266,7 +278,7 @@ describe('entity', function() {
       e.data.posting = '<div>Test test</div>';
       e.summary =
       {"title": "blrg",
-       "abstract": "some text goes here"};
+        "abstract": "some text goes here"};
     });
 
     describe('#updateTimes', function() {
@@ -275,10 +287,27 @@ describe('entity', function() {
         tomorrow.setDate(tomorrow.getDate() + 1);
 
         now.should.be.equal(e.view().meta.modified);
+        now.should.be.equal(e.view().meta.touched);
 
         e.updateTimes(tomorrow);
 
         tomorrow.should.be.equal(e.view().meta.modified);
+        tomorrow.should.be.equal(e.view().meta.touched);
+      });
+    });
+
+    describe('#updateTouched', function() {
+      it('should work', function() {
+        var tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        now.should.be.equal(e.view().meta.modified);
+        now.should.be.equal(e.view().meta.touched);
+
+        e.updateTouched(tomorrow);
+
+        now.should.be.equal(e.view().meta.modified);
+        tomorrow.should.be.equal(e.view().meta.touched);
       });
     });
 
@@ -296,6 +325,11 @@ describe('entity', function() {
 
         e._tags.hasTag('wh.ponies', {'@id': 'twilight', 'objClass': 'tag'}).should.equal(true);
         e._tags.hasTag('wh.ponies', {'@id': 'wh.princess', 'objClass': 'ontag'}).should.equal(true);
+
+        e.hasTag(null, 'sparklefish').should.equal(true);
+        e.hasTag('navigation', 'navbar').should.equal(true);
+        e.hasTag(new sitepath(['wh', 'ponies']), 'twilight').should.equal(true);
+        e.hasTag(new sitepath(['wh', 'ponies']), new sitepath(['wh', 'princess'])).should.equal(true);
       });
 
       it('should reject invalid values', function() {

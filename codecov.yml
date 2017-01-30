@@ -3,10 +3,9 @@ codecov:
 
 coverage:
   status:
-    project: false
 
     patch: false
 
     changes: false
 
-comment: off
+comment: on

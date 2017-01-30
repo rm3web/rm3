@@ -1,11 +1,21 @@
 
 <div class="pure-u-1 headermenu">
   <div class="pure-menu pure-menu-horizontal">
+   <div style="float:right" class="pure-menu-item"><a class="pure-menu-link" href="/search.cgi">{@formatMessage _key="SEARCH"/}</a></div>
    <a class="pure-menu-heading pure-menu-link" href="/">{site.name}</a>
    <ul class="pure-menu-list">
 {@basicQuery rootPath="true" navbar="true"}
   <li class="pure-menu-item">{@titleLink linkclass="pure-menu-link" /}</li>
 {/basicQuery}
    </ul>
+  </div>
+</div>
+{@onlyThirdLevel}
+<div class="pure-u-1 childheadermenu">
+<div style="float:right">
+{@basicQuery select="parents"}
+  {@ne key=idx value=0} &raquo; {/ne} {@titleLink /}
+{/basicQuery}
 </div>
 </div>
+{/onlyThirdLevel}

@@ -1,5 +1,5 @@
 var ActivityFeed = require ('../../lib/activityfeed');
-var should = require('should');
+var should = require('chai').should();
 var SitePath = require ('sitepath');
 var events = require("events");
 
@@ -43,7 +43,7 @@ describe('activityfeed', function() {
       };
 
       output.on('article', function(rec) {
-        rec.should.have.properties(['object', '@type', 'updated', 'startTime',
+        rec.should.contain.all.keys(['object', '@type', 'updated', 'startTime',
           'endTime', '@id', 'published', 'actor']);
         rec.object.url.should.equal('/sunlit/pony/?revisionId=uuid13566');
         rec.object.displayName.should.equal('Sunlit Ponies!');
@@ -51,7 +51,7 @@ describe('activityfeed', function() {
         rec['@type'].should.equal('post');
         rec.updated.should.equal(now);
         rec['@id'].should.equal('urn:uuid13566:1');
-        rec.actor.should.have.properties('@type', '@id', 'url');
+        rec.actor.should.contain.all.keys('@type', '@id', 'url');
         rec.actor['@type'].should.equal('Person');
         rec.actor.url.should.equal('/midnight/kitty/');
         rec.actor['rm3:proto'].should.equal('user');
@@ -81,14 +81,14 @@ describe('activityfeed', function() {
       };
 
       output.on('article', function(rec) {
-        rec.should.have.properties(['object', '@type', 'updated', 'startTime',
+        rec.should.contain.all.keys(['object', '@type', 'updated', 'startTime',
           'endTime', '@id', 'actor']);
-        rec.should.not.have.properties(['published']);
+        rec.should.not.have.all.keys(['published']);
         rec.object.url.should.equal('/sunlit/pony/?revisionId=uuid13566');
         rec['@type'].should.equal('post');
         rec.updated.should.equal(now);
         rec['@id'].should.equal('urn:uuid13566:1');
-        rec.actor.should.have.properties('@type', '@id', 'url');
+        rec.actor.should.have.all.keys('@type', '@id', 'url');
         rec.actor['@type'].should.equal('Person');
         rec.actor.url.should.equal('/midnight/kitty/');
         cb();
@@ -116,7 +116,7 @@ describe('activityfeed', function() {
       };
 
       output.on('article', function(rec) {
-        rec.should.have.properties(['object', '@type', 'updated', 'startTime',
+        rec.should.contain.all.keys(['object', '@type', 'updated', 'startTime',
           'endTime', '@id', 'published', 'actor']);
         rec.object.url.should.equal('/sunlit/pony/?revisionId=uuid13566');
         rec['@type'].should.equal('post');
@@ -169,23 +169,23 @@ describe('activityfeed', function() {
 
       var tests = [
         {desc: 'returns a string if given a string',
-        input: 'long noses',
-        output: 'long noses'},
+          input: 'long noses',
+          output: 'long noses'},
         {desc: 'returns root',
-        input: {'@type': 'http://rm3.wirewd.com/Site'},
-        output: 'root'},
+          input: {'@type': 'http://rm3.wirewd.com/Site'},
+          output: 'root'},
         {desc: 'returns an id and URL',
-        input: {url: 'url', '@id': 'id'},
-        output: '<a href="url">id</a>'},
+          input: {url: 'url', '@id': 'id'},
+          output: '<a href="url">id</a>'},
         {desc: 'returns a displayName and URL',
-        input: {url: 'url', '@id': 'id', displayName: 'pony'},
-        output: '<a href="url">pony</a>'},
+          input: {url: 'url', '@id': 'id', displayName: 'pony'},
+          output: '<a href="url">pony</a>'},
         {desc: 'returns an id',
-        input: {'@id': 'sad_id'},
-        output: 'sad_id'},
+          input: {'@id': 'sad_id'},
+          output: 'sad_id'},
         {desc: 'handles complete unknown situations',
-        input: {},
-        output: 'unknown'}
+          input: {},
+          output: 'unknown'}
       ];
 
       tests.forEach(function(test, index) {
@@ -214,20 +214,20 @@ describe('activityfeed', function() {
 
       var tests = [
         {desc: 'returns a string if given a string',
-        input: 'screwball humor',
-        output: 'screwball humor'},
+          input: 'screwball humor',
+          output: 'screwball humor'},
         {desc: 'returns an id and URL',
-        input: {url: 'url', '@id': 'id'},
-        output: '<a href="url">id</a>'},
+          input: {url: 'url', '@id': 'id'},
+          output: '<a href="url">id</a>'},
         {desc: 'returns a displayName and URL',
-        input: {url: 'url', '@id': 'id', displayName: 'kitten'},
-        output: '<a href="url">kitten</a>'},
+          input: {url: 'url', '@id': 'id', displayName: 'kitten'},
+          output: '<a href="url">kitten</a>'},
         {desc: 'returns an id',
-        input: {'@id': 'sad_id'},
-        output: 'sad_id'},
+          input: {'@id': 'sad_id'},
+          output: 'sad_id'},
         {desc: 'handles complete unknown situations',
-        input: {},
-        output: 'unknown object'}
+          input: {},
+          output: 'unknown object'}
       ];
 
       tests.forEach(function(test, index) {
@@ -260,6 +260,37 @@ describe('activityfeed', function() {
         dust.helpers.activityVerb(chunk, context, {}, params);
       });
     });
-  });
 
+    describe('#activityId', function() {
+      it('works', function(cb) {
+        var chunk = {}, context = {}, params = {};
+        chunk.write = function(str) {
+          str.should.equal('the id goes here');
+          cb();
+        };
+        context.get = function(param) {
+          param.should.equal('rm3:revisionId');
+          return 'the id goes here';
+        };
+
+        dust.helpers.activityId(chunk, context, {}, params);
+      });
+    });
+
+    describe('#activityBareUrl', function() {
+      it('works', function(cb) {
+        var chunk = {}, context = {}, params = {};
+        chunk.write = function(str) {
+          str.should.equal('http://example.com');
+          cb();
+        };
+        context.get = function(param) {
+          param.should.equal('object');
+          return {'rm3:rootUrl': 'http://example.com'};
+        };
+
+        dust.helpers.activityBareUrl(chunk, context, {}, params);
+      });
+    });
+  });
 });
