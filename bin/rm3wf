@@ -1,0 +1,35 @@
+#!/usr/bin/env node
+
+var Conf = require('../lib/conf');
+var workflow = require('../lib/workflow'),
+    runWorkflows = require('../lib/runworkflows');
+var winston = require('winston');
+var BlobStores = require('../lib/blobstores'),
+    FileBlobStore = require('../lib/fileblobstore');
+var db = require('../lib/db');
+var cs = require('cache-service');
+var redisModule = require('cache-service-redis');
+var redisCache = new redisModule({redisUrl: Conf.getEndpoint('cacheRedis')}),
+    cacheService = new cs({}, [redisCache]);
+
+
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {colorize: true});
+
+var conf = {
+  path: Conf.getPath('localBlobs'),
+  urlroot: '/blobs/',
+  category: 'public'
+};
+BlobStores.register('public', new FileBlobStore(conf, db, cacheService));
+
+
+workflow.loadConf(function() {
+  runWorkflows(function(err) {
+    if (err) {
+      winston.error('front', 'Startup failed', {err:err});
+    } else {
+      winston.info('front', 'startup complete');
+    }
+  });
+});

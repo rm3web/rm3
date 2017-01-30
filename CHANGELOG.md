@@ -11,6 +11,41 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.6] - Low - 2017-01-16: Women's March on Washington edition
+### Added
+- `rm3rm` command to delete an entity via the CLI.
+- Proper icon for audio.
+- Blog-with-sidebar proto.
+
+### Changed
+- PureCSS's npm package is in good shape these days; removing bower entirely.
+
+### Fixed
+- `rm3wf` didn't support the blobstore, which broke things.
+- Weird formatting issue that crept in when creating a page with invalid HTML.
+
+## [0.3.5] - Low - 2017-01-16: Martin Luther King Jr. edition
+### Added
+- `rm3wf` command to just run the workflow without responding to web requests.
+
+### Changed
+- Cache key for most recent changed is now based on the path root.
+- Re-organized startup phases to make it easier to use debugging tools that catch errors and insert themselves into the express pipeline (sentry, rollbar, exceptional.io, et al)
+
+## [0.3.4] - Low - 2017-01-08: California Rainpocalypse special edition
+### Added
+- You can now disable workflow processing entirely with the `RM3_WF_DISABLE` env variable.
+- More tweaks to internal workflow tasks.
+- Scheme can be a child of another scheme, where any changed files will override from the parent.  (Not really part of the public API yet)
+
+### Changed
+- Updated dependencies
+- Refactored the protos such that there is now a simple decorator to expose blob files.
+
+### Fixed
+- loaddump will load blob-less protos requiring workflow properly.
+- In the audio proto, the play button disabled until the MP3 has loaded.
+
 ## [0.3.3] - Low - 2017-01-01: New Years Day Sick-but-not-hungover edition
 
 ### Added
@@ -238,7 +273,10 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.3...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.6...HEAD
+[0.3.6]: https://github.com/rm3web/rm3/compare/v0.3.5...v0.3.6
+[0.3.5]: https://github.com/rm3web/rm3/compare/v0.3.4...v0.3.5
+[0.3.4]: https://github.com/rm3web/rm3/compare/v0.3.3...v0.3.4
 [0.3.3]: https://github.com/rm3web/rm3/compare/v0.3.2...v0.3.3
 [0.3.2]: https://github.com/rm3web/rm3/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/rm3web/rm3/compare/v0.3.0...v0.3.1
