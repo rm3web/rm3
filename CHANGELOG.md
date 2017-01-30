@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Unbranded the default header logo now that the innards are in a good enough shape, even lacking a public API, that I can insert the branding on my end.
+
 ### Fixed
 - If you tried to load a page with an unsupported proto, the index code would crash.  Now it will vaguely work.
 
