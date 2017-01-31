@@ -13,6 +13,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Unbranded the default header logo now that the innards are in a good enough shape, even lacking a public API, that I can insert the branding on my end.
+- Updated dependencies:
+  - cache-service-redis that has a contributed patch to let you connect to a differently numbered redis database which made running multiple rm3 instances on the same node tricky.
 
 ### Fixed
 - If you tried to load a page with an unsupported proto, the index code would crash.  Now it will vaguely work.
