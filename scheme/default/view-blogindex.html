@@ -3,6 +3,22 @@
 
 {@textblock field=data.posting resolve="posting"}{/textblock}
 
+{@requirePermission permission="edit"}
+<div>
+  <form id="userform-form" method="post" action="quickcreate.html" class="pure-form pure-form-stacked">
+  <fieldset>
+    <h1><textarea rows="1" class="pure-input-1" placeholder="Title" name="title"></textarea></h1>
+  </fieldset>
+  <fieldset>
+    <textarea rows="10" class="pure-input-1" name="posting" placeholder="Posting"></textarea>
+  </fieldset>
+  <fieldset>
+    <button type="submit" class="pure-button pure-button-primary" data-reactid=".v7web14uf4.7.0.0.0">post</button>
+  </fieldset>
+  </form>
+</div>
+{/requirePermission}
+
 <div>
 {@basicQuery select="child" limit="4" paginationKey="index"}
 <div class="hentry hentry-card">
