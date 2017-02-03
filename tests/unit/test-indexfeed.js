@@ -4,6 +4,28 @@ var SitePath = require ('sitepath');
 var events = require("events");
 
 describe('indexfeed', function() {
+  describe('#generateFacetLink', function() {
+    var site = {};
+
+    beforeEach(function() {
+      site.sitePathToUrl = function(sitepath) {
+        return 'fq';
+      };
+    });
+
+    it('generates a key for date facets', function() {
+      var row = {facet: new Date(0)};
+      var out = IndexFeed._generateFacetLink(row, true, 'f', 'q', site, {}, 'changed');
+      out.should.equal('fq$/f_q/1969_12/');
+    });
+
+    it('generates a key for tag facets', function() {
+      var row = {facet: 'goo'};
+      var out = IndexFeed._generateFacetLink(row, false, 'f', 'q', site, {}, 'changed');
+      out.should.equal('fq$/f_q/goo/');
+    });
+  });
+
   describe('#authorLink', function() {
 
     var dust, db, query, chunk, str, contextData, context;
