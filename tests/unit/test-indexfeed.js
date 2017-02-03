@@ -4,6 +4,57 @@ var SitePath = require ('sitepath');
 var events = require("events");
 
 describe('indexfeed', function() {
+  describe('#parseFacetPath', function() {
+    it('works for no partial', function() {
+      var filter = {};
+      var facet = IndexFeed._parseFacetPath([], 'index', filter);
+      facet.should.equal(false);
+    });
+
+    it('works for predicate', function() {
+      var filter = {};
+      var facet = IndexFeed._parseFacetPath(['index_pred', 'plain', ''], 'index', filter);
+      facet.should.equal(true);
+      filter.predicate.should.equal('plain');
+    });
+
+    it('works for tag', function() {
+      var filter = {};
+      var facet = IndexFeed._parseFacetPath(['index_tag', 'foo', ''], 'index', filter);
+      facet.should.equal(true);
+      filter.tag.should.equal('foo');
+    });
+
+    it('works for yearmonth', function() {
+      var filter = {};
+      var facet = IndexFeed._parseFacetPath(['index_yearmonth', '2017_1', ''], 'index', filter);
+      facet.should.equal(true);
+      filter.yearMonth.should.eql(new Date(2017,0,1));
+    });
+  });
+
+  describe('#generateFacetLink', function() {
+    var site = {};
+
+    beforeEach(function() {
+      site.sitePathToUrl = function(sitepath) {
+        return 'fq';
+      };
+    });
+
+    it('generates a key for date facets', function() {
+      var row = {facet: new Date(1995, 11, 17, 3, 24, 0)};
+      var out = IndexFeed._generateFacetLink(row, true, 'f', 'q', site, {}, 'changed');
+      out.should.equal('fq$/f_q/1995_12/');
+    });
+
+    it('generates a key for tag facets', function() {
+      var row = {facet: 'goo'};
+      var out = IndexFeed._generateFacetLink(row, false, 'f', 'q', site, {}, 'changed');
+      out.should.equal('fq$/f_q/goo/');
+    });
+  });
+
   describe('#authorLink', function() {
 
     var dust, db, query, chunk, str, contextData, context;

@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+### Added
+- Blog index proto.
 
 ### Changed
 - Unbranded the default header logo now that the innards are in a good enough shape, even lacking a public API, that I can insert the branding on my end.
