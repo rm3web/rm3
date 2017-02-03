@@ -14,9 +14,9 @@ describe('indexfeed', function() {
     });
 
     it('generates a key for date facets', function() {
-      var row = {facet: new Date(0)};
+      var row = {facet: new Date(1995, 11, 17, 3, 24, 0)};
       var out = IndexFeed._generateFacetLink(row, true, 'f', 'q', site, {}, 'changed');
-      out.should.equal('fq$/f_q/1969_12/');
+      out.should.equal('fq$/f_q/1995_12/');
     });
 
     it('generates a key for tag facets', function() {
