@@ -20,7 +20,7 @@
 {/requirePermission}
 
 <div>
-{@basicQuery select="child" limit="4" paginationKey="index"}
+{@basicQuery select="dir" limit="15" paginationKey="index"}
 <div class="hentry hentry-card">
   <a class="icon" href="{@sitePathToUrl path=path /}">
     {@icon/}
@@ -35,7 +35,9 @@
   </div>
 </div>
 {:more}
+<div style="clear: left;">
 {moreLink|s}
+</div>
 {/basicQuery}
 </div>
 
