@@ -48,6 +48,7 @@
   </div></div>
   {/requireUser}
   </div>
+{+nav-sidebar}
   {@eq key=data.excludeChildrenDisplay value=true}
   <div class="pure-menu">
     <ul class="pure-menu-list">
@@ -57,6 +58,7 @@
     </ul>    
   </div>
   {/eq}
+{/nav-sidebar}
   {@requireUser}
   {:else}
   {@ifLoginEnabled}
