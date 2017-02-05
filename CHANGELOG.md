@@ -21,6 +21,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   - cache-service-redis that has a contributed patch to let you connect to a differently numbered redis database which made running multiple rm3 instances on the same node tricky.
 - Tweaked the style system slightly so it's easier to remove the navbar index via Dust.
 - Can disable the basicindex pagination "more" link
+- Page for the predicate proto now has a search and shows useful information.
 
 ### Fixed
 - If you tried to load a page with an unsupported proto, the index code would crash.  Now it will vaguely work.
