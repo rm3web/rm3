@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Blog index proto.
 - Image index proto.
+- Ontological tag index proto.
 
 ### Changed
 - Unbranded the default header logo now that the innards are in a good enough shape, even lacking a public API, that I can insert the branding on my end.
