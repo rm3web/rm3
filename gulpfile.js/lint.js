@@ -23,8 +23,10 @@ gulp.task('eslint', function () {
 
 gulp.task('csslint', function() {
   gulp.src('scheme/default/styles/*.css')
-    .pipe(csslint())
-    .pipe(csslint.reporter());
+    .pipe(csslint({
+        'order-alphabetical': false
+      }))
+    .pipe(csslint.formatter());
 });
 
 gulp.task('lint', ['eslint', 'csslint'])
