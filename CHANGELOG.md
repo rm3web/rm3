@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- BasicQuery can now set a path manually
+
 ### Fixed
 - Default sort order on the blog index was wrong.
 
