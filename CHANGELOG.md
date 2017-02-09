@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+### Added
+- OAuth 2.0 / OpenID Connect 1.0
 
 ### Fixed
 - Default sort order on the blog index was wrong.
