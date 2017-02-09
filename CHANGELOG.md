@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.3.8] - Low - 2017-02-05: Special Crazy Eights edition
+
 ### Changed
 - BasicQuery can now set a path manually
 
@@ -297,8 +299,9 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.7...HEAD
-[0.3.6]: https://github.com/rm3web/rm3/compare/v0.3.6...v0.3.7
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.8...HEAD
+[0.3.8]: https://github.com/rm3web/rm3/compare/v0.3.7...v0.3.8
+[0.3.7]: https://github.com/rm3web/rm3/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/rm3web/rm3/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/rm3web/rm3/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/rm3web/rm3/compare/v0.3.3...v0.3.4
