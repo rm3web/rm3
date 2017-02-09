@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Default sort order on the blog index was wrong.
+
 ## [0.3.7] - Low - 2017-02-05: Superb, and not so superb, owl edition
 
 ### Added
