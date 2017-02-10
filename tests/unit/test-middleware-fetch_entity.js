@@ -202,6 +202,65 @@ describe('middleware:fetchEntity', function() {
       });
     });
 
+    it('middleware fetchEntity moved', function(done) {
+      query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
+        ent.should.eql(entity);
+        sp.should.eql(new sitepath(['sparklepony']));
+        should.not.exist(rev);
+        var tmpent = new StubEntity();
+        tmpent.summary = {
+          moved: true,
+          path: 'wh'
+        };
+        next(null, tmpent);
+      };
+
+      req.site = {};
+      req.site.sitePathToUrl = function() {
+        return '/';
+      };
+
+      var middleware = fetchEntity(db, {}, query, entity, StubEntity);
+      middleware.should.be.a("function");
+
+      res.redirect = function(code, path) {
+        code.should.eql(308);
+        path.should.eql('/');
+        done();
+      };
+
+      middleware(req, res, function(err) {
+        should.fail('shouldn\'t be called');
+      });
+    });
+
+    it('middleware fetchEntity redirect', function(done) {
+      query.entityFromPath = function(db, cache, ent, ctx, acc, sp, rev, next) {
+        ent.should.eql(entity);
+        sp.should.eql(new sitepath(['sparklepony']));
+        should.not.exist(rev);
+        var tmpent = new StubEntity();
+        tmpent.summary = {
+          deleted: true,
+          redirect: 'http://www.example.com/'
+        };
+        next(null, tmpent);
+      };
+
+      var middleware = fetchEntity(db, {}, query, entity, StubEntity);
+      middleware.should.be.a("function");
+
+      res.redirect = function(code, path) {
+        code.should.eql(308);
+        path.should.eql('http://www.example.com/');
+        done();
+      };
+
+      middleware(req, res, function(err) {
+        should.fail('shouldn\'t be called');
+      });
+    });
+
     it('middleware fetchEntity revision_not_found_error', function(done) {
       function RevisionIdNotFoundError() {
         this.message = "Entity not found";
