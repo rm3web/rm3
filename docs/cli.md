@@ -48,6 +48,17 @@ rm3rm will delete entites from the site.
 
 `rm3rm -E wh.the_meat` will forcibly delete everything about the entity.  It will be as if it never existed (although any blob files will remain).  This is a dangerous operation.
 
+`rm3rm wh.the_meat -r http://www.example.com/` will delete an entity and place a redirect to an external site.
+
+rm3mv
+-----
+
+rm3mv will move a node
+
+`rm3rm wh.the_meat wh.meat` move an entity from the first path to the second path.
+
+Warning: This won't move things that have blobs right now.
+
 rm3admin
 --------
 

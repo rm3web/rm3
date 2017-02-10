@@ -11,6 +11,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- rm3mv command
+- rm3rm command has the -r option to redirect to an external URL.
+
 ### Changed
 - BasicQuery can select on a proto type.
 
