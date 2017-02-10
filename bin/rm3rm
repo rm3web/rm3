@@ -54,7 +54,7 @@ async.waterfall([
       if (ent && ent.summary.deleted === true) {
         return callback(new Error('Entity already deleted'));
       }
-      return update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', callback);
+      return update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', {}, callback);
     }
   }
 ], function(err) {

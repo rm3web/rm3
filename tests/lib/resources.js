@@ -25,7 +25,7 @@ exports.entityResource = function entityResource(path, ents, entidx, provisional
   });
 
   after(function deleteEntityResource(done) {
-    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', done);
+    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', {}, done);
     delete ents[entidx];
   });
 };
@@ -54,7 +54,7 @@ exports.userResource = function userResource(userpath, username, ents, entidx, n
   });
 
   after(function deleteUserResource(done) {
-    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', done);
+    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', {}, done);
     delete ents[entidx];
   });
 };

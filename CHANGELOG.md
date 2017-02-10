@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- rm3mv command
+
 ### Changed
 - BasicQuery can select on a proto type.
 
