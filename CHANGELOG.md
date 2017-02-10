@@ -13,6 +13,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - OAuth 2.0 / OpenID Connect 1.0
 
+### Added
+- rm3mv command
+- rm3rm command has the -r option to redirect to an external URL.
+
+### Changed
+- BasicQuery can select on a proto type.
+
 ## [0.3.8] - Low - 2017-02-05: Special Crazy Eights edition
 
 ### Changed

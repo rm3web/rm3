@@ -82,7 +82,7 @@ function stepGenericMove(desc, ents, startidx, newpath, moveMark) {
 
 function stepGenericDelete(desc, ent, delMark) {
   step(desc, function(done) {
-    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete',
+    update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', {},
       function(err, entityId, revisionId, revisionNum) {
         should.not.exist(err);
         should.exist(entityId);
@@ -514,7 +514,7 @@ describe('update', function() {
     step('delete', function(done) {
       var ent = ents.start;
       ent._path = newpath;
-      update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete',
+      update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', {},
         function(err, entityId, revisionId, revisionNum) {
           entityId.should.be.a('string');
           entityId.should.equal(ent._entityId);
