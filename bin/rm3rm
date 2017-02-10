@@ -14,8 +14,9 @@ var inquirer = require('inquirer');
 program
   .version(pjson.version)
   .arguments('<path>')
-  .option('-E', '--expunge', 'Remove completely, including any history and blobs')
-  .option('-Y', '--yes', 'Answer yes')
+  .option('-E, --expunge', 'Remove completely, including any history and blobs')
+  .option('-Y, --yes', 'Answer yes')
+  .option('-r, --redirect [url]', 'Redirect to a URL')
   .parse(process.argv)
   ;
 
@@ -26,7 +27,7 @@ async.waterfall([
     query.entityFromPath(db, false, entity.Entity, {}, {context: 'ROOT'}, path, null, callback);
   },
   function confirm(ent, callback) {
-    if (program.Y) {
+    if (program.yes) {
       return callback(null, ent);
     }
     if (ent) {
@@ -48,13 +49,17 @@ async.waterfall([
     }
   },
   function doDelete(ent, callback) {
-    if (program.E) {
+    if (program.expunge) {
       return update.expungeEntity(db, {}, path, callback);
     } else {
       if (ent && ent.summary.deleted === true) {
         return callback(new Error('Entity already deleted'));
       }
-      return update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', {}, callback);
+      var details = {};
+      if (program.redirect) {
+        details.redirect = program.redirect;
+      }
+      return update.deleteEntity(db, {}, {context: 'ROOT'}, ent, true, 'delete', details, callback);
     }
   }
 ], function(err) {
