@@ -11,6 +11,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+BREAKING: You need to destroy and recreate the workflow.
+
+### Added
+- Image protection, so that full-resolution original images aren't part of a public blob store
+
 ### Changed
 - BasicQuery can select on a proto type.
 
