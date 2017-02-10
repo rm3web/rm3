@@ -15,6 +15,8 @@ BREAKING: You need to destroy and recreate the workflow.
 
 ### Added
 - Image protection, so that full-resolution original images aren't part of a public blob store
+- rm3mv command
+- rm3rm command has the -r option to redirect to an external URL.
 
 ### Changed
 - BasicQuery can select on a proto type.
