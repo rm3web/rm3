@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - rm3mv command
 - rm3rm command has the -r option to redirect to an external URL.
+- Ontological tag can be in template.
 
 ### Changed
 - BasicQuery can select on a proto type.
