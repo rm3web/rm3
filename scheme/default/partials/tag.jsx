@@ -20,6 +20,8 @@ var TagPageComponent = ReactIntl.injectIntl(React.createClass({
     };
     state.predicates = {};
     state.predicateList = [];
+    state.ontags = [];
+    state.popularTags = [];
 
     state.ready = false;
     return state;
@@ -41,7 +43,9 @@ var TagPageComponent = ReactIntl.injectIntl(React.createClass({
       // in the state.
       self.state.tags.fromJSON(res.body.tags);
       self.state.predicates = {};
+      self.state.ontags = res.body.ontags;
       self.state.predicateList = res.body.predicates;
+      self.state.popularTags = res.body.popularTags;
       self.state.predicateList.forEach( function(currentValue) {
         self.state.predicates[currentValue.id] = {
           name: currentValue.name,
@@ -61,7 +65,9 @@ var TagPageComponent = ReactIntl.injectIntl(React.createClass({
       // in the state.
       self.state.tags.fromJSON(res.body.tags);
       self.state.predicates = {};
+      self.state.ontags = res.body.ontags;
       self.state.predicateList = res.body.predicates;
+      self.state.popularTags = res.body.popularTags;
       self.state.predicateList.forEach( function(currentValue) {
         self.state.predicates[currentValue.id] = {
           name: currentValue.name,
@@ -78,7 +84,8 @@ var TagPageComponent = ReactIntl.injectIntl(React.createClass({
     if (tag.hasOwnProperty('predicate')) {
       pred = tag.predicate.id;
     }
-    this.state.tags.addTag(pred, {"@id": tag.tag, "objClass": "tag"});
+    var type = tag.type;
+    this.state.tags.addTag(pred, {"@id": tag.tag, "objClass": tag.type});
     this.setState(this.state);
   },
 
@@ -90,8 +97,8 @@ var TagPageComponent = ReactIntl.injectIntl(React.createClass({
         <TagControl.TagInput ref="input" ready={this.state.ready} 
           predicates={this.state.predicateList} addTag={this.addTag} 
           selectPlaceholder={this.props.intl.formatMessage({id:'SELECT_A_PREDICATE'})} 
-          addMessage={this.props.intl.formatMessage({id:'ADD'})}
-          defaultPredicate={{"id": "plain"}} />
+          addMessage={this.props.intl.formatMessage({id:'ADD'})} links={this.state.ontags}
+          defaultPredicate={{"id": "plain"}} popularTags={this.state.popularTags} />
         <hr />
         <button className="pure-button pure-button-primary" disabled={this.state.isSubmitting}
           onClick={this.handleSave} type="button"> <FormattedMessage

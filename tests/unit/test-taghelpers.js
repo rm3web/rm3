@@ -80,6 +80,40 @@ describe('taghelpers', function() {
       dust.helpers.objLink(chunk, context, {}, params);
     });
 
+    it('works for ontags', function(cb) {
+      var chunk = {}, context = {};
+      var params = {obj: {objClass: 'ontag'}, pred: 'plain', objKey: 'wh.woof'};
+      context.resolve = function(param) {
+        return param;
+      };
+      chunk.write = function(str) {
+        str.should.equal('<a href="/search.cgi/$/ontag/plain/wh.woof">woof</a>');
+        cb();
+      };
+      context.get = function(param) {
+        return params[param];
+      };
+
+      dust.helpers.objLink(chunk, context, {}, params);
+    });
+
+    it('works for link tags', function(cb) {
+      var chunk = {}, context = {};
+      var params = {obj: {objClass: 'link'}, pred: 'plain', objKey: 'http://www.example.com/'};
+      context.resolve = function(param) {
+        return param;
+      };
+      chunk.write = function(str) {
+        str.should.equal('<a href="http://www.example.com/">http://www.example.com/</a> <a href="/search.cgi/$/link/plain/http%3A%2F%2Fwww.example.com%2F">(search)</a>');
+        cb();
+      };
+      context.get = function(param) {
+        return params[param];
+      };
+
+      dust.helpers.objLink(chunk, context, {}, params);
+    });
+
     it('works for plain tags with a linclass', function(cb) {
       var chunk = {}, context = {};
       var params = {linkclass: 'linkclass', obj: {objClass: 'tag'}, pred: 'plain', objKey: 'woof'};
