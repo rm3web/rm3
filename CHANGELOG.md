@@ -11,6 +11,42 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- rm3mv command
+- rm3rm command has the -r option to redirect to an external URL.
+- Ontological tag can be in template.
+- Added support for ontological tags, tag categories, link tags, and auto-suggest tags.
+
+### Changed
+- BasicQuery can select on a proto type.
+- Filtering out tags with only one hit on them.
+
+## [0.3.8] - Low - 2017-02-05: Special Crazy Eights edition
+
+### Changed
+- BasicQuery can now set a path manually
+
+### Fixed
+- Default sort order on the blog index was wrong.
+
+## [0.3.7] - Low - 2017-02-05: Superb, and not so superb, owl edition
+
+### Added
+- Blog index proto.
+- Image index proto.
+- Ontological tag index proto.
+
+### Changed
+- Unbranded the default header logo now that the innards are in a good enough shape, even lacking a public API, that I can insert the branding on my end.
+- Updated dependencies:
+  - cache-service-redis that has a contributed patch to let you connect to a differently numbered redis database which made running multiple rm3 instances on the same node tricky.
+- Tweaked the style system slightly so it's easier to remove the navbar index via Dust.
+- Can disable the basicindex pagination "more" link
+- Page for the predicate proto now has a search and shows useful information.
+
+### Fixed
+- If you tried to load a page with an unsupported proto, the index code would crash.  Now it will vaguely work.
+
 ## [0.3.6] - Low - 2017-01-16: Women's March on Washington edition
 ### Added
 - `rm3rm` command to delete an entity via the CLI.
@@ -273,7 +309,9 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.6...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.8...HEAD
+[0.3.8]: https://github.com/rm3web/rm3/compare/v0.3.7...v0.3.8
+[0.3.7]: https://github.com/rm3web/rm3/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/rm3web/rm3/compare/v0.3.5...v0.3.6
 [0.3.5]: https://github.com/rm3web/rm3/compare/v0.3.4...v0.3.5
 [0.3.4]: https://github.com/rm3web/rm3/compare/v0.3.3...v0.3.4
