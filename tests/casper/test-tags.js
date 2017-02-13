@@ -79,9 +79,10 @@ describe('Tags', function() {
     casper.waitUntilVisible('form#tagaddform', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       'div.r-ss-wrap'.should.be.inDOM.and.be.visible;
-      '#tagaddform > div > input'.should.be.inDOM.and.be.visible;
+      '#tagaddform > div.pure-g > div.pure-u-1-2'.should.be.inDOM.and.be.visible;
+      '#tagaddform > div.pure-g > div.pure-u-1-2 > div'.should.be.inDOM.and.be.visible;
       this.fillSelectors('form#tagaddform', {'input[type="text"]':'ponies'},false);
-      this.click('#tagaddform > div > button');
+      this.click('#tagaddform > div > div > div > button');
       this.click('#tagaddform > button.pure-button-primary');
     });
 
