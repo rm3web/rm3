@@ -20,19 +20,21 @@ describe('tags', function() {
         return cb(err);
       }
       res.body.should.eql(
-        {"predicates":
-        [{id: 'plain',
-          name: 'Plain tag (no semantic information)',
-          metadataClass: 'plain'},
-        {id: 'wh.meta.dc.coverage',
-          name: 'Coverage',
-          metadataClass: 'plain'},
-        {id: 'wh.meta.dc.creator',
-          name: 'Creator',
-          metadataClass: 'plain'},
-        {id: 'wh.meta.dc.subject',
-          name: 'Subject',
-          metadataClass: 'plain'}],
+        {"ontags": [],
+          "popularTags": [],
+          "predicates":
+          [{id: 'plain',
+            name: 'Plain tag (no semantic information)',
+            metadataClass: 'plain'},
+          {id: 'wh.meta.dc.coverage',
+            name: 'Coverage',
+            metadataClass: 'dc'},
+          {id: 'wh.meta.dc.creator',
+            name: 'Creator',
+            metadataClass: 'dc'},
+          {id: 'wh.meta.dc.subject',
+            name: 'Subject',
+            metadataClass: 'dc'}],
           "tags": {"navigation": [{"@id": "navbar", "objClass": "tag"}]}
         });
       cb();
@@ -71,19 +73,21 @@ describe('tags', function() {
           return cb(err);
         }
         res.body.should.eql(
-          {"predicates":
-          [{id: 'plain',
-            name: 'Plain tag (no semantic information)',
-            metadataClass: 'plain'},
-          {id: 'wh.meta.dc.coverage',
-            name: 'Coverage',
-            metadataClass: 'plain'},
-          {id: 'wh.meta.dc.creator',
-            name: 'Creator',
-            metadataClass: 'plain'},
-          {id: 'wh.meta.dc.subject',
-            name: 'Subject',
-            metadataClass: 'plain'}],
+          {"ontags": [],
+            "popularTags": [],
+            "predicates":
+            [{id: 'plain',
+              name: 'Plain tag (no semantic information)',
+              metadataClass: 'plain'},
+            {id: 'wh.meta.dc.coverage',
+              name: 'Coverage',
+              metadataClass: 'dc'},
+            {id: 'wh.meta.dc.creator',
+              name: 'Creator',
+              metadataClass: 'dc'},
+            {id: 'wh.meta.dc.subject',
+              name: 'Subject',
+              metadataClass: 'dc'}],
             "tags": {"navigation": [{"@id": "navbar", "objClass": "tag"}],
               "plain" : [{"@id": "boo", "objClass": "tag"}]}
           });
