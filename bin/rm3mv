@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+
+var query = require('../lib/query');
+var entity = require('../lib/entity');
+var update = require('../lib/update');
+var sitepath = require ('sitepath');
+var db = require('../lib/db');
+var program = require('commander');
+var pjson = require('../package.json');
+var async = require('async');
+var util = require('util');
+
+program
+  .version(pjson.version)
+  .arguments('<from> <to>')
+  .parse(process.argv)
+  ;
+
+var fromPath = new sitepath(program.args[0]);
+var toPath = new sitepath(program.args[1]);
+
+async.waterfall([
+  function queryEnt(callback) {
+    query.entityFromPath(db, false, entity.Entity, {}, {context: 'ROOT'}, fromPath, null, callback);
+  },
+  function doMove(ent, callback) {
+    return update.moveEntity(db, {}, {context: 'ROOT'}, ent, toPath, true, 'move', callback);
+  },
+], function(err) {
+  if (err) {
+    console.log(err);
+  }
+  db.gunDatabase();
+});
