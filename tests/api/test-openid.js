@@ -78,6 +78,17 @@ describe('oauth2', function() {
           });
       });
     });
+    it('rejects bad client credentials', function(cb) {
+      var oauth2bad = require('simple-oauth2').create(badCredentials);
+      var tokenConfig = {
+        username: 'wirehead',
+        password: 'password'
+      };
+      oauth2bad.ownerPassword.getToken(tokenConfig, function(err, result) {
+        should.exist(err);
+        cb();
+      });
+    });
     it('rejects bad passwords', function(cb) {
       var tokenConfig = {
         username: 'wirehead',
