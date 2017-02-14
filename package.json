@@ -173,6 +173,7 @@
     "proxyquire": "^1.7.10",
     "purecss": "^0.6.2",
     "run-sequence": "^1.1.5",
+    "simple-oauth2": "^1.0.3",
     "tcp-port-used": "^0.1.2",
     "test-plan": "~0.1.1",
     "vinyl-source-stream": "^1.1.0"
