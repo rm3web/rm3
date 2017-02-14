@@ -17,12 +17,11 @@ describe('jwt', function() {
     client.page('/users/').get()
     .set('Authorization', 'JWT ' + token)
     .end(function(err, res) {
-      if (err) {
-        console.log(err);
-        should.fail();
-      }
+      should.not.exist(err);
+      should.exist(res.body);
+      should.exist(res.body.summary);
       res.body.summary.should.eql({title: 'User root', abstract: 'User root'});
-      cb();
+      cb(err);
     });
   });
 });
