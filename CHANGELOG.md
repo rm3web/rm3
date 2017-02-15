@@ -15,6 +15,7 @@ BREAKING: You need to destroy and recreate the workflow.
 
 ### Added
 - Image protection, so that full-resolution original images aren't part of a public blob store
+- Unobtrusive watermarking
 - rm3mv command
 - rm3rm command has the -r option to redirect to an external URL.
 - Ontological tag can be in template.
