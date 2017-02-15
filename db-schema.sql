@@ -8,7 +8,7 @@ CREATE TABLE wh_siteconfig (
 );
 
 INSERT INTO wh_siteconfig (site, path, data) VALUES
-		('default', 'site', '{"name": "WireWorld"}'),
+		('default', 'site', '{"name": "WireWorld", "copyright": "WireWorld"}'),
     ('default', 'sitepath', '{"root": "wh", "urlroot": "http://127.0.0.1:4000"}'),
     ('default', 'login', '{"visible": true}');
 

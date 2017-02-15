@@ -18,6 +18,8 @@ function parse_sitepath(val) {
   return pth;
 }
 
+var site = {};
+
 program
   .version(pjson.version)
   .option('-d, --directory [dir]','Input directory')
@@ -42,7 +44,7 @@ if (program.directory) {
   }
 
   workflow.loadConf(function() {
-    loaddump.loadFromCatalog(db, security, program.directory, program.path, new SitePath(['wh','users']), !program.nohistory, function(err) {
+    loaddump.loadFromCatalog(db, security, site, program.directory, program.path, new SitePath(['wh','users']), !program.nohistory, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();
@@ -70,7 +72,7 @@ if (program.directory) {
   stdin.on('end', function() {
     var inputData = inputChunks.join();
     var parsedData = JSON.parse(inputData);
-    loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
+    loaddump.loadEntity(db, security, site, parsedData, program.path, false, !program.nohistory, {}, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();
@@ -86,7 +88,7 @@ if (program.directory) {
       winston.error('Error:', err);
       process.exit(1);
     }
-    loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
+    loaddump.loadEntity(db, security, site, parsedData, program.path, false, !program.nohistory, {}, function(err) {
       if (err) {
         winston.error('Error:', err);
         db.gunDatabase();
