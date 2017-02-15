@@ -29,6 +29,7 @@ function stepGenericCreate(desc, path, ents, entidx, provisional, now) {
       "abstract": "some text goes here"};
     ents[entidx].data.posting = longstr;
     ents[entidx].addTag('navigation', 'navbar');
+    ents[entidx].addGeotag(null, 37.7749, 122.4194);
 
     update.createEntity(db, {}, {context: 'ROOT'}, ents[entidx], provisional, 'create',
       function(err, entityId, revisionId, revisionNum) {
