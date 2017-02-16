@@ -8,7 +8,9 @@ var credentials = {
     secret: 'ssh-secret'
   },
   auth: {
-    tokenHost: 'http://127.0.0.1:4000/oauth/token'
+    tokenHost: 'http://127.0.0.1:4000',
+    tokenPath: '/$oauth/token',
+    authorizePath: '/$oauth/authorize'
   }
 };
 var badCredentials = {
@@ -17,7 +19,9 @@ var badCredentials = {
     secret: 'naughty'
   },
   auth: {
-    tokenHost: 'http://127.0.0.1:4000/oauth/token'
+    tokenHost: 'http://127.0.0.1:4000',
+    tokenPath: '/$oauth/token',
+    authorizePath: '/$oauth/authorize'
   }
 };
 var tokenConfig = {};

@@ -1,7 +1,7 @@
 var AuthorizationCode = require ('../../lib/openid/authorizationcode.js');
 var should = require('chai').should();
 
-describe('conf', function() {
+describe('AuthorizationCode', function() {
   it('should work as expected', function(cb) {
     var secret = 'secretsecret';
     var issuer = 'issuer';
