@@ -24,6 +24,7 @@ BREAKING: You need to destroy and recreate the workflow.
 ### Changed
 - BasicQuery can select on a proto type.
 - Filtering out tags with only one hit on them.
+- Updated dependencies - React 0.14.x to React 15.x
 
 ## [0.3.8] - Low - 2017-02-05: Special Crazy Eights edition
 

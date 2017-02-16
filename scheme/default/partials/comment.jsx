@@ -1,4 +1,4 @@
-var React = require('react/addons');
+var React = require('react');
 var ReactIntl = require('react-intl');
 var IntlProvider = ReactIntl.IntlProvider;
 var FormattedMessage  = ReactIntl.FormattedMessage;
