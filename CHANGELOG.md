@@ -23,6 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - BasicQuery can select on a proto type.
 - Filtering out tags with only one hit on them.
 - Updated dependencies - React 0.14.x to React 15.x
+- rm3dump doesn't need a `-p` to specify path anymore.
 
 ## [0.3.8] - Low - 2017-02-05: Special Crazy Eights edition
 
