@@ -1,0 +1,25 @@
+{>"layouts/full_tiny_sidebar"/}
+{<view-content}
+
+<p>Hi {user.summary.title}!</p>
+<p><b>{client.providerDetails.name}</b> is requesting access to your account.</p>
+<p>Do you approve?</p>
+
+<div id="decisionform">
+<form action="/$oauth/authorize/decision" method="post" class="pure-form pure-form-aligned">
+  <input name="transaction_id" type="hidden" value="{transactionID}">
+  <div>
+  <input class="pure-button pure-button-primary" type="submit" value="Allow" id="allow">
+  <input class="pure-button pure-button-primary" type="submit" value="Deny" name="cancel" id="deny">
+  </div>
+</form>
+
+{/view-content}
+
+{<pagefooter}
+<div class="pure-g" style="padding-top: 1em;">
+ <div class="pure-u-1 footer">
+   &nbsp;
+  </div>
+</div>
+{/pagefooter}

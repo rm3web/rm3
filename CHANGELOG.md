@@ -10,13 +10,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
-
 ### Added
 - rm3mv command
 - rm3rm command has the -r option to redirect to an external URL.
 - Ontological tag can be in template.
 - Added support for ontological tags, tag categories, link tags, and auto-suggest tags.
 - Added storage support for geotags (but no UI yet)
+- OAuth2 support
 
 ### Changed
 - BasicQuery can select on a proto type.

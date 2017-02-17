@@ -80,6 +80,16 @@ RM3_JWT_ISSUER is the issuer that JWT tokens generated and verified are checked 
 
 If these keys aren't present, JWT won't be active.
 
+RM3_JWT_EXPIRES_SECONDS
+-----------------------
+
+The number of seconds that issued tokens expire after.
+
+RM3_JWT_AUDIENCE_ROOT
+---------------------
+
+The root for the audience
+
 RM3_TOTP_ISSUER
 ---------------
 

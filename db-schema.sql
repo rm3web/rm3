@@ -122,3 +122,10 @@ CREATE TABLE wh_last_seen (
 	"lastSeen" timestamp,
 	"lastSeenIp" inet
 );
+
+CREATE TABLE wh_serviceaccount (
+	PRIMARY KEY(provider, "clientId"),
+	provider text,
+	"clientId" text,
+	"providerDetails" json
+);

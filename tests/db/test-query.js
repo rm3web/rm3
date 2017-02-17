@@ -392,6 +392,24 @@ describe('query', function() {
     });
   });
 
+  describe('serviceaccount', function() {
+    var ents = {};
+    var delMark = {};
+
+    step('create', function createCredential(done) {
+      update.createServiceAccount(db, {}, 'test', 'blfr', {}, done);
+    });
+
+    step('check created credential', function checkCredential(done) {
+      query.findServiceAccount(db, {}, 'test', 'blfr', function(err, rec) {
+        should.not.exist(err);
+        rec.provider.should.equal('test');
+        rec.clientId.should.equal('blfr');
+        done(err);
+      });
+    });
+  });
+
   describe('blob', function() {
     var ents = {};
     var delMark = {};
