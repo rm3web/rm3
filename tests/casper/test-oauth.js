@@ -4,6 +4,8 @@
 describe('OAuth', function() {
   beforeEach(function() {
     casper.start('http://127.0.0.1:4000/$logout/');
+    this.echo('111');
+    this.echo(this.getHTML());
     'a[href*=login]'.should.be.inDOM.and.be.visible;
     'div.footer'.should.be.inDOM.and.be.visible;
   });
@@ -20,6 +22,8 @@ describe('OAuth', function() {
       this.click('a[href*=auth]');
     });
     casper.then(function() {
+      this.echo('1112');
+      this.echo(this.getHTML());
       'a[href*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
       this.click('a[href*=login]');
@@ -47,6 +51,8 @@ describe('OAuth', function() {
     });
 
     casper.then(function() {
+      this.echo('113');
+      this.echo(this.getHTML());
       'a[href*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
     });
