@@ -11,7 +11,13 @@
 {<view-content}
 
 {?srcset}
-<img sizes="(min-width: 40em) 60vw, 100vw" srcset="{srcset}" alt="">
+{?summary.protect}
+<div style="overflow: hidden; line-height: 0px;">
+<img sizes="(min-width: 40em) 60vw, 100vw" srcset="{srcset}" alt="" style="position: relative; bottom: -16px;" />
+</div>
+{:else}
+<img sizes="(min-width: 40em) 60vw, 100vw" srcset="{srcset}" alt="" />
+{/summary.protect}
 {:else}
 <svg xmlns="http://www.w3.org/2000/svg" width="{fallwidth}" height="{fallheight}" viewBox="0 0 {fallwidth} {fallheight}">
 <line x1="0" y1="0" 

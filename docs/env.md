@@ -41,6 +41,11 @@ RM3_LOCAL_BLOBS
 
 The directory (can be relative or absolute) where rm3 is to store it's blobs (e.g. binary files like photos)
 
+RM3_PRIVATE_BLOBS
+-----------------
+
+The directory (can be relative or absolute) where rm3 can store private blobs (e.g. the full-resolution version of a photo, so that users can't navigate to it).  If left blank, functionality will be disabled.
+
 RM3_RESOURCES
 -------------
 

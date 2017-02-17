@@ -10,7 +10,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+
+BREAKING: You need to destroy and recreate the workflow.
+
 ### Added
+- Image protection, so that full-resolution original images aren't part of a public blob store
+- Unobtrusive watermarking
 - rm3mv command
 - rm3rm command has the -r option to redirect to an external URL.
 - Ontological tag can be in template.
