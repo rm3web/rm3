@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ontological tag can be in template.
 - Added support for ontological tags, tag categories, link tags, and auto-suggest tags.
 - Added tickets to DB (represents votes, flags, etc)
+- Added storage support for geotags (but no UI yet)
 - OAuth2 support
 
 ### Changed
