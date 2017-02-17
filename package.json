@@ -157,7 +157,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-csslint": "^1.0.0",
     "gulp-eslint": "^3.0.1",
-    "gulp-imagemin": "^2.3.0",
+    "gulp-imagemin": "^3.1.1",
     "gulp-nodemon": "^2.1.0",
     "gulp-rename": "^1.2.2",
     "gulp-rsvg": "^1.0.0",
