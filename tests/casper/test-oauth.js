@@ -20,8 +20,6 @@ describe('OAuth', function() {
       this.click('a[href*=auth]');
     });
     casper.then(function() {
-      this.echo('1112');
-      this.echo(this.getHTML());
       'a[href*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
       this.click('a[href*=login]');
@@ -48,9 +46,9 @@ describe('OAuth', function() {
       this.click('a[href*=logout]');
     });
 
+    casper.wait(300);
+
     casper.then(function() {
-      this.echo('113');
-      this.echo(this.getHTML());
       'a[href*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
     });
