@@ -60,6 +60,7 @@ gulp.task('test:casper:users', ['test:casper:schema'], function() {
   return gulp.src('')
     .pipe(shell([
       './bin/rm3admin loadtemplate base_access.json wh',
+      './bin/rm3admin addclient abc123 ssh-secret Samplr'
     ], {env: {
       RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
     }}))
@@ -94,7 +95,7 @@ gulp.task('test:api:users', ['test:api:schema'], function() {
     }}))
 })
 
-function spawnServerForTests(db, executable, params, timeout, setup, next) {
+function spawnServerForTests(db, executable, params, timeout, port, setup, next) {
   var ctx = { cwd: process.cwd(),
     env: clone(process.env)
   }
@@ -104,7 +105,7 @@ function spawnServerForTests(db, executable, params, timeout, setup, next) {
   ctx.env['RM3_DANGER_DISABLE_HTTPS_CHECKS'] = true;
   var server = spawn(executable, params, ctx);
   setup(server);
-  tcpPortUsed.waitUntilUsed(4000, 500, timeout)
+  tcpPortUsed.waitUntilUsed(port, 500, timeout)
   .then(function() {
     next(server);
   }, function(err) {
@@ -141,7 +142,7 @@ gulp.task('test:api', ['test:api:db', 'test:api:schema', 'test:api:fixtures', 't
   var tests = ['--require', './tests/lib/mocha.js', '-c', './tests/api/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3api',
-    './bin/rm3front', [], 165000, function(server) {
+    './bin/rm3front', [], 165000, 4000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
@@ -165,7 +166,7 @@ gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fi
   var tests = ['./tests/casper/*'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
-    './bin/rm3front', [], 165000, function(server) {
+    './bin/rm3front', [], 165000, 4000, function(server) {
       server.stderr.on('data', function (data) {
         gutil.log('ServerErr:', data.toString().slice(0, -1));;
       });
@@ -173,14 +174,26 @@ gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fi
         gutil.log('Server:', data.toString().slice(0, -1));
       });
     }, function(server) {
-      runTestChild('./node_modules/.bin/mocha-casperjs', casperTests, function(success) {
-        gutil.log('killing server');
-        server.kill('SIGINT');
-        if (success) {
-          cb();
-        } else {
-          cb(new Error('fail'));
-        }
+      spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
+        './tests/bin/oauth2-client', [], 165000, 9000, function(server) {
+          server.stderr.on('data', function (data) {
+            gutil.log('OauthServerErr:', data.toString().slice(0, -1));;
+          });
+          server.stdout.on('data', function (data) {
+            gutil.log('OauthServer:', data.toString().slice(0, -1));
+          });
+        }, function(oauthServer) {
+          runTestChild('./node_modules/.bin/mocha-casperjs', casperTests, function(success) {
+            gutil.log('killing server');
+            server.kill('SIGINT');
+            oauthServer.kill('SIGINT');
+            if (success) {
+              cb();
+            } else {
+              cb(new Error('fail'));
+            }
+
+          });
       });
     });
 });

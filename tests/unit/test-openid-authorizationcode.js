@@ -8,9 +8,9 @@ describe('AuthorizationCode', function() {
     var clientId = 'client';
     var userId = 'user';
     var redirectUri = 'redirect';
-    AuthorizationCode.generateAuthorizationCode(secret, issuer, clientId, userId, redirectUri, function(err, token) {
+    AuthorizationCode.generateAuthorizationCode(secret, issuer, 'www.example.com', 60, clientId, userId, redirectUri, function(err, token) {
       should.not.exist(err);
-      AuthorizationCode.validateAuthorizationCode(secret, issuer, token, clientId, function(err, rec) {
+      AuthorizationCode.validateAuthorizationCode(secret, issuer, 'www.example.com', 60, token, clientId, function(err, rec) {
         should.not.exist(err);
         rec.redirectUri.should.equal(redirectUri);
         rec.aud.should.equal('127.0.0.1/authorization/' + userId);
@@ -24,9 +24,9 @@ describe('AuthorizationCode', function() {
     var clientId = 'client';
     var userId = 'user';
     var redirectUri = 'redirect';
-    AuthorizationCode.generateAuthorizationCode(secret, issuer, clientId, userId, redirectUri, function(err, token) {
+    AuthorizationCode.generateAuthorizationCode(secret, issuer, 'www.example.com', 60, clientId, userId, redirectUri, function(err, token) {
       should.not.exist(err);
-      AuthorizationCode.validateAuthorizationCode('badsecret', issuer, token, clientId, function(err, sub) {
+      AuthorizationCode.validateAuthorizationCode('badsecret', 'www.example.com', 60, issuer, token, clientId, function(err, sub) {
         should.exist(err);
         cb();
       });
@@ -39,9 +39,9 @@ describe('AuthorizationCode', function() {
     var clientId = 'client';
     var userId = 'user';
     var redirectUri = 'redirect';
-    AuthorizationCode.generateAuthorizationCode(secret, issuer, clientId, userId, redirectUri, function(err, token) {
+    AuthorizationCode.generateAuthorizationCode(secret, issuer, 'www.example.com', 60, clientId, userId, redirectUri, function(err, token) {
       should.not.exist(err);
-      AuthorizationCode.validateAuthorizationCode(secret, 'badisue', token, clientId, function(err, sub) {
+      AuthorizationCode.validateAuthorizationCode(secret, 'badisue', 'www.example.com', 60, token, clientId, function(err, sub) {
         should.exist(err);
         cb();
       });
