@@ -58,7 +58,7 @@ describe('User', function() {
 
   it('should be able to log in and out', function() {
     casper.then(function() {
-      this.echo('111')
+      this.echo('111');
       this.echo(this.getHTML());
       'Welcome to rm3'.should.matchTitle;
       'a[href*=login]'.should.be.inDOM.and.be.visible;
@@ -67,7 +67,7 @@ describe('User', function() {
     });
 
     casper.then(function() {
-      this.echo('222')
+      this.echo('222');
       this.echo(this.getHTML());
       'form[action*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
@@ -86,7 +86,7 @@ describe('User', function() {
     casper.wait(300);
 
     casper.then(function() {
-      this.echo('333')
+      this.echo('333');
       this.echo(this.getHTML());
       'a[href*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
