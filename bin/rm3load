@@ -24,7 +24,7 @@ var site = {};
 
 function loadSite(next) {
   winston.info('Loading site');
-  var keys = ['site', 'sitepath', 'login'];
+  var keys = ['site', 'sitepath'];
   async.map(keys, function reqKeys(item, callback) {
     query.getSiteConfig(db, {}, 'default', item, callback);
   }, function(err, res) {
@@ -35,7 +35,6 @@ function loadSite(next) {
     site.copyright = res[0].copyright;
     site.root = new SitePath(res[1].root);
     site.urlroot = res[1].urlroot;
-    site.loginVisible = res[2].visible;
     site.sitePathToUrl = function(sitepath, revisionId) {
       if (revisionId) {
         return sitepath.toUrl('/', 1) + '?revisionId=' + revisionId;
