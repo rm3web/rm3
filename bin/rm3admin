@@ -294,15 +294,15 @@ program
   });
 
 program
-  .command('addclient [clientId] [clientSecret] [name] ')
+  .command('addclient [clientId] [clientSecret] [name] [redirectUri]')
   .description('add a Oauth2 / OpenID Client')
-  .action(function(clientId, clientSecret, name, options) {
+  .action(function(clientId, clientSecret, name, redirectUri, options) {
     if (!(clientId && clientSecret)) {
       winston.warn('clientId and clientSecret are required');
       return;
     }
     update.createServiceAccount(db, {}, 'openid', clientId, 
-      {secret: clientSecret, name: name}, function(err, entity_id, revision_id, revision_num) {
+      {secret: clientSecret, redirectUri: redirectUri, name: name}, function(err, entity_id, revision_id, revision_num) {
          if (err) {
            winston.error('error:', err);
          } else {

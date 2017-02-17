@@ -60,7 +60,7 @@ gulp.task('test:casper:users', ['test:casper:schema'], function() {
   return gulp.src('')
     .pipe(shell([
       './bin/rm3admin loadtemplate base_access.json wh',
-      './bin/rm3admin addclient abc123 ssh-secret Samplr'
+      './bin/rm3admin addclient abc123 ssh-secret Samplr http://localhost:9000/callback'
     ], {env: {
       RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3casper'
     }}))
@@ -89,7 +89,7 @@ gulp.task('test:api:users', ['test:api:schema'], function() {
     .pipe(shell([
       './bin/rm3admin loadtemplate base_access.json wh',
       './bin/rm3admin loadtemplate meta.json wh',
-      './bin/rm3admin addclient abc123 ssh-secret Samplr'
+      './bin/rm3admin addclient abc123 ssh-secret Samplr http://localhost:9000/callback'
     ], {env: {
       RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3api'
     }}))
