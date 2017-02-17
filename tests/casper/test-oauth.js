@@ -45,12 +45,5 @@ describe('OAuth', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
       this.click('a[href*=logout]');
     });
-
-    casper.wait(300);
-
-    casper.then(function() {
-      'a[href*=login]'.should.be.inDOM.and.be.visible;
-      'div.footer'.should.be.inDOM.and.be.visible;
-    });
   });
 });
