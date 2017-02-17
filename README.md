@@ -73,10 +73,9 @@ To check coverage
 
 * `npm run coverage`
 
-If you want to do some development and not want to log in:
+If you want to do some development with auto-restart:
 
-* `RM3_DANGER_FORCE_AUTH='wirehead' gulp develop`
-  - **Warning: If you try to do this on a publicly accessible Internet port, you will get hacked**
+* `gulp develop`
 
 Benchmarks
 ----------
