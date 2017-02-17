@@ -13,7 +13,7 @@ describe('AuthorizationCode', function() {
       AuthorizationCode.validateAuthorizationCode(secret, issuer, 'www.example.com', 60, token, clientId, function(err, rec) {
         should.not.exist(err);
         rec.redirectUri.should.equal(redirectUri);
-        rec.aud.should.equal('127.0.0.1/authorization/' + userId);
+        rec.aud.should.equal('www.example.com/authorization/' + userId);
         cb(err);
       });
     });
