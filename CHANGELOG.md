@@ -10,17 +10,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
-
 ### Added
 - rm3mv command
 - rm3rm command has the -r option to redirect to an external URL.
 - Ontological tag can be in template.
 - Added support for ontological tags, tag categories, link tags, and auto-suggest tags.
 - Added tickets to DB (represents votes, flags, etc)
+- OAuth2 support
 
 ### Changed
 - BasicQuery can select on a proto type.
 - Filtering out tags with only one hit on them.
+- Updated dependencies - React 0.14.x to React 15.x
 
 ## [0.3.8] - Low - 2017-02-05: Special Crazy Eights edition
 

@@ -886,6 +886,27 @@ describe('update', function() {
     });
   });
 
+  describe('serviceaccount', function() {
+    var ents = {};
+    var delMark = {};
+
+    step('create', function createCredential(done) {
+      update.createServiceAccount(db, {}, 'test', 'gor', {}, done);
+    });
+
+    step('check create credential', function checkCredential(done) {
+      var query = "SELECT provider, \"clientId\", \"providerDetails\" FROM wh_serviceaccount WHERE provider = 'test' AND \"clientId\" = 'gor';";
+      quickQuery(db, query, function(err, result) {
+        should.not.exist(err);
+        result.rowCount.should.equal(1);
+        result.rows[0].provider.should.equal('test');
+        result.rows[0].clientId.should.equal('gor');
+        should.not.exist(result.rows[0].userPath);
+        done(err);
+      });
+    });
+  });
+
   describe('blob', function() {
     var ents = {};
     var delMark = {};

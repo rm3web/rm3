@@ -116,6 +116,7 @@ CREATE TABLE wh_last_seen (
 	"lastSeenIp" inet
 );
 
+
 CREATE TABLE wh_ticket (
 	PRIMARY KEY("ticketId"),
 	"ticketId" uuid,
@@ -126,4 +127,11 @@ CREATE TABLE wh_ticket (
 	subject text,
 	recorded timestamp,
 	details json
+);
+
+CREATE TABLE wh_serviceaccount (
+	PRIMARY KEY(provider, "clientId"),
+	provider text,
+	"clientId" text,
+	"providerDetails" json
 );

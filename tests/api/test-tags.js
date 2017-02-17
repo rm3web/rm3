@@ -1,17 +1,28 @@
 var should = require('chai').should();
 var SitePath = require ('sitepath');
 var ApiClient = require('../../lib/apiclient');
+var query = require('../../lib/query');
+var db = require('../../lib/db');
+var entity = require('../../lib/entity');
 var Conf = require('../../lib/conf'),
     jwtSecret = Conf.getCertificate('jwtSecret'),
     jwtIssuer = Conf.getCertificate('jwtIssuer');
 var jwt = require('jsonwebtoken');
-var token = jwt.sign({}, jwtSecret, {
-  audience: '127.0.0.1',
-  subject: 'wirehead',
-  issuer: jwtIssuer
-});
+var token;
 
 describe('tags', function() {
+  before(function(cb) {
+    query.entityFromPath(db, false, entity.Entity, {}, {context: "ROOT"}, new SitePath(['wh', 'users', 'wirehead']), null, function(err, ent) {
+      should.not.exist(err);
+      token = jwt.sign({}, jwtSecret, {
+        audience: '127.0.0.1/accessToken',
+        subject: 'abc123/wirehead:' + ent._entityId,
+        issuer: jwtIssuer
+      });
+      cb();
+    });
+  });
+
   it('gets tags', function(cb) {
     var client = new ApiClient('http://127.0.0.1:4000');
     client.page('/').tags().end(function(err, res) {
