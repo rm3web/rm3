@@ -60,6 +60,13 @@ CREATE TABLE wh_tag (
 	"objClass" text
 );
 
+CREATE TABLE wh_geotag (
+	"predPath" ltree,
+	"objGeotag" point,
+	"subjPath" ltree,
+	"objClass" text
+);
+
 CREATE TABLE wh_blob (
 	PRIMARY KEY(category, provider, "entityPath", "blobPath", "revisionId"),
 	"category" text,
