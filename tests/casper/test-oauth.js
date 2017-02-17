@@ -20,11 +20,6 @@ describe('OAuth', function() {
       this.click('a[href*=auth]');
     });
     casper.then(function() {
-      'a[href*=login]'.should.be.inDOM.and.be.visible;
-      'div.footer'.should.be.inDOM.and.be.visible;
-      this.click('a[href*=login]');
-    });
-    casper.then(function() {
       'form[action*=login]'.should.be.inDOM.and.be.visible;
       'div.footer'.should.be.inDOM.and.be.visible;
       this.fill('form[action*=login]',
