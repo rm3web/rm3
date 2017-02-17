@@ -25,6 +25,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Updated dependencies - React 0.14.x to React 15.x
 - rm3dump doesn't need a `-p` to specify path anymore.
 
+### Removed
+- RM3_DANGER_FORCE_AUTH flag removed.
+
 ## [0.3.8] - Low - 2017-02-05: Special Crazy Eights edition
 
 ### Changed
