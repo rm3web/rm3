@@ -1,15 +1,20 @@
 /* global casper */
 /*jshint expr:true */
 
-describe('User', function() {
+describe('OAuth', function() {
   beforeEach(function() {
-    casper.start('http://127.0.0.1:9000/');
+    casper.start('http://127.0.0.1:4000/$logout/');
+    'a[href*=login]'.should.be.inDOM.and.be.visible;
+    'div.footer'.should.be.inDOM.and.be.visible;
   });
 
   after(function() {
     casper.thenOpen('http://127.0.0.1:4000/$logout/');
   });
-  it('should be able to log in and out', function() {
+
+  it('should work', function() {
+    casper.thenOpen('http://127.0.0.1:9000/');
+
     casper.then(function() {
       'a[href*=auth]'.should.be.inDOM.and.be.visible;
       this.click('a[href*=auth]');
