@@ -20,6 +20,7 @@ BREAKING: You need to destroy and recreate the workflow.
 - rm3rm command has the -r option to redirect to an external URL.
 - Ontological tag can be in template.
 - Added support for ontological tags, tag categories, link tags, and auto-suggest tags.
+- OAuth2 support
 
 ### Changed
 - BasicQuery can select on a proto type.
