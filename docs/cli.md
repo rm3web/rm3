@@ -27,8 +27,8 @@ rm3dump
 
 Dumps a node to the console.
 
-* Dump wh.users page to stdout `rm3dump -p wh.users`
-* Dum wh page to stdout, with history, in a more readable format `./bin/rm3dump -lfp wh`
+* Dump wh.users page to stdout `rm3dump wh.users`
+* Dum wh page to stdout, with history, in a more readable format `./bin/rm3dump -lf wh`
 
 rm3backup
 ---------

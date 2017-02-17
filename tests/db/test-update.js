@@ -1005,7 +1005,42 @@ describe('update', function() {
     });
   });
 
+  describe('ticket', function() {
+    var ents = {};
+    var delMark = {};
+    var entityPath = new sitepath(['wh', 'ticket']);
+    var userPath = new sitepath(['wh', 'users', 'wirehead']);
+    var now = new Date();
+    var id;
+
+    step('create', function createCredential(done) {
+      update.addTicket(db, {}, entityPath, '192.0.2.1', null, userPath, now, 'vote', {'rating': 5}, function(err, ticketId) {
+        should.not.exist(err);
+        id = ticketId;
+        done(err);
+      });
+    });
+
+    step('check create ticket', function checkCredential(done) {
+      var query = "SELECT \"ticketId\", path, \"inetAddr\", \"identityId\", \"userPath\",\
+       subject, recorded, details FROM wh_ticket WHERE \"ticketId\" = '" + id + "';";
+      quickQuery(db, query, function(err, result) {
+        console.log(err);
+        should.not.exist(err);
+        result.rowCount.should.equal(1);
+        result.rows[0].path.should.equal(entityPath.toDottedPath());
+        result.rows[0].userPath.should.equal(userPath.toDottedPath());
+        result.rows[0].subject.should.equal('vote');
+        result.rows[0].recorded.should.eql(now);
+        result.rows[0].details.rating.should.equal(5);
+        console.log(result);
+        done(err);
+      });
+    });
+  });
+
   after(function() {
     db.gunDatabase();
   });
 });
+
