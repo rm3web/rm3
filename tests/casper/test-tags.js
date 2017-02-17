@@ -69,6 +69,8 @@ describe('Tags', function() {
           password: 'password'}, true);
     });
 
+    casper.wait(300);
+
     casper.then(function() {
       'a[href*=logout]'.should.be.inDOM.and.be.visible;
       'div.infomessage'.should.be.inDOM.and.contain.text('You have been logged in');
