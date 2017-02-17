@@ -123,7 +123,6 @@ CREATE TABLE wh_last_seen (
 	"lastSeenIp" inet
 );
 
-
 CREATE TABLE wh_ticket (
 	PRIMARY KEY("ticketId"),
 	"ticketId" uuid,

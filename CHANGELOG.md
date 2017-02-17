@@ -11,7 +11,48 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-BREAKING: You need to destroy and recreate the workflow.
+Many of the non-breaking changes for this milestone were rolled out already in 0.3.x builds, so if you are just joining us after the 0.3.0 release, check the added functionality in the point releases.
+
+This should be good enough to replace all of the pre-rm3 installations.
+
+**BREAKING**: There are database changes since 0.3.  Before you install 0.4 you should delete the workflow:
+```sql
+drop table wf_jobs;
+drop table wf_jobs_info;
+drop table wf_runners;
+drop table wf_locked_targets;
+drop table wf_workflows;
+```
+
+And then you can add the tables:
+```sql
+CREATE TABLE wh_geotag (
+  "predPath" ltree,
+  "objGeotag" point,
+  "subjPath" ltree,
+  "objClass" text
+);
+
+CREATE TABLE wh_ticket (
+  PRIMARY KEY("ticketId"),
+  "ticketId" uuid,
+  path ltree,
+  "inetAddr" inet,
+  "identityId" uuid,
+  "userPath" ltree,
+  subject text,
+  recorded timestamp,
+  details json
+);
+
+CREATE TABLE wh_serviceaccount (
+  PRIMARY KEY(provider, "clientId"),
+  provider text,
+  "clientId" text,
+  "providerDetails" json
+);
+```
+and create the workflow engine again:  `./bin/rm3admin createworkflow`
 
 ### Added
 - Image protection, so that full-resolution original images aren't part of a public blob store
