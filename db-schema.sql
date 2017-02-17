@@ -123,6 +123,19 @@ CREATE TABLE wh_last_seen (
 	"lastSeenIp" inet
 );
 
+
+CREATE TABLE wh_ticket (
+	PRIMARY KEY("ticketId"),
+	"ticketId" uuid,
+	path ltree,
+	"inetAddr" inet,
+	"identityId" uuid,
+	"userPath" ltree,
+	subject text,
+	recorded timestamp,
+	details json
+);
+
 CREATE TABLE wh_serviceaccount (
 	PRIMARY KEY(provider, "clientId"),
 	provider text,
