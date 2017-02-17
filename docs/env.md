@@ -85,6 +85,11 @@ RM3_JWT_EXPIRES_SECONDS
 
 The number of seconds that issued tokens expire after.
 
+RM3_JWT_AUDIENCE_ROOT
+---------------------
+
+The root for the audience
+
 RM3_TOTP_ISSUER
 ---------------
 

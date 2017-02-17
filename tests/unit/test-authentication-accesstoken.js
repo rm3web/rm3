@@ -6,9 +6,9 @@ describe('conf', function() {
     var secret = 'secretsecret';
     var issuer = 'issuer';
     var subject = 'subject';
-    AccessToken.generateAccessToken(secret, issuer, 60, subject, function(err, token) {
+    AccessToken.generateAccessToken(secret, issuer, 'www.example.com', 60, subject, function(err, token) {
       should.not.exist(err);
-      AccessToken.validateAccessToken(secret, issuer, 60, token, function(err, sub) {
+      AccessToken.validateAccessToken(secret, issuer, 'www.example.com', 60, token, function(err, sub) {
         should.not.exist(err);
         sub.should.equal(subject);
         cb(err);
@@ -19,9 +19,9 @@ describe('conf', function() {
     var secret = 'secretsecret';
     var issuer = 'issuer';
     var subject = 'subject';
-    AccessToken.generateAccessToken(secret, issuer, 60, subject, function(err, token) {
+    AccessToken.generateAccessToken(secret, issuer, 'www.example.com', 60, subject, function(err, token) {
       should.not.exist(err);
-      AccessToken.validateAccessToken('badsecret', issuer, 60, token, function(err, sub) {
+      AccessToken.validateAccessToken('badsecret', issuer, 'www.example.com', 60, token, function(err, sub) {
         should.exist(err);
         cb();
       });
@@ -32,9 +32,9 @@ describe('conf', function() {
     var secret = 'secretsecret';
     var issuer = 'issuer';
     var subject = 'subject';
-    AccessToken.generateAccessToken(secret, issuer, 60, subject, function(err, token) {
+    AccessToken.generateAccessToken(secret, issuer, 'www.example.com', 60, subject, function(err, token) {
       should.not.exist(err);
-      AccessToken.validateAccessToken(secret, 'badisue', 60, token, function(err, sub) {
+      AccessToken.validateAccessToken(secret, 'badisue', 'www.example.com', 60, token, function(err, sub) {
         should.exist(err);
         cb();
       });
