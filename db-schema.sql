@@ -141,3 +141,12 @@ CREATE TABLE wh_serviceaccount (
 	"clientId" text,
 	"providerDetails" json
 );
+
+CREATE TABLE wh_workflowsub (
+	PRIMARY KEY("subscriptionId"),
+	"subscriptionId" uuid,
+	proto text,
+	pathQuery lquery,
+	"actorPath" ltree,
+	"workflowDetails" json
+);

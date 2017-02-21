@@ -51,6 +51,15 @@ CREATE TABLE wh_serviceaccount (
   "clientId" text,
   "providerDetails" json
 );
+
+CREATE TABLE wh_workflowsub (
+  PRIMARY KEY("subscriptionId"),
+  "subscriptionId" uuid,
+  proto text,
+  pathQuery lquery,
+  "actorPath" ltree,
+  "workflowDetails" json
+);
 ```
 and create the workflow engine again:  `./bin/rm3admin createworkflow`
 
@@ -64,6 +73,7 @@ and create the workflow engine again:  `./bin/rm3admin createworkflow`
 - Added tickets to DB (represents votes, flags, etc)
 - Added storage support for geotags (but no UI yet)
 - OAuth2 support
+- DB table for workflow subscriptions (but no code yet)
 
 ### Changed
 - BasicQuery can select on a proto type.
