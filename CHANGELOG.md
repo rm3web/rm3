@@ -11,9 +11,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-Many of the non-breaking changes for this milestone were rolled out already in 0.3.x builds, so if you are just joining us after the 0.3.0 release, check the added functionality in the point releases.
+## [0.4.0] - Moderate - 2017-02-21: Would Have Done It Earlier But For A Two Our Power Outage edition
 
-This should be good enough to replace all of the pre-rm3 installations.
+**Note**: Many of the non-breaking changes for this milestone were rolled out already in 0.3.x builds, so if you are just joining us after the 0.3.0 release, check the added functionality in the point releases instead of just what happened between 0.3.8 and 0.4.
+
+I'm able to replace all of my installations of the original rm with rm3 0.4.  It's still alpha but it should work for you. :)
 
 **BREAKING**: There are database changes since 0.3.  Before you install 0.4 you should delete the workflow:
 ```sql
@@ -62,6 +64,8 @@ CREATE TABLE wh_workflowsub (
 );
 ```
 and create the workflow engine again:  `./bin/rm3admin createworkflow`
+
+Alternatively, you can load from a saved dump.
 
 ### Added
 - Image protection, so that full-resolution original images aren't part of a public blob store
@@ -372,7 +376,8 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.8...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/rm3web/rm3/compare/v0.3.8...v0.4.0
 [0.3.8]: https://github.com/rm3web/rm3/compare/v0.3.7...v0.3.8
 [0.3.7]: https://github.com/rm3web/rm3/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/rm3web/rm3/compare/v0.3.5...v0.3.6
