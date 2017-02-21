@@ -1,0 +1,108 @@
+{
+  "wh": {
+    "main": "wh-data.json"
+  },
+  "wh.users": {
+    "main": "wh.users-data.json"
+  },
+  "wh.meta": {
+    "main": "wh.meta-data.json"
+  },
+  "wh.meta.dc": {
+    "main": "wh.meta.dc-data.json"
+  },
+  "wh.meta.dc.subject": {
+    "main": "wh.meta.dc.subject-data.json"
+  },
+  "wh.meta.dc.creator": {
+    "main": "wh.meta.dc.creator-data.json"
+  },
+  "wh.meta.dc.coverage": {
+    "main": "wh.meta.dc.coverage-data.json"
+  },
+  "wh.users.wirehead": {
+    "main": "wh.users.wirehead-data.json"
+  },
+  "wh.blog.blog_entry": {
+    "main": "wh.blog.blog_entry-data.json"
+  },
+  "wh.blog.blog_with_sidebar": {
+    "main": "wh.blog.blog_with_sidebar-data.json"
+  },
+  "wh.blog": {
+    "main": "wh.blog-data.json"
+  },
+  "wh.blog.blog_entry.8fbaa780_f852_11e6_a379_b77189445ee3": {
+    "main": "wh.blog.blog_entry.8fbaa780_f852_11e6_a379_b77189445ee3-data.json"
+  },
+  "wh.images": {
+    "main": "wh.images-data.json"
+  },
+  "wh.saxu": {
+    "main": "wh.saxu-data.json",
+    "blobs": {
+      "wh.saxu-be776041-f852-11e6-a379-b77189445ee3-file.mp3": {
+        "category": "public",
+        "provider": "fileblobstore",
+        "entityPath": "wh.saxu",
+        "blobPath": "file.mp3",
+        "revisionId": "be776041-f852-11e6-a379-b77189445ee3",
+        "source": true,
+        "temporary": false,
+        "details": {
+          "filePath": "/home/wirehead/src/rm3/blobs/wh.saxu-be776041-f852-11e6-a379-b77189445ee3-file.mp3",
+          "urlPath": "wh.saxu-be776041-f852-11e6-a379-b77189445ee3-file.mp3"
+        }
+      }
+    }
+  },
+  "wh.images.svg_hex": {
+    "main": "wh.images.svg_hex-data.json",
+    "blobs": {
+      "wh.images.svg_hex-d40bf921-f852-11e6-a379-b77189445ee3-infile.svg": {
+        "category": "public",
+        "provider": "fileblobstore",
+        "entityPath": "wh.images.svg_hex",
+        "blobPath": "infile.svg",
+        "revisionId": "d40bf921-f852-11e6-a379-b77189445ee3",
+        "source": true,
+        "temporary": false,
+        "details": {
+          "filePath": "/home/wirehead/src/rm3/blobs/wh.images.svg_hex-d40bf921-f852-11e6-a379-b77189445ee3-infile.svg",
+          "urlPath": "wh.images.svg_hex-d40bf921-f852-11e6-a379-b77189445ee3-infile.svg"
+        }
+      }
+    }
+  },
+  "wh.images.graphic": {
+    "main": "wh.images.graphic-data.json",
+    "blobs": {
+      "wh.images.graphic-e22dfc10-f852-11e6-a379-b77189445ee3-infile.jpg": {
+        "category": "public",
+        "provider": "fileblobstore",
+        "entityPath": "wh.images.graphic",
+        "blobPath": "infile.jpg",
+        "revisionId": "e22dfc10-f852-11e6-a379-b77189445ee3",
+        "source": true,
+        "temporary": false,
+        "details": {
+          "filePath": "/home/wirehead/src/rm3/blobs/wh.images.graphic-e22dfc10-f852-11e6-a379-b77189445ee3-infile.jpg",
+          "urlPath": "wh.images.graphic-e22dfc10-f852-11e6-a379-b77189445ee3-infile.jpg"
+        }
+      }
+    }
+  },
+  "wh.link": {
+    "main": "wh.link-data.json"
+  },
+  "wh.email": {
+    "main": "wh.email-data.json"
+  },
+  "wh.meta.canon_g7": {
+    "main": "wh.meta.canon_g7-data.json"
+  },
+  "_permissions": "permissions.json",
+  "_credentials": "credentials.json",
+  "_dump_date": "2017-02-21T16:31:10.155Z",
+  "_dump_version": "0.3.8"
+}

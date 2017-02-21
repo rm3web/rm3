@@ -1,0 +1,99 @@
+{
+  "wh": {
+    "main": "wh-data.json"
+  },
+  "wh.users": {
+    "main": "wh.users-data.json"
+  },
+  "wh.meta": {
+    "main": "wh.meta-data.json"
+  },
+  "wh.meta.dc": {
+    "main": "wh.meta.dc-data.json"
+  },
+  "wh.meta.dc.subject": {
+    "main": "wh.meta.dc.subject-data.json"
+  },
+  "wh.meta.dc.creator": {
+    "main": "wh.meta.dc.creator-data.json"
+  },
+  "wh.meta.dc.coverage": {
+    "main": "wh.meta.dc.coverage-data.json"
+  },
+  "wh.users.wirehead": {
+    "main": "wh.users.wirehead-data.json"
+  },
+  "wh.blog": {
+    "main": "wh.blog-data.json"
+  },
+  "wh.blog.bloggy_blog_blog": {
+    "main": "wh.blog.bloggy_blog_blog-data.json"
+  },
+  "wh.blog.bloggy_blog_blog.bcc23a60_f84b_11e6_ac03_176ffec870d0": {
+    "main": "wh.blog.bloggy_blog_blog.bcc23a60_f84b_11e6_ac03_176ffec870d0-data.json"
+  },
+  "wh.svg_hex": {
+    "main": "wh.svg_hex-data.json",
+    "blobs": {
+      "wh.svg_hex-d24b88a1-f84b-11e6-ac03-176ffec870d0-infile.svg": {
+        "category": "public",
+        "provider": "fileblobstore",
+        "entityPath": "wh.svg_hex",
+        "blobPath": "infile.svg",
+        "revisionId": "d24b88a1-f84b-11e6-ac03-176ffec870d0",
+        "source": true,
+        "temporary": false,
+        "details": {
+          "filePath": "/home/wirehead/src/rm3/blobs/wh.svg_hex-d24b88a1-f84b-11e6-ac03-176ffec870d0-infile.svg",
+          "urlPath": "wh.svg_hex-d24b88a1-f84b-11e6-ac03-176ffec870d0-infile.svg"
+        }
+      }
+    }
+  },
+  "wh.photo": {
+    "main": "wh.photo-data.json",
+    "blobs": {
+      "wh.photo-df0fa941-f84b-11e6-ac03-176ffec870d0-infile.jpg": {
+        "category": "public",
+        "provider": "fileblobstore",
+        "entityPath": "wh.photo",
+        "blobPath": "infile.jpg",
+        "revisionId": "df0fa941-f84b-11e6-ac03-176ffec870d0",
+        "source": true,
+        "temporary": false,
+        "details": {
+          "filePath": "/home/wirehead/src/rm3/blobs/wh.photo-df0fa941-f84b-11e6-ac03-176ffec870d0-infile.jpg",
+          "urlPath": "wh.photo-df0fa941-f84b-11e6-ac03-176ffec870d0-infile.jpg"
+        }
+      }
+    }
+  },
+  "wh.link_link": {
+    "main": "wh.link_link-data.json"
+  },
+  "wh.email": {
+    "main": "wh.email-data.json"
+  },
+  "wh.saxu": {
+    "main": "wh.saxu-data.json",
+    "blobs": {
+      "wh.saxu-9310e621-f84c-11e6-ac03-176ffec870d0-file.mp3": {
+        "category": "public",
+        "provider": "fileblobstore",
+        "entityPath": "wh.saxu",
+        "blobPath": "file.mp3",
+        "revisionId": "9310e621-f84c-11e6-ac03-176ffec870d0",
+        "source": true,
+        "temporary": false,
+        "details": {
+          "filePath": "/home/wirehead/src/rm3/blobs/wh.saxu-9310e621-f84c-11e6-ac03-176ffec870d0-file.mp3",
+          "urlPath": "wh.saxu-9310e621-f84c-11e6-ac03-176ffec870d0-file.mp3"
+        }
+      }
+    }
+  },
+  "_permissions": "permissions.json",
+  "_credentials": "credentials.json",
+  "_dump_date": "2017-02-21T15:49:33.709Z",
+  "_dump_version": "0.3.0"
+}
