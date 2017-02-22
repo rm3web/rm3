@@ -28,3 +28,12 @@ They have both an operational and technical staff. They want to offer rm3 and/or
 
 ## The corporate internet
 This user wants something like redmine or microsoft sharepoint. They need strong and easy-to-integrate permissioning and authentication. They want to install multiple rm3 applications from different sources and have them not conflict. They need strong backup and audit-logging. 
+
+## The person being stalked or harassed
+This user may be seeking to host their own instance of rm3 on a system they trust.  Alternatively, they may be a user of a shared rm3 setup or someone who is being harassed by a user on a shared rm3 setup.
+
+Regardless, this person needs to be able to report abuse where observed.  Some abuse, e.g. DMCA takedown requests, may be legally actionable within a required period.  Other abuse may be legal but objectionable.  Service administrators need to have a trouble-free way to handle a potential flood of abuse reports, some of those reports themselves abusive.
+
+Users need to be able to be blocked, both silently and publicly.  Users need to able to be removed, potentially in an evidence-preserving fashion.
+
+This person may need to heavily secure their system against attackers.  The user may seek to configure a [Duress code](https://en.wikipedia.org/wiki/Duress_code) or other similar measures.
