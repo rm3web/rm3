@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Blog with sidebar proto doesn't parse enrichment properly.
+
 ## [0.4.0] - Moderate - 2017-02-21: Would Have Done It Earlier But For A Two Our Power Outage edition
 
 **Note**: Many of the non-breaking changes for this milestone were rolled out already in 0.3.x builds, so if you are just joining us after the 0.3.0 release, check the added functionality in the point releases instead of just what happened between 0.3.8 and 0.4.
