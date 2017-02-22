@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Figure display tweaked slightly (always have a title, different view sizes)
+
 ### Fixed
 - Blog with sidebar proto doesn't parse enrichment properly.
 - Loading a dump from 0.4.x with image protection turned on will crash.
