@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Blog with sidebar proto doesn't parse enrichment properly.
 - Loading a dump from 0.4.x with image protection turned on will crash.
+- Image with image protection on will eat up page space.
 
 ## [0.4.0] - Moderate - 2017-02-21: Would Have Done It Earlier But For A Two Our Power Outage edition
 
