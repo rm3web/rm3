@@ -35,6 +35,8 @@ Again, 'un-glamorous' and 'normal'.  `passport` manages the different providers 
 
 Authentication is protected by rate limits.
 
+### Local passwords
+
 There's always a default local access system that stores a password locally.  Because it's really easy to screw that up, I'm using the `credential` library to do the actual password checking.
 
 Credential uses PBKDF2 as a 'Key derivation' or 'Key stretching' function, with some extra logic to expand the key over time.  PBKDF2 is a one-way function.  It's designed such that it's easier to attack the stored stretched password with brute force than it is to work PBKDF2 backwards, and then the paramaters for PBKDF2 are set high enough that it's computationally expensive to brute force it.  This protects against an attack reading your password table and figuring out passwords as well as providing a rough limit on how fast you can brute force passwords.
@@ -44,3 +46,32 @@ There's a good chance that PBKDF2 is going to run out of ability to protect cred
 The user that you authenticate as is stored as a page within the site, but the credentials associated with your user are stored separately in the credentials table.
 
 Other credentials, such as TOTP two-factor auth and more complex accounts from other servers with Passport login buttons, are also stored in the credentials table.
+
+### OAuth + OpenID Connect + etc.
+
+OAuth 1 and 2 are, to be very specific, Authorization protocols, not Authentication protocols.  The difference is that an Authentication protocol is designed to say that somebody is who they say they are, whereas an Authorization protocol is designed to represent what they are allowed to do.
+
+You can abuse... err... take advantage of their functionality to make an Authentication protocol out of them.  Which is what OpenID Connect provides a standardized version of.  Pretty much, you end up having the user authorize themselves on a separate site and then, in a three-handed handshake, the site receives a shared secret that allows them to execute a set of operations on behalf of the user.  As I prevously described, these are stored in the same credentials table as everything else, but because it's a shared secret, you can't use PBKDF2 as a one-way key stretching function.
+
+Rm3 will store a subset of the credential information that Passport provides, scrubbing anything too transient or too sensitive.
+
+JWT and OAuth2 / OpenID access tokens
+-------------------------------------
+
+For browser applications, storing a Session ID is a great way to handle repeated authentication of a user, such that they log in once and nothing so sensitive as a password is stored in the user's browser.
+
+On the other hand, non-interactive applications don't work like that.
+
+Enter JWT, which provides a fairly standardized way to encode a JSON payload containing claims that are protected with an encrypted hash.
+
+An access token can handle authentication or authorization.  Right now, the access tokens just handle authentication.
+
+This is disabled, by default, but you can enable it by setting the RM3_JWT_SECRET, RM3_JWT_ISSUER, and RM3_JWT_AUDIENCE_ROOT variables.  **Be careful with JWT keys.  If you have the JWT keys, you can forge all kinds of credentials.  If you don't have a need for this feature, leave it in the default turned-off state.**
+
+The relevant claims for a JWT key are:
+
+* `aud`(Audience): `RM3_JWT_AUDIENCE_ROOT` + '/accessToken'
+* `sub`(Subject): `clientID` + '/' + `userName` + `userEntityId`
+* `iss`(Issuer): `RM3_JWT_ISSUER`
+
+You need to set a clientID with the rm3admin command.

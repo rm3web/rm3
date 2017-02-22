@@ -83,7 +83,7 @@ Contributing
 
 There are a wide variety of ways to contribute.  Documentation, bug triage, detailed issues (including UI/UX, bug reports, etc), artwork, schemes, and so on are all just as important as code.  Similarly, cleaning up the messy abstractions and copypasta, writing unit tests, and other non-feature tasks are probably more valuable to me.
 
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
+Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms -- see [code of conduct](code_of_conduct.md)
 
 [CONTRIBUTING.md](CONTRIBUTING.md) contains more details on contributing.
 

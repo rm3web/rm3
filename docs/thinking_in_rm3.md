@@ -95,3 +95,41 @@ This is all, of course, way too complex for most people. So I tried to take the 
 rm3 will allow you to create tags, just like everything else. But rm3 will also let you create tags that are unambiguous (I'll call them ontags, short for 'ontological tags') and point to a definition.  So I can create an ontag where you know I'm talking about my Olympus PEN, and not a pen.
 
 Furthermore rm3 will allow you to use predicates.  Optionally, of course.  This way, I can create a predicate for "Camera used to take this picture" and do a query on that predicate to get a list of cameras I've used.  And if I search for the predicate of "Camera used to take this picture" and the tag of "Olympus PEN E-P3" that I'll get only photos taken with my E-P3, not a blog article where I talk about it or a picture of my E-P3 that I took with my cell phone.
+
+A semi-guided tour of auth standards and Rm3
+============================================
+
+Any given instance of Rm3 is destined to be a 'minority' platform.  Thus, unlike large services like Twitter and Facebook, the traditional methods of authentication don't work.
+
+To understand what I'd like to do, let's go through a history lesson.
+
+Originally, it was seen as OK for you to give other people your login credentials and/or to generate a special URL that you shared with another service.  But that's a pretty bad way to do things.
+
+Then a few providers did various simple little APIs, all of them incompatible, to authenticate with the API.  This way, they still took you to a page on their site where you said "Hey, I'm OK with this particular application having one set of permissions".
+
+Then OpenID and OAuth 1.0 came along.  Bugs were found in both, new versions pushed.
+
+Eventually, they realized that next to nobody could implement OAuth 1.0 properly, so OAuth 2.0 was created.  And OAuth 2.0 assumes that everything is happening over TLS and therefore the rest of the algorithms are easier.
+
+People hate on OAuth 2.0 for security issues and they are kinda right, because all of that effort in making it easy to use also creates opportunity for exploits.  We'll kinda ignore a lot of that for now because everything in security is horrible and it's even worse if you've worked with genuine security experts who explain everything you didn't know.
+
+There are real other non-security problems with OAuth 2.0.  The biggest one is that nobody actually implements it the same way; in fact the standard is sufficently vague that it's impossible to tell in some cases what's the best right way.  You can avoid some of this by using a standard library such as oauth2orize instead of rolling your own.
+
+Furthermore, OAuth 2.0 was designed for the needs of large sites.  Thus, you have to request an API key that contains an ID and a secret.
+
+Enter OpenID Connect, which is tantalizingly close.  If you implement the optional [Dynamic Client Registration](http://openid.net/specs/openid-connect-registration-1_0.html) protocol, you don't need to force everybody to go through a non-automated API key request process.  If you implement the optional [Discovery](http://openid.net/specs/openid-connect-discovery-1_0.html) protocol, you can avoid making the user need to think about what the paramaters for the OpenID server are.
+
+Controlled tech debt
+====================
+
+The general principle that I've followed with rm3 is "Controlled tech debt".  This isn't necessarily a development pattern that works everywhere, it only works in some situations.
+
+The primary idea behind this is that you frequently can't see the best abstraction for a given situation until you've got 2-3 examples of almost-but-not-quite-identical code.  Furthermore, sometimes you can't see the best abstraction until the rest of the system is a bit more mature.  You might put in a really good localized abstraction and then have to rip it all out for a more global abstraction later.  Thus, prefer duplication over the wrong abstraction.
+
+Therefore, there's some messy segments of rm3 that are just waiting for the right abstraction to turn them into something neater and more compact.  Or there's a very brute-force easy-to-rip-out abstraction instead of a nice one.
+
+The downside of this approach is that you frequently find yourself unable to refactor the code later on.  Furthermore, you may forget where the nasty bits are.  Thus, create 'tech debt' tickets and ensure that they move through the pipeline.  The tech debt ticket needs to be significantly more verbose than you'd think.  You should always tie some tech debt tickets to any feature milestone.
+
+Furthermore, sometimes it's better to avoid adding a feature that the system doesn't have the infrastructure to support.
+
+The knob can be turned, over time.  Between 0.1 and 0.3, I specifically created some tech debt to get things to the point where the rest of the system could have more useful abstractions.  Between 0.3 and 0.4, I juggled tickets to force myself to take care of at least some of those issues.

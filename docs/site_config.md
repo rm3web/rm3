@@ -16,7 +16,7 @@ Site configuration, on the other hand, is stored inside of the database.  Right 
 
 To update the site's name:
 ```
-UPDATE wh_siteconfig SET data = '{"name": "WireWorld"}' WHERE path='site' AND site='default';
+UPDATE wh_siteconfig SET data = '{"name": "WireWorld", "copyright": "WireWorld"}' WHERE path='site' AND site='default';
 ```
 
 To update the url root (the path that URLs are generated against) or the path root (the root of all internal rm3 paths):
