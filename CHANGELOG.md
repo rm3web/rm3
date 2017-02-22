@@ -10,6 +10,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
 ## [Unreleased]
+### Added
+- Random sort order
 
 ### Changed
 - Figure display tweaked slightly (always have a title, different view sizes)
@@ -18,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Blog with sidebar proto doesn't parse enrichment properly.
 - Loading a dump from 0.4.x with image protection turned on will crash.
 - Image with image protection on will eat up page space.
+- Image protection is communicated in query result enhancement.
 
 ## [0.4.0] - Moderate - 2017-02-21: Would Have Done It Earlier But For A Two Our Power Outage edition
 
