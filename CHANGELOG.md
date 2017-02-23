@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - "View large" had a display bug.
 - Blog index wasn't generating shortened links.
 - Fix to remove unnecessary duplication in tag search made the bug worse.
+- Tweaked masonry formatting
 
 ## [0.4.2] - Low - 2017-02-22: Special artistic edition
 
