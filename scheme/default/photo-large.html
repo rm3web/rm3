@@ -1,0 +1,39 @@
+{>base/}
+{<metatag}
+<meta name="og:image" content="{ogThumbnail}" />
+<meta property="og:image:type" content="image/jpeg" />
+{/metatag}
+{<typetag}
+<meta property="og:type" content="article" />
+<meta name="twitter:card" content="summary_large_image" />
+{/typetag}
+
+{<main}
+
+{?srcset}
+{?summary.protect}
+<div style="overflow: hidden; line-height: 0px;">
+<img sizes="100vw" srcset="{srcset}" alt="" style="position: relative; bottom: -16px;" />
+</div>
+{:else}
+<img sizes="100vw" srcset="{srcset}" alt="" />
+{/summary.protect}
+{:else}
+<svg xmlns="http://www.w3.org/2000/svg" width="{fallwidth}" height="{fallheight}" viewBox="0 0 {fallwidth} {fallheight}">
+<line x1="0" y1="0" 
+          x2="{fallwidth}" y2="{fallheight}" 
+          stroke="black" 
+          stroke-width=".5"/>
+<line x1="0" y1="{fallheight}" 
+          x2="{fallwidth}" y2="0" 
+          stroke="black" 
+          stroke-width=".5"/>
+<rect width="{fallwidth}" height="{fallheight}" style="fill:rgba(0,0,0,0);stroke-width:1;stroke:rgb(0,0,0)" />
+</svg>
+{/srcset}
+
+<div>
+{@textblock field=data.posting resolve="posting"}{/textblock}
+</div>
+
+{/main}
