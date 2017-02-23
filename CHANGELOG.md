@@ -11,6 +11,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.4.2] - Low - 2017-02-22: Special artistic edition
+
 ### Added
 - "View large" photo page, not used in the default scheme.
 
@@ -401,7 +403,8 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.4.2...HEAD
+[0.4.2]: https://github.com/rm3web/rm3/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/rm3web/rm3/compare/v0.4.0...v0.4.1
 [0.4.0]: https://github.com/rm3web/rm3/compare/v0.3.8...v0.4.0
 [0.3.8]: https://github.com/rm3web/rm3/compare/v0.3.7...v0.3.8
