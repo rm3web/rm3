@@ -14,10 +14,18 @@ exports = module.exports = function(dust, db, cache, query, reactDir) {
                 scaleSize.width + '" border="0" data-width="' +
                 scaleSize.width + '" data-height="' + scaleSize.height + '"/></picture>');
     } else {
-      return chunk.write('<img srcset="' + imgicon + '"  height="' + scaleSize.height +
-                '" width="' + scaleSize.width + '" border="0" data-width="' +
-                scaleSize.width + '" data-height="' + scaleSize.height + '"/>');
+      var protect = context.get('meta.rm3\:protect');
+      if (protect) {
+        return chunk.write('<div style="height:' + scaleSize.height + 'px; width:' + 
+          scaleSize.width + ';  overflow:hidden">' + '<img srcset="' + imgicon + 
+          '"  height="' + (parseInt(scaleSize.height)+16) + '" width="' + scaleSize.width + 
+          '" border="0" data-width="' + scaleSize.width + '" data-height="' + 
+          scaleSize.height + '"/></div>');
+      } else {
+        return chunk.write('<img srcset="' + imgicon + '"  height="' + scaleSize.height +
+                  '" width="' + scaleSize.width + '" border="0" data-width="' +
+                  scaleSize.width + '" data-height="' + scaleSize.height + '"/>');
+      }
     }
   };
-
 };

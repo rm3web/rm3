@@ -20,6 +20,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Removed unnecessary duplication in tag search
+- Image protection and the image helper weren't working well together.
 
 ## [0.4.1] - Low - 2017-02-22: GSV Unfortunate Contact with the Enemy edition
 
