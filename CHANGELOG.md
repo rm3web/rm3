@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Made tag link text friendlier
+- Added a style for the 'memo' section of the form instead of hardcoding.
 
 ### Fixed
 - Removed unnecessary duplication in tag search
