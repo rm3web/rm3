@@ -59,7 +59,7 @@ var LinkFormComponent = ReactIntl.injectIntl(React.createClass({
         placeholder={this.props.intl.formatMessage({id:"URL"})} name="url" 
         valueLink={this.linkState('url')} />
 
-      <fieldset style={{background: 'rgb(237, 237, 237)'}}>
+      <fieldset className="memobar">
       <textarea rows="1" className="pure-input-1" 
         placeholder={this.props.intl.formatMessage({id:"MEMO"})} name="memo" 
         valueLink={this.linkState('memo')} />

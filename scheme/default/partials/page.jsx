@@ -65,7 +65,7 @@ var PageFormComponent = ReactIntl.injectIntl(React.createClass({
       </label>
       </fieldset>
 
-      <fieldset style={{background: 'rgb(237, 237, 237)'}}>
+      <fieldset className="memobar">
       <textarea rows="1" className="pure-input-1" 
         placeholder={this.props.intl.formatMessage({id:"MEMO"})} name="memo" 
         valueLink={this.linkState('memo')} />

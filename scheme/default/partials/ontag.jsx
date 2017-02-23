@@ -124,7 +124,7 @@ var OntagFormComponent = ReactIntl.injectIntl(React.createClass({
       <OntagProperties prefix="properties" properties={this.state.properties}/>
       <button onClick={this.handleAddRow} className="pure-button" id="addRow">Add Row</button>
 
-      <fieldset style={{background: 'rgb(237, 237, 237)'}}>
+      <fieldset className="memobar">
       <textarea rows="1" className="pure-input-1" 
         placeholder={this.props.intl.formatMessage({id:"MEMO"})} name="memo" 
         valueLink={this.linkState('memo')} />
