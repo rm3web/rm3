@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- "View large" photo page, not used in the default scheme.
+
 ## [0.4.1] - Low - 2017-02-22: GSV Unfortunate Contact with the Enemy edition
 
 ### Added
