@@ -406,7 +406,7 @@ describe('query', function() {
         arts.length.should.equal(1);
         done();
       });
-    })
+    });
   });
 
   describe('serviceaccount', function() {
