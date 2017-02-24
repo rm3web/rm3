@@ -1,7 +1,7 @@
 var AccessToken = require ('../../lib/authentication/accesstoken.js');
 var should = require('chai').should();
 
-describe('conf', function() {
+describe('accessToken', function() {
   it('should work as expected', function(cb) {
     var secret = 'secretsecret';
     var issuer = 'issuer';
