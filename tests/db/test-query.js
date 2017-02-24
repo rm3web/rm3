@@ -390,6 +390,23 @@ describe('query', function() {
         done();
       });
     });
+
+    step('list credentials', function listCredentials(done) {
+      var resp = query.listCredentials(db, {});
+      var arts = [];
+      resp.on('article', function(article) {
+        if (article.provider === 'test') {
+          arts.push(article);
+        }
+      });
+      resp.on('error', function(err) {
+        should.fail(err);
+      });
+      resp.on('end', function() {
+        arts.length.should.equal(1);
+        done();
+      });
+    });
   });
 
   describe('serviceaccount', function() {
