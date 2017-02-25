@@ -22,6 +22,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
       state.errors = {};
     }
     state.title = this.props.title;
+    state.isSubmitting = false;
     state.abstract = this.props.abstract;
     return state;
   },
@@ -29,6 +30,9 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
   onSubmit: function (event) {
     var self = this;
     event.preventDefault();
+    self.setState({
+      isSubmitting: true
+    });
     var vectorForm = new VectorForm(this.props.section === 'edit');
     var body = {};
     ['root', 'leaf', 'autogenSlug', 'abstract', 'title'].forEach(function(field) {
@@ -114,7 +118,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
       <ErrorsList errors={this.state.errors.title} />
       </fieldset>
       <fieldset>
-      <textarea rows="5" className="pure-input-1" name="abstract" 
+      <textarea rows="5" className="pure-input-1" name="abstract" id="abstract"
         placeholder={this.props.intl.formatMessage({id:"ABSTRACT"})}
         valueLink={this.linkState('abstract')} >
       </textarea>
@@ -124,7 +128,6 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
       <TextBlockComponent prefix="posting" {...this.props} />
 
       <Dropzone multiple={false} onDrop={this.onDrop}>
-        
         {preview}
       </Dropzone>
 
@@ -137,7 +140,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
         {minorChange}
       </fieldset>
 
-      <JsxForms.SubmitButton onClick={this.onSubmit} locales={this.props.intl.locales} messages={this.props.intl.messages} isDraft={this.props.isDraft} buttonMessage={buttonMessage} />
+      <JsxForms.SubmitButton onClick={this.onSubmit} disabled={this.state.isSubmitting} locales={this.props.intl.locales} messages={this.props.intl.messages} isDraft={this.props.isDraft} buttonMessage={buttonMessage} />
       
     </JsxForms.FormWrapper>);
   }
