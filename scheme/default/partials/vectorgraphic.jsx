@@ -3,6 +3,7 @@ var ReactIntl = require('react-intl');
 var IntlProvider = ReactIntl.IntlProvider;
 var FormattedMessage  = ReactIntl.FormattedMessage;
 var JsxForms = require('rm3-react-controls');
+var VectorForm = require('../../../lib/forms/vectorgraphic');
 var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
 var TextBlockComponent = require('textblocks-react-editor').TextBlockComponent;
@@ -21,6 +22,27 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
     state.title = this.props.title;
     state.abstract = this.props.abstract;
     return state;
+  },
+
+  onSubmit: function (event) {
+    var self = this;
+    event.preventDefault();
+    var vectorForm = new VectorForm(this.props.section === 'edit');
+    var body = {};
+    ['root', 'leaf', 'autogenSlug', 'abstract', 'title'].forEach(function(field) {
+      var val = document.getElementById(field)
+      if (val) {
+        body[field] = val.value;
+      }
+    })
+    vectorForm.checkForm(body, function(err) {
+      if (err) {
+        console.log(err);
+        self.setState({errors: err});
+      } else {
+        document.forms["userform-form"].submit();
+      }
+    });
   },
 
   render: function() {
@@ -42,7 +64,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
     return (
       <JsxForms.FormWrapper encType="multipart/form-data" onSubmit={this.onSubmit} proto={this.props.proto} section={this.props.section} revisionId={this.props.revisionId}>
       <fieldset><h1>
-       <textarea rows="1" className="pure-input-1" 
+       <textarea rows="1" className="pure-input-1" id="title"
         placeholder={this.props.intl.formatMessage({id: "TITLE"})} name="title" 
         valueLink={this.linkState('title')} /></h1>
       <ErrorsList errors={this.state.errors.title} />
@@ -70,7 +92,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
         {minorChange}
       </fieldset>
 
-      <JsxForms.SubmitButton locales={this.props.intl.locales} messages={this.props.intl.messages} isDraft={this.props.isDraft} buttonMessage={buttonMessage} />
+      <JsxForms.SubmitButton onClick={this.onSubmit} locales={this.props.intl.locales} messages={this.props.intl.messages} isDraft={this.props.isDraft} buttonMessage={buttonMessage} />
       
     </JsxForms.FormWrapper>);
   }

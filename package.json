@@ -114,7 +114,7 @@
     "require-compiled": "^1.4.0",
     "require-https": "^1.1.1",
     "rm3-page-router": "0.0.2",
-    "rm3-react-controls": "0.0.12",
+    "rm3-react-controls": "0.0.13",
     "rm3-tag-control": "0.0.11",
     "rolling-rate-limiter": "^0.1.4",
     "serve-favicon": "~2.3.0",
