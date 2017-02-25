@@ -8,6 +8,8 @@ var SingleError = JsxForms.SingleError;
 var ErrorsList = JsxForms.ErrorsList;
 var TextBlockComponent = require('textblocks-react-editor').TextBlockComponent;
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
+var Dropzone = require('react-dropzone');
+var request = require('superagent');
 
 var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
   mixins: [LinkedStateMixin],
@@ -40,9 +42,45 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
         console.log(err);
         self.setState({errors: err});
       } else {
-        document.forms["userform-form"].submit();
+        var x = document.forms["userform-form"];
+        var req = request.post(window.location.href)
+          .attach('svg', self.state.svg)
+          .field('newResponse', true);
+        var i;
+        for (i = 0; i < x.length; i++) {
+          if (x.elements[i].name) {
+            if (x.elements[i].type === 'checkbox') {
+              req.field(x.elements[i].name, x.elements[i].checked)
+            } else {
+              req.field(x.elements[i].name, x.elements[i].value)
+            }
+          }
+        }
+
+        req.end(function(err, res){
+          self.setState({
+            isSubmitting: false
+          });
+          if (err) {
+            if (err.response.statusType === 5) {
+              FormLib.markError(self.state.errors,'__all__',err.response.statusText);
+              self.setState({errors: self.state.errors});
+            }
+          }
+          if (res.accepted) {
+            if (res.body.posted) {
+              window.location.href = res.body.location;
+            }
+          }
+          FormLib.markError(self.state.errors,'__all__','unidentified response');
+          self.setState({errors: self.state.errors});
+        });
       }
     });
+  },
+
+  onDrop: function (acceptedFiles) {
+    this.setState({svg: acceptedFiles[0]});
   },
 
   render: function() {
@@ -50,6 +88,7 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
     var self = this;
     var pathBit;
     var minorChange;
+    var preview;
 
     if (this.props.section === 'edit') {
       buttonMessage = 'edit';
@@ -59,6 +98,11 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
         </label>)
     } else {
       pathBit = (<JsxForms.PathNameComponent {...this.props} />);
+    }
+    if (this.state.svg) {
+      preview = (<img style={{height: '100px', width: '100px', 'object-fit': 'contain'}} src={this.state.svg.preview} />);
+    } else {
+      preview = (<div>Try dropping some files here, or click to select files to upload.</div>);
     }
 
     return (
@@ -79,9 +123,10 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
       {pathBit}
       <TextBlockComponent prefix="posting" {...this.props} />
 
-      <fieldset>
-      <input type="file" name="svg" />
-      </fieldset>
+      <Dropzone multiple={false} onDrop={this.onDrop}>
+        
+        {preview}
+      </Dropzone>
 
       <ErrorsList errors={this.state.errors.__all__} />
 

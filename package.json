@@ -107,6 +107,7 @@
     "react-addons-linked-state-mixin": "^15.4.2",
     "react-aria-menubutton": "^4.0.2",
     "react-dom": "^15.4.2",
+    "react-dropzone": "^3.11.0",
     "react-intl": "^2.2.3",
     "react-super-select": "^0.5.2",
     "react-wavesurfer": "^0.8.3",
