@@ -19,6 +19,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - NODE_ENV check in the error handler wasn't checking for production, just the var.
+- Crashing bug with tag search.
 
 ## [0.4.3] - High - 2017-02-23: **Important tag search bug fix!**
 
