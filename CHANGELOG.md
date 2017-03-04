@@ -12,10 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added
-- Dropzone uploading for images
+- Dropzone uploading for images.
 
 ### Changed
 - Improved test coverage again.
+- Modal dialog for delete action.
 
 ### Fixed
 - NODE_ENV check in the error handler wasn't checking for production, just the var.
