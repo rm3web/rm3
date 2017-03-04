@@ -108,6 +108,9 @@ var VectorGraphicFormComponent = ReactIntl.injectIntl(React.createClass({
     } else {
       preview = (<div>Try dropping some files here, or click to select files to upload.</div>);
     }
+    if (this.state.isSubmitting) {
+      buttonMessage = 'Submitting...'
+    }
 
     return (
       <JsxForms.FormWrapper encType="multipart/form-data" onSubmit={this.onSubmit} proto={this.props.proto} section={this.props.section} revisionId={this.props.revisionId}>
