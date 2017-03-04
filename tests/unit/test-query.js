@@ -120,7 +120,7 @@ describe('query gen', function() {
         expected: 'SELECT count(*), actor.proto AS "actorProto", actor.summary AS "actorSummary" FROM wh_entity LEFT JOIN wh_entity AS actor ON (ltree(wh_entity.summary->>\'author\') = actor.path) INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'comment\')'},
       {desc: 'for plain tags',
         args: [root, 'wh', 'child', 'count', {predicate: 'plain', tag: 'bears'}, undefined, undefined, {}],
-        expected: 'SELECT DISTINCT ON (wh_entity.path, wh_entity.path) count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("objStr" = $2) AND ("predPath" = $3) ORDER BY wh_entity.path ASC, wh_entity.path ASC'},
+        expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("objStr" = $2) AND ("predPath" = $3)'},
       {desc: 'for predicates',
         args: [root, 'wh', 'child', 'count', {predicates: true}, undefined, undefined, {}],
         expected: 'SELECT count(*) FROM wh_entity INNER JOIN wh_tag ON (wh_tag."subjPath" = wh_entity.path) WHERE (wh_entity.stub <> true) AND (wh_entity.path <@ $1) AND (wh_entity.hidden = false) AND ("predPath" = \'navigation\' AND "objStr" = \'predicate\')'},
