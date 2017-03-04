@@ -7,21 +7,39 @@ var AmbWrapper = AriaMenuButton.Wrapper;
 var AmbButton = AriaMenuButton.Button;
 var AmbMenu = AriaMenuButton.Menu;
 var AmbMenuItem = AriaMenuButton.MenuItem;
+var ReactModal = require('react-modal');
+
+const customModalStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)'
+  }
+};
 
 var MenuButton = ReactIntl.injectIntl(React.createClass({
+
+  getInitialState: function() {
+    return { showModal: false };
+  },
 
   handleSelection: function(value, event) {
     if (value.func) {
       value.func();
     } else if (value.confirm) {
-      var answer = confirm(this.props.intl.formatMessage({id:"DO_YOU_REALLY_WANT_TO_GO_HERE"}));
-      if (answer !=0) {
-        window.location.href = value.url + "?sure=yes"
-      }
+      this.setState({ showModal: true , modalLink: value.url + "?sure=yes"});
     } else {
       window.location.href = value.url;
     }
   },
+
+  handleCloseModal: function(event) {
+    this.setState({ showModal: false });
+  },
+
   render: function() {
     var self = this;
     var actions = this.props.actions;
@@ -47,6 +65,17 @@ var MenuButton = ReactIntl.injectIntl(React.createClass({
         className='AriaMenuButton pure-u-1'
         onSelection={self.handleSelection}
       >
+        <ReactModal 
+           isOpen={this.state.showModal}
+           style={customModalStyles}
+           onRequestClose={this.handleCloseModal}
+           contentLabel="Minimal Modal Example"
+        >
+        <FormattedMessage id={'DO_YOU_REALLY_WANT_TO_GO_HERE'} />
+          <br /><a className="pure-button" href={this.state.modalLink}>Yes</a>
+          <button className="pure-button" onClick={this.handleCloseModal}>No</button>
+
+        </ReactModal>
         <AmbButton className='AriaMenuButton-trigger pure-button pure-u-1'>
           <span className='AriaMenuButton-triggerText'>
             <FormattedMessage
