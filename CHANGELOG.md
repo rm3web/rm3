@@ -17,6 +17,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Improved test coverage again.
 
+### Fixed
+- NODE_ENV check in the error handler wasn't checking for production, just the var.
+
 ## [0.4.3] - High - 2017-02-23: **Important tag search bug fix!**
 
 Very sorry about that. :(
