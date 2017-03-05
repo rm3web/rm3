@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * High: There's a critical bug that may impact a percentage of the users.  Upgrade!
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
-## [Unreleased]
+## [0.4.4] - High - 2017-02-23: **Another important tag search bug fix!**
 
 ### Added
 - Dropzone uploading for images.
@@ -427,7 +427,8 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.4.3...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.4.4...HEAD
+[0.4.3]: https://github.com/rm3web/rm3/compare/v0.4.3...v0.4.4
 [0.4.3]: https://github.com/rm3web/rm3/compare/v0.4.2...v0.4.3
 [0.4.2]: https://github.com/rm3web/rm3/compare/v0.4.1...v0.4.2
 [0.4.1]: https://github.com/rm3web/rm3/compare/v0.4.0...v0.4.1
