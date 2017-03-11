@@ -293,4 +293,23 @@ program
     });
   });
 
+program
+  .command('addclient [clientId] [clientSecret] [name] [redirectUri]')
+  .description('add a Oauth2 / OpenID Client')
+  .action(function(clientId, clientSecret, name, redirectUri, options) {
+    if (!(clientId && clientSecret)) {
+      winston.warn('clientId and clientSecret are required');
+      return;
+    }
+    update.createServiceAccount(db, {}, 'openid', clientId, 
+      {secret: clientSecret, redirectUri: redirectUri, name: name}, function(err, entity_id, revision_id, revision_num) {
+         if (err) {
+           winston.error('error:', err);
+         } else {
+           winston.info('Service Account created');
+           db.gunDatabase();
+         }
+       });
+  });
+
 program.parse(process.argv);

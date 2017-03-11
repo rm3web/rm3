@@ -9,13 +9,9 @@ A platform for publishing more than just textual articles on the web.
 What is it?
 -----------
 
-rm3 is not just a blog engine, but it's still lighter-weight and friendlier than those enterprise-grade CMS systems.  Conceptually, it is to Drupal as Ghost is to WordPress.
+rm3 is not just a blog engine, but it's still lighter-weight and friendlier than those enterprise-grade CMS systems.  It can be used to drive a large site, but I don't want to lose sight of being something that a person can install on a micro cloud instance and use themselves.  Conceptually, it is to Drupal as Ghost is to WordPress.
 
-rm3 is able work as a blog, a wiki, a photo archive, or some combination of those... and more.
-
-rm3 has blog-styled views such that you can post a series of dated blog articles and view them as such.  But every entity on the site has a history, like how a wiki works.  Like some of those enterprise CMS systems, you aren't restricted to just creating a mere list of posts.
-
-rm3 has rapidly improving support for media:  It supports photos, but it also supports SVG vector graphics and audio files.  
+rm3 is able work as a blog, a wiki, a photo archive, or some combination of those... and more.  It's got blog-styled views such that you can post a series of dated blog articles and view them as such.  But every entity on the site has a history, like how a wiki works.  Like some of those enterprise CMS systems, you aren't restricted to just creating a mere list of posts.  You can use it to manage links, photos, graphics (both photos and SVG vector graphics), and audio.
 
 Release Status
 --------------
@@ -73,10 +69,9 @@ To check coverage
 
 * `npm run coverage`
 
-If you want to do some development and not want to log in:
+If you want to do some development with auto-restart:
 
-* `RM3_DANGER_FORCE_AUTH='wirehead' gulp develop`
-  - **Warning: If you try to do this on a publicly accessible Internet port, you will get hacked**
+* `gulp develop`
 
 Benchmarks
 ----------
@@ -86,13 +81,11 @@ Benchmarks
 Contributing
 ------------
 
-There are a wide variety of ways to contribute.  Documentation, bug triage, detailed issues (including UI/UX, bug reports, etc), test cases, refactoring, artwork, schemes, and so on are all just as important as features.
+There are a wide variety of ways to contribute.  Documentation, bug triage, detailed issues (including UI/UX, bug reports, etc), artwork, schemes, and so on are all just as important as code.  Similarly, cleaning up the messy abstractions and copypasta, writing unit tests, and other non-feature tasks are probably more valuable to me.
 
-Sections of the code are kinda messy copypasta that I'm waiting for a good abstraction to refactor.  Patches to fix that are probably even more important than full features.
+Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms -- see [code of conduct](code_of_conduct.md)
 
-Please note that this project is released with a Contributor Code of Conduct. By participating in this project you agree to abide by its terms.
-
-[CONTRIBUTING.md](CONTRIBUTING.md) contains more details.
+[CONTRIBUTING.md](CONTRIBUTING.md) contains more details on contributing.
 
 License
 -------

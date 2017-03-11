@@ -8,7 +8,7 @@ var sitepath = require ('sitepath');
 var query = require('../../lib/query');
 
 describe('rm3rm', function() {
-  this.timeout(20000); // This might take a bit of time
+  this.timeout(40000); // This might take a bit of time
 
   it('should delete', function(done) {
     childProcess.execSync('./bin/rm3load -f ./tests/page-fixtures/front.json -p wh.rm3rm.test1');

@@ -19,6 +19,10 @@
     height: 256px;
 }
 
+.memobar {
+    background: rgb(237,237,237);
+}
+
 .footer {
     border-bottom-color: black;
     border-radius: 0;

@@ -46,7 +46,7 @@ gulp.task('icon', ['icon-75', 'icon-24'], function() {
 
 gulp.task('imagemin', function () { 
     return gulp.src('./scheme/default/images/*')
-        .pipe(imagemin({}))
+        .pipe(imagemin())
         .pipe(gulp.dest('./scheme/default/static/images/'));
 });
 

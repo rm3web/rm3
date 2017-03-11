@@ -23,7 +23,7 @@ gulp.task('coveralls', shell.task([
   'cat ./coverage/lcov.info |  ./node_modules/codecov.io/bin/codecov.io.js'
 ]))
 
-gulp.task('travis', ['prepublish', 'lint'])
+gulp.task('travis', ['lint'])
 
 gulp.task('prepublish', function(callback) {
   runSequence('imagemin',

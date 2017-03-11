@@ -29,6 +29,7 @@ function stepGenericCreate(desc, path, ents, entidx, provisional, now) {
       "abstract": "some text goes here"};
     ents[entidx].data.posting = longstr;
     ents[entidx].addTag('navigation', 'navbar');
+    ents[entidx].addGeotag(null, 37.7749, 122.4194);
 
     update.createEntity(db, {}, {context: 'ROOT'}, ents[entidx], provisional, 'create',
       function(err, entityId, revisionId, revisionNum) {
@@ -162,9 +163,35 @@ function stepValidateTagExistence(desc, ent) {
   });
 }
 
+function stepValidateGeotagExistence(desc, ent) {
+  step(desc, function(done) {
+    var query = "SELECT \"predPath\", \"objGeotag\", \"objClass\" FROM wh_geotag WHERE \"subjPath\" = '" +
+      ent.path().toDottedPath() + "'";
+    quickQuery(db, query, function(err, result) {
+      should.not.exist(err);
+      result.rows[0].predPath.should.equal('plain');
+      result.rows[0].objClass.should.equal('geo');
+      result.rows[0].objGeotag.should.eql({x: 122.4194, y: 37.7749});
+      done(err);
+    });
+  });
+}
+
 function stepValidateTagNonExistence(desc, ent) {
   step(desc, function(done) {
     var query = "SELECT \"predPath\", \"objStr\", \"objClass\" FROM wh_tag WHERE \"subjPath\" = '" +
+      ent.path().toDottedPath() + "'";
+    quickQuery(db, query, function(err, result) {
+      should.not.exist(err);
+      result.rowCount.should.equal(0);
+      done(err);
+    });
+  });
+}
+
+function stepValidateGeotagNonExistence(desc, ent) {
+  step(desc, function(done) {
+    var query = "SELECT \"predPath\", \"objGeotag\", \"objClass\" FROM wh_geotag WHERE \"subjPath\" = '" +
       ent.path().toDottedPath() + "'";
     quickQuery(db, query, function(err, result) {
       should.not.exist(err);
@@ -183,6 +210,20 @@ function stepValidateTagExistencePath(desc, path) {
       result.rows[0].predPath.should.equal('navigation');
       result.rows[0].objStr.should.equal('navbar');
       result.rows[0].objClass.should.equal('tag');
+      done(err);
+    });
+  });
+}
+
+function stepValidateGeotagExistencePath(desc, path) {
+  step(desc, function(done) {
+    var query = "SELECT \"predPath\", \"objGeotag\", \"objClass\" FROM wh_geotag WHERE \"subjPath\" = '" +
+      path.toDottedPath() + "'";
+    quickQuery(db, query, function(err, result) {
+      should.not.exist(err);
+      result.rows[0].predPath.should.equal('plain');
+      result.rows[0].objClass.should.equal('geo');
+      result.rows[0].objGeotag.should.eql({x: 122.4194, y: 37.7749});
       done(err);
     });
   });
@@ -270,6 +311,7 @@ describe('update', function() {
     stepValidateEntityExistence('check create', ents.one);
 
     stepValidateTagExistence('check tag create', ents.one);
+    stepValidateGeotagExistence('check geo tag create', ents.one);
 
     stepGenericLogCheck('check log', ents.one, function(result) {
       var ent = ents.one;
@@ -289,6 +331,7 @@ describe('update', function() {
     });
 
     stepValidateTagExistence('check preservation', ents.one);
+    stepValidateGeotagExistence('check geotag preservation', ents.one);
 
     stepValidateEntityExistence('verify only one creation went through', ents.one);
 
@@ -304,6 +347,7 @@ describe('update', function() {
     stepValidateNonEntityExistence('check create after delete', ents.one);
 
     stepValidateTagNonExistence('check delete tags', ents.one);
+    stepValidateGeotagNonExistence('check delete gettags', ents.one);
 
     stepGenericLogCheck('verify create and delete in log', ents.one, function(result) {
       result.rowCount.should.equal(2);
@@ -337,6 +381,7 @@ describe('update', function() {
     stepValidateEntityExistence('verify update', ents.next);
 
     stepValidateTagExistence('verify the tags are still there', ents.next);
+    stepValidateGeotagExistence('verify the geotags are still there', ents.next);
 
     stepGenericLogCheck('check log after update', ents.start, function(result) {
       var ent = ents.start;
@@ -352,6 +397,7 @@ describe('update', function() {
     stepValidateNonEntityExistence('check create after delete', ents.next);
 
     stepValidateTagNonExistence('check delete tags', ents.next);
+    stepValidateGeotagNonExistence('check delete geotags', ents.next);
 
     stepGenericLogCheck('check log after delete', ents.start, function(result) {
       var ent = ents.start;
@@ -381,6 +427,7 @@ describe('update', function() {
     stepValidateEntityExistence('verify update', ents.next);
 
     stepValidateTagExistence('verify the tags are still there', ents.next);
+    stepValidateGeotagExistence('verify the geotags are still there', ents.next);
 
     stepGenericLogCheck('check log after update', ents.start, function(result) {
       var ent = ents.start;
@@ -396,6 +443,7 @@ describe('update', function() {
     stepValidateNonEntityExistence('check create after delete', ents.next);
 
     stepValidateTagNonExistence('check delete tags', ents.next);
+    stepValidateGeotagNonExistence('check delete geotags', ents.next);
 
     stepGenericLogCheck('check log after delete', ents.start, function(result) {
       result.rowCount.should.equal(0);
@@ -433,6 +481,7 @@ describe('update', function() {
     stepValidateEntityExistence('verify update', ents.next);
 
     stepValidateTagExistence('verify the tags are still there', ents.next);
+    stepValidateGeotagExistence('verify the geotags are still there', ents.next);
 
     stepGenericLogCheck('check log after update', ents.start, function(result) {
       var ent = ents.start;
@@ -448,6 +497,7 @@ describe('update', function() {
     stepValidateNonEntityExistence('check create after delete', ents.next);
 
     stepValidateTagNonExistence('check delete tags', ents.next);
+    stepValidateGeotagNonExistence('check delete geotags', ents.next);
 
     stepGenericLogCheck('check log after delete', ents.start, function(result) {
       var ent = ents.start;
@@ -479,8 +529,10 @@ describe('update', function() {
     stepValidateNonEntityExistence('check create after delete', ents.start);
 
     stepValidateTagExistencePath('check tag move', newpath);
+    stepValidateGeotagExistencePath('check tag move', newpath);
 
     stepValidateTagNonExistence('check tag move deletion', ents.start);
+    stepValidateGeotagNonExistence('check tag move deletion', ents.start);
 
     step('validate move', function(done) {
       var query = "SELECT \"entityId\", \"revisionId\", \"revisionNum\" FROM wh_entity WHERE path = '" +
@@ -555,6 +607,7 @@ describe('update', function() {
     });
 
     stepValidateTagNonExistence('check tag non creation', ents.start);
+    stepValidateGeotagNonExistence('check geotag non creation', ents.start);
 
     step('commit', function(done) {
       update.commitEntityRev(db, {}, ents.start._revisionId,
@@ -582,6 +635,7 @@ describe('update', function() {
     });
 
     stepValidateTagExistence('check tag create', ents.start);
+    stepValidateGeotagExistence('check geotag create', ents.start);
 
     stepGenericDelete('delete', ents.start, delMark);
   });
@@ -605,6 +659,7 @@ describe('update', function() {
     });
 
     stepValidateTagNonExistence('check tag non creation', ents.start);
+    stepValidateGeotagNonExistence('check geotag non creation', ents.start);
 
     stepGenericUpdate('update', ents, 'start', 'next', false, true);
 
@@ -634,6 +689,7 @@ describe('update', function() {
     });
 
     stepValidateTagExistence('check tag create', ents.next);
+    stepValidateGeotagExistence('check geotag create', ents.next);
 
     stepGenericDelete('delete', ents.next, delMark);
   });
@@ -657,6 +713,7 @@ describe('update', function() {
     });
 
     stepValidateTagNonExistence('check tag non creation', ents.start);
+    stepValidateGeotagNonExistence('check geotag non creation', ents.start);
 
     stepGenericUpdate('update', ents, 'start', 'next', false, false);
 
@@ -687,6 +744,7 @@ describe('update', function() {
     });
 
     stepValidateTagExistence('check tag create', ents.next);
+    stepValidateGeotagExistence('check geotag create', ents.next);
 
     stepGenericDelete('delete', ents.next, delMark);
   });
@@ -886,6 +944,27 @@ describe('update', function() {
     });
   });
 
+  describe('serviceaccount', function() {
+    var ents = {};
+    var delMark = {};
+
+    step('create', function createCredential(done) {
+      update.createServiceAccount(db, {}, 'test', 'gor', {}, done);
+    });
+
+    step('check create credential', function checkCredential(done) {
+      var query = "SELECT provider, \"clientId\", \"providerDetails\" FROM wh_serviceaccount WHERE provider = 'test' AND \"clientId\" = 'gor';";
+      quickQuery(db, query, function(err, result) {
+        should.not.exist(err);
+        result.rowCount.should.equal(1);
+        result.rows[0].provider.should.equal('test');
+        result.rows[0].clientId.should.equal('gor');
+        should.not.exist(result.rows[0].userPath);
+        done(err);
+      });
+    });
+  });
+
   describe('blob', function() {
     var ents = {};
     var delMark = {};
@@ -926,7 +1005,42 @@ describe('update', function() {
     });
   });
 
+  describe('ticket', function() {
+    var ents = {};
+    var delMark = {};
+    var entityPath = new sitepath(['wh', 'ticket']);
+    var userPath = new sitepath(['wh', 'users', 'wirehead']);
+    var now = new Date();
+    var id;
+
+    step('create', function createCredential(done) {
+      update.addTicket(db, {}, entityPath, '192.0.2.1', null, userPath, now, 'vote', {'rating': 5}, function(err, ticketId) {
+        should.not.exist(err);
+        id = ticketId;
+        done(err);
+      });
+    });
+
+    step('check create ticket', function checkCredential(done) {
+      var query = "SELECT \"ticketId\", path, \"inetAddr\", \"identityId\", \"userPath\",\
+       subject, recorded, details FROM wh_ticket WHERE \"ticketId\" = '" + id + "';";
+      quickQuery(db, query, function(err, result) {
+        console.log(err);
+        should.not.exist(err);
+        result.rowCount.should.equal(1);
+        result.rows[0].path.should.equal(entityPath.toDottedPath());
+        result.rows[0].userPath.should.equal(userPath.toDottedPath());
+        result.rows[0].subject.should.equal('vote');
+        result.rows[0].recorded.should.eql(now);
+        result.rows[0].details.rating.should.equal(5);
+        console.log(result);
+        done(err);
+      });
+    });
+  });
+
   after(function() {
     db.gunDatabase();
   });
 });
+

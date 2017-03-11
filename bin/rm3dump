@@ -17,13 +17,19 @@ function parse_sitepath(val) {
 
 program
   .version(pjson.version)
+  .arguments('[path]')
   .option('-l, --log','Get history', false)
-  .option('-p, --path [path]','Get path',parse_sitepath,new sitepath(['wh']))
   .option('-f, --friendly','Human-readable friendly format')
   .parse(process.argv)
   ;
 
-dumpEntity(db, entity.Entity, program.path, program.log, function(err, ent, log, blobs) {
+var path = new sitepath('wh');
+if(program.args[0]) {
+  var path = new sitepath(program.args[0]);
+}
+
+dumpEntity(db, entity.Entity, path, program.log, function(err, ent, log, blobs) {
+
   if (!err) {
     if (program.friendly) {
       console.log('Path: %s', ent._path.toDottedPath());

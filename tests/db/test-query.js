@@ -390,6 +390,41 @@ describe('query', function() {
         done();
       });
     });
+
+    step('list credentials', function listCredentials(done) {
+      var resp = query.listCredentials(db, {});
+      var arts = [];
+      resp.on('article', function(article) {
+        if (article.provider === 'test') {
+          arts.push(article);
+        }
+      });
+      resp.on('error', function(err) {
+        should.fail(err);
+      });
+      resp.on('end', function() {
+        arts.length.should.equal(1);
+        done();
+      });
+    });
+  });
+
+  describe('serviceaccount', function() {
+    var ents = {};
+    var delMark = {};
+
+    step('create', function createCredential(done) {
+      update.createServiceAccount(db, {}, 'test', 'blfr', {}, done);
+    });
+
+    step('check created credential', function checkCredential(done) {
+      query.findServiceAccount(db, {}, 'test', 'blfr', function(err, rec) {
+        should.not.exist(err);
+        rec.provider.should.equal('test');
+        rec.clientId.should.equal('blfr');
+        done(err);
+      });
+    });
   });
 
   describe('blob', function() {

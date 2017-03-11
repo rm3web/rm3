@@ -128,4 +128,45 @@ describe('BlobStores', function() {
       });
     });
   });
+  describe('#batchDelete', function() {
+    it('should work as expected', function() {
+      var blobstore = {
+        deleteBlob: function(ctx, path, filename, revisionId, next) {
+          path.should.equal('path');
+          revisionId.should.equal('revisionId');
+          next(null, true);
+        }
+      };
+      BlobStores.batchDelete({}, blobstore, 'path', ['filename', 'file2'], 'revisionId', function(err) {
+        should.not.exist(err);
+      });
+    });
+    it('should ignore ENOENT', function() {
+      var blobstore = {
+        deleteBlob: function(ctx, path, filename, revisionId, next) {
+          path.should.equal('path');
+          revisionId.should.equal('revisionId');
+          var err = new Error('fer');
+          err.code = 'ENOENT';
+          next(err);
+        }
+      };
+      BlobStores.batchDelete({}, blobstore, 'path', ['filename', 'file2', 'file3'], 'revisionId', function(err, path) {
+        should.not.exist(err);
+      });
+    });
+    it('should pass errors', function() {
+      var blobstore = {
+        deleteBlob: function(ctx, path, filename, revisionId, next) {
+          path.should.equal('path');
+          revisionId.should.equal('revisionId');
+          next(new Error('fer'));
+        }
+      };
+      BlobStores.batchDelete({}, blobstore, 'path', ['filename', 'file2', 'file3'], 'revisionId', function(err, path) {
+        should.exist(err);
+        err.message.should.equal('fer');
+      });
+    });
+  });
 });

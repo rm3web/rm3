@@ -8,7 +8,7 @@ CREATE TABLE wh_siteconfig (
 );
 
 INSERT INTO wh_siteconfig (site, path, data) VALUES
-		('default', 'site', '{"name": "WireWorld"}'),
+		('default', 'site', '{"name": "WireWorld", "copyright": "WireWorld"}'),
     ('default', 'sitepath', '{"root": "wh", "urlroot": "http://127.0.0.1:4000"}'),
     ('default', 'login', '{"visible": true}');
 
@@ -56,6 +56,13 @@ CREATE INDEX wh_log_revisionId ON wh_log USING btree ("revisionId");
 CREATE TABLE wh_tag (
 	"predPath" ltree,
 	"objStr" text,
+	"subjPath" ltree,
+	"objClass" text
+);
+
+CREATE TABLE wh_geotag (
+	"predPath" ltree,
+	"objGeotag" point,
 	"subjPath" ltree,
 	"objClass" text
 );
@@ -114,4 +121,32 @@ CREATE TABLE wh_last_seen (
 	"identityId" uuid REFERENCES wh_identity ("identityId") ON DELETE CASCADE,
 	"lastSeen" timestamp,
 	"lastSeenIp" inet
+);
+
+CREATE TABLE wh_ticket (
+	PRIMARY KEY("ticketId"),
+	"ticketId" uuid,
+	path ltree,
+	"inetAddr" inet,
+	"identityId" uuid,
+	"userPath" ltree,
+	subject text,
+	recorded timestamp,
+	details json
+);
+
+CREATE TABLE wh_serviceaccount (
+	PRIMARY KEY(provider, "clientId"),
+	provider text,
+	"clientId" text,
+	"providerDetails" json
+);
+
+CREATE TABLE wh_workflowsub (
+	PRIMARY KEY("subscriptionId"),
+	"subscriptionId" uuid,
+	proto text,
+	pathQuery lquery,
+	"actorPath" ltree,
+	"workflowDetails" json
 );

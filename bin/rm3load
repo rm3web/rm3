@@ -10,12 +10,40 @@ var loaddump = require('../lib/loaddump');
 var winston = require('winston');
 var workflow = require('../lib/workflow'),
     runWorkflows = require('../lib/runworkflows');
+var query = require ('../lib/query'),
+    async = require('async');
 
 winston.cli();
 
 function parse_sitepath(val) {
   var pth = new SitePath(val);
   return pth;
+}
+
+var site = {};
+
+function loadSite(next) {
+  winston.info('Loading site');
+  var keys = ['site', 'sitepath'];
+  async.map(keys, function reqKeys(item, callback) {
+    query.getSiteConfig(db, {}, 'default', item, callback);
+  }, function(err, res) {
+    if (err) {
+      return next(err);
+    }
+    site.name = res[0].name;
+    site.copyright = res[0].copyright;
+    site.root = new SitePath(res[1].root);
+    site.urlroot = res[1].urlroot;
+    site.sitePathToUrl = function(sitepath, revisionId) {
+      if (revisionId) {
+        return sitepath.toUrl('/', 1) + '?revisionId=' + revisionId;
+      } else {
+        return sitepath.toUrl('/', 1);
+      }
+    };
+    next();
+  });
 }
 
 program
@@ -42,14 +70,16 @@ if (program.directory) {
   }
 
   workflow.loadConf(function() {
-    loaddump.loadFromCatalog(db, security, program.directory, program.path, new SitePath(['wh','users']), !program.nohistory, function(err) {
-      if (err) {
-        winston.error('Error:', err);
+    loadSite(function() {
+      loaddump.loadFromCatalog(db, security, site, program.directory, program.path, new SitePath(['wh','users']), !program.nohistory, function(err) {
+        if (err) {
+          winston.error('Error:', err);
+          db.gunDatabase();
+          process.exit(1);
+        }
         db.gunDatabase();
-        process.exit(1);
-      }
-      db.gunDatabase();
-      process.exit(0);
+        process.exit(0);
+      });
     });
   });
 
@@ -70,13 +100,15 @@ if (program.directory) {
   stdin.on('end', function() {
     var inputData = inputChunks.join();
     var parsedData = JSON.parse(inputData);
-    loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
-      if (err) {
-        winston.error('Error:', err);
+    loadSite(function() {
+      loaddump.loadEntity(db, security, site, parsedData, program.path, false, !program.nohistory, {}, function(err) {
+        if (err) {
+          winston.error('Error:', err);
+          db.gunDatabase();
+          process.exit(1);
+        }
         db.gunDatabase();
-        process.exit(1);
-      }
-      db.gunDatabase();
+      });
     });
   });
 } else {
@@ -86,13 +118,15 @@ if (program.directory) {
       winston.error('Error:', err);
       process.exit(1);
     }
-    loaddump.loadEntity(db, security, parsedData, program.path, false, !program.nohistory, {}, function(err) {
-      if (err) {
-        winston.error('Error:', err);
+    loadSite(function() {
+      loaddump.loadEntity(db, security, site, parsedData, program.path, false, !program.nohistory, {}, function(err) {
+        if (err) {
+          winston.error('Error:', err);
+          db.gunDatabase();
+          process.exit(1);
+        }
         db.gunDatabase();
-        process.exit(1);
-      }
-      db.gunDatabase();
+      });
     });
   });
 }

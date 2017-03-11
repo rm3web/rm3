@@ -41,6 +41,11 @@ RM3_LOCAL_BLOBS
 
 The directory (can be relative or absolute) where rm3 is to store it's blobs (e.g. binary files like photos)
 
+RM3_PRIVATE_BLOBS
+-----------------
+
+The directory (can be relative or absolute) where rm3 can store private blobs (e.g. the full-resolution version of a photo, so that users can't navigate to it).  If left blank, functionality will be disabled.
+
 RM3_RESOURCES
 -------------
 
@@ -69,16 +74,22 @@ The consumer key and secret from Twitter, for login integration.
 
 If these keys aren't present, Twitter auth won't be active.
 
-RM3_JWT_SECRET & RM3_JWT_ISSUER
--------------------------------
+RM3_JWT_SECRET, RM3_JWT_ISSUER, RM3_JWT_EXPIRES_SECONDS, & RM3_JWT_AUDIENCE_ROOT
+--------------------------------------------------------------------------------
 
 **Warning: Do be careful with these keys.  Anyone with these keys can forge access credentials as any user on the system.**
+
+OAuth 2 / OpenID Connect are built atop the JWT layer and make use of the JWT credentials.
 
 RM3_JWT_SECRET contains either a secret key or a PEM-encoded public key for verifying a JSON Web Token secret.
 
 RM3_JWT_ISSUER is the issuer that JWT tokens generated and verified are checked against.
 
-If these keys aren't present, JWT won't be active.
+RM3_JWT_AUDIENCE_ROOT is the root for audience paths.  Both RM3_JWT_ISSUER and RM3_JWT_AUDIENCE_ROOT are probably the root path for your site.
+
+If RM3_JWT_SECRET and RM3_JWT_ISSUER are not present, JWT and OAuth2/OpenID Connect won't be active.
+
+RM3_JWT_EXPIRES_SECONDS is specified by the number of seconds before JWT tokens and thus OAuth 2 / OpenID Connect tokens expire.  It defaults to 24 hours.
 
 RM3_TOTP_ISSUER
 ---------------
@@ -102,15 +113,6 @@ RM3_CACHE_CONTROL_DISABLE
 -------------------------
 
 If this env variable is set, rm3 won't try to generate ETags or Cache-Control headers, which means that all of the intervening caches won't work.  This is only really useful if you are trying to develop the front-end.
-
-RM3_DANGER_FORCE_AUTH
----------------------
-
-**Dangerous flag: If you have this running on the public web, someone will probably find it and hack you.**
-
-This will force all connections to be authenticated as the user contained within this environment variable.
-
-This is, obviously, a great way to get rooted.  It's also really handy for debugging and playing with things.
 
 RM3_DANGER_DISABLE_HTTPS_CHECKS
 -------------------------------

@@ -27,8 +27,8 @@ rm3dump
 
 Dumps a node to the console.
 
-* Dump wh.users page to stdout `rm3dump -p wh.users`
-* Dum wh page to stdout, with history, in a more readable format `./bin/rm3dump -lfp wh`
+* Dump wh.users page to stdout `rm3dump wh.users`
+* Dum wh page to stdout, with history, in a more readable format `./bin/rm3dump -lf wh`
 
 rm3backup
 ---------
@@ -95,3 +95,7 @@ To list the users in the root group: `rm3admin roleusers root`
 ### rm3admin roleinfo
 
 To list the permissions that the root group has: `rm3admin roleinfo root`
+
+### rm3admin addclient
+
+To create a service account with a client ID of 'abc123', a shared secret of 'ssh-secret' a name of 'Samplr' and a callback URI of 'http://localhost:9000/callback': `rm3admin addclient abc123 ssh-secret Samplr http://localhost:9000/callback` 

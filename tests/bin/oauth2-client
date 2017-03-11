@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+// Set the configuration settings 
+const credentials = {
+  client: {
+    id: 'abc123',
+    secret: 'ssh-secret'
+  },
+  auth: {
+    tokenHost: 'http://127.0.0.1:4000',
+    tokenPath: '/$oauth/token',
+    authorizePath: '/$oauth/authorize',
+  }
+};
+ 
+// Initialize the OAuth2 Library 
+const oauth2 = require('simple-oauth2').create(credentials);
+const express = require('express');
+const app = express();
+
+// Authorization uri definition
+const authorizationUri = oauth2.authorizationCode.authorizeURL({
+  redirect_uri: 'http://localhost:9000/callback',
+  scope: 'notifications',
+  state: '3(#0/!~',
+});
+
+// Initial page redirecting to Github
+app.get('/auth', (req, res) => {
+  res.redirect(authorizationUri);
+});
+
+// Callback service parsing the authorization token and asking for the access token
+app.get('/callback', (req, res) => {
+  const code = req.query.code;
+  const options = {
+    code: code,
+    redirect_uri: 'http://localhost:9000/callback'
+  };
+
+  oauth2.authorizationCode.getToken(options, (error, result) => {
+    if (error) {
+      console.log(error);
+      console.error('Access Token Error', error.message);
+      return res.json('Authentication failed');
+    }
+
+    console.log('The resulting token: ', result);
+    const token = oauth2.accessToken.create(result);
+
+    return res
+      .status(200)
+      .json(token);
+  });
+});
+
+app.get('/success', (req, res) => {
+  res.send('');
+});
+
+app.get('/', (req, res) => {
+  res.send('Hello<br><a href="/auth">Log in with Github</a>');
+});
+
+app.listen(9000, () => {
+  console.log('Express server started on port 9000'); // eslint-disable-line
+});

@@ -22,7 +22,14 @@ var conf = {
   category: 'public'
 };
 BlobStores.register('public', new FileBlobStore(conf, db, cacheService));
-
+if (Conf.getPath('privateBlobs')) {
+  var privateConf = {
+    path: Conf.getPath('privateBlobs'),
+    urlroot: '/blobs/',
+    category: 'private'
+  };
+  BlobStores.register('private', new FileBlobStore(privateConf, db, null));
+}
 
 workflow.loadConf(function() {
   runWorkflows(function(err) {

@@ -9,17 +9,135 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * High: There's a critical bug that may impact a percentage of the users.  Upgrade!
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
-## [Unreleased]
+## [0.4.4] - High - 2017-02-23: **Another important tag search bug fix!**
 
 ### Added
+- Dropzone uploading for images.
+
+### Changed
+- Improved test coverage again.
+- Modal dialog for delete action.
+
+### Fixed
+- NODE_ENV check in the error handler wasn't checking for production, just the var.
+- Crashing bug with tag search.
+
+## [0.4.3] - High - 2017-02-23: **Important tag search bug fix!**
+
+Very sorry about that. :(
+
+### Fixed
+- rm3wf doesn't obey private blobs.
+- "View large" had a display bug.
+- Blog index wasn't generating shortened links.
+- Fix to remove unnecessary duplication in tag search made the bug worse.
+- Tweaked masonry formatting
+
+## [0.4.2] - Low - 2017-02-22: Special artistic edition
+
+**You probably want to avoid installing this release**
+
+### Added
+- "View large" photo page, not used in the default scheme.
+
+### Changed
+- Made tag link text friendlier
+- Added a style for the 'memo' section of the form instead of hardcoding.
+
+### Fixed
+- Removed unnecessary duplication in tag search
+- Image protection and the image helper weren't working well together.
+
+## [0.4.1] - Low - 2017-02-22: GSV Unfortunate Contact with the Enemy edition
+
+### Added
+- Random sort order
+
+### Changed
+- Figure display tweaked slightly (always have a title, different view sizes)
+
+### Fixed
+- Blog with sidebar proto doesn't parse enrichment properly.
+- Loading a dump from 0.4.x with image protection turned on will crash.
+- Image with image protection on will eat up page space.
+- Image protection is communicated in query result enhancement.
+
+## [0.4.0] - Moderate - 2017-02-21: Would Have Done It Earlier But For A Two Hour Power Outage edition
+
+**Note**: Many of the non-breaking changes for this milestone were rolled out already in 0.3.x builds, so if you are just joining us after the 0.3.0 release, check the added functionality in the point releases instead of just what happened between 0.3.8 and 0.4.
+
+I'm able to replace all of my installations of the original rm with rm3 0.4.  It's still alpha but it should work for you. :)
+
+**BREAKING**: There are database changes since 0.3.  Before you install 0.4 you should delete the workflow:
+```sql
+drop table wf_jobs;
+drop table wf_jobs_info;
+drop table wf_runners;
+drop table wf_locked_targets;
+drop table wf_workflows;
+```
+
+And then you can add the tables:
+```sql
+CREATE TABLE wh_geotag (
+  "predPath" ltree,
+  "objGeotag" point,
+  "subjPath" ltree,
+  "objClass" text
+);
+
+CREATE TABLE wh_ticket (
+  PRIMARY KEY("ticketId"),
+  "ticketId" uuid,
+  path ltree,
+  "inetAddr" inet,
+  "identityId" uuid,
+  "userPath" ltree,
+  subject text,
+  recorded timestamp,
+  details json
+);
+
+CREATE TABLE wh_serviceaccount (
+  PRIMARY KEY(provider, "clientId"),
+  provider text,
+  "clientId" text,
+  "providerDetails" json
+);
+
+CREATE TABLE wh_workflowsub (
+  PRIMARY KEY("subscriptionId"),
+  "subscriptionId" uuid,
+  proto text,
+  pathQuery lquery,
+  "actorPath" ltree,
+  "workflowDetails" json
+);
+```
+and create the workflow engine again:  `./bin/rm3admin createworkflow`
+
+Alternatively, you can load from a saved dump.
+
+### Added
+- Image protection, so that full-resolution original images aren't part of a public blob store
+- Unobtrusive watermarking
 - rm3mv command
 - rm3rm command has the -r option to redirect to an external URL.
 - Ontological tag can be in template.
 - Added support for ontological tags, tag categories, link tags, and auto-suggest tags.
+- Added tickets to DB (represents votes, flags, etc)
+- Added storage support for geotags (but no UI yet)
+- OAuth2 support
+- DB table for workflow subscriptions (but no code yet)
 
 ### Changed
 - BasicQuery can select on a proto type.
 - Filtering out tags with only one hit on them.
+- Updated dependencies - React 0.14.x to React 15.x being the big one
+- rm3dump doesn't need a `-p` to specify path anymore.
+
+### Removed
+- RM3_DANGER_FORCE_AUTH flag removed.
 
 ## [0.3.8] - Low - 2017-02-05: Special Crazy Eights edition
 
@@ -309,7 +427,12 @@ Most of the basic concepts behind rm3 were born here.  Entities (I called them N
 
 Unfortunately, I didn't write any unit tests and kinda forgot all of the corner cases that I manually tested and decided I needed to start over.
 
-[Unreleased]: https://github.com/rm3web/rm3/compare/v0.3.8...HEAD
+[Unreleased]: https://github.com/rm3web/rm3/compare/v0.4.4...HEAD
+[0.4.3]: https://github.com/rm3web/rm3/compare/v0.4.3...v0.4.4
+[0.4.3]: https://github.com/rm3web/rm3/compare/v0.4.2...v0.4.3
+[0.4.2]: https://github.com/rm3web/rm3/compare/v0.4.1...v0.4.2
+[0.4.1]: https://github.com/rm3web/rm3/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/rm3web/rm3/compare/v0.3.8...v0.4.0
 [0.3.8]: https://github.com/rm3web/rm3/compare/v0.3.7...v0.3.8
 [0.3.7]: https://github.com/rm3web/rm3/compare/v0.3.6...v0.3.7
 [0.3.6]: https://github.com/rm3web/rm3/compare/v0.3.5...v0.3.6
