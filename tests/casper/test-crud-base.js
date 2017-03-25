@@ -85,6 +85,9 @@ describe('Base type CRUD', function() {
     */
     casper.thenOpen('http://127.0.0.1:4000/$new/create.html?type=base', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
+    });
+
+    casper.waitUntilVisible('form[action*=create]', function() {
       this.fill('form[action*=create]',
         {title: 'CasperJS Test',
           'posting[source]': 'post data here do stuff etc'}, true);
