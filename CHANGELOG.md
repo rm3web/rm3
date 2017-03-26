@@ -9,6 +9,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * High: There's a critical bug that may impact a percentage of the users.  Upgrade!
 * Critical: There's a critical bug that impacts most of the users.  Upgrade ASAP!
 
+## [Unreleased]
+
+### Added
+- Textblock editor behaving far better: Textblock delete, no overwriting of state.
+
+### Changed
+- Updated dependencies
+
 ## [0.4.4] - High - 2017-02-23: **Another important tag search bug fix!**
 
 ### Added
