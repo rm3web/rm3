@@ -1,6 +1,8 @@
 rm3
 ===
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/rm3web/rm3.svg)](https://greenkeeper.io/)
+
 A platform for publishing more than just textual articles on the web.
 ---------------------------------------------------------------------
 
