@@ -20,13 +20,15 @@ const customModalStyles = {
   }
 };
 
-var MenuButton = ReactIntl.injectIntl(React.createClass({
+class MenuWrapper extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state =  { showModal: false };
+    this.handleSelection = this.handleSelection.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+  }
 
-  getInitialState: function() {
-    return { showModal: false };
-  },
-
-  handleSelection: function(value, event) {
+  handleSelection(value, event) {
     if (value.func) {
       value.func();
     } else if (value.confirm) {
@@ -34,13 +36,13 @@ var MenuButton = ReactIntl.injectIntl(React.createClass({
     } else {
       window.location.href = value.url;
     }
-  },
+  }
 
-  handleCloseModal: function(event) {
+  handleCloseModal(event) {
     this.setState({ showModal: false });
-  },
+  }
 
-  render: function() {
+  render() {
     var self = this;
     var actions = this.props.actions;
 
@@ -60,22 +62,25 @@ var MenuButton = ReactIntl.injectIntl(React.createClass({
       );
     });
 
-    return (
-      <AmbWrapper
-        className='AriaMenuButton pure-u-1'
-        onSelection={self.handleSelection}
-      >
-        <ReactModal 
+    var modal = (<ReactModal 
            isOpen={this.state.showModal}
            style={customModalStyles}
            onRequestClose={this.handleCloseModal}
-           contentLabel="Minimal Modal Example"
+           contentLabel="Confirmation"
         >
         <FormattedMessage id={'DO_YOU_REALLY_WANT_TO_GO_HERE'} />
           <br /><a className="pure-button" href={this.state.modalLink}>Yes</a>
           <button className="pure-button" onClick={this.handleCloseModal}>No</button>
 
         </ReactModal>
+      )
+
+    return (
+      <AmbWrapper
+        className='AriaMenuButton pure-u-1'
+        onSelection={self.handleSelection}
+      >
+        {modal}
         <AmbButton className='AriaMenuButton-trigger pure-button pure-u-1'>
           <span className='AriaMenuButton-triggerText'>
             <FormattedMessage
@@ -90,7 +95,9 @@ var MenuButton = ReactIntl.injectIntl(React.createClass({
       </AmbWrapper>
     );
   }
-}));
+}
+
+var MenuButton = ReactIntl.injectIntl(MenuWrapper);
 
 var MenuButtonWrapper = function MenuButtonWrapper(props) {
   return <IntlProvider messages={props.messages} locale='en'><MenuButton {...props} /></IntlProvider>
