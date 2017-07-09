@@ -1,6 +1,6 @@
 {
   "name": "rm3",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "A node.js CMS toolkit",
   "main": "lib/index.js",
   "directories": {
@@ -27,7 +27,7 @@
   },
   "engines": {
     "node": "4.x || 5.x",
-    "npm": "2.x || 3.x"
+    "npm": "2.x || 3.x || 4.x"
   },
   "nyc": {
     "exclude": [
