@@ -213,6 +213,7 @@ gulp.task('coverage:core', function(callback) {
               'test:db',
               'test:casper',
               'test:api',
+              'test:cli',
               callback);
 });
 
