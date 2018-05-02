@@ -85,6 +85,9 @@ describe('Blog index type CRUD', function() {
     */
     casper.thenOpen('http://127.0.0.1:4000/$new/create.html?type=blogindex', function() {
       'div.footer'.should.be.inDOM.and.be.visible;
+    });
+
+    casper.waitUntilVisible('form[action*=create]', function() {
       this.fill('form[action*=create]',
         {title: 'Blog Index Test',
           'posting[source]': 'post data here do stuff etc'}, true);
@@ -126,6 +129,8 @@ describe('Blog index type CRUD', function() {
         {'title': 'blogy blog',
           'posting': 'postingy'}, true);
     });
+
+    casper.wait(100);
 
     casper.thenOpen('http://127.0.0.1:4000/blog_index_test/', function() {
       'div.footer'.should.be.inDOM.and.be.visible;

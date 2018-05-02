@@ -28,6 +28,7 @@ var tokenConfig = {};
 var oauth2 = require('simple-oauth2').create(credentials);
 
 describe('oauth2', function() {
+  this.timeout(4000);
   it('rejects bad bearer tokens', function(cb) {
     var client = new ApiClient('http://127.0.0.1:4000');
     client.page('/users/').get()
