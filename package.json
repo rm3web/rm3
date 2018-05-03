@@ -109,7 +109,7 @@
     "react-aria-menubutton": "^5.0.0",
     "react-dom": "^15.5.4",
     "react-dropzone": "^3.11.0",
-    "react-intl": "^2.3.0",
+    "react-intl": "~2.3.0",
     "react-modal": "^1.7.1",
     "react-super-select": "^1.0.2",
     "react-wavesurfer": "^0.8.3",
