@@ -185,7 +185,7 @@
     "benchmark": "./node_modules/.bin/gulp benchmark",
     "test": "./node_modules/.bin/gulp test",
     "coverage": "./node_modules/.bin/gulp coverage",
-    "travis": "./node_modules/.bin/gulp travis && ./node_modules/.bin/gulp coverage && ./node_modules/.bin/gulp test:cli && ./node_modules/.bin/gulp coveralls",
+    "travis": "./node_modules/.bin/gulp coverage && ./node_modules/.bin/gulp test:cli && ./node_modules/.bin/gulp coveralls",
     "lint": "./node_modules/.bin/gulp lint",
     "docs": "./node_modules/.bin/jsdox -A --output ./docs/api lib && ./node_modules/.bin/jsdox -A --output ./docs/api/middlware lib/middleware",
     "prepublish": "./node_modules/.bin/gulp prepublish"
