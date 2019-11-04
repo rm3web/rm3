@@ -95,7 +95,7 @@ var TagPageComponent = ReactIntl.injectIntl(React.createClass({
         <TagControl.Tags predicates={this.state.predicates} tags={this.state.tags} 
          readOnlyPredicates={{'navigation': true}} />
         <TagControl.TagInput ref="input" ready={this.state.ready} 
-          predicates={this.state.predicateList} addTag={this.addTag} 
+          predicates={this.state.predicateList} addTag={this.addTag} placeholder=""
           selectPlaceholder={this.props.intl.formatMessage({id:'SELECT_A_PREDICATE'})} 
           addMessage={this.props.intl.formatMessage({id:'ADD'})} links={this.state.ontags}
           defaultPredicate={{"id": "plain"}} popularTags={this.state.popularTags} />
