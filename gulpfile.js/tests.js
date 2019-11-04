@@ -38,16 +38,16 @@ gulp.task('test:cli', ['test:cli:db', 'test:cli:schema'],
     RM3_PG: 'postgresql://wirehead:rm3test@127.0.0.1/rm3cli'
   }}));
 
-gulp.task('test:casper:db', shell.task([
+gulp.task('test:puppeteer:db', shell.task([
   'redis-cli FLUSHALL',
   'dropdb --if-exists rm3casper && createdb rm3casper'
 ]))
 
-gulp.task('test:casper:schema', ['test:casper:db'], shell.task([
+gulp.task('test:puppeteer:schema', ['test:puppeteer:db'], shell.task([
   'psql rm3casper < db-schema.sql'
 ]))
 
-gulp.task('test:casper:fixtures', ['test:casper:schema'], function() {
+gulp.task('test:puppeteer:fixtures', ['test:puppeteer:schema'], function() {
   return gulp.src('tests/page-fixtures/*.json', {read: false})
     .pipe(shell([
       './bin/rm3load -f <%= file.path %>'
@@ -56,7 +56,7 @@ gulp.task('test:casper:fixtures', ['test:casper:schema'], function() {
     }}))
 })
 
-gulp.task('test:casper:users', ['test:casper:schema'], function() {
+gulp.task('test:puppeteer:users', ['test:puppeteer:schema'], function() {
   return gulp.src('')
     .pipe(shell([
       './bin/rm3admin loadtemplate base_access.json wh',
@@ -162,8 +162,8 @@ gulp.task('test:api', ['test:api:db', 'test:api:schema', 'test:api:fixtures', 't
     });
 });
 
-gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fixtures'], function(cb) {
-  var tests = ['./tests/casper/*'];
+gulp.task('test:puppeteer', ['test:puppeteer:db', 'test:puppeteer:users', 'test:puppeteer:fixtures'], function(cb) {
+  var tests = ['--require', './tests/lib/mocha.js', '-c', './tests/puppeteer/*', '--timeout', '30000'];
 
   spawnServerForTests('postgresql://wirehead:rm3test@127.0.0.1/rm3casper',
     './bin/rm3front', [], 165000, 4000, function(server) {
@@ -183,7 +183,7 @@ gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fi
             gutil.log('OauthServer:', data.toString().slice(0, -1));
           });
         }, function(oauthServer) {
-          runTestChild('./node_modules/.bin/mocha-casperjs', casperTests, function(success) {
+          runTestChild('./node_modules/.bin/mocha', tests, function(success) {
             gutil.log('killing server');
             server.kill('SIGINT');
             oauthServer.kill('SIGINT');
@@ -198,6 +198,7 @@ gulp.task('test:casper', ['test:casper:db', 'test:casper:users', 'test:casper:fi
     });
 });
 
+
 gulp.task('coverage:report', shell.task(['./node_modules/.bin/nyc report -r html -r lcov -r html']));
 
 gulp.task('test', ['test:unit', 'test:db']);
@@ -211,7 +212,7 @@ gulp.task('base-coverage:core', function(callback) {
 gulp.task('coverage:core', function(callback) {
   runSequence('test:unit',
               'test:db',
-              'test:casper',
+              'test:puppeteer',
               'test:api',
               callback);
 });

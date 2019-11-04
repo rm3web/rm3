@@ -26,7 +26,7 @@ describe('schemehelpers', function() {
   describe('#toISOString', function() {
     var dottedPathTemplate = "{myInput|toISOString}";
     it('works for a date', function(cb) {
-      dustRender(dust, dottedPathTemplate , 'schemehelpers.toISOString', {myInput: new Date('1995-12-17T03:24:00')}, '1995-12-17T03:24:00.000Z', cb);
+      dustRender(dust, dottedPathTemplate , 'schemehelpers.toISOString', {myInput: new Date('1995-12-17T03:24:00Z')}, '1995-12-17T03:24:00.000Z', cb);
     });
     it('ignores everything else', function(cb) {
       dustRender(dust, dottedPathTemplate , 'schemehelpers.toISOString', {myInput: '51'}, '51', cb);
