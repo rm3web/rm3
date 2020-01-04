@@ -11,6 +11,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.5.0] - High - 2020-01-04: Another Special preventing bit-rot edition
+
+### Changed
+- Updated to Node v8
+
 ## [0.4.5] - Low - 2017-07-09: Special preventing bit-rot edition
 
 ### Added
