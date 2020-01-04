@@ -33,7 +33,7 @@ deploy:
     on:
       tags: true
       repo: rm3web/rm3
-      node: '4'
+      node: '8'
   - provider: releases
     api_key:
       secure: JMDbzxgUgl5C8oo1hJsnvOgHrujNvihw6gCV1HCiWeO0/Qk+nxxf7L6z4mGS2+5C5wXV9qvgSCfjPLnsVTs4pFeRy+23hALGrVcmFgx0bfJC3XlmtdYaHORMv9zK3XMhHMgjVn3m7Xs6mu841Gp/ZbnpP1tiWhH4NMf2TCcyYS5MuJOPgMJn4VveGTWQvoouErsaCbCbtbRfnLMnze9JJFtkkecsiDj5JzkcaTY3qOh2BXPUdoRuWOYCDxDdMfOSNr7EYF+dTpp5zwtj3/KRJU0V2O0F/Gq+8E3n9zlwC3QqVNUCytttxczTSrmvxhPaYn4lCTocn/7EiqSPZ9p5FQKXM3xTJyD+EKhqffNo49MjK3Fx09tIFGuMyUkjBhJM/84dD94U15ZWSXns+65nUUlVFQRizB/T/J8wvNglJy1Bc90Vae1GaVncl2wd9U6EPuU3IfuvyGhO0CeZhqbaxsSPp55f0crjq8TIWwQcJh2dqg0675oOhOh4ZdyFCbMElfqpMgitbO+3/ggLrT4LRBcxmQqmDTKgoFu5bqQTwHveeQraHe2hSXyMzkNG5JXunG9o467nmg0ZaJGW9twoy1X+EMdPtUgvnLebjwqbkOvr9CYieLhwzsFLuINq8o3vVDgFnV2FqmUC+IKQD9zhVnu7HyMllS173BBmB+4pA2g=
@@ -42,7 +42,7 @@ deploy:
     on:
       tags: true
       repo: rm3web/rm3
-      node: '4'
+      node: '8'
 cache:
   directories:
     - node_modules
