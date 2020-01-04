@@ -26,10 +26,11 @@ script: npm run travis
 before_deploy:
 - tar -pczf scheme-default.tar.gz scheme/default/
 deploy:
+  matrix:
   - provider: npm
     email: wh-npm@wirewd.com
     api_key:
-      secure: PIEJzzgJHDw9zv2sykPcVHrLylurSGVF/ggg2Dy41xyyXF/Gy5RzqKK14jSGXJO1L5386VInhGCjZVpgU4qrxhcaibRNbHTfI0FLOcSiQoQnvxvonlUMfRSZf/DFW6jfeO6SHL3C4MK2/e+BdFdbkVUAUAi5R04r13Op8dbfjVzkzh2qOwx934/0mFcTix3dJ0jo6HaYnN2m4Fc9B68zw3zeTQ8fOFvtlpflkAtPbb8yVK/j+xoWO1J0WJenjrJkz0A3nBKEGhnkp7HoaFg7KwB4/Xi7V7oic7pEmVkWD6TOx8dug9rr8PLSAW1TaFaUUzXlNDpHZrK2WPpk/pnWveIPm4lvkg3yiZukdaj2KC+EfRxLQ+1A5VRsinKJji0hL+Y2nvpHqhlrvHP20MmgGsm1kWGFccM11+uBBrkBA6+BJuPGceuK2Fk1p28U8fyla3dncVTXkZvRhaYixz4SFJ9KKGv43fDb3+pG16rqy5xZJ8k7z7ywMif1VtEsKBr7XLjkFfUuEYpQkJDyBaihwPD0m85J96cD/fogQwcsEZEOzBOGJypKvxNp/pzPEnyFd5QU6JPyM0FkQCDcFaeMBqxhUhwfpv+2rXzd6dHu+eHYC3xHxUTVQztjkB/mydgFxafp70CKo79Fpx+HPxb3wtrnX03QB2tgonoBrfWQqgY=
+      secure: k0spOkriMkHB3yZH58q1k4nL/Cj6EtU6Ex/Rtr/ksUV/1yHHoQlHVcEM1Brsqlykv84cIsP5DucYjNkJR/7VZ1ZCUSu+UOMOjo1xHW2UbXEO8wKqNhR+GISJQKxnWFXfF3JSO0pF5oMuy1WDp9yHOgb/86OV4hzWlOVzPTEivEcZ2b7760MymVzUR9DuyY6zz6rgEGitCyALWBxJg2BcsBZccKx8YZAidKM5OSnAr2RcBMoOK03pVgrd0quZIs5yzmcrvIz9mCRuyIR6oCSsEgmVg0UZsvVR149Yssbm892x3TljJftnHAryx/F53hfFVEHsmNtWyr3QUXcqbrF0zRxLne3f7zqSXNvLBd+1MuMQfpxC9vFaEFa6s5M9yQPHxU11becGzhv8+hXSIZ4SA/dAqq6wCUUYyH0x3QbQO6mqhmtSBefA2rJm5Rnsn1ZEVIFI2HrfVvJF+jGJhZVkPk+T7NzuSa4XuymvMDCVAAsAE7Ya7k6HV9el4YGcXMoXJTCMYndpXOI5hyOCmzZQfk+Y8bw4WhmXjxHNC+PRv2vMpa1JFQnLQV3YFgzJUQiP1b/TncU2rfwv+Q4cMAUvm+I7QfeSp/iVbWjK2FpWg+7RqA46l5X4Ghzk6ZUlay4AlsM7GM8hD5e0Ym4mPLoAUmbttm6GypTFysns5nBGBRU=
     on:
       tags: true
       repo: rm3web/rm3
@@ -45,4 +46,4 @@ deploy:
       node: '8'
 cache:
   directories:
-    - node_modules
+  - node_modules
