@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  coveralls: coveralls/coveralls@1.0.4
-
 defaults: &defaults
   working_directory: ~/repo
   docker:
@@ -65,8 +62,6 @@ jobs:
           name: Install
           command: npm install
       - run: npm run travis
-
-      - coveralls/upload
 
       - save_cache:
           paths:
