@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  coveralls: coveralls/coveralls@1.0.4
+
 defaults: &defaults
   working_directory: ~/repo
   docker:
@@ -50,14 +53,20 @@ jobs:
       - run:
           name: Wait for redis
           command: dockerize -wait tcp://localhost:6379 -timeout 1m
-      - run: echo "Hello World"
-      - run: psql -c 'create database rm3unit;' -U postgres
-      - run: psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres
-      - run: psql -c "GRANT ALL PRIVILEGES ON database rm3unit TO wirehead;" -U postgres
-      - run: psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres
-      - run: psql rm3unit < ./db-schema.sql -U postgres
-      - run: npm install
+      - run: 
+          name: Set up DB
+          command: |
+            psql -c 'create database rm3unit;' -U postgres
+            psql -c "CREATE USER wirehead WITH PASSWORD 'rm3test';" -U postgres
+            psql -c "GRANT ALL PRIVILEGES ON database rm3unit TO wirehead;" -U postgres
+            psql -c "ALTER USER wirehead WITH SUPERUSER;" -U postgres
+            psql rm3unit < ./db-schema.sql -U postgres
+      - run: 
+          name: Install
+          command: npm install
       - run: npm run travis
+
+      - coveralls/upload
 
       - save_cache:
           paths:
