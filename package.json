@@ -67,7 +67,7 @@
     "errs": "~0.3.2",
     "express": "^4.15.2",
     "express-session": "^1.14.0",
-    "express-state": "^1.3.0",
+    "express-state": "^1.4.0",
     "express-winston": "^2.0.0",
     "frameguard": "^3.0.0",
     "gallerygrid": "^1.0.0",
