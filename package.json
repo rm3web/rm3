@@ -169,7 +169,7 @@
     "matcha": "^0.7.0",
     "mocha": "^3.0.1",
     "mocha-steps": "^1.0.0",
-    "nyc": "^11.0.0",
+    "nyc": "^15.0.0",
     "proxyquire": "^1.7.10",
     "puppeteer": "^1.19.0",
     "purecss": "^0.6.2",
