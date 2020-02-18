@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Updated dependencies (dustjs, express-state, jsonwebtoken, passport-jwt, pg, squel, codecov, nyc)
+
 ## [0.5.0] - High - 2020-01-04: Another Special preventing bit-rot edition
 
 ### Changed
