@@ -56,7 +56,7 @@
     "cookie-parser": "~1.4.0",
     "credential": "~2.0.0",
     "csurf": "^1.9.0",
-    "dompurify": "^0.9.0",
+    "dompurify": "^2.0.14",
     "dont-sniff-mimetype": "^1.0.0",
     "dotenv": "^4.0.0",
     "dotty": "0.0.2",
